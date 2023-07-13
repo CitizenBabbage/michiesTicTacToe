@@ -11,7 +11,7 @@ import {corner, edge} from './globals.js'
 
 export function chooseMove(board){
     const obj = getBoardObject(board); 
-    console.log("object is:", obj); 
+    // console.log("object is:", obj); 
     return chooseMoveFromObject(obj); 
 }
 
@@ -23,10 +23,13 @@ console.log(chooseMove(['X',null,null,null,null,null,null,null,null]))
 export function getBoardArchetype(boardState){
     for (let i = 0; i < boardStatesDB.length; i++){
         if (areEquivalent(boardState, boardStatesDB[i].state)){
-            console.log(`BoardState is ${boardState} and boardStatesDB[i].state is ${boardStatesDB[i].state}`)
+            //console.log(`BoardState[0] is ${boardState[0]} and boardStatesDB[i].state[8] is ${boardStatesDB[i].state[8]}`)
+
+            //console.log(`type of BoardState is ${typeof boardState} and type of boardStatesDB[i].state is ${typeof boardStatesDB[i].state}`)
+            //console.log(`BoardState is ${boardState} and boardStatesDB[i].state is ${boardStatesDB[i].state}`)
             let boardObject = boardStatesDB[i]; 
-            boardObject.transform = equivalenceScore(boardState, boardStatesDB[i])
-            console.log("1. transform is: ", boardObject.transform)
+            boardObject.transform = equivalenceScore(boardState, boardStatesDB[i].state)
+            //console.log("1. transform is: ", boardObject.transform)
             return boardObject; 
         }
     }
@@ -37,7 +40,8 @@ export function getBoardArchetype(boardState){
 // according to the transform 
 export function getBoardObject(boardState){
     let arche = getBoardArchetype(boardState) 
-    console.log("2. transform is: ", arche.transform)
+    // console.log("arche is: ", arche)
+    // console.log("2. transform is: ", arche.transform)
 
     arche.state = transformBoard(arche.state, arche.transform)
     if (!areIdentical(arche.state,boardState)){console.log(`Error: ${arche.state} not equal to ${boardState}`); return}
@@ -49,10 +53,10 @@ export function getBoardObject(boardState){
 
 export function chooseMoveFromObject(object){
     let x = Math.random(); 
-    console.log("random is :", x)
+    // console.log("random is :", x)
     let probSum = 0; 
     for (let i = 0; i < object.response.length; i++){
-        console.log("probSum is now:", probSum)
+        // console.log("probSum is now:", probSum)
         probSum += object.response[i]; 
         if (x < probSum){return i}
     }

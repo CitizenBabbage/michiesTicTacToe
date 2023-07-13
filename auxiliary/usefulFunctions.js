@@ -61,6 +61,8 @@ export function areEquivalent(board1, board2){
 // the score is a two element array. If the first number is 1 this means that the transformation involves a reflection
 // the second number says how many 90 degree rotations the board must undergo
 export function equivalenceScore(board1, board2){
+    //console.log(`Board1 is ${board1} and board2 is ${board2}`)
+
     for (let i = 0; i < 4; i++){
         if (checkRotationalID(board1, board2, i)){return [0,i]}
     }
@@ -70,6 +72,8 @@ export function equivalenceScore(board1, board2){
     }
     return ['error','error']
 }
+
+//console.log(equivalenceScore(['X',null, null,null, null,null, null,null, null,],[null, null,null, null,null, null,null, null,'X']))
 
 
 //F1.4.1.1.1.1 areIdentical//
@@ -97,6 +101,7 @@ export function rotation(square, numOf90DegreeTurns){
     else return square; //center square 
 }
 
+/// given a square number and a number of 90 degree turns, returns the square number reached
 export function reverseRotation(square, numOf90DegreeTurns){
     if (reverseEdge.includes(square)){return reverseEdge[(reverseEdge.indexOf(square) + numOf90DegreeTurns)%4]}
     else if (reverseCorner.includes(square)){return reverseCorner[(reverseCorner.indexOf(square) + numOf90DegreeTurns)%4]}
@@ -105,9 +110,12 @@ export function reverseRotation(square, numOf90DegreeTurns){
 
 // Returns an array representing the board state (reverse) transformed
 export function transformBoard(boardState, transform){
-    console.log("3. transform is ", transform)
-    let newBoard = boardState.map((item) => reverseRotation(item,transform[1]))
-    return newBoard.map((item) => reflectNumber(item))
+    // console.log("board state is ", boardState)
+    // console.log("3. transform is ", transform)
+    let newBoard = boardState.map((item, index) => boardState[reverseRotation(index,transform[1])])
+    //console.log("newBoard is ", newBoard)
+    if (transform[0] === 1) return newBoard.map((item) => reflectNumber(item))
+    else return newBoard; 
 }
 
 
