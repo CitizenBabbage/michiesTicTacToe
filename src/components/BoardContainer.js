@@ -10,6 +10,7 @@ export default function BoardContainer( props ) {
     if (props.player === 'X'){turn = true} else turn = false; 
     const [playersTurn, setPlayersTurn] = useState(turn);
     const [squares, setSquares] = useState(Array(9).fill(null)); 
+    const [gameLog, setGameLog] = useState([]); 
     let status = checkStatus(squares, playersTurn);
 
     useEffect(() => {
@@ -20,12 +21,14 @@ export default function BoardContainer( props ) {
     const opponentPlays = async () => {
       console.log(`props.opponent is `,props.opponent)
       if (!playersTurn){
-        const nextSquares = squares.slice();
+        const nextSquares = squares.slice();                  // create duplicate board
         if (calculateWinner(nextSquares)) return;             // if player has just won, stop
         if (nextSquares.includes(null)) {                     // if there are any empty squares left
           let nextSquareToMoveTo = await delayAndChoose(nextSquares)
           console.log("nextSquareToMoveTo is", nextSquareToMoveTo)
           nextSquares[nextSquareToMoveTo] = props.opponent
+          setGameLog([...gameLog,[nextSquares,nextSquareToMoveTo]])
+          console.log("game log is : ", gameLog)
           setSquares(nextSquares); 
           setPlayersTurn(true);
         }
@@ -37,11 +40,13 @@ export default function BoardContainer( props ) {
     function handleClickBoard(i) {                          // i = number of square 0 through 8
       if (!playersTurn) {return}   ;                        // if it's not the player's turn, do nothing
       const nextSquares = squares.slice();                  // create duplicate board
-      if (squares[i] || calculateWinner(nextSquares)) {     // if the square is occupied or the winner has been decided, don't respond
-        console.log("bad click or winner decided")
+      if (squares[i] || calculateWinner(nextSquares)) {     // if the square is occupied or the winner has been decided, 
+        console.log("bad click or winner decided")          //don't respond
         return;
       }
       nextSquares[i] = props.player;                        // puts an X or O in the array depending on who is the player
+      setGameLog([...gameLog,[nextSquares,i]])
+      console.log("game log is : ", gameLog)
       setSquares(nextSquares);                              // sets the board equal to the duplicate board
       setPlayersTurn(false);
     }
