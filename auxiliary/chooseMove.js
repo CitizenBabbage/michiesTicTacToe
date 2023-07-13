@@ -15,7 +15,7 @@ export function chooseMove(board){
     return chooseMoveFromObject(obj); 
 }
 
-console.log(chooseMove(['X',null,null,null,null,null,null,null,null]))
+
 
 // db contains ARCHETYPAL board states---i.e. not every equivalent flip and rotation
 // this function takes board state, and returns the archetype of which it is a flip/rotation
@@ -42,12 +42,16 @@ export function getBoardObject(boardState){
     let arche = getBoardArchetype(boardState) 
     // console.log("arche is: ", arche)
     // console.log("2. transform is: ", arche.transform)
+    // console.log("arche.state BEFORE transform is: ", arche.state)
 
     arche.state = transformBoard(arche.state, arche.transform)
+    //console.log("arche.state AFTER transform is: ", arche.state)
+
     if (!areIdentical(arche.state,boardState)){console.log(`Error: ${arche.state} not equal to ${boardState}`); return}
     arche.response = transformBoard(arche.response, arche.transform)
     return arche; 
 }
+
 
 // takes object, returns move chosen 
 

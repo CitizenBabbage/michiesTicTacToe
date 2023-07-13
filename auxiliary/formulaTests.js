@@ -1,6 +1,6 @@
 import {corner, edge} from './globals.js'
 import {rotation, reflectNumber, nextWheel} from './usefulFunctions.js'
-import {reverseTransformation} from './chooseMove.js'
+import {chooseMove, reverseTransformation} from './chooseMove.js'
 
 
 // function whetherFlipPlusRotationEqualsAntiCWRotationMinusOne(){
@@ -87,4 +87,26 @@ function gtTest(){
         return true; 
     }
 
-gtTest()
+
+    //console.log(chooseMove(['X',null,null,null,null,null,null,null,null]))
+
+
+    function testChooseMoveNeverTriesToFillFilledSquare(){
+        let nextBoard = [null, null,null,null,null,null,null,null,null];
+        let newSuggestion;  
+        for (let i = 0; i < 9; i++){
+            nextBoard = [null, null,null,null,null,null,null,null,null]
+            nextBoard[i] = 'X'
+            //console.log(`Trying: `, nextBoard)
+            for (let j = 0; j < 300; j++){
+                newSuggestion = chooseMove(nextBoard); 
+                if (nextBoard[newSuggestion]){
+                    console.log(`ERROR: X suggestion for ${nextBoard} is already filled`)
+                return}
+            }
+        }
+        console.log("testChooseMoveNeverTriesToFillFilledSquare completed with no errors.")
+        return true; 
+    }
+
+    testChooseMoveNeverTriesToFillFilledSquare()

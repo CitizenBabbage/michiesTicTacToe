@@ -112,10 +112,12 @@ export function reverseRotation(square, numOf90DegreeTurns){
 export function transformBoard(boardState, transform){
     // console.log("board state is ", boardState)
     // console.log("3. transform is ", transform)
-    let newBoard = boardState.map((item, index) => boardState[reverseRotation(index,transform[1])])
+    if (transform[0] === 1) {
+        newBoard = boardState.map((item, index) => boardState[reverseRotation(index,transform[1])]);
+        return newBoard.map((item) => reflectNumber(item))
+    }
+    else return boardState.map((item, index) => boardState[rotation(index,transform[1])])
     //console.log("newBoard is ", newBoard)
-    if (transform[0] === 1) return newBoard.map((item) => reflectNumber(item))
-    else return newBoard; 
 }
 
 
