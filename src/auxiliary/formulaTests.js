@@ -1,60 +1,9 @@
 import {corner, edge} from './globals.js'
-import {rotation, reflectNumber, nextWheel} from './usefulFunctions.js'
-import {chooseMove, reverseTransformation} from './chooseMove.js'
+import {rotation, areEquivalent, equivalenceScore, areIdentical, reflectNumber, nextWheel, reverseTransformBoard, transformBoard, reverseTransformation} from './usefulFunctions.js'
+import {chooseMove} from './chooseMove.js'
+import {db} from './databaseFormatted.js' //assert { type: "json" };
 
 
-// function whetherFlipPlusRotationEqualsAntiCWRotationMinusOne(){
-//     let newByFlipPlusRotation, newByAntiCWRotation; 
-//     for (let i = 0; i < 9; i++){ // i is square number
-//         for (let j = 0; j < 5; j++) { //j is number of 90 degree rotations
-//             newByFlipPlusRotation = rotation(reflectNumber(i),j)
-//             if (edge.includes(i)){newByAntiCWRotation = edge[(edge.indexOf(i) - (j -1))%4]}
-//             else if (corner.includes(i)){newByAntiCWRotation = corner[(corner.indexOf(i) - (j -1))%4]}
-//             else newByAntiCWRotation = i; 
-//             if (newByFlipPlusRotation !== newByAntiCWRotation){
-//                 console.log(`fail for i = ${i}, j = ${j}.newByFlipPlusRotation = ${newByFlipPlusRotation}, newByAntiCWRotation = ${newByAntiCWRotation} `)
-//                 return false
-//             }
-//             else console.log(`succeed for i = ${i}, j = ${j}`)
-//             }
-//         }
-//         return true
-//     }
-
-function whetherFlippingMakesADifference(){
-    let newByFlipPlusRotation, newByRotationOnly; 
-    for (let i = 0; i < 9; i++){ // i is square number
-        for (let j = 0; j < 5; j++) { //j is number of 90 degree rotations
-            newByFlipPlusRotation = rotation(reflectNumber(i),j)
-            if (edge.includes(i)){newByRotationOnly = edge[(edge.indexOf(i) + j)%4]}
-            else if (corner.includes(i)){newByRotationOnly = corner[(corner.indexOf(i) + j)%4]}
-            else newByRotationOnly = i; 
-            if (newByFlipPlusRotation !== newByRotationOnly){
-                console.log(`fail for i = ${i}, j = ${j}.newByFlipPlusRotation = ${newByFlipPlusRotation}, newByRotationOnly = ${newByRotationOnly} `)
-                return false
-            }
-            else console.log(`succeed for i = ${i}, j = ${j}`)
-            }
-        }
-        return true
-    }
-    
-function whenFlippingMakesNoDifference(){
-    let newByFlipPlusRotation, newByRotationOnly; 
-    for (let i = 0; i < 9; i++){ // i is square number
-        for (let j = 0; j < 5; j++) { //j is number of 90 degree rotations
-            newByFlipPlusRotation = rotation(reflectNumber(i),j)
-            if (edge.includes(i)){newByRotationOnly = edge[(edge.indexOf(i) + j)%4]}
-            else if (corner.includes(i)){newByRotationOnly = corner[(corner.indexOf(i) + j)%4]}
-            else newByRotationOnly = i; 
-            if (newByFlipPlusRotation !== newByRotationOnly){
-                console.log(`difference for i = ${i}, j = ${j}.newByFlipPlusRotation = ${newByFlipPlusRotation}, newByRotationOnly = ${newByRotationOnly} `)
-            }
-            else console.log(`no difference for i = ${i}, j = ${j}`)
-            }
-        }
-        console.log(`Done!`)
-    }
 
 // gtTest is going to take each number, rotate and reflect it by every possible combination
 // then test whether reverseTransformation returns the original number 
@@ -87,9 +36,50 @@ function gtTest(){
         return true; 
     }
 
+   
 
     //console.log(chooseMove(['X',null,null,null,null,null,null,null,null]))
 
+    function transformAndReTransformBoardStates(board, transform){
+        //console.log("Board is", board)
+        let newBoard = transformBoard(board,transform); 
+        //console.log("newBoard is", newBoard)
+        let oldBoard = reverseTransformBoard(newBoard,transform)
+        //console.log("oldBoard is", oldBoard)
+        if (!areIdentical(board,oldBoard)){return false}
+        return true; 
+    }
+
+    //console.log(transformAndReTransformBoardStates(['X',,'X','X',,'O','O','X','O'], [1,0]))
+
+    function transformAndReverseAllBoardStates(){
+        for (let i = 0; i < db.length; i++){
+            let board = db[i].state; 
+            for (let j = 0; j < 5; j++){
+                for (let k = 0; k < 2; k++){
+                    try {
+                    if (transformAndReTransformBoardStates(board,[k,j])) continue
+                    else {
+                        console.log(`1. Fail for board ${board} with transform [${k},${j}]}`)
+                    }
+                    }
+                    catch(e) {
+                        console.log(`2. Fail for board ${board} with transform [${k},${j}]}`)
+                        console.error(e.message)};
+                }
+            }
+        }
+        console.log("transformAndReverseAllBoardStates succeeds for all values!")
+    }
+
+function testChooseMoveForAllDBEntries(){
+    for (let i = 0; i < db.length; i++){
+        if (!chooseMove(db[i].state)){console.log(`Failure for i = ${i}`)}
+    }
+    console.log("testChooseMoveForAllDBEntries finished with success")
+}
+
+testChooseMoveForAllDBEntries()
 
     function testChooseMoveNeverTriesToFillFilledSquare(){
         let nextBoard = [null, null,null,null,null,null,null,null,null];
@@ -109,4 +99,24 @@ function gtTest(){
         return true; 
     }
 
-    //testChooseMoveNeverTriesToFillFilledSquare()
+    function testEquivalenceAndEquivalenceScore(){
+        for (let i = 0; i < db.length; i++){
+            let board1 = db[i].state; 
+            for (let j = 0; j < 5; j++){
+                for (let k = 0; k < 2; k++){
+                    let board2 = transformBoard(board1, [k,j])
+                    if (!areEquivalent(board1,board2)){
+                        console.log(`Bad inequivalence 1 for board1 = ${board1}, board2 = ${board2}`)
+                        return
+                    }
+                    else if (areIdentical(equivalenceScore(board1,board2),['error','error'])){
+                        console.log(`Bad inequivalence 2 for board1 = [${board1}] board2 = [${board2}]`)
+                        return
+                    }
+                }
+            }
+        }
+        console.log("testEquivalenceAndEquivalenceScore succeeds without errors")
+    }
+
+//testEquivalenceAndEquivalenceScore()

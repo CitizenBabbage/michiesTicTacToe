@@ -70,11 +70,16 @@ function countFilledSquares(array){
 function generateGoodBoardStates(num){
     const allBoardStates = generateAllBoards(num); 
     let legalStates = removeNumericallyIllegalBoards(allBoardStates);
-    let newLegalStates = removeUnreachables(legalStates)
+    let newLegalStates = removeUnreachables(legalStates); 
+    newLegalStates = removeFullBoardStates(newLegalStates); 
     return removeEquivalents(newLegalStates)
 }
 
-
+// these may be legal but they do not present an opportunity for a move, and hence do not belong
+// n our database
+function removeFullBoardStates(db){
+    return db.filter((item) => item.includes(undefined))
+}
 
 
 ////F1.1 generateAllBoards////

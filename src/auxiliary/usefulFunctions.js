@@ -68,7 +68,7 @@ export function equivalenceScore(board1, board2){
     }
     const refl = reflection(board1); 
     for (let i = 0; i < 4; i++){
-        if (checkRotationalID(board1, board2, i)){return [1,i]}
+        if (checkRotationalID(refl, board2, i)){return [1,i]}
     }
     return ['error','error']
 }
@@ -101,25 +101,60 @@ export function rotation(square, numOf90DegreeTurns){
     else return square; //center square 
 }
 
-/// given a square number and a number of 90 degree turns, returns the square number reached
+/// given a square number and a number of 90 degree turns, returns the square number reached by rotating ccw
 export function reverseRotation(square, numOf90DegreeTurns){
     if (reverseEdge.includes(square)){return reverseEdge[(reverseEdge.indexOf(square) + numOf90DegreeTurns)%4]}
     else if (reverseCorner.includes(square)){return reverseCorner[(reverseCorner.indexOf(square) + numOf90DegreeTurns)%4]}
     else return square; //center square 
 }
 
-// Returns an array representing the board state (reverse) transformed
+
+export function transformation(number, transformation){
+    let index; 
+    if (transformation[0]===1){number = reflectNumber(number)}; 
+    //console.log("number after flip (if any) equals: ", number)
+    return rotation(number,transformation[1]); 
+}
+
+// takes number of square and transformation that resulted in that square
+// and returns the number of the square under the reverse of that transformation
+
+export function reverseTransformation(number, transformation){
+    let index; 
+    number = reverseRotation(number,transformation[1]); 
+    if (transformation[0]===1){number = reflectNumber(number)}; 
+    //console.log("number after flip (if any) equals: ", number)
+    return number
+}
+
+// Returns an array representing the board state transformed
 export function transformBoard(boardState, transform){
     // console.log("board state is ", boardState)
     // console.log("3. transform is ", transform)
-    let newBoard; 
-    if (transform[0] === 1) {
-        newBoard = boardState.map((item, index) => boardState[reverseRotation(index,transform[1])]);
-        return newBoard.map((item) => reflectNumber(item))
-    }
-    else return boardState.map((item, index) => boardState[rotation(index,transform[1])])
+    return boardState.map((item, index) => boardState[transformation(index,transform)])
     //console.log("newBoard is ", newBoard)
 }
+
+// Returns an array representing the board state (reverse) transformed
+export function reverseTransformBoard(boardState, transform){
+    // console.log("board state is ", boardState)
+    // console.log("3. transform is ", transform)
+    return boardState.map((item, index) => boardState[reverseTransformation(index,transform)])
+    //console.log("newBoard is ", newBoard)
+}
+
+// // Returns an array representing the board state (reverse) transformed
+// export function transformBoard(boardState, transform){
+//     // console.log("board state is ", boardState)
+//     // console.log("3. transform is ", transform)
+//     let newBoard; 
+//     if (transform[0] === 1) {
+//         newBoard = boardState.map((item, index) => boardState[reverseRotation(index,transform[1])]);
+//         return newBoard.map((item) => reflectNumber(item))
+//     }
+//     else return boardState.map((item, index) => boardState[rotation(index,transform[1])])
+//     //console.log("newBoard is ", newBoard)
+// }
 
 
 //F1.4.1.1.1.2.1 areRotationalVariants//

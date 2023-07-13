@@ -27,7 +27,7 @@ export default function BoardContainer( props ) {
           let nextSquareToMoveTo = await delayAndChoose(nextSquares)
           console.log("nextSquareToMoveTo is", nextSquareToMoveTo)
           nextSquares[nextSquareToMoveTo] = props.opponent
-          setGameLog([...gameLog,[nextSquares,nextSquareToMoveTo]])
+          setGameLog([...gameLog,[squares,nextSquareToMoveTo]])
           console.log("game log is : ", gameLog)
           setSquares(nextSquares); 
           setPlayersTurn(true);
@@ -45,7 +45,7 @@ export default function BoardContainer( props ) {
         return;
       }
       nextSquares[i] = props.player;                        // puts an X or O in the array depending on who is the player
-      setGameLog([...gameLog,[nextSquares,i]])
+      setGameLog([...gameLog,[squares,i]])
       console.log("game log is : ", gameLog)
       setSquares(nextSquares);                              // sets the board equal to the duplicate board
       setPlayersTurn(false);
