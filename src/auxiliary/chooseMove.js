@@ -1,9 +1,10 @@
 import {areEquivalent, equivalenceScore, areIdentical, transformBoard, reflection, rotation, reverseRotation, reflectNumber, nextWheel} from "./usefulFunctions.js"
-import boardStatesDB from './databaseFormatted.json' assert { type: "json" };
+import {db} from './databaseFormatted.js' //assert { type: "json" };
 //const boardStatesDB = require('./databaseFormatted.json');
 
 import {corner, edge} from './globals.js'
 
+const boardStatesDB = db; 
 //console.log("object corresponding to ['X','X',null,'O','O',null,'X','O',null] is: ", getBoardObject(['X','X',null,'O','O',null,'X','O',null]))
 //console.log("move chosen in response to ['X','X',null,'O','O',null,'X','O',null] is: ", chooseMove(['X','X',null,'O','O',null,'X','O',null]))
 

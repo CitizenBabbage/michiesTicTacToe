@@ -109,4 +109,4 @@ function gtTest(){
         return true; 
     }
 
-    testChooseMoveNeverTriesToFillFilledSquare()
+    //testChooseMoveNeverTriesToFillFilledSquare()

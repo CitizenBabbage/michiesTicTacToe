@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Board from "./Board" 
 import ClearButton from "./ClearBoardButton"
+import { chooseMove } from "../auxiliary/chooseMove.js"
 
 export default function BoardContainer( props ) {
     let turn; 
@@ -69,7 +70,8 @@ export default function BoardContainer( props ) {
       return new Promise((resolve, reject) => {
         delay(3000)
           .then(() => {
-            const choice = chooseEmptySquare(board);
+            //const choice = chooseEmptySquare(board);
+            const choice = chooseMove(board); 
             //setPlayersTurn(true);                                 //it's Player's turn again
             resolve(choice);
           })
