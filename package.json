@@ -1,0 +1,29 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@babel/preset-env": "^7.22.7",
+    "babel-jest": "^29.6.1",
+    "fsevents": "^2.3.2",
+    "jest": "^29.6.1",
+    "primeflex": "^3.3.1",
+    "primeicons": "^6.0.1",
+    "primereact": "^9.5.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "ts-jest": "^29.1.1"
+  },
+  "main": "/index.js",
+  "devDependencies": {
+    "@babel/plugin-syntax-import-attributes": "^7.22.5",
+    "react-scripts": "^1.1.5"
+  },
+  "name": "ljg0t8",
+  "description": null,
+  "version": "0.0.0",
+  "scripts": {
+    "test": "jest",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject"
+  }
+}
