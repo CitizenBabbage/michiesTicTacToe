@@ -1,3 +1,8 @@
+// This handles the following functions: 
+// writing the player's choice into the appropriate place in the board 
+// writing the computer's choice ditto
+// 
+
 import React from 'react';
 import { useState, useEffect, useCallback} from 'react';
 import Board from "./Board" 
@@ -10,34 +15,35 @@ import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
 export default function BoardContainer( props ) {
   console.log('Component rendered');
     let turn; 
-    if (props.player === null) return; 
-    if (props.player === 'X'){turn = true} else turn = false; 
-    const [playersTurn, setPlayersTurn] = useState(turn);
-    const [squares, setSquares] = useState(Array(9).fill(null)); 
+    if (props.player === null) return;                                  // do nothing until you get a value
+    if (props.player === 'X'){turn = true} else turn = false;           // X goes first, so player goes first iff player = X
+    const [playersTurn, setPlayersTurn] = useState(turn);               // set state to hold whose turn it is
+    const [squares, setSquares] = useState(Array(9).fill(null));        // create the board with 9 empty slots
     //const [gameLog, setGameLog] = useState([]); 
-    const [database,setDatabase] = useState(db);
+    const [database,setDatabase] = useState(db);                        // set the board state database by copying the untrained db
     console.log("database initialized with length ", database.length)
-    let status = checkStatus(squares, playersTurn);
+    let status = checkStatus(squares, playersTurn);                     // set whose turn it is
 
 
-
+    // whenever playersTurn changes value, ask the computer to check whether it needs to take a turn
     useEffect(() => {
       console.log(`players turn change detected to ${playersTurn}`)
-      opponentPlays()
+      opponentPlays()                                                 // check if it's computer's turn, & take it if so
     }, [playersTurn]);
 
+    //this governs the writing of the computer's symbol (X or O) onto the board array 
     const opponentPlays = async () => {
       console.log(`props.opponent is `,props.opponent)
       if (!playersTurn){
-        const nextSquares = squares.slice();                  // create duplicate board
-        if (calculateWinner(nextSquares)) return;             // if player has just won, stop
-        if (nextSquares.includes(null)) {                     // if there are any empty squares left
-          let nextSquareToMoveTo = await delayAndChoose(nextSquares)
-          console.log("nextSquareToMoveTo is", nextSquareToMoveTo)
-          nextSquares[nextSquareToMoveTo] = props.opponent
-          // setGameLog([...gameLog,[squares,nextSquareToMoveTo]])
-          setSquares(nextSquares); 
-          setPlayersTurn(true);
+        const nextSquares = squares.slice();                          // create duplicate board in memory
+        if (calculateWinner(nextSquares)) return;                     // if player has just won, stop
+        if (nextSquares.includes(null)) {                             // if there are any empty squares left
+          let nextSquareToMoveTo = await delayAndChoose(nextSquares)  // pick the next square to move to
+          console.log("nextSquareToMoveTo is", nextSquareToMoveTo)    // 
+          nextSquares[nextSquareToMoveTo] = props.opponent            // set the board square to X or O, as appropriate
+          // setGameLog([...gameLog,[squares,nextSquareToMoveTo]])    // 
+          setSquares(nextSquares);                                    // now change the real board to match the duplicate
+          setPlayersTurn(true);                                       // it's now the player's turn
         }
       }
     } 
