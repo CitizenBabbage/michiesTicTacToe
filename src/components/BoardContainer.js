@@ -1,17 +1,25 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback} from 'react';
 import Board from "./Board" 
 import ClearButton from "./ClearBoardButton"
 import { chooseMove } from "../auxiliary/chooseMove.js"
+import { updateDB } from '../auxiliary/update';
+import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
+
 
 export default function BoardContainer( props ) {
+  console.log('Component rendered');
     let turn; 
     if (props.player === null) return; 
     if (props.player === 'X'){turn = true} else turn = false; 
     const [playersTurn, setPlayersTurn] = useState(turn);
     const [squares, setSquares] = useState(Array(9).fill(null)); 
-    const [gameLog, setGameLog] = useState([]); 
+    //const [gameLog, setGameLog] = useState([]); 
+    const [database,setDatabase] = useState(db);
+    console.log("database initialized with length ", database.length)
     let status = checkStatus(squares, playersTurn);
+
+
 
     useEffect(() => {
       console.log(`players turn change detected to ${playersTurn}`)
@@ -27,8 +35,7 @@ export default function BoardContainer( props ) {
           let nextSquareToMoveTo = await delayAndChoose(nextSquares)
           console.log("nextSquareToMoveTo is", nextSquareToMoveTo)
           nextSquares[nextSquareToMoveTo] = props.opponent
-          setGameLog([...gameLog,[squares,nextSquareToMoveTo]])
-          console.log("game log is : ", gameLog)
+          // setGameLog([...gameLog,[squares,nextSquareToMoveTo]])
           setSquares(nextSquares); 
           setPlayersTurn(true);
         }
@@ -36,40 +43,29 @@ export default function BoardContainer( props ) {
     } 
 
                                    
-   
+   // this takes in the board square clicked as an argument, 
+   // then handles the placing of an X or an O as appropriate. 
     function handleClickBoard(i) {                          // i = number of square 0 through 8
       if (!playersTurn) {return}   ;                        // if it's not the player's turn, do nothing
       const nextSquares = squares.slice();                  // create duplicate board
       if (squares[i] || calculateWinner(nextSquares)) {     // if the square is occupied or the winner has been decided, 
-        console.log("bad click or winner decided")          //don't respond
+        console.log("bad click or winner decided")          // don't respond
         return;
       }
       nextSquares[i] = props.player;                        // puts an X or O in the array depending on who is the player
-      setGameLog([...gameLog,[squares,i]])
-      console.log("game log is : ", gameLog)
+      // setGameLog([...gameLog,[squares,i]])
       setSquares(nextSquares);                              // sets the board equal to the duplicate board
       setPlayersTurn(false);
     }
 
-    function chooseEmptySquare(board){
-      if (calculateWinner(squares)) return; 
-      let randomSquare = Math.floor(Math.random()*9); 
-      if (board[randomSquare] === null){
-        return randomSquare
-      }
-      else return chooseEmptySquare(board); 
-    }
-
+// the purpose of this is just to create a small delay so that the computer appears to be thinking
+// without it the computer tends to respond simultaneously with the player's move, which is disconcerting and unnatural
     function delay(delay) {
       return new Promise((resolve) => {
         setTimeout(() => {resolve()}, delay);
       });
     }
 
-    // function delayAndChoose(board) {
-    //   delay(4000).then((result) => {return chooseEmptySquare(board)})
-    //   .catch((error) => {console.log("Error in delayAndChoose");throw error; });
-    // }
 
     function delayAndChoose(board) {
       return new Promise((resolve, reject) => {
@@ -87,15 +83,39 @@ export default function BoardContainer( props ) {
       });
     }
 
+
+   
+
   // checks for result and displays it, else returns values needed to start next turn
     function checkStatus(boardState, playersTurn){
       const result = calculateWinner(boardState);
+      //learn(result); 
       if (result === 'X') {return "X is the winner";} 
       else if (result === 'O') {return "O is the winner";}
       else if (result === 'D') {return "It's a draw!";}
       else if (props.player) {return "Next player: " + (playersTurn ? props.player : props.opponent);}
       else return " "; 
     }
+
+    //takes in winner as a symbol 'O' or 'X', determines whether computer won, and returns either 1 or -1 
+    function gameResult(winner){
+      if (winner !== 'X' && winner !== 'O') return; //ignore draws and incomplete games
+      if (props.player === winner) return -1 // computer lost
+      else return 1; // else computer won 
+    }
+
+    // function learn(winner){
+    //   let gameRes = gameResult(winner); 
+    //   useEffect(()=>{
+    //     let newDB = updateDB(gameLog, gameRes); // returns new DB, with modifications for learning
+    //     setDatabase(newDB);
+    //     console.log("via BoardContainer/learn, database is now:", database)
+    //   },[]) 
+       
+    // }
+
+    
+
 
     function clearBoard() {
         setSquares(Array(9).fill(null)); 
