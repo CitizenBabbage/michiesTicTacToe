@@ -4,6 +4,7 @@ import {db} from './databaseFormatted.js' //assert { type: "json" };
 
 import {corner, edge} from './globals.js'
 
+//For testing
 let example = [
     'O', null, 'O',
     'X', null, 'X',
@@ -56,11 +57,11 @@ export function chooseMove(board){
 }
 
 //console.log(chooseMove(example))
-console.log(equivalenceScore(example, [
-    'X', null, 'O',
-    'X', null, 'X',
-    'O', null, 'O'
-  ]))
+// console.log(equivalenceScore(example, [
+//     'X', null, 'O',
+//     'X', null, 'X',
+//     'O', null, 'O'
+//   ]))
 
 // db contains ARCHETYPAL board states---i.e. not every equivalent flip and rotation
 // this function takes board state, and returns the archetype of which it is a flip/rotation
@@ -90,20 +91,13 @@ export function getBoardObject(boardState){
     console.log("2. transform is: ", JSON.parse(JSON.stringify(arche.transform)));
     console.log("3. arche.state BEFORE transform is: ", JSON.parse(JSON.stringify(arche.state)));
     console.log(`4. corresponding archetype to ${boardState} is: `, JSON.parse(JSON.stringify(arche)));
-    arche.state = reverseTransformBoard(arche.state, arche.transform);
+    console.log(arche.state = reverseTransformBoard(arche.state, arche.transform));
     console.log("5. arche.state AFTER transform is: ", JSON.parse(JSON.stringify(arche.state)));
-    // console.log(`1. corresponding archetype to ${boardState} is: `, arche)
-    // console.log("2. transform is: ", arche.transform)
-    // console.log("3. arche.state BEFORE transform is: ", arche.state)
-    // console.log(`4. corresponding archetype to ${boardState} is: `, arche)
-    // arche.state = reverseTransformBoard(arche.state, arche.transform)
-    // console.log("5. arche.state AFTER transform is: ", arche.state)
 
     if (!areIdentical(arche.state,boardState)){console.log(`Error: ${arche.state} not equal to ${boardState}`); return}
     arche.response = reverseTransformBoard(arche.response, arche.transform)
     return arche; 
 }
-
 
 // takes object, returns move chosen 
 
@@ -124,8 +118,8 @@ export function chooseMoveFromObject(object){
 
 //console.log("console log: reverse transformation is: ", reverseTransformation(2, [0,1]))
 
+// console.log(chooseMove(['X', 'X', null, 'X', 'X', 'O', null, 'O', 'O']))
 
-
-
+// console.log(equivalenceScore(['X', 'X', null, 'X', 'X', 'O', null, 'O', 'O'], [null, 'X', 'X', 'O', 'X', 'X', 'O', 'O', null]))
 
 

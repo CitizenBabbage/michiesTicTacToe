@@ -64,7 +64,7 @@ export function equivalenceScore(board1, board2){
     //console.log(`Board1 is ${board1} and board2 is ${board2}`)
 
     for (let i = 0; i < 4; i++){
-        if (checkRotationalID(board1, board2, i)){return [0,i]}
+        if (checkRotationalID(board2, board1, i)){return [0,i]}
     }
     const refl = reflection(board1); 
     for (let i = 0; i < 4; i++){
@@ -80,10 +80,17 @@ export function equivalenceScore(board1, board2){
 
 export function areIdentical(board1,board2){
     for (let i = 0; i < board1.length; i++){
-        if (board1[i] === board2[i]) {continue}
+        if (equals(board1[i],board2[i])) {continue}
         else return false;
     }
     return true;
+}
+
+function equals(x,y){
+    if (x === y) {return true}
+    else if (x === null && y === undefined){return true}
+    else if (y === null && x === undefined){return true}
+    else return false;
 }
 
 //F1.4.1.1.1.2 areRotationalVariants//
@@ -110,7 +117,7 @@ export function reverseRotation(square, numOf90DegreeTurns){
 
 
 export function transformation(number, transformation){
-    let index; 
+    //let index; 
     if (transformation[0]===1){number = reflectNumber(number)}; 
     //console.log("number after flip (if any) equals: ", number)
     return rotation(number,transformation[1]); 
@@ -120,7 +127,7 @@ export function transformation(number, transformation){
 // and returns the number of the square under the reverse of that transformation
 
 export function reverseTransformation(number, transformation){
-    let index; 
+    //let index; 
     number = reverseRotation(number,transformation[1]); 
     if (transformation[0]===1){number = reflectNumber(number)}; 
     //console.log("number after flip (if any) equals: ", number)
@@ -131,17 +138,25 @@ export function reverseTransformation(number, transformation){
 export function transformBoard(boardState, transform){
     // console.log("board state is ", boardState)
     // console.log("3. transform is ", transform)
-    return boardState.map((item, index) => boardState[transformation(index,transform)])
+    let newBoard = boardState.map((item, index) => boardState[transformation(index,transform)])
+    //console.log("transformBoard: newBoard is ", newBoard)
+    return newBoard
     //console.log("newBoard is ", newBoard)
 }
 
 // Returns an array representing the board state (reverse) transformed
 export function reverseTransformBoard(boardState, transform){
-    // console.log("board state is ", boardState)
-    // console.log("3. transform is ", transform)
-    return boardState.map((item, index) => boardState[reverseTransformation(index,transform)])
-    //console.log("newBoard is ", newBoard)
+    //console.log("reverseTransformBoard: board state is ", boardState)
+    //console.log("reverseTransformBoard: transform is ", transform)
+    let newBoard = boardState.map((item, index) => boardState[reverseTransformation(index,transform)])
+    //console.log("reverseTransformBoard: newBoard is ", newBoard)
+    return newBoard
+    
 }
+// console.log("received transformed is : ", transformBoard(['X', 'X', null, 'X', 'X', 'O', null, 'O', 'O'], [0,1]))
+
+// console.log("arche transformed is : ", reverseTransformBoard([null, 'X', 'X', 'O', 'X', 'X', 'O', 'O', null], [0,1]))
+
 
 // // Returns an array representing the board state (reverse) transformed
 // export function transformBoard(boardState, transform){
@@ -166,15 +181,15 @@ export function checkRotationalID(board1, board2, n){
     for (let i = 0; i<board1.length; i++){
         if (edge.includes(i)){
             let indexOfRotation = nextWheel(edge.indexOf(i),n); 
-            if (board1[i] === board2[edge[indexOfRotation]]) continue
+            if (equals(board1[i], board2[edge[indexOfRotation]])) continue
             else return false
         }
         else if (corner.includes(i)){
             let indexOfRotation = nextWheel(corner.indexOf(i),n);
-            if (board1[i] === board2[corner[indexOfRotation]]) continue
+            if (equals(board1[i],board2[corner[indexOfRotation]])) continue
             else return false
             }
-        else if (board1[4] === board2[4]) continue
+        else if (equals(board1[4], board2[4])) continue
         else return false
     }
     return true; 
