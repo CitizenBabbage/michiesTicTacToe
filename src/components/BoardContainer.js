@@ -7,13 +7,13 @@ import React from 'react';
 import { useState, useEffect, useCallback} from 'react';
 import Board from "./Board" 
 import ClearButton from "./ClearBoardButton"
-import { chooseMove } from "../auxiliary/chooseMove.js"
 import { updateDB } from '../auxiliary/update';
 import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
+import Thinking from './Thinking.js'
 
 
 export default function BoardContainer( props ) {
-  console.log('Component rendered');
+  console.log('BoardContainer rendered');
     let turn; 
     if (props.player === null) return;                                  // do nothing until you get a value
     if (props.player === 'X'){turn = true} else turn = false;           // X goes first, so player goes first iff player = X
@@ -25,34 +25,23 @@ export default function BoardContainer( props ) {
     let status = checkStatus(squares, playersTurn);                     // set whose turn it is
 
 
-    // whenever playersTurn changes value, ask the computer to check whether it needs to take a turn
-    useEffect(() => {
-      console.log(`players turn change detected to ${playersTurn}`)
-      opponentPlays()                                                 // check if it's computer's turn, & take it if so
-    }, [playersTurn]);
+    
+        
 
-    //this governs the writing of the computer's symbol (X or O) onto the board array 
-    const opponentPlays = async () => {
-      console.log(`props.opponent is `,props.opponent)
-      if (!playersTurn){
-        const nextSquares = squares.slice();                          // create duplicate board in memory
-        if (calculateWinner(nextSquares)) return;                     // if player has just won, stop
-        if (nextSquares.includes(null)) {                             // if there are any empty squares left
-          let nextSquareToMoveTo = await delayAndChoose(nextSquares)  // pick the next square to move to
-          console.log("nextSquareToMoveTo is", nextSquareToMoveTo)    // 
-          nextSquares[nextSquareToMoveTo] = props.opponent            // set the board square to X or O, as appropriate
-          // setGameLog([...gameLog,[squares,nextSquareToMoveTo]])    // 
-          setSquares(nextSquares);                                    // now change the real board to match the duplicate
-          setPlayersTurn(true);                                       // it's now the player's turn
-        }
-      }
-    } 
 
+  
+    
+
+    function getChoice( newSquares ){                             // takes a board state as argument
+      setSquares(newSquares);                                     // changes the real board to match the argument
+      setPlayersTurn(true);                                       // it's now the player's turn
+    }
                                    
-   // this takes in the board square clicked as an argument, 
+   // this takes in the board square clicked by the player as an argument, 
    // then handles the placing of an X or an O as appropriate. 
-    function handleClickBoard(i) {                          // i = number of square 0 through 8
+    function placePlayersMark(i) {                          // i = number of square 0 through 8
       if (!playersTurn) {return}   ;                        // if it's not the player's turn, do nothing
+      console.log("squares are : ", squares)
       const nextSquares = squares.slice();                  // create duplicate board
       if (squares[i] || calculateWinner(nextSquares)) {     // if the square is occupied or the winner has been decided, 
         console.log("bad click or winner decided")          // don't respond
@@ -64,30 +53,7 @@ export default function BoardContainer( props ) {
       setPlayersTurn(false);
     }
 
-// the purpose of this is just to create a small delay so that the computer appears to be thinking
-// without it the computer tends to respond simultaneously with the player's move, which is disconcerting and unnatural
-    function delay(delay) {
-      return new Promise((resolve) => {
-        setTimeout(() => {resolve()}, delay);
-      });
-    }
 
-
-    function delayAndChoose(board) {
-      return new Promise((resolve, reject) => {
-        delay(3000)
-          .then(() => {
-            //const choice = chooseEmptySquare(board);
-            const choice = chooseMove(board); 
-            //setPlayersTurn(true);                                 //it's Player's turn again
-            resolve(choice);
-          })
-          .catch((error) => {
-            console.error("Error in delayAndChoose:", error);
-            reject(error);
-          });
-      });
-    }
 
 
    
@@ -127,10 +93,14 @@ export default function BoardContainer( props ) {
         setSquares(Array(9).fill(null)); 
         setPlayersTurn(true);  
     }
+
+
+   
     return (
       <div>
-        <Board handleClick = { handleClickBoard } squares = { squares} ></Board> 
-        <p>{ status }</p>    
+        <Board handleClick = { placePlayersMark } squares = { squares} ></Board> 
+        <p>{ status }</p> 
+        <Thinking opponent ={ props.opponent } squares = { squares } getChoice = { getChoice } playersTurn = { playersTurn } calculateWinner = { calculateWinner }/>   
         <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
       </div> 
     )

@@ -47,7 +47,7 @@ const dummyObject = {
 // takes board state, returns move chosen
 
 export function chooseMove(board){
-    console.log("board state is :", board)
+    console.log("chooseMove. Received board state is :", board)
     const obj = getBoardObject(board); 
     // console.log("object is:", obj); 
     if (obj) {return chooseMoveFromObject(obj)}
@@ -86,12 +86,18 @@ export function getBoardArchetype(boardState){
 // according to the transform 
 export function getBoardObject(boardState){
     let arche = getBoardArchetype(boardState) 
-    console.log("arche is: ", arche)
-    console.log("2. transform is: ", arche.transform)
-    console.log("arche.state BEFORE transform is: ", arche.state)
-
-    arche.state = reverseTransformBoard(arche.state, arche.transform)
-    //console.log("arche.state AFTER transform is: ", arche.state)
+    console.log(`1. corresponding archetype to ${boardState} is: `, JSON.parse(JSON.stringify(arche)));
+    console.log("2. transform is: ", JSON.parse(JSON.stringify(arche.transform)));
+    console.log("3. arche.state BEFORE transform is: ", JSON.parse(JSON.stringify(arche.state)));
+    console.log(`4. corresponding archetype to ${boardState} is: `, JSON.parse(JSON.stringify(arche)));
+    arche.state = reverseTransformBoard(arche.state, arche.transform);
+    console.log("5. arche.state AFTER transform is: ", JSON.parse(JSON.stringify(arche.state)));
+    // console.log(`1. corresponding archetype to ${boardState} is: `, arche)
+    // console.log("2. transform is: ", arche.transform)
+    // console.log("3. arche.state BEFORE transform is: ", arche.state)
+    // console.log(`4. corresponding archetype to ${boardState} is: `, arche)
+    // arche.state = reverseTransformBoard(arche.state, arche.transform)
+    // console.log("5. arche.state AFTER transform is: ", arche.state)
 
     if (!areIdentical(arche.state,boardState)){console.log(`Error: ${arche.state} not equal to ${boardState}`); return}
     arche.response = reverseTransformBoard(arche.response, arche.transform)

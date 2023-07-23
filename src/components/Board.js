@@ -4,6 +4,8 @@ import Square from "./SquareComponent"
 export default function Board( props ) {
     const handleClick = props.handleClick; 
     const squares = props.squares; 
+    console.log("in Board.js, squares is : ", squares)
+    
     return (
       
       <div>
