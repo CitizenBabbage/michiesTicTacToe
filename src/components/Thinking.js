@@ -2,7 +2,7 @@
 // an appropriate delay is built in here. 
 
 import React from 'react';
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef , useState} from 'react'
 import { chooseMove } from "../auxiliary/chooseMove.js"
 
 
@@ -17,50 +17,23 @@ export default function Thinking( props ) {
     const playersTurn = props.playersTurn; 
     const calculateWinner = props.calculateWinner; 
     
-    let thinkingWord = ""; 
+    const [thinkingWord, setThinkingWord] = useState(""); 
 
-// whenever playersTurn changes value, ask the computer to check whether it needs to take a turn
-    // useEffect(() => {
-    //         console.log(`players turn change detected to ${playersTurn}`)
-    //         if (!playersTurn){
-    //             thinkingWord = "Thinking..."
-    //             getChoice(computerPlay())  // computerPlay returns a new boardstate reflecting new move, to be passed up to getChoice in BoardContainer
-    //         }
-    //         else thinkingWord = ""
-    //     }, [board]);
 
     useEffect(() => {
         // Whenever playersTurn changes value, ask the computer to check whether it needs to take a turn
         console.log(`props.playersTurn change detected:`, props.playersTurn);
         if (!playersTurn) {
-            thinkingWord = "Thinking..."; 
+            setThinkingWord("Thinking..."); 
             computerPlay().then(resolvedSquares => getChoice(resolvedSquares)); // make sure computerPlay resolves before passing it to getChoice
 
             //getChoice(computerPlay());
         } else {
-            thinkingWord = "";
+            setThinkingWord("");
         }
       }, [playersTurn]);
 
-    // // //this governs the writing of the computer's symbol (X or O) onto the board array 
-    // // const checkIfComputerShouldPlay = async () => {
-    // //   console.log(`props.opponent is `,props.opponent)
-    // //   if (!playersTurn){computerPlay()}
-    // // }
-    
-    
 
-    // async function computerPlay(){
-    //     const nextSquares = board.slice();                            // create duplicate board in memory
-    //     if (calculateWinner(nextSquares)) return;                     // if player has just won, stop
-    //     if (nextSquares.includes(null)) {                             // if there are any empty squares left
-    //       let nextSquareToMoveTo = await delayAndChoose(nextSquares)  // pick the next square to move to
-    //       console.log("nextSquareToMoveTo is", nextSquareToMoveTo)    // 
-    //       nextSquares[nextSquareToMoveTo] = props.opponent            // set the board square to X or O, as appropriate
-    //       // setGameLog([...gameLog,[squares,nextSquareToMoveTo]])    // 
-    //       return nextSquares; 
-    //     }
-    //   }
 
       function computerPlay() {
         let nextSquares = props.squares.slice(); // create duplicate board in memory
@@ -103,7 +76,7 @@ export default function Thinking( props ) {
     }
     return (
         <div>
-            <p>{thinkingWord}</p>
+            <p> {thinkingWord} </p>
         </div>
       
     )
