@@ -25,7 +25,9 @@ export default function Thinking( props ) {
         console.log(`props.playersTurn change detected:`, props.playersTurn);
         if (!playersTurn) {
             setThinkingWord("Thinking..."); 
-            computerPlay().then(resolvedSquares => getChoice(resolvedSquares)); // make sure computerPlay resolves before passing it to getChoice
+            computerPlay().then(resolvedSquares => {
+                console.log("get-Choice is receiving value: ", resolvedSquares)
+                getChoice(resolvedSquares)}); // make sure computerPlay resolves before passing it to getChoice
 
             //getChoice(computerPlay());
         } else {
@@ -37,7 +39,7 @@ export default function Thinking( props ) {
 
       function computerPlay() {
         let nextSquares = props.squares.slice(); // create duplicate board in memory
-        if (calculateWinner(nextSquares)) return Promise.resolve(); // if player has just won, stop
+        if (calculateWinner(nextSquares)) return Promise.resolve(board); // if player has just won, stop
         if (nextSquares.includes(null)) {// if there are any empty squares left
           return delayAndChoose(nextSquares).then(nextSquareToMoveTo => {
             console.log("nextSquareToMoveTo is", nextSquareToMoveTo);

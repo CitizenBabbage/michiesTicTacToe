@@ -5,7 +5,10 @@ export default function Board( props ) {
     const handleClick = props.handleClick; 
     const squares = props.squares; 
     console.log("in Board.js, squares is : ", squares)
-    
+    if (!Array.isArray(props.squares)) {
+      console.log("debug = ", props.debug)
+      return null; // or return a loading spinner, error message, etc.
+    }
     return (
       
       <div>

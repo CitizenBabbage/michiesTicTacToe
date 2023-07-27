@@ -13,6 +13,7 @@ import Thinking from './Thinking.js'
 
 
 export default function BoardContainer( props ) {
+  const[debug, setDebug] = useState("initialized"); 
   console.log('BoardContainer rendered');
     let turn; 
     if (props.player === null) return;                                  // do nothing until you get a value
@@ -22,7 +23,13 @@ export default function BoardContainer( props ) {
     //const [gameLog, setGameLog] = useState([]); 
     const [database,setDatabase] = useState(db);                        // set the board state database by copying the untrained db
     console.log("database initialized with length ", database.length)
-    let status = checkStatus(squares, playersTurn);                     // set whose turn it is
+    //let status = checkStatus(squares, playersTurn);                     // set whose turn it is
+    const [status, setStatus] = useState('');
+
+    useEffect(() => {
+      console.log("Squares before checkstatus is: ", squares)
+      setStatus(checkStatus(squares, playersTurn));
+    }, [playersTurn]);
 
 
     
@@ -33,6 +40,7 @@ export default function BoardContainer( props ) {
     
 
     function getChoice( newSquares ){                             // takes a board state as argument
+      setDebug("getChoice")
       setSquares(newSquares);                                     // changes the real board to match the argument
       setPlayersTurn(true);                                       // it's now the player's turn
     }
@@ -40,6 +48,7 @@ export default function BoardContainer( props ) {
    // this takes in the board square clicked by the player as an argument, 
    // then handles the placing of an X or an O as appropriate. 
     function placePlayersMark(i) {                          // i = number of square 0 through 8
+      setDebug("placePlayersMark")
       if (!playersTurn) {return}   ;                        // if it's not the player's turn, do nothing
       console.log("squares are : ", squares)
       const nextSquares = squares.slice();                  // create duplicate board
@@ -60,8 +69,10 @@ export default function BoardContainer( props ) {
 
   // checks for result and displays it, else returns values needed to start next turn
     function checkStatus(boardState, playersTurn){
+      setDebug("checkStatus")
       const result = calculateWinner(boardState);
       //learn(result); 
+      console.log("Squares is now: ", squares)
       if (result === 'X') {return "X is the winner";} 
       else if (result === 'O') {return "O is the winner";}
       else if (result === 'D') {return "It's a draw!";}
@@ -71,6 +82,7 @@ export default function BoardContainer( props ) {
 
     //takes in winner as a symbol 'O' or 'X', determines whether computer won, and returns either 1 or -1 
     function gameResult(winner){
+      setDebug("gameResult")
       if (winner !== 'X' && winner !== 'O') return; //ignore draws and incomplete games
       if (props.player === winner) return -1 // computer lost
       else return 1; // else computer won 
@@ -90,15 +102,52 @@ export default function BoardContainer( props ) {
 
 
     function clearBoard() {
+      setDebug("clearBoard")
         setSquares(Array(9).fill(null)); 
         setPlayersTurn(true);  
     }
 
+    function calculateWinner(squares) {
+      setDebug("calculateWinner")
+      if (!squares) {
+        console.warn('calculateWinner was called with undefined squares. debug = ', debug);
+        return null;
+      }
+      //part I: check for a winning line 
+      const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+      ];
+      for (let i = 0; i < lines.length; i++) {
+        const [a, b, c] = lines[i];
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+          return squares[a];
+        }
+      }
+      // part ii: check if the board is full
+      for (let i = 0; i < squares.length; i++) {
+        if (squares[i] !== 'X' && squares[i] !== 'O'){
+          break // we've found an empty square so exit the loop
+        }
+        else {
+          // if i = 8 then there are no empty squares and it's a draw. 
+          if (i === 8){return 'D'} 
+          else continue
+        }
+      }
+      return null;
+    }
 
    
     return (
       <div>
-        <Board handleClick = { placePlayersMark } squares = { squares} ></Board> 
+        <Board debug = {debug} handleClick = { placePlayersMark } squares = { squares} ></Board> 
         <p>{ status }</p> 
         <Thinking opponent ={ props.opponent } squares = { squares } getChoice = { getChoice } playersTurn = { playersTurn } calculateWinner = { calculateWinner }/>   
         <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
@@ -109,36 +158,6 @@ export default function BoardContainer( props ) {
 
 
   
-  function calculateWinner(squares) {
-    //part I: check for a winning line 
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]
-    ];
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
-      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
-      }
-    }
-    // part ii: check if the board is full
-    for (let i = 0; i < squares.length; i++) {
-      if (squares[i] !== 'X' && squares[i] !== 'O'){
-        break // we've found an empty square so exit the loop
-      }
-      else {
-        // if i = 8 then there are no empty squares and it's a draw. 
-        if (i === 8){return 'D'} 
-        else continue
-      }
-    }
-    return null;
-  }
+  
 
   
