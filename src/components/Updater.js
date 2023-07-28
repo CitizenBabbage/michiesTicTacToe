@@ -38,26 +38,45 @@ export default function Updater(props){
             return
         } ; 
         console.log("Machine-learning useEffect continues...")
-        setUpDatingText("Learning...")
-        let gameResult = gameresult(winner); 
-        let odven; 
-        if (props.player === "O") odven = 2; //if the player is O, computer was X, and took the even turns
-        let data = database.slice();  // make a copy for manipulation purposes
-        for (let i = 0; i < gameLog.length -1; i++){  //for each state in the game log
-            let move = getPositionThatChanged(gameLog[i], gameLog[i+1]); 
-            let update; 
-            if (i % odven === 0) {update = gameResult} // if number of turn was odven, it was yours
-            else update = gameResult * (-1); 
-            for (let j = 0; j < data.length; j++){    // look through the db for equivalent board state
-                if (areEquivalent(gameLog[i], data[j].state)){ // when you find it
-                    data[j].response[gameLog[i][move]]+=update // modify 
-                    console.log(`Modified ${JSON.stringify(data[j])} at position ${move} by ${update}`)
-                    }
-            }
-        setDatabase(data); 
-        setUpDatingText("")
-    }
+        learnFromGame()
     },[winner])
+
+
+function learnFromGame(){
+    setUpDatingText("Learning...")
+    let gameResult = gameresult(winner); 
+    let oddOrEven; 
+    if (props.player === "O") oddOrEven = 2; //if the player is O, computer was X, and took the even turns
+    let data = database.slice();  // make a copy for manipulation purposes
+    updateEachBoardPlayed(oddOrEven, gameLog, gameResult, data)
+    setDatabase(data); 
+    setUpDatingText("")
+}
+
+
+function updateEachBoardPlayed(oddOrEven, log, gameResult, data){
+    for (let i = 0; i < gameLog.length -1; i++){  //for each state in the game log
+        let move = getPositionThatChanged(log[i], log[i+1]); 
+        let update; 
+        if (i % oddOrEven === 0) {update = gameResult} // if number of turn was odven, it was yours
+        else update = gameResult * (-1); 
+        findAndUpdateEquivalent(data, update, move, gameLog[i])
+}
+}
+
+
+function findAndUpdateEquivalent(data, update, move, boardState){
+    for (let j = 0; j < data.length; j++){    // look through the db for equivalent board state
+        if (areEquivalent(boardState, data[j].state)){ // when you find it
+            // get the equivalence score 
+            // modify move by that quantity
+            // 
+            data[j].response[boardState[move]]+=update // modify 
+            console.log(`Modified ${JSON.stringify(data[j])} at position ${move} by ${update}`)
+            }
+    }
+}
+
 
 function getPositionThatChanged(array1, array2){
     for (let i = 0; i < array1.length; i++){
