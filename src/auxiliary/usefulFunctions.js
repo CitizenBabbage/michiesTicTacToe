@@ -225,4 +225,9 @@ export function reflectNumber(number){
     }
 }
 
-
+export function includes(array, arrayMember){
+    for (let i = 0; i < array.length; i++){
+        if (areIdentical(array[0],arrayMember)) return true; 
+    }
+    return false; 
+}

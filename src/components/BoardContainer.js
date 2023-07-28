@@ -7,13 +7,14 @@ import React from 'react';
 import { useState } from 'react';
 import Board from "./Board" 
 import ClearButton from "./ClearBoardButton"
-import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
 import Thinking from './Thinking.js'
 import GameEnd from './GameEnd.js'
+import GameLog from './GameLog.js'
+
 
 
 export default function BoardContainer( props ) {
-  console.log('BoardContainer rendering...');
+  //console.log('BoardContainer rendering...');
 
   const[debug, setDebug] = useState("initialized"); 
 
@@ -21,13 +22,16 @@ export default function BoardContainer( props ) {
   // if (props.player === null) return;                                  // do nothing until you get a value
   // if (props.player === 'X'){turn = true} else turn = false;           // X goes first, so player goes first iff player = X
   // const [playersTurn, setPlayersTurn] = useState(turn);               // set state to hold whose turn it is
-
+  const db = props.db; 
   const [playersTurn, setPlayersTurn] = useState(props.playersTurn);     // set state to hold whose turn it is
   const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
-  const [database,setDatabase] = useState(db);                           // set the board state database by copying the untrained db
-  console.log("database initialized with length ", database.length)
-  const [winner, setWinner] = useState(); 
+  const database = props.database; 
+  const winner = props.winner; 
+  const setWinner = props.setWinner; 
   const [isCalculatingWinner, setIsCalculatingWinner] = useState(false); 
+  const gameLog = props.gameLog; 
+  const setGameLog = props.setGameLog; 
+
 
   function renderComputersMove( newSquares ){                             // takes a board state as argument
     if (playersTurn || winner ) return
@@ -65,12 +69,7 @@ export default function BoardContainer( props ) {
   //   console.log("isCalculatingWinner is now ", isCalculatingWinner)
   // }
 
-  //takes in winner as a symbol 'O' or 'X', determines whether computer won, and returns either 1 or -1 
-  function gameResult(winner){
-    if (winner !== 'X' && winner !== 'O') return; //ignore draws and incomplete games
-    if (props.player === winner) return -1 // computer lost
-    else return 1; // else computer won 
-  }
+  
 
   function clearBoard() {
       setSquares(Array(9).fill(null)); 
@@ -84,6 +83,7 @@ export default function BoardContainer( props ) {
     <div>
       <Board debug = {debug} handleClick = { placePlayersMark } squares = { squares} ></Board> 
       <Thinking setPlayersTurn = {setPlayersTurn} isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } squares = { squares } renderComputersMove = { renderComputersMove } playersTurn = { playersTurn } winner = { winner }/>   
+      <GameLog winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
       <GameEnd isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
       <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
     </div> 

@@ -12,22 +12,22 @@ export default function GameEnd(props){
 
 
     useEffect(() => {
-        console.log("useEffect GameEnd1 triggered by change in playersTurn or squares")
+        //console.log("useEffect GameEnd1 triggered by change in playersTurn or squares")
         setIsCalculatingWinner(true);
       }, [squares]);
   
 
       // checks for result and displays it, else returns values needed to start next turn
     function checkStatus(boardState, playersTurn){
-        console.log("checkStatus called in GameEnd")
+        //console.log("checkStatus called in GameEnd")
         setIsCalculatingWinner(true);
       }
 
     useEffect(()=>{
-        console.log("GameEnd/useEffect2: isCalculatingWinner is", props.isCalculatingWinner)
+        //console.log("GameEnd/useEffect2: isCalculatingWinner is", props.isCalculatingWinner)
         const result = calculateWinner(squares);
         if (result === 'X') {
-            console.log("X IS THE WINNER")
+            //console.log("X IS THE WINNER")
             setWinner('X'); 
             setResultText("X is the winner")
         } 
@@ -39,7 +39,7 @@ export default function GameEnd(props){
             setWinner('D');
             setResultText("It's a draw!")}
         else if (props.player) {
-            console.log("1. No winner discovered.")
+            //console.log("1. No winner discovered.")
             setResultText("Next player: " + (playersTurn ? props.player : props.opponent));
         }
         else {

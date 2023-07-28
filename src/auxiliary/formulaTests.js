@@ -1,5 +1,5 @@
 import {corner, edge} from './globals.js'
-import {rotation, areEquivalent, equivalenceScore, areIdentical, reflectNumber, nextWheel, reverseTransformBoard, transformBoard, reverseRotation, reverseTransformation} from './usefulFunctions.js'
+import {includes, rotation, areEquivalent, equivalenceScore, areIdentical, reflectNumber, nextWheel, reverseTransformBoard, transformBoard, reverseRotation, reverseTransformation} from './usefulFunctions.js'
 import {chooseMove} from './chooseMove.js'
 import {db} from './databaseFormatted.js' //assert { type: "json" };
 import {generateAllBoards, removeNumericallyIllegalBoards, removeUnreachables, removeFullBoardStates} from './makeBoardAuxiliaries.js'
@@ -141,7 +141,7 @@ function testEquivalenceScoreForOneEntry(boardState1, boardState2){
     }
     } 
 
-console.log(testEquivalenceScoreForAllDBEntries())
+//console.log(testEquivalenceScoreForAllDBEntries())
 // console.log("1st:", testEquivalenceScoreForOneEntry([,,,,,,,,],[,,,,,,,,]))
 // console.log("2nd:", testEquivalenceScoreForOneEntry([,,,,,,,,],[undefined, undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined]))
 // console.log("3rd:", testEquivalenceScoreForOneEntry([null,null,null,null,null,null,null,null,null],[undefined, undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined]))
@@ -195,3 +195,5 @@ function generateGoodBoardStates(num){
     }
 
 //testEquivalenceAndEquivalenceScore()
+
+if (includes([[null, null, null]], ["B", null, null])) console.log ("yiddle dee dee")

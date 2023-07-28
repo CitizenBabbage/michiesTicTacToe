@@ -4,9 +4,9 @@ import Square from "./SquareComponent"
 export default function Board( props ) {
     const handleClick = props.handleClick; 
     const squares = props.squares; 
-    console.log("in Board.js, squares is : ", squares)
+    //console.log("in Board.js, squares is : ", squares)
     if (!Array.isArray(props.squares)) {
-      console.log("debug = ", props.debug)
+      //console.log("debug = ", props.debug)
       return null; // or return a loading spinner, error message, etc.
     }
     return (
@@ -28,9 +28,6 @@ export default function Board( props ) {
       <Square value={squares[8]} onSquareClick={() => handleClick(8)}/>
       </div>
       </div>
-    //   {/* <div className="status">{status}</div>
-    //   <button className="restart-button" onClick = {clearBoard}>Restart</button>
-    //   </div> */}
     )
   }
   

@@ -13,32 +13,15 @@ export default function Thinking( props ) {
     const playersTurn = props.playersTurn;
     const winner = props.winner; 
     const isCalculatingWinner = props.isCalculatingWinner
-    //const calculateWinner = props.calculateWinner; 
     const setPlayersTurn = props.setPlayersTurn; 
-
     const [thinkingWord, setThinkingWord] = useState(""); 
 
-    // useEffect(() => {
-    //     // Whenever playersTurn changes value, ask the computer to check whether it needs to take a turn
-    //     console.log("useEffect Thinking1 triggered by change in playersTurn or isCalculatingWinner")
-    //     //console.log(`winner is:`, winner);
-    //     console.log(`isCalculatingWinner is:`, isCalculatingWinner);
-    //     if (!playersTurn && !isCalculatingWinner && !winner) {
-    //         setThinkingWord("Thinking..."); 
-    //         computerPlay().then(resolvedSquares => {
-    //             //console.log("get-Choice is receiving value: ", resolvedSquares)
-    //             renderComputersMove(resolvedSquares)}); // make sure computerPlay resolves before passing it to renderComputersMove
-                
-    //     } else {
-    //         setThinkingWord("");
-    //     }
-    //   }, [playersTurn, isCalculatingWinner]);
 
     useEffect(() => {
         // Whenever playersTurn changes value, ask the computer to check whether it needs to take a turn
-        console.log("useEffect Thinking1 triggered by change in playersTurn or isCalculatingWinner")
+        //console.log("useEffect Thinking1 triggered by change in playersTurn or isCalculatingWinner")
         //console.log(`winner is:`, winner);
-        console.log(`isCalculatingWinner is:`, isCalculatingWinner);
+        //console.log(`isCalculatingWinner is:`, isCalculatingWinner);
         if (playersTurn || winner ) {setThinkingWord(""); return;} 
         if (isCalculatingWinner) return; 
         else {
@@ -52,7 +35,7 @@ export default function Thinking( props ) {
 
 
       function computerPlay() {
-        console.log("computerPlay called in Thinking")
+        //console.log("computerPlay called in Thinking")
         let nextSquares = props.squares.slice(); // create duplicate board in memory
         //console.log(`Computer's move. Currently board = ${props.squares} and winner = ${props.winner}`)
         if (props.winner) return Promise.resolve(board); // if player has just won, stop
