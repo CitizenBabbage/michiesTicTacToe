@@ -75,6 +75,7 @@ export default function BoardContainer( props ) {
       setSquares(Array(9).fill(null)); 
       setPlayersTurn(true);  
       setWinner(undefined); 
+      setGameLog([]); 
   }
 
 

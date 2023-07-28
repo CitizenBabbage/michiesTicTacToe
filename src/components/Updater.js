@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect} from 'react';
 import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
-import { areEquivalent } from '../auxiliary/usefulFunctions.js';
+import { areEquivalent , equivalenceScore, transformation} from '../auxiliary/usefulFunctions.js';
 
 
 
@@ -68,9 +68,8 @@ function updateEachBoardPlayed(oddOrEven, log, gameResult, data){
 function findAndUpdateEquivalent(data, update, move, boardState){
     for (let j = 0; j < data.length; j++){    // look through the db for equivalent board state
         if (areEquivalent(boardState, data[j].state)){ // when you find it
-            // get the equivalence score 
-            // modify move by that quantity
-            // 
+            let equivScore = equivalenceScore(boardState, data[j].state) // get the equivalence score 
+            move = transformation(move, equivScore)// modify move by that quantity
             data[j].response[boardState[move]]+=update // modify 
             console.log(`Modified ${JSON.stringify(data[j])} at position ${move} by ${update}`)
             }
