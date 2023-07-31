@@ -5,7 +5,7 @@ import React from 'react';
 import { useState, useEffect} from 'react';
 //import GameContainer from "./GameContainer"
 import BoardContainer from './BoardContainer';
-import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
+import {db} from '../auxiliary/databaseFormatted' //assert { type: "json" };
 import { Button } from 'primereact/button';
 import Updater from './Updater';
 import { GameLog } from './GameLog.js';

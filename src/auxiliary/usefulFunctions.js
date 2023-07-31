@@ -231,3 +231,19 @@ export function includes(array, arrayMember){
     }
     return false; 
 }
+
+//this just checks that the input is an array with objects of the right sort.
+export function structureTest(array){
+    if (array[0].state.length === 9){return true}
+    else return false; 
+}
+
+export function normalizeResponses(array){
+    let sum = array.reduce((accumulator, current) => accumulator + current, 0)
+    let normalized = array.map((item)=>(item /sum))
+    // let checkSum = normalized.reduce((accumulator, current) => accumulator + current, 0) 
+    // if (checkSum >= 0.99 && checkSum <= 1) {console.log("yup")}
+    return normalized
+}
+
+console.log(normalizeResponses([1,0.16666666666666666,0,0.16666666666666666,0,0.16666666666666666,0.16666666666666666,0.16666666666666666,0.16666666666666666]))

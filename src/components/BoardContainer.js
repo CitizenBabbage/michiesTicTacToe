@@ -1,7 +1,7 @@
 // This handles the following functions: 
 // writing the player's choice into the appropriate place in the board 
 // writing the computer's choice ditto
-// 
+// FIX : You can double place your token if you click fast enough. 
 
 import React from 'react';
 import { useState } from 'react';
