@@ -62,7 +62,6 @@ export function areEquivalent(board1, board2){
 // the second number says how many 90 degree rotations the board must undergo
 export function equivalenceScore(board1, board2){
     //console.log(`Board1 is ${board1} and board2 is ${board2}`)
-
     for (let i = 0; i < 4; i++){
         if (checkRotationalID(board2, board1, i)){return [0,i]}
     }
@@ -246,4 +245,23 @@ export function normalizeResponses(array){
     return normalized
 }
 
-console.log(normalizeResponses([1,0.16666666666666666,0,0.16666666666666666,0,0.16666666666666666,0.16666666666666666,0.16666666666666666,0.16666666666666666]))
+export function dataBaseDuplicator(database){
+    let duplicate = JSON.parse(JSON.stringify(database)); 
+    return duplicate; 
+}
+
+//console.log(areIdentical([1,0.16666666666666666,0,0.16666666666666666,0,0.16666666666666666,0.16666666666666666,0.16666666666666666,0.16666666666666666],[1,0.16666666666666666,0,0.16666666666666666,0,0.16666666666666666,0.16666666666666666,0.16666666666666666,0.16666666666666666]))
+
+
+//this takes a type (either a square or a whole board) and a transform code and 
+// returns a description of the transformation in natural language
+export function transformationReader(type, transform){
+    if (transform[0] === 0 && transform [1] === 0){return "No transformation of ${type} was necessary."}
+    else if (transform[0] === 0) return (`${type} was rotated by ${transform[1]}`)
+    else return `${type} was flipped and rotated by ${transform[1]}`
+}
+
+export function isOdd(n){
+    if (n % 2 === 0) return false; 
+    else return true; 
+}

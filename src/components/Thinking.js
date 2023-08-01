@@ -14,14 +14,14 @@ export default function Thinking( props ) {
     const winner = props.winner; 
     const isCalculatingWinner = props.isCalculatingWinner
     const setPlayersTurn = props.setPlayersTurn; 
-    const [thinkingWord, setThinkingWord] = useState(""); 
+    const [thinkingWord, setThinkingWord] = useState("");
 
 
     useEffect(() => {
-        // Whenever playersTurn changes value, ask the computer to check whether it needs to take a turn
-        //console.log("useEffect Thinking1 triggered by change in playersTurn or isCalculatingWinner")
-        //console.log(`winner is:`, winner);
-        //console.log(`isCalculatingWinner is:`, isCalculatingWinner);
+        // Whenever isCalculatingWinner changes value, ask the computer to check whether it needs to take a turn
+        // console.log("useEffect Thinking1 triggered by change in playersTurn or isCalculatingWinner")
+        // console.log(`winner is:`, winner);
+        // console.log(`isCalculatingWinner is:`, isCalculatingWinner);
         if (playersTurn || winner ) {setThinkingWord(""); return;} 
         if (isCalculatingWinner) return; 
         else {
@@ -85,3 +85,5 @@ export default function Thinking( props ) {
       
     )
   }
+
+ 

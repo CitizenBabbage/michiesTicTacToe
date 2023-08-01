@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect} from 'react';
 import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
-import { normalizeResponses, structureTest, areEquivalent , equivalenceScore, transformation} from '../auxiliary/usefulFunctions.js';
+import { isOdd,  reverseTransformation, transformationReader, dataBaseDuplicator, areIdentical, normalizeResponses, structureTest, areEquivalent , equivalenceScore, transformation} from '../auxiliary/usefulFunctions.js';
 
 
 
@@ -45,51 +45,81 @@ export default function Updater(props){
 
     function learnFromGame(){
         setUpDatingText("Learning...")
-        let gameResult = gameresult(winner); 
+        let gameResult = gameresult(winner); // 1 for a win, 0 for a draw, -1 for a loss
         let oddOrEven; 
         if (player === "O") oddOrEven = 2; //if the player is O, computer was X, and took the even turns
         let data = database.slice();  // make a copy for manipulation purposes
         console.log("UpDater/learnFromGame: data structure is: ", structureTest(data)); 
-        let newData = updateEachBoardPlayed(oddOrEven, gameLog, gameResult, data)
+        let newData = updateEachBoardPlayed(gameLog, gameResult, data)
         setDatabase(newData); 
         setUpDatingText("")
     }
 
 
-    function updateEachBoardPlayed(oddOrEven, log, gameResult, data){
-        let newData = data; 
+    function updateEachBoardPlayed(log, gameResult, data){
+        let newData = dataBaseDuplicator(data); 
+        gameResult = gameResult/10; 
         for (let i = 0; i < gameLog.length -1; i++){  //for each state in the game log
             let move = getPositionThatChanged(log[i], log[i+1]); 
+            console.log("ROUND NUMBER ", i+1)
+            console.log("board before move is: ", log[i]); 
+            console.log("board after move is: ", log[i+1]); 
+            console.log("position that changed is: ", move); 
             let update; 
-            if (i % oddOrEven === 0) {update = gameResult} // if number of turn was odd (or even, depending), it was yours
-            else update = gameResult * (-1); 
-            newData = findAndUpdateEquivalent(data, update, move, gameLog[i])
-            console.log("1. UpDater/updateEachBoardPlayed: newData structure is: ", structureTest(data)); 
+            if (isOdd(i) &&  player === 'X') { // if computer is 0 and it was an odd round, that was computer's turn. 
+                update = gameResult 
+            } 
+            else if (!isOdd(i) &&  player === 'O'){ // if computer is X and it's an even round, that was computer's turn.
+                update = gameResult
+            }
+            else update = gameResult * (-1); // what's good for your opponent is bad for you, and vice versa
+            console.log("update is: ", update)
+            if (isOdd(i)){
+                if (update < 0) {console.log(`O lost, right?`)}
+                else {console.log(`O won, right?`)}
+            }
+            else {
+                if (update < 0) {console.log(`X lost, right?`)}
+                else {console.log(`X won, right?`)}
+            }
+                
+            update -= update * gameLog.length/10; 
+            newData = findAndUpdateEquivalent(newData, update, move, gameLog[i]); 
+            console.log("1. UpDater/updateEachBoardPlayed: newData structure is correct? ", structureTest(newData)); 
+            
+
             }
         console.log("2. UpDater/updateEachBoardPlayed: data structure is: ", structureTest(data)); 
         return newData; 
     }
 
 
+
     function findAndUpdateEquivalent(data, update, move, boardState){
-        for (let j = 0; j < data.length; j++){    // look through the db for equivalent board state
-            if (areEquivalent(boardState, data[j].state)){ // when you find it
-                console.log(`equivalent board state response array is: id: ${data[j].id}, ${data[j].response}`);
-                let equivScore = equivalenceScore(boardState, data[j].state) // get the equivalence score 
-                move = transformation(move, equivScore)// modify move by that quantity
-                data[j].response[move]+=update // modify 
-                data[j].response = normalizeResponses(data[j].response); 
-                console.log(`Modified ${JSON.stringify(data[j].response)} at position ${move} by ${update}`)
+        let newData = dataBaseDuplicator(data); 
+        for (let j = 0; j < newData.length; j++){    // look through the db for equivalent board state
+            if (areEquivalent(boardState, newData[j].state)){ // when you find it
+                console.log(`equivalent board is: id: ${newData[j].id}, ${JSON.stringify(newData[j].state)}`);
+                let equivScore = equivalenceScore(boardState, newData[j].state) // get the equivalence score 
+                console.log("equivalence score is ", equivScore)
+                let newMove = reverseTransformation(move, equivScore)// modify move by that quantity
+                console.log(`${transformationReader("move", equivScore)} from ${move} to ${newMove}`)
+                //console.log(`move changed from ${move} to ${newMove} under transformation ${equivScore}`)
+                newData[j].response[newMove] = Math.max(0.001, newData[j].response[newMove] + update); // modify 
+                newData[j].response = normalizeResponses(newData[j].response); 
+                console.log(`ID: ${data[j].id} modified, ${JSON.stringify(data[j].response)} at position ${newMove} by ${update} to create ${newData[j].response}`)
 
                 }
         }
-        return data; 
+        return newData; 
     }
+
+    
 
 
     function getPositionThatChanged(array1, array2){
         for (let i = 0; i < array1.length; i++){
-            if (array1 !== array2) {return i}
+            if (array1[i] !== array2[i]) {return i}
         }
     }
 

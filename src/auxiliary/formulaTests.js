@@ -194,6 +194,9 @@ function generateGoodBoardStates(num){
         console.log("testEquivalenceAndEquivalenceScore succeeds without errors")
     }
 
+    
+
 //testEquivalenceAndEquivalenceScore()
 
-if (includes([[null, null, null]], ["B", null, null])) console.log ("yiddle dee dee")
+// if (includes([[null, null, null]], ["B", null, null])) console.log ("yiddle dee dee")
+
