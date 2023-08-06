@@ -22,27 +22,32 @@ export default function BoardContainer( props ) {
   // if (props.player === null) return;                                  // do nothing until you get a value
   // if (props.player === 'X'){turn = true} else turn = false;           // X goes first, so player goes first iff player = X
   // const [playersTurn, setPlayersTurn] = useState(turn);               // set state to hold whose turn it is
-  const db = props.db; 
-  const [playersTurn, setPlayersTurn] = useState(props.playersTurn);     // set state to hold whose turn it is
-  const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
+  // const [playersTurn, setPlayersTurn] = useState(props.playersTurn);     // set state to hold whose turn it is
+  const playersTurn = props.playersTurn; 
+  const setPlayersTurn = props.setPlayersTurn; 
+  // const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
+  const squares = props.squares; 
+  const setSquares = props.setSquares; 
   const database = props.database; 
   const winner = props.winner; 
   const setWinner = props.setWinner; 
   const [isCalculatingWinner, setIsCalculatingWinner] = useState(false); 
   const gameLog = props.gameLog; 
-  const setGameLog = props.setGameLog; 
-
+  const setGameLog = props.setGameLog;  
+  const setTrainingMode = setTrainingMode; 
+  const trainingMode = trainingMode; 
 
   function renderComputersMove( newSquares ){                             // takes a board state as argument
     if (playersTurn || winner ) return
-    console.log("BoardContainer/renderComputersMove called")
+    //console.log("BoardContainer/renderComputersMove called")
     setSquares(newSquares);                                               // changes the real board to match the argument
   }
                                    
    // this takes in the board square clicked by the player as an argument, 
    // then handles the placing of an X or an O as appropriate. 
+   
   function placePlayersMark(i) {                          // i = number of square 0 through 8
-    console.log("placePlayersMark in BoardContainer called")
+    //console.log("placePlayersMark in BoardContainer called")
     if (!playersTurn) {return}   ;                        // if it's not the player's turn, do nothing
     //console.log("squares are : ", squares)
     const nextSquares = squares.slice();                  // create duplicate board
@@ -73,7 +78,6 @@ export default function BoardContainer( props ) {
 
   function clearBoard() {
       setSquares(Array(9).fill(null)); 
-      setPlayersTurn(true);  
       setWinner(undefined); 
       setGameLog([]); 
   }
@@ -83,7 +87,7 @@ export default function BoardContainer( props ) {
   return (
     <div>
       <Board debug = {debug} handleClick = { placePlayersMark } squares = { squares} ></Board> 
-      <Thinking setPlayersTurn = {setPlayersTurn} isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } squares = { squares } renderComputersMove = { renderComputersMove } playersTurn = { playersTurn } winner = { winner }/>   
+      <Thinking database = {database} trainingMode = {props.trainingMode} setTrainingMode = {props.setTrainingMode} setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares } renderComputersMove = { renderComputersMove } playersTurn = { playersTurn } winner = { winner }/>   
       <GameLog winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
       <GameEnd isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
       <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>

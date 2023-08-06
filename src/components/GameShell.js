@@ -9,6 +9,7 @@ import {db} from '../auxiliary/databaseFormatted' //assert { type: "json" };
 import { Button } from 'primereact/button';
 import Updater from './Updater';
 import { GameLog } from './GameLog.js';
+import { isAnInteger } from '../auxiliary/usefulFunctions';
 
 
 
@@ -22,9 +23,15 @@ export default function GameShell() {
   const [winner, setWinner] = useState(); 
   const [database,setDatabase] = useState(db);                     // this is the main database that is updated as learning progresses
   const [gameLog, setGameLog] = useState([]);
-  console.log("database initialized with length ", database.length)
+  const [trainingMode, setTrainingMode] = useState(false); 
+  const [value, setValue] = useState("");
+  const [trainingIterations, setTrainingIterations] = useState(0); 
+  const [submissionError, setSubmissionError] = useState(""); 
+  const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
   
-  useEffect(()=> {console.log("GameShell is responsive to changes in gameLog!")},[gameLog])
+  //console.log("database initialized with length ", database.length)
+  
+  //useEffect(()=> {console.log("GameShell is responsive to changes in gameLog!")},[gameLog])
 
 
   function handleXClick () {
@@ -38,16 +45,37 @@ export default function GameShell() {
     setPlayer('O');
     setOpponent('X');
     setPlayersTurn(false)
-    setPromptText('Choose side, X or O'); 
+    setPromptText('Player is O, Computer is X'); 
     setButtonActivation(false); 
   }
+
+  function handleSubmit (event) {
+    event.preventDefault();
+    if (isAnInteger(event.target.elements[0].value)){
+      setTrainingIterations(event.target.elements[0].value); 
+      setPlayer('O');
+      setOpponent('X');
+      setPlayersTurn(false)
+      setButtonActivation(false);
+      setTrainingMode(true) ; 
+    }
+    else setSubmissionError("Please enter an integer")
+  }
+
+  function handleChange(event) {
+    setValue(event.target.value);
+  };
 
   function reset () {
     setPlayer(null);
     setOpponent(null);
     setPromptText('Player is O, Computer is X'); 
-    setButtonActivation(true); 
+    setButtonActivation(true);
+    setTrainingMode(false); 
   }
+
+
+
 
  
 
@@ -70,13 +98,21 @@ export default function GameShell() {
         className={`player-button ${player === 'O' ? 'active' : ''}`}>
         O
       </Button>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={value} onChange={handleChange} />
+        </label>
+      <input type="submit" value="Submit" />
+      </form>
+      <p>{submissionError}</p> 
       </div>
       )
     }
   else return (
       <div>
-      <BoardContainer gameLog = {gameLog} setGameLog = {setGameLog} db = {db} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} player = {player} opponent = {opponent}></BoardContainer>
-      <Updater player = {player} database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog}/> 
+      <BoardContainer squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} player = {player} opponent = {opponent} setOpponent = {setOpponent}></BoardContainer>
+      <Updater setOpponent = {setOpponent} player = {player} database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog} trainingIterations = {trainingIterations} setTrainingIterations = {setTrainingIterations} setWinner = {setWinner}  setGameLog = {setGameLog} setSquares = {setSquares} /> 
       </div>
   )
 }

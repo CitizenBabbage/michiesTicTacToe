@@ -226,7 +226,7 @@ export function reflectNumber(number){
 
 export function includes(array, arrayMember){
     for (let i = 0; i < array.length; i++){
-        if (areIdentical(array[0],arrayMember)) return true; 
+        if (areIdentical(array[i],arrayMember)) return true; 
     }
     return false; 
 }
@@ -236,6 +236,8 @@ export function structureTest(array){
     if (array[0].state.length === 9){return true}
     else return false; 
 }
+
+
 
 export function normalizeResponses(array){
     let sum = array.reduce((accumulator, current) => accumulator + current, 0)
@@ -265,3 +267,14 @@ export function isOdd(n){
     if (n % 2 === 0) return false; 
     else return true; 
 }
+
+export function opposite(XorO){
+    if (XorO === "X") return "O"
+    else return "X"; 
+}
+
+export function isAnInteger(value) {
+    const num = Number(value); 
+    return !isNaN(num) && isFinite(num) && num % 1 === 0;
+} 
+

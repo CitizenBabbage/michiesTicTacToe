@@ -17,11 +17,11 @@ export default function GameEnd(props){
       }, [squares]);
   
 
-      // checks for result and displays it, else returns values needed to start next turn
-    function checkStatus(boardState, playersTurn){
-        //console.log("checkStatus called in GameEnd")
-        setIsCalculatingWinner(true);
-      }
+    //   // checks for result and displays it, else returns values needed to start next turn
+    // function checkStatus(boardState, playersTurn){
+    //     //console.log("checkStatus called in GameEnd")
+    //     setIsCalculatingWinner(true);
+    //   }
 
     useEffect(()=>{
         //console.log("GameEnd/useEffect2: isCalculatingWinner is", props.isCalculatingWinner)

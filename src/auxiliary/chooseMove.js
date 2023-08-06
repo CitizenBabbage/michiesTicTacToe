@@ -4,13 +4,14 @@ import {db} from './databaseFormatted.js' //assert { type: "json" };
 
 import {corner, edge} from './globals.js'
 
+const boardStatesDB = db; 
+
 //For testing
 let example = [
     'O', null, 'O',
     'X', null, 'X',
     'X', null, 'O'
   ]
-const boardStatesDB = db; 
 const dummyObject = {
     "id":-1,
     "state":[
@@ -47,13 +48,27 @@ const dummyObject = {
 
 // takes board state, returns move chosen
 
-export function chooseMove(board){
-    //console.log("chooseMove. Received board state is :", board)
-    const obj = getBoardObject(board); 
-    // console.log("object is:", obj); 
-    if (obj) {return chooseMoveFromObject(obj)}
+export function chooseMove(board, dbase){
+    testForChangeInFirstObjectInDataBase(dbase); 
+    const obj = getBoardObject(board, dbase); 
+    if (obj) {return [chooseMoveFromObject(obj),obj.response]}
     else console.log(`Error: no object returned for board state ${board}`)
 
+}
+
+// just a test that helps make sure the database is updating
+function testForChangeInFirstObjectInDataBase(dbase){
+    if (areIdentical(dbase[0].response, [
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111
+     ])){console.log("WARNING: First board state unchanged in database")}
 }
 
 //console.log(chooseMove(example))
@@ -66,15 +81,15 @@ export function chooseMove(board){
 // db contains ARCHETYPAL board states---i.e. not every equivalent flip and rotation
 // this function takes board state, and returns the archetype of which it is a flip/rotation
 // changes transform, however, to represent the change needed to recover input board state 
-export function getBoardArchetype(boardState){
-    for (let i = 0; i < boardStatesDB.length; i++){
-        if (areEquivalent(boardState, boardStatesDB[i].state)){
+export function getBoardArchetype(boardState, dbase){
+    for (let i = 0; i < dbase.length; i++){
+        if (areEquivalent(boardState, dbase[i].state)){
             //console.log(`BoardState[0] is ${boardState[0]} and boardStatesDB[i].state[8] is ${boardStatesDB[i].state[8]}`)
 
             //console.log(`type of BoardState is ${typeof boardState} and type of boardStatesDB[i].state is ${typeof boardStatesDB[i].state}`)
             //console.log(`BoardState is ${boardState} and boardStatesDB[i].state is ${boardStatesDB[i].state}`)
-            let boardObject = boardStatesDB[i]; 
-            boardObject.transform = equivalenceScore(boardState, boardStatesDB[i].state)
+            let boardObject = dbase[i]; 
+            boardObject.transform = equivalenceScore(boardState, dbase[i].state)
             //console.log("1. transform is: ", boardObject.transform)
             return boardObject; 
         }
@@ -85,8 +100,8 @@ export function getBoardArchetype(boardState){
 // this gets an archetypal board state + transform using getBoardArchetype and 
 // returns an object with the board state and response array back-rotated and back-flipped
 // according to the transform 
-export function getBoardObject(boardState){
-    let arche = getBoardArchetype(boardState) 
+export function getBoardObject(boardState, dbase){
+    let arche = getBoardArchetype(boardState, dbase) 
     // console.log(`1. corresponding archetype to ${boardState} is: `, JSON.parse(JSON.stringify(arche)));
     // console.log("2. transform is: ", JSON.parse(JSON.stringify(arche.transform)));
     // console.log("3. arche.state BEFORE transform is: ", JSON.parse(JSON.stringify(arche.state)));
@@ -102,13 +117,12 @@ export function getBoardObject(boardState){
 // takes object, returns move chosen 
 
 export function chooseMoveFromObject(object){
-    let x = Math.random(); 
-    // console.log("random is :", x)
+    let rand = Math.random(); 
     let probSum = 0; 
     for (let i = 0; i < object.response.length; i++){
         // console.log("probSum is now:", probSum)
-        probSum += object.response[i]; 
-        if (x < probSum){return i}
+        probSum += object.response[i]; // add the first probability in the response array to probsum
+        if (rand < probSum){return i} // if rand is less than that, that's the move
     }
     console.log(`Error: object scanned without probability satisfaction`)
 }
