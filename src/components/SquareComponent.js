@@ -1,5 +1,10 @@
 import React from 'react';
+import "./SquareComponent.css"
+import {useState} from 'react'; 
+
 
 export default function Square( props ) {
-    return <button className="square" onClick={props.onSquareClick}>{props.value}</button>;
+    const [cn, setCn] = useState(props.className)
+    console.log("props.className is: ", props.className)
+    return <button className= {cn} onClick={props.onSquareClick}> {props.value} </button>;
     }

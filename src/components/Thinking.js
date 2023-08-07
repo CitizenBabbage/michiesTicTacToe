@@ -28,6 +28,7 @@ export default function Thinking( props ) {
     useEffect(() => {
         // Whenever isCalculatingWinner changes value, ask the computer to check whether it needs to take a turn
         if (playersTurn || winner ) {setThinkingWord("Player's Turn"); return;} 
+        // else if (trainingMode){setThinkingWord("Training...")}
         if (isCalculatingWinner) return; 
         else {
             setThinkingWord("Thinking..."); 
@@ -108,7 +109,7 @@ export default function Thinking( props ) {
     return (
         <div>
             <p> {thinkingWord} </p>
-            <Board squares = {thinkBoard}/>
+            <Board squaresClassName = "thinkBoardButton" squares = {thinkBoard}/>
         </div>
       
     )

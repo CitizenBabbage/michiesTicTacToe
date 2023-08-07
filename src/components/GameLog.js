@@ -1,6 +1,9 @@
 import React from 'react';
 import { useRef, useState, useEffect} from 'react';
 import {includes} from "../auxiliary/usefulFunctions.js"
+import "./GameLog.css"
+import Board from "./Board" 
+
 
 export default function GameLog( props ){
     const gameLog = props.gameLog; 
@@ -8,6 +11,7 @@ export default function GameLog( props ){
     const squares = props.squares; 
     //const winner = props.winner; 
     const initialRender = useRef(true);
+    const [logBoardButton, setLogBoardButton] = useState("logBoardButton"); 
 
 
     useEffect(()=>{
@@ -28,9 +32,14 @@ export default function GameLog( props ){
     return (
         <div>
             <p>Game Log:</p>
-            <ul>
+            <ul className='list'>
                 {gameLog.map((item, index) => (
-                    <li key={index}>{JSON.stringify(item)}</li>
+                    <li key={index}>
+                    <Board squares = {item} squaresClassName = {logBoardButton}/>
+                    <p>
+
+                    </p>
+                    </li>
                 ))}
             </ul>
         </div>

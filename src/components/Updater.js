@@ -22,17 +22,17 @@ export default function Updater(props){
       
 
     useEffect(() => {
-        console.log("Machine-learning useEffect triggered...")
+        // console.log("Machine-learning useEffect triggered...")
         if (gameLog === undefined){
             console.log("but gameLog undefined.")
             return
         } ; 
         // console.log("Machine-learning useEffect continues...")
         learnFromGame()
-        console.log("Machine-learning useEffect continues...")
+        // console.log("Machine-learning useEffect continues...")
 
         if (trainingIterations > 0){startNewTrainingIteration()}
-        console.log("Machine-learning useEffect complete.")
+        // console.log("Machine-learning useEffect complete.")
     },[winner])
 
 
@@ -73,19 +73,10 @@ export default function Updater(props){
             } 
             else update = gameResult; 
             // console.log("update is: ", update)
-
-            // if (isOdd(i)){
-            //     if (update < 0) {console.log(`O lost, right?`)}
-            //     else {console.log(`O won, right?`)}
-            // }
-            // else {
-            //     if (update < 0) {console.log(`X lost, right?`)}
-            //     else {console.log(`X won, right?`)}
-            // }
             
             // the longer the game, the worse for the winner and better for the loser
+            // thus the longer the game, the more the reward should approximate a tie. 
             // 1 - gameLog.length/10 is large for short games and small for long games 
-            // thus the longer the game, the more the reward approximates a tie. 
             // when multiplied by update it becomes positive for wins and negative for losses
            
             update = update * (1 - (gameLog.length/10)); 
@@ -128,14 +119,7 @@ export default function Updater(props){
         }
     }
 
-    // function learn(winner){
-    //     let gameRes = gameResult(winner); 
-    //     useEffect(()=>{
-    //         let newDB = updateDB(gameLog, gameRes); // returns new DB, with modifications for learning
-    //         setDatabase(newDB);
-    //         console.log("via BoardContainer/learn, database is now:", database)
-    //     },[])    
-    //     }
+
 
     //takes in winner as a symbol 'O' or 'X', determines whether computer won, and returns either 1 or -1 
     function gameresult(winner){
