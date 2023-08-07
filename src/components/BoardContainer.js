@@ -31,10 +31,11 @@ export default function BoardContainer( props ) {
   const [isCalculatingWinner, setIsCalculatingWinner] = useState(false); 
   const gameLog = props.gameLog; 
   const setGameLog = props.setGameLog;  
-  const setTrainingMode = setTrainingMode; 
-  const trainingMode = trainingMode; 
+  const setTrainingMode = props.setTrainingMode; 
+  const trainingMode = props.trainingMode; 
   const [squaresClassName, setSquaresClassName] = useState("mainBoardButton"); 
 
+  console.log("Training mode in boardContainer is : ", trainingMode)
   function renderComputersMove( newSquares ){                             // takes a board state as argument
     if (playersTurn || winner ) return
     setSquares(newSquares);                                               // changes the real board to match the argument
@@ -63,15 +64,23 @@ export default function BoardContainer( props ) {
 
 
   
-  return (
+  if (!trainingMode || props.trainingIterations < 2) return (
     <div>
-      <Board squaresClassName = {squaresClassName} debug = {debug} handleClick = { placePlayersMark } squares = { squares} ></Board> 
-      <Thinking database = {database} trainingMode = {props.trainingMode} setTrainingMode = {props.setTrainingMode} setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares } renderComputersMove = { renderComputersMove } playersTurn = { playersTurn } winner = { winner }/>   
-      <GameLog winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
+      <Board trainingMode = {trainingMode} trainingIterations = {props.trainingIterations} squaresClassName = {squaresClassName} debug = {debug} handleClick = { placePlayersMark } squares = { squares} ></Board> 
+      <Thinking database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares } renderComputersMove = { renderComputersMove } playersTurn = { playersTurn } winner = { winner }/>   
+      <GameLog trainingMode = {trainingMode} winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
       <GameEnd isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
       <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
     </div> 
   )
+  else return (
+    <div>
+        <p> Training... </p>
+        <Thinking database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares } renderComputersMove = { renderComputersMove } playersTurn = { playersTurn } winner = { winner }/>   
+      <GameEnd isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
+      <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
+      </div> 
+    )
   }
 
 

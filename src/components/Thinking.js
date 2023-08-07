@@ -28,10 +28,10 @@ export default function Thinking( props ) {
     useEffect(() => {
         // Whenever isCalculatingWinner changes value, ask the computer to check whether it needs to take a turn
         if (playersTurn || winner ) {setThinkingWord("Player's Turn"); return;} 
-        // else if (trainingMode){setThinkingWord("Training...")}
         if (isCalculatingWinner) return; 
         else {
-            setThinkingWord("Thinking..."); 
+            if (trainingMode){setThinkingWord("Training...")}
+            else setThinkingWord("Thinking..."); 
             computerPlay().then(resolvedSquares => {
                 renderComputersMove(resolvedSquares); // make sure computerPlay resolves before passing it to renderComputersMove
                 if (!trainingMode) {
@@ -109,7 +109,7 @@ export default function Thinking( props ) {
     return (
         <div>
             <p> {thinkingWord} </p>
-            <Board squaresClassName = "thinkBoardButton" squares = {thinkBoard}/>
+            <Board trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" squares = {thinkBoard}/>
         </div>
       
     )

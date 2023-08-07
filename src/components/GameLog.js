@@ -12,8 +12,9 @@ export default function GameLog( props ){
     //const winner = props.winner; 
     const initialRender = useRef(true);
     const [logBoardButton, setLogBoardButton] = useState("logBoardButton"); 
+    const trainingMode = props.trainingMode; 
 
-
+console.log(`training mode in gamelog is :`, trainingMode)
     useEffect(()=>{
         //console.log("1. gameLog is ", gameLog)
         if (initialRender.current) {
@@ -29,13 +30,13 @@ export default function GameLog( props ){
 
    
 
-    return (
+    if (!trainingMode) return (
         <div>
             <p>Game Log:</p>
             <ul className='list'>
                 {gameLog.map((item, index) => (
                     <li key={index}>
-                    <Board squares = {item} squaresClassName = {logBoardButton}/>
+                    <Board trainingMode = {props.trainingMode} squares = {item} squaresClassName = {logBoardButton}/>
                     <p>
 
                     </p>
