@@ -44,7 +44,7 @@ export default function GameEnd(props){
             setResultText("Next player: " + (playersTurn ? props.player : props.opponent));
         }
         else {
-            console.log("2. No winner discovered.")
+            //console.log("2. No winner discovered.")
         }
         setIsCalculatingWinner(false)
     },[props.isCalculatingWinner, winner])

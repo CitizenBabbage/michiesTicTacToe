@@ -11,43 +11,182 @@ import {areEquivalent} from './usefulFunctions.js'
 // returns array of objects 
 export function createAllBoardStateObjects(num){
     const allBoards = generateGoodBoardStates(num);
-    return allBoards.map((item,index) => buildObject(item,index))
+    let database = allBoards.map((item,index) => buildObject(item,index))
+    return reduceOptionsOnFirstMove(database)
 }
 
 
-//this reduces the options on the first move to the three equivalent options, 
-//play centre, play corner, play side, which greatly reduces the learning space
+//this cycles through database looking for objects with no more than one move played (which must be X) 
+// when found it calls the function reducing the options on the response array  
 function reduceOptionsOnFirstMove(database){
-    database[0].response = [0.333,0.333,0,0,0.334,0,0,0,0]
     for (let i = 0; i < database.length; i++){
         if (containsOneXOrNothing(database[i].state)){
-            let cornersUsed = 0; 
-            let edgesUsed = 0;
-            let probability = 0.3333333
-            if (database[i].state[4] === 'X') {//if the opening move was x to centre
-                probability = 0.5  // there are only two moves left (edge and corner) which should get a 50/50 probability
-            }
-            for (j = 0; j < database[i].state.length; j++){
-                if (database[i].state[j] !== 'X'){ // if the square is empty...
-                    if (corner.includes(j) && cornersUsed === 0){ // if it's a corner and you haven't yet assigned a nonzero probabiity to a corner
-                        cornersUsed = 1; 
-                        database[i].response[j] = probability; 
-                    }
-                    else if (edge.includes(j) && edgesUsed === 0) { // if it's an edge and you haven't yet assigned a nonzero probabiity to an edge
-                        edgesUsed = 1; 
-                        database[i].response[j] = probability; 
-                    }
-                    else if (j === 4){ // if it's the centre square then (since we've checked it's blank...) 
-                        database[i].response[j] = 0.3333334; 
-                    }
-                    }
-                else database[i].response[j] = 0; // 0 probability if the square is taken. 
-               
-                }
+            database[i] = reduceOptions(database[i])
+        }
+    }
+    return database; 
+}
+
+// takes an object that should have no more than one move played
+// and reduces the options on the first move to eliminate equivalent options, 
+// This greatly reduces the learning space
+function reduceOptions(object){
+        let newResponseArray = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ]; 
+        let xFound = false; 
+        if (object.state[4] === 'X') { //if the opening move was x to centre
+            newResponseArray[0] = 0.5; 
+            newResponseArray[1] = 0.5;  // there are only two moves left (edge and corner) which should get a 50/50 probability
+            xFound = true; 
+        }
+        else for (let j = 0; j < object.state.length; j++){ //else find where the X was put
+            if (object.state[j] === 'X'){
+                newResponseArray[4] = 0.2; 
+                newResponseArray[oppositeCorner(j)] = 0.2; 
+                newResponseArray[adjacentCorner(j)] = 0.2; 
+                newResponseArray[oppositeEdge(j)] = 0.2; 
+                newResponseArray[adjacentEdge(j)] = 0.2; 
+                xFound = true; 
+                break; 
             }
         }
-        return database; 
+        if (!xFound) newResponseArray = [ 0.33333, 0.33333, 0, 0, 0.33334, 0, 0, 0, 0]
+        object.response = newResponseArray; 
+        return object; 
+    }
+    
+
+function oppositeCorner(num){
+    switch(num) {
+        case 0:
+            return 8
+        case 1:
+            return 8;
+        case 2:
+            return 6; 
+        case 3:
+            return 2;  
+        case 5:
+            return 6;
+        case 6:
+            return 2;
+        case 7:
+            return 0;
+        case 8:
+            return 0; 
+        default:
+            console.error("Error in oppositeCorner, must receive input 0 through 3 or 5 through 8")
+    }
 }
+
+function adjacentCorner(num){
+    switch(num) {
+        case 0:
+            return 2;
+        case 1:
+            return 2;
+        case 2:
+            return 8; 
+        case 3:
+            return 0;  
+        case 5:
+            return 8;
+        case 6:
+            return 0;
+        case 7:
+            return 6;
+        case 8:
+            return 6; 
+        default:
+            console.error("Error in adjacentCorner, must receive input 0 through 3 or 5 through 8")
+    }
+}
+
+
+function oppositeEdge(num){
+    switch(num) {
+        case 0:
+            return 5;
+        case 1:
+            return 7;
+        case 2:
+            return 7; 
+        case 3:
+            return 5;  
+        case 5:
+            return 3;
+        case 6:
+            return 1;
+        case 7:
+            return 1;
+        case 8:
+            return 3; 
+        default:
+            console.error("Error in oppositeEdge, must receive input 0 through 3 or 5 through 8")
+    }
+}
+
+function adjacentEdge(num){
+    switch(num) {
+        case 0:
+            return 1;
+        case 1:
+            return 5;
+        case 2:
+            return 5; 
+        case 3:
+            return 1;  
+        case 5:
+            return 7;
+        case 6:
+            return 3;
+        case 7:
+            return 3;
+        case 8:
+            return 7; 
+        default:
+            console.error("Error in adjacentEdge, must receive input 0 through 3 or 5 through 8")
+    }
+}
+
+
+//             let cornersUsed = 0; 
+//             let edgesUsed = 0;
+//             let probability = setProbability(database[i].state); 
+//             if (database[i].state[4] === 'X') {//if the opening move was x to centre
+//                 probability = 0.5  // there are only two moves left (edge and corner) which should get a 50/50 probability
+//             }
+//             else if 
+//             for (let j = 0; j < database[i].state.length; j++){
+//                 if (database[i].state[j] !== 'X'){ // if the square is empty...
+//                     if (corner.includes(j) && cornersUsed === 0){ // if it's a corner and you haven't yet assigned a nonzero probabiity to a corner
+//                         cornersUsed = 1; 
+//                         database[i].response[j] = probability; 
+//                     }
+//                     else if (edge.includes(j) && edgesUsed === 0) { // if it's an edge and you haven't yet assigned a nonzero probabiity to an edge
+//                         edgesUsed = 1; 
+//                         database[i].response[j] = probability; 
+//                     }
+//                     else if (j === 4){ // if it's the centre square then (since we've checked it's blank...) 
+//                         database[i].response[j] = 0.3333334; 
+//                     }
+//                     else database[i].response[j] = 0; // 0 probability if we've assigned relevant type already. 
+//                     }
+//                 else database[i].response[j] = 0; // 0 probability if the square is taken. 
+               
+//                 }
+//             }
+//         }
+//         return database; 
+// }
+
+function setProbability( array ){
+    let oppositeCorners = 0, adjacentCorners = 0, oppositeEdges = 0, adjacentEdges = 0; 
+    if (database[i].state[4] === 'X') {//if the opening move was x to centre
+        return 0.5  // there are only two moves left (edge and corner) which should get a 50/50 probability
+    }
+    else return 0.2; // else there are five genuinely distinct moves
+}
+    
 
 function containsOneXOrNothing(array){
     let takenSquares = 0; 

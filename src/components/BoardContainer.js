@@ -35,7 +35,6 @@ export default function BoardContainer( props ) {
   const trainingMode = props.trainingMode; 
   const [squaresClassName, setSquaresClassName] = useState("mainBoardButton"); 
 
-  console.log("Training mode in boardContainer is : ", trainingMode)
   function renderComputersMove( newSquares ){                             // takes a board state as argument
     if (playersTurn || winner ) return
     setSquares(newSquares);                                               // changes the real board to match the argument
