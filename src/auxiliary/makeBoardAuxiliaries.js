@@ -15,6 +15,57 @@ export function createAllBoardStateObjects(num){
 }
 
 
+//this reduces the options on the first move to the three equivalent options, 
+//play centre, play corner, play side, which greatly reduces the learning space
+function reduceOptionsOnFirstMove(database){
+    database[0].response = [0.333,0.333,0,0,0.334,0,0,0,0]
+    for (let i = 0; i < database.length; i++){
+        if (containsOneXOrNothing(database[i].state)){
+            let cornersUsed = 0; 
+            let edgesUsed = 0;
+            let probability = 0.3333333
+            if (database[i].state[4] === 'X') {//if the opening move was x to centre
+                probability = 0.5  // there are only two moves left (edge and corner) which should get a 50/50 probability
+            }
+            for (j = 0; j < database[i].state.length; j++){
+                if (database[i].state[j] !== 'X'){ // if the square is empty...
+                    if (corner.includes(j) && cornersUsed === 0){ // if it's a corner and you haven't yet assigned a nonzero probabiity to a corner
+                        cornersUsed = 1; 
+                        database[i].response[j] = probability; 
+                    }
+                    else if (edge.includes(j) && edgesUsed === 0) { // if it's an edge and you haven't yet assigned a nonzero probabiity to an edge
+                        edgesUsed = 1; 
+                        database[i].response[j] = probability; 
+                    }
+                    else if (j === 4){ // if it's the centre square then (since we've checked it's blank...) 
+                        database[i].response[j] = 0.3333334; 
+                    }
+                    }
+                else database[i].response[j] = 0; // 0 probability if the square is taken. 
+               
+                }
+            }
+        }
+        return database; 
+}
+
+function containsOneXOrNothing(array){
+    let takenSquares = 0; 
+    let xes = 0; 
+    for (let i = 0; i < array.length; i++){
+        if (array[i]==='X'){
+            takenSquares += 1; 
+            xes += 1;
+        }
+        else if (array[i]==='O'){
+            takenSquares += 1; 
+        }
+    }
+    if (xes === takenSquares) return true
+    else return false
+}
+
+
 // takes a board state and number as input and returns an object, with properties: 
         // id: a number
 		// state: an array of nine elements. 

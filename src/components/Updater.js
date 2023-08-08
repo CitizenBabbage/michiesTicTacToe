@@ -22,7 +22,7 @@ export default function Updater(props){
       
 
     useEffect(() => {
-        // console.log("Machine-learning useEffect triggered...")
+        console.log("Machine-learning useEffect triggered...")
         if (gameLog === undefined){
             console.log("but gameLog undefined.")
             return
@@ -42,7 +42,7 @@ export default function Updater(props){
         setSquares(Array(9).fill(null)); 
         setWinner(undefined); 
         setGameLog([]); 
-        setOpponent("X"); /// keep??
+        setOpponent("X"); /// 
     }
 
 

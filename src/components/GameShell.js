@@ -29,6 +29,7 @@ export default function GameShell() {
   const [submissionError, setSubmissionError] = useState(""); 
   const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
   
+  
   //console.log("database initialized with length ", database.length)
   
   //useEffect(()=> {console.log("GameShell is responsive to changes in gameLog!")},[gameLog])

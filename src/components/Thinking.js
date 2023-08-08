@@ -27,10 +27,14 @@ export default function Thinking( props ) {
 
     useEffect(() => {
         // Whenever isCalculatingWinner changes value, ask the computer to check whether it needs to take a turn
-        if (playersTurn || winner ) {setThinkingWord("Player's Turn"); return;} 
+        if (playersTurn) {setThinkingWord("Player's Turn"); return;} 
+        if (winner ) return;
         if (isCalculatingWinner) return; 
         else {
-            if (trainingMode){setThinkingWord("Training...")}
+            if (trainingMode){
+                setThinkingWord("Training...")
+                if (props.trainingIterations === 0){setThinkingWord("Training Complete!")}
+            }
             else setThinkingWord("Thinking..."); 
             computerPlay().then(resolvedSquares => {
                 renderComputersMove(resolvedSquares); // make sure computerPlay resolves before passing it to renderComputersMove
@@ -90,7 +94,7 @@ export default function Thinking( props ) {
     function delayAndChoose(board) {
         return new Promise((resolve, reject) => {
             let delayms = 0; 
-            if (trainingMode !== true){delayms = 3000}
+            if (!trainingMode){delayms = 3000}
             delay(delayms)
             .then(() => {
                 const choiceAndBoard = chooseMove(board, database); 

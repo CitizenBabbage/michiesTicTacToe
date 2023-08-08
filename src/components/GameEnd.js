@@ -9,6 +9,7 @@ export default function GameEnd(props){
     const winner = props.winner; 
     const playersTurn = props.playersTurn; 
     const [resultText, setResultText] = useState('')
+    const trainingMode = props.trainingMode; 
 
 
     useEffect(() => {
@@ -85,7 +86,7 @@ export default function GameEnd(props){
         }
         return null;
       }
-      return (
+      if (!trainingMode) return (
         <div>
             <p>{ resultText }</p> 
         </div>
