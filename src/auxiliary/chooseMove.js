@@ -1,7 +1,7 @@
 import {areEquivalent, equivalenceScore, areIdentical, reverseTransformBoard, reflection, rotation, reverseRotation, reflectNumber, nextWheel} from "./usefulFunctions.js"
 import {db} from './databaseFormatted.js' //assert { type: "json" };
 //const boardStatesDB = require('./databaseFormatted.json');
-
+import { calculateWinner } from "./checkWinner.js";
 import {corner, edge} from './globals.js'
 
 const boardStatesDB = db; 
@@ -49,7 +49,129 @@ const dummyObject = {
 // takes board state, returns move chosen
 
 export function chooseMove(board, dbase){
-    testForChangeInFirstObjectInDataBase(dbase); 
+    console.log("1. board is ", board)
+    let whoseTurn = whoseMove(board); 
+    console.log("global turn is set to ", whoseTurn)
+    return [minimaxChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]; 
+}
+
+function mediocrePlayer(board, turn){
+    let chosenMove = null; 
+    let bestScore = -100; 
+    let whoseTurn = whoseMove(board); 
+    for (let i = 0; i < board.length; i++){
+        let tempboard = [...board]; 
+        if (tempboard[i] !== undefined && tempboard[i] !== null) continue; 
+        tempboard[i] = whoseTurn; // place whoever's turn it is into empty slot
+        let winner = calculateWinner(tempboard)
+        if (winner === turn){ // if this is a winning position for the player evaluating the series of plays
+            if (bestScore < 10){
+                chosenMove = i; 
+                bestScore = 10
+            }
+        }
+        else if (["X","O"].includes(winner)){ // otherwise if there's a winner defined, it's the other guy
+            if (bestScore < -10){
+                chosenMove = i; 
+                bestScore = -10
+                }
+            }
+        else if (winner === "D"){
+            if (bestScore < 0){
+                chosenMove = i; 
+                bestScore = 0
+                }
+            }
+        else {
+            let mr = minimaxRecurse(tempboard); 
+            if (bestScore < mr[1]){
+                chosenMove = mr[0]; 
+                bestScore = mr[1]
+                }
+            }
+        }
+    return [chosenMove,bestScore]
+    }
+
+function minimaxChooseMove(board, whoseTurn){
+    return minimaxRecurse(board,whoseTurn)[0]
+}
+function minimaxRecurse(board, turn){
+    
+    let moveArray = [null,null,null,null,null,null,null,null,null]
+    let whoseTurn = whoseMove(board); 
+    //console.log(`local turn for ${board} is set to `, whoseTurn)
+    for (let i = 0; i < board.length; i++){
+        let tempboard = [...board]; 
+        
+        if (tempboard[i] !== undefined && tempboard[i] !== null) continue; 
+        tempboard[i] = whoseTurn; // place whoever's turn it is into empty slot
+        let winner = calculateWinner(tempboard)
+        //console.log(`for board ${tempboard} we have winner ${winner} and last turn ${turn}`)
+        if (winner === turn){ // if this is a winning position for the player evaluating the series of plays
+            moveArray[i] = 10; 
+            }
+        else if (["X","O"].includes(winner)){ // otherwise if there's a winner defined, it's the other guy
+            moveArray[i] = -10; 
+        }
+        else if (winner === "D"){
+            moveArray[i] = 0; 
+            }
+        else {
+            let mr = minimaxRecurse(tempboard, turn); 
+            moveArray[i] = mr[1]; 
+            }
+        }
+        //console.log(` moveArray for ${board} when it's ${whoseTurn}'s turn is `, moveArray)
+        let moveAndAssociatedScore = getMoveAndAssociatedScore(board, moveArray, turn, whoseTurn)
+        return moveAndAssociatedScore
+    }
+
+    function getMoveAndAssociatedScore(board, moveArray, turn, whoseTurn){
+        let recommendedMove = 0, highestSoFar = -11, lowestSoFar = 11, recommendedMoveScore = -1; 
+        // console.log("getMoveAndAssociatedScore, received board ", board) 
+        // console.log("getMoveAndAssociatedScore, received moveArray ", moveArray) 
+        if (whoseTurn === turn){
+            for (let i = 0; i < moveArray.length; i++){
+                if (moveArray[i] === null) continue; 
+                if (moveArray[i] > highestSoFar){
+                    highestSoFar = moveArray[i]; 
+                    recommendedMove = i; 
+                    recommendedMoveScore = highestSoFar; 
+                }
+                //if (moveArray[i] === 10){console.log(`It's my (${turn}'s) turn, and moving to position ${i} on board ${board} leads to a winning position for me`)}
+            }
+        }
+        else {
+            for (let i = 0; i < moveArray.length; i++){
+                if (moveArray[i] === null) continue; 
+                if (moveArray[i] < lowestSoFar){
+                    lowestSoFar = moveArray[i];
+                    recommendedMove = i; 
+                    recommendedMoveScore = lowestSoFar; 
+                }
+                //if (moveArray[i] === -10){console.log(`Its my opponent's turn, and moving to position ${i} on board ${board} leads to a losing position for me, ${turn}`)}
+            }
+        }
+        console.log("getMoveAndAssociatedScore, recommending move ", recommendedMove) 
+        return [recommendedMove, recommendedMoveScore]
+    
+    }
+   
+function whoseMove(board){
+    let xes = 0; 
+    let oes = 0; 
+    for (let i = 0; i < board.length; i++){
+        if (board[i] === "X"){xes+=1}
+        else if (board[i] === "O"){oes+=1}
+        else continue; 
+    }
+    if (oes === xes) return "X"; 
+    else return "O"; 
+}
+
+export function menaceChooseMove(board, dbase){
+    testForChangeInFirstObjectInDataBase(dbase); // just a test to make sure learning is updating
     const obj = getBoardObject(board, dbase); 
     if (obj) {return [chooseMoveFromObject(obj),obj.response]}
     else console.log(`Error: no object returned for board state ${board}`)

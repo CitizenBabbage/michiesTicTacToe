@@ -101,7 +101,7 @@ export default function Updater(props){
                 let newMove = reverseTransformation(move, equivScore)// modify move by that quantity
                 // console.log(`${transformationReader("move", equivScore)} from ${move} to ${newMove}`)
                 //console.log(`move changed from ${move} to ${newMove} under transformation ${equivScore}`)
-                newData[j].response[newMove] = Math.max(0.001, newData[j].response[newMove] + update); // modify 
+                newData[j].response[newMove] = Math.max(0, newData[j].response[newMove] + update); // modify 
                 newData[j].response = normalizeResponses(newData[j].response); 
                 // console.log(`ID: ${data[j].id} modified, ${JSON.stringify(data[j].response)} at position ${newMove} by ${update} to create ${newData[j].response}`)
 
