@@ -14,7 +14,6 @@ export default function GameLog( props ){
     const [logBoardButton, setLogBoardButton] = useState("logBoardButton"); 
     const trainingMode = props.trainingMode; 
 
-console.log(`training mode in gamelog is :`, trainingMode)
     useEffect(()=>{
         //console.log("1. gameLog is ", gameLog)
         if (initialRender.current) {

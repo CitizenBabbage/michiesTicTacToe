@@ -22,7 +22,8 @@ export default function Thinking( props ) {
     const opponent = props.opponent; 
     const setOpponent = props.setOpponent; 
     const database = props.database; 
-    const [thinkBoard, setThinkBoard] = useState(Array(9).fill(null))
+    const [thinkBoard, setThinkBoard] = useState(Array(9).fill(null)); 
+    const foe = props.foe; 
 
 
     useEffect(() => {
@@ -97,7 +98,7 @@ export default function Thinking( props ) {
             if (!trainingMode){delayms = 3000}
             delay(delayms)
             .then(() => {
-                const choiceAndBoard = chooseMove(board, database); 
+                const choiceAndBoard = chooseMove(board, database, foe); 
                 console.log("choiceAndBoard is: ", choiceAndBoard); 
                 //console.log("delayAndChoose, selected move is :", choice)
                 resolve(choiceAndBoard);

@@ -10,6 +10,8 @@
     "primereact": "^9.5.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-icons": "^4.10.1",
+    "react-router-dom": "^6.14.2",
     "styled-components": "^6.0.7",
     "ts-jest": "^29.1.1"
   },
