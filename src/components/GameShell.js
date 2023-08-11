@@ -15,6 +15,12 @@ import { isAnInteger } from '../auxiliary/usefulFunctions';
 
 
 export default function GameShell( props ) {
+//   const dbs = props.dbs, setDBS = props.setDBS;
+//   useEffect(() => {
+//     setDBS(prevValue => prevValue + 1);
+// }, []); 
+//   console.log("gameShell, debugging sequencer: ", dbs)
+
   const [player, setPlayer] = useState( null ); 
   const [opponent, setOpponent] = useState( null ); 
   const [promptText, setPromptText ] = useState( `Choose side, X or O` ); 
@@ -29,6 +35,7 @@ export default function GameShell( props ) {
   const [submissionError, setSubmissionError] = useState(""); 
   const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
   const foe = props.foe; 
+   
   
   //console.log("database initialized with length ", database.length)
   
@@ -56,7 +63,7 @@ export default function GameShell( props ) {
     event.preventDefault();
     if (isAnInteger(event.target.elements[0].value)){
       setTrainingIterations(event.target.elements[0].value); 
-      setPlayer('O');
+      setPlayer('O'); //not sure which way round these two should be
       setOpponent('X');
       setPlayersTurn(false)
       setButtonActivation(false);
@@ -114,7 +121,7 @@ export default function GameShell( props ) {
     }
   else return (
       <div>
-      <BoardContainer foe = {foe} trainingIterations = {trainingIterations} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} player = {player} opponent = {opponent} setOpponent = {setOpponent}></BoardContainer>
+      <BoardContainer setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} player = {player} opponent = {opponent} setOpponent = {setOpponent}></BoardContainer>
       <Updater setOpponent = {setOpponent} player = {player} database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog} trainingIterations = {trainingIterations} setTrainingIterations = {setTrainingIterations} setWinner = {setWinner}  setGameLog = {setGameLog} setSquares = {setSquares} /> 
       </div>
   )

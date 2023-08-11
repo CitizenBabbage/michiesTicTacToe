@@ -10,6 +10,12 @@ import Board from "./Board"
 
 
 export default function Thinking( props ) {
+    // const dbs = props.dbs, setDBS = props.setDBS;
+    // useEffect(() => {
+    //     setDBS(prevValue => prevValue + 1);
+    // }, []); 
+    // console.log("thinking, debugging sequencer: ", dbs)
+
     const renderComputersMove = props.renderComputersMove; 
     const board = props.squares; 
     const playersTurn = props.playersTurn;
@@ -24,54 +30,54 @@ export default function Thinking( props ) {
     const database = props.database; 
     const [thinkBoard, setThinkBoard] = useState(Array(9).fill(null)); 
     const foe = props.foe; 
+    const setFoe = props.setFoe; 
+     
 
-
+    // Whenever isCalculatingWinner changes value, ask the computer to check whether it needs to take a turn
     useEffect(() => {
-        // Whenever isCalculatingWinner changes value, ask the computer to check whether it needs to take a turn
-        if (playersTurn) {setThinkingWord("Player's Turn"); return;} 
-        if (winner ) return;
+        console.log("useEffect triggered based on change in isCalculatingWinner")
         if (isCalculatingWinner) return; 
-        else {
-            if (trainingMode){
-                setThinkingWord("Training...")
-                if (props.trainingIterations === 0){setThinkingWord("Training Complete!")}
-            }
-            else setThinkingWord("Thinking..."); 
-            computerPlay().then(resolvedSquares => {
-                renderComputersMove(resolvedSquares); // make sure computerPlay resolves before passing it to renderComputersMove
-                if (!trainingMode) {
-                    //console.log("Training mode is off.")
-                    setPlayersTurn(true);}
-            })
+        console.log("1")
+        console.log("playersTurn is ", playersTurn)
+        if (playersTurn) {setThinkingWord("Player's Turn"); return;} 
+        console.log("2")
+        if (winner) return;
+        console.log("3")
+        if (trainingMode){
+            setThinkingWord("Training...")
+            if (props.trainingIterations === 0){setThinkingWord("Training Complete!")}
+        }
+        else setThinkingWord("Thinking..."); 
+        computerPlay().then(resolvedSquares => {
+            renderComputersMove(resolvedSquares); // make sure computerPlay resolves before passing it to renderComputersMove
+            if (!trainingMode) {
+                //console.log("Training mode is off.")
+                setPlayersTurn(true);}
+        })
         } 
-      }, [isCalculatingWinner]);
+        , [isCalculatingWinner]);
 
 
 
       function computerPlay() {
-        //console.log("computerPlay called in Thinking")
-        console.log("thinking/computerPlay: About to take a turn. Opponent is: ", props.opponent)
-        if (props.squares === undefined){props.setIsCalculatingWinner(true); return}
-        let nextSquares = props.squares.slice(); // create duplicate board in memory
-        if (props.winner) return Promise.resolve(board); // if player has just won, stop
-        if (nextSquares.includes(null)) {// if there are any empty squares left
-            if (trainingMode !== true) { // if ordinary game
-                return delayAndChoose(nextSquares).then(choiceAndBoard => {
-                    nextSquares[choiceAndBoard[0]] = props.opponent; // set the board square to X or O, as appropriate
-                    setThinkBoard(roundOff(choiceAndBoard[1])); 
-                    return Promise.resolve(nextSquares); 
-                });
-                }
-            else return delayAndChoose(nextSquares).then(choiceAndBoard => {
-                nextSquares[choiceAndBoard[0]] = props.opponent; // set the board square to X or O, as appropriate
-                setThinkBoard(roundOff(choiceAndBoard[1])); 
-                setOpponent(opposite(opponent));
-                return Promise.resolve(nextSquares); 
-                }
-            )
-        // if there are no empty squares left...
-        return Promise.resolve(nextSquares); // 
+        let nextSquares = props.squares.slice();                        // create duplicate board in memory
+        if (!nextSquares.includes(null)) return                         // if there are no empty squares left, finish. 
+        return delayAndChoose(nextSquares).then(choiceAndBoard => {
+            nextSquares[choiceAndBoard[0]] = props.opponent;            // set the board square to X or O, as appropriate
+            setThinkBoard(roundOff(choiceAndBoard[1])); 
+            if (trainingMode) setOpponent(opposite(opponent));
+            return Promise.resolve(nextSquares); 
+        });
         }
+    
+
+    function reverseFoe(){
+        let foes = ["menace","minimax"]
+        if (foe === "menace"){
+            let randomFoe = foes[Math.floor(Math.random() * foes.length)];
+            setFoe(randomFoe)
+        }
+        else setFoe("menace"); 
     }
   
     function roundOff(array){
@@ -98,10 +104,11 @@ export default function Thinking( props ) {
             if (!trainingMode){delayms = 3000}
             delay(delayms)
             .then(() => {
-                const choiceAndBoard = chooseMove(board, database, foe); 
-                console.log("choiceAndBoard is: ", choiceAndBoard); 
+                const choiceAndBoard = chooseMove(board, database, foe);  
+                console.log("foe is: ", foe)
                 //console.log("delayAndChoose, selected move is :", choice)
                 resolve(choiceAndBoard);
+                console.log("choiceAndBoard is: ", choiceAndBoard);
             })
             .catch((error) => {
                 console.error("Error in delayAndChoose:", error);

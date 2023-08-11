@@ -1,6 +1,7 @@
 import React from 'react';
  
-const Contact = () => {
+const Contact = ( props ) => {
+    const dbs = props.dbs, setDBS = props.setDBS; 
     return (
         <div>
             <h1>Mail us on feedback@geeksforgeeks.org</h1>

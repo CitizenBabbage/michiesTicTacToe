@@ -221,6 +221,8 @@ export function reflectNumber(number){
         case 6: return 8;
         case 7: return 7;
         case 8: return 6;
+        default: 
+            throw new Error(`Invalid input for reflectNumber: ${number}`);
     }
 }
 

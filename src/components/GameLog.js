@@ -6,13 +6,20 @@ import Board from "./Board"
 
 
 export default function GameLog( props ){
+    // const dbs = props.dbs, setDBS = props.setDBS; 
+    // useEffect(() => {
+    //     setDBS(prevValue => prevValue + 1);
+    // }, []); 
+    // console.log("GameLog, debugging sequencer: ", dbs)
+
     const gameLog = props.gameLog; 
     const setGameLog = props.setGameLog; 
     const squares = props.squares; 
     //const winner = props.winner; 
     const initialRender = useRef(true);
-    const [logBoardButton, setLogBoardButton] = useState("logBoardButton"); 
+    //const [logBoardButton, setLogBoardButton] = useState("logBoardButton"); 
     const trainingMode = props.trainingMode; 
+    
 
     useEffect(()=>{
         //console.log("1. gameLog is ", gameLog)
@@ -35,9 +42,9 @@ export default function GameLog( props ){
             <ul className='list'>
                 {gameLog.map((item, index) => (
                     <li key={index}>
-                    <Board trainingMode = {props.trainingMode} squares = {item} squaresClassName = {logBoardButton}/>
+                    <Board squaresClassName = {"logBoardButton"} trainingMode = {props.trainingMode} squares = {item} />
                     <p>
-
+                        {/* space between boards */}
                     </p>
                     </li>
                 ))}

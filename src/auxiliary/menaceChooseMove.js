@@ -1,4 +1,4 @@
-import {areEquivalent, equivalenceScore, areIdentical, reverseTransformBoard, reflection, rotation, reverseRotation, reflectNumber, nextWheel} from "./usefulFunctions.js"
+import {areEquivalent, equivalenceScore, areIdentical, reverseTransformBoard} from "./usefulFunctions.js"
 
 
 export function menaceChooseMove(board, dbase){

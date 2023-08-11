@@ -1,5 +1,3 @@
-import {areEquivalent, equivalenceScore, areIdentical, reverseTransformBoard, reflection, rotation, reverseRotation, reflectNumber, nextWheel} from "./usefulFunctions.js"
-import {db} from './databaseFormatted.js' //assert { type: "json" };
 import { calculateWinner } from "./checkWinner.js";
 import { whoseMove } from "./chooseMove.js";
 

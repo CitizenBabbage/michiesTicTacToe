@@ -6,7 +6,7 @@
 // FIX : You can double place your token if you click fast enough. 
 
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import Board from "./Board" 
 import ClearButton from "./ClearBoardButton"
 import Thinking from './Thinking.js'
@@ -18,8 +18,14 @@ import GameLog from './GameLog.js'
 export default function BoardContainer( props ) {
   //console.log('BoardContainer rendering...');
 
-  const[debug, setDebug] = useState("initialized"); 
+//   const dbs = props.dbs, setDBS = props.setDBS; 
+//   useEffect(() => {
+//     setDBS(prevValue => prevValue + 1);
+// }, []); 
+//     console.log("BoardContainer, debugging sequencer: ", dbs)
 
+  const[debug, setDebug] = useState("initialized"); 
+  
   
   const playersTurn = props.playersTurn; 
   const setPlayersTurn = props.setPlayersTurn; 
@@ -66,17 +72,17 @@ export default function BoardContainer( props ) {
   if (!trainingMode || props.trainingIterations < 2) return (
     <div>
       <Board trainingMode = {trainingMode} trainingIterations = {props.trainingIterations} squaresClassName = {squaresClassName} debug = {debug} handleClick = { placePlayersMark } squares = { squares} ></Board> 
-      <Thinking foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares } renderComputersMove = { renderComputersMove } playersTurn = { playersTurn } winner = { winner }/>   
+      <Thinking setFoe = { props.setFoe } foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares } renderComputersMove = { renderComputersMove } playersTurn = { playersTurn } winner = { winner }/>   
       <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
       <GameLog trainingMode = {trainingMode} winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
-      <GameEnd isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
+      <GameEnd player = {props.player} opponent = { props.opponent }isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
     </div> 
   )
   else return (
     <div>
         {/* <p> Training... </p> */}
-        <Thinking foe = {props.foe} trainingIterations = {props.trainingIterations} database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares } renderComputersMove = { renderComputersMove } playersTurn = { playersTurn } winner = { winner }/>   
-        <GameEnd trainingMode = {trainingMode} isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
+        <Thinking setFoe = { props.setFoe } foe = {props.foe} trainingIterations = {props.trainingIterations} database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares } renderComputersMove = { renderComputersMove } playersTurn = { playersTurn } winner = { winner }/>   
+        <GameEnd player = {props.player} opponent = { props.opponent } trainingMode = {trainingMode} isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
         <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
         <GameLog trainingMode = {trainingMode} winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
 

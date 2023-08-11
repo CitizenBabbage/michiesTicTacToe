@@ -1,11 +1,17 @@
 import React from 'react';
 import { useState, useEffect} from 'react';
-import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
+//import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
 import { isOdd,  reverseTransformation, transformationReader, dataBaseDuplicator, areIdentical, normalizeResponses, structureTest, areEquivalent , equivalenceScore, transformation} from '../auxiliary/usefulFunctions.js';
 
 
 
 export default function Updater(props){
+    // const dbs = props.dbs, setDBS = props.setDBS; 
+    // useEffect(() => {
+    //     setDBS(prevValue => prevValue + 1);
+    // }, []); 
+    // console.log(`Updater, debugging sequencer: ${dbs}`)
+
     const database = props.database; 
     const setDatabase = props.setDatabase; 
     const [upDatingText, setUpDatingText] = useState("")
@@ -18,6 +24,7 @@ export default function Updater(props){
     const setGameLog = props.setGameLog; 
     const setSquares = props.setSquares; 
     const setOpponent = props.setOpponent; 
+    
 
       
 
@@ -27,12 +34,8 @@ export default function Updater(props){
             console.log("but gameLog undefined.")
             return
         } ; 
-        // console.log("Machine-learning useEffect continues...")
         learnFromGame()
-        // console.log("Machine-learning useEffect continues...")
-
         if (trainingIterations > 0){startNewTrainingIteration()}
-        // console.log("Machine-learning useEffect complete.")
     },[winner])
 
 
@@ -49,8 +52,6 @@ export default function Updater(props){
     function learnFromGame(){
         setUpDatingText("Learning...")
         let gameResult = gameresult(winner); // 1 for a win for X, 0 for a draw, -1 for a loss
-        //let data = database.slice();  // make a copy for manipulation purposes
-        // console.log("UpDater/learnFromGame: data structure is: ", structureTest(data)); 
         let newData = updateEachBoardPlayed(gameLog, gameResult, database)
         setDatabase(newData); 
         setUpDatingText("")
