@@ -2,24 +2,18 @@
 // and the learning algorithm, which triggers in reaction to the completion of a game. 
 
 import React from 'react';
-import { useState, useEffect} from 'react';
-//import GameContainer from "./GameContainer"
+import { useState } from 'react';
 import BoardContainer from './BoardContainer';
 import {db} from '../auxiliary/databaseFormatted' //assert { type: "json" };
 import { Button } from 'primereact/button';
 import Updater from './Updater';
-import { GameLog } from './GameLog.js';
 import { isAnInteger } from '../auxiliary/usefulFunctions';
+import { checkDbase } from '../auxiliary/errorCheckers';
 
 
 
 
 export default function GameShell( props ) {
-//   const dbs = props.dbs, setDBS = props.setDBS;
-//   useEffect(() => {
-//     setDBS(prevValue => prevValue + 1);
-// }, []); 
-//   console.log("gameShell, debugging sequencer: ", dbs)
 
   const [player, setPlayer] = useState( null ); 
   const [opponent, setOpponent] = useState( null ); 
@@ -35,11 +29,9 @@ export default function GameShell( props ) {
   const [submissionError, setSubmissionError] = useState(""); 
   const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
   const foe = props.foe; 
-   
-  
-  //console.log("database initialized with length ", database.length)
-  
-  //useEffect(()=> {console.log("GameShell is responsive to changes in gameLog!")},[gameLog])
+  console.log(`db[0].response is ${JSON.stringify(db[0].response)} but database[0].response is ${JSON.stringify(database[0].response)}`)
+  checkDbase(db, "GameShell---db")
+  checkDbase(database, "GameShell---database")
 
 
   function handleXClick () {
@@ -121,8 +113,8 @@ export default function GameShell( props ) {
     }
   else return (
       <div>
-      <BoardContainer setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} player = {player} opponent = {opponent} setOpponent = {setOpponent}></BoardContainer>
-      <Updater setOpponent = {setOpponent} player = {player} database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog} trainingIterations = {trainingIterations} setTrainingIterations = {setTrainingIterations} setWinner = {setWinner}  setGameLog = {setGameLog} setSquares = {setSquares} /> 
+      <BoardContainer devMode = {props.devMode} setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} player = {player} opponent = {opponent} setOpponent = {setOpponent}></BoardContainer>
+      <Updater devMode = {props.devMode} setOpponent = {setOpponent} player = {player} database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog} trainingIterations = {trainingIterations} setTrainingIterations = {setTrainingIterations} setWinner = {setWinner}  setGameLog = {setGameLog} setSquares = {setSquares} /> 
       </div>
   )
 }

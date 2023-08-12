@@ -260,7 +260,7 @@ export function dataBaseDuplicator(database){
 //this takes a type (either a square or a whole board) and a transform code and 
 // returns a description of the transformation in natural language
 export function transformationReader(type, transform){
-    if (transform[0] === 0 && transform [1] === 0){return "No transformation of ${type} was necessary."}
+    if (transform[0] === 0 && transform[1] === 0){return `No transformation of ${type} was necessary.`}
     else if (transform[0] === 0) return (`${type} was rotated by ${transform[1]}`)
     else return `${type} was flipped and rotated by ${transform[1]}`
 }
@@ -279,4 +279,9 @@ export function isAnInteger(value) {
     const num = Number(value); 
     return !isNaN(num) && isFinite(num) && num % 1 === 0;
 } 
+
+export function isNumber(value) {
+    return typeof value === 'number' && !Number.isNaN(value);
+}
+
 

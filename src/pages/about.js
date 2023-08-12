@@ -1,6 +1,5 @@
 import React from 'react';
 import {NavigationButton} from '../components/NavigationButton'
-import { useState, useEffect} from 'react';
  
 const About = ( props ) => {
     // const dbs = props.dbs, setDBS = props.setDBS; 
@@ -12,8 +11,8 @@ const About = ( props ) => {
         <div>
         <h1>Choose your opponent</h1>
         
-            <NavigationButton  path = '/menace' label = 'menace'/>
-            <NavigationButton  path = '/minimax' label = 'minimax'/>
+            <NavigationButton  devMode = {props.devMode} path = '/menace' label = 'menace'/>
+            <NavigationButton  devMode = {props.devMode} path = '/minimax' label = 'minimax'/>
         </div>
     );
 };

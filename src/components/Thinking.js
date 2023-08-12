@@ -2,47 +2,37 @@
 // an appropriate delay is built in here. 
 
 import React from 'react';
-import { useEffect, useRef , useState} from 'react'
-import { chooseMove } from "../auxiliary/chooseMove.js"
+import { useEffect, useState} from 'react'
+import { chooseMove } from '../auxiliary/chooseMove.js';
+import { checkDbase } from "../auxiliary/errorCheckers.js"
 import {opposite} from "../auxiliary/usefulFunctions.js"
 import Board from "./Board" 
 
 
 
 export default function Thinking( props ) {
-    // const dbs = props.dbs, setDBS = props.setDBS;
-    // useEffect(() => {
-    //     setDBS(prevValue => prevValue + 1);
-    // }, []); 
-    // console.log("thinking, debugging sequencer: ", dbs)
 
     const renderComputersMove = props.renderComputersMove; 
-    const board = props.squares; 
     const playersTurn = props.playersTurn;
     const winner = props.winner; 
     const isCalculatingWinner = props.isCalculatingWinner
     const setPlayersTurn = props.setPlayersTurn; 
     const [thinkingWord, setThinkingWord] = useState("");
     const trainingMode = props.trainingMode; 
-    const setTrainingMode = props.setTrainingMode
     const opponent = props.opponent; 
     const setOpponent = props.setOpponent; 
     const database = props.database; 
     const [thinkBoard, setThinkBoard] = useState(Array(9).fill(null)); 
     const foe = props.foe; 
-    const setFoe = props.setFoe; 
-     
+    //const setFoe = props.setFoe; 
+    
+    checkDbase(database,"Thinking")
 
     // Whenever isCalculatingWinner changes value, ask the computer to check whether it needs to take a turn
     useEffect(() => {
-        console.log("useEffect triggered based on change in isCalculatingWinner")
         if (isCalculatingWinner) return; 
-        console.log("1")
-        console.log("playersTurn is ", playersTurn)
         if (playersTurn) {setThinkingWord("Player's Turn"); return;} 
-        console.log("2")
         if (winner) return;
-        console.log("3")
         if (trainingMode){
             setThinkingWord("Training...")
             if (props.trainingIterations === 0){setThinkingWord("Training Complete!")}
@@ -51,7 +41,6 @@ export default function Thinking( props ) {
         computerPlay().then(resolvedSquares => {
             renderComputersMove(resolvedSquares); // make sure computerPlay resolves before passing it to renderComputersMove
             if (!trainingMode) {
-                //console.log("Training mode is off.")
                 setPlayersTurn(true);}
         })
         } 
@@ -65,20 +54,23 @@ export default function Thinking( props ) {
         return delayAndChoose(nextSquares).then(choiceAndBoard => {
             nextSquares[choiceAndBoard[0]] = props.opponent;            // set the board square to X or O, as appropriate
             setThinkBoard(roundOff(choiceAndBoard[1])); 
-            if (trainingMode) setOpponent(opposite(opponent));
+            if (trainingMode) {
+                setOpponent(opposite(opponent));
+                //reverseFoe(); 
+            }
             return Promise.resolve(nextSquares); 
         });
         }
     
 
-    function reverseFoe(){
-        let foes = ["menace","minimax"]
-        if (foe === "menace"){
-            let randomFoe = foes[Math.floor(Math.random() * foes.length)];
-            setFoe(randomFoe)
-        }
-        else setFoe("menace"); 
-    }
+    // function reverseFoe(){
+    //     let foes = ["menace","minimax"]
+    //     if (foe === "menace"){
+    //         let randomFoe = foes[Math.floor(Math.random() * foes.length)];
+    //         setFoe(randomFoe)
+    //     }
+    //     else setFoe("menace"); 
+    // }
   
     function roundOff(array){
         let newArray = []; 
@@ -104,6 +96,7 @@ export default function Thinking( props ) {
             if (!trainingMode){delayms = 3000}
             delay(delayms)
             .then(() => {
+                checkDbase(database,"Thinking/delayAndChoose")
                 const choiceAndBoard = chooseMove(board, database, foe);  
                 console.log("foe is: ", foe)
                 //console.log("delayAndChoose, selected move is :", choice)
@@ -121,7 +114,7 @@ export default function Thinking( props ) {
     return (
         <div>
             <p> {thinkingWord} </p>
-            <Board trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" squares = {thinkBoard}/>
+            <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" squares = {thinkBoard}/>
         </div>
       
     )

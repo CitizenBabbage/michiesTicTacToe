@@ -1,36 +1,16 @@
 import React from 'react';
 import Square from "./SquareComponent" 
-import { useState, useEffect} from 'react';
-//import {useState} from 'react';
 
 export default function Board( props ) {
-//   const dbs = props.dbs, setDBS = props.setDBS; 
-
-//   useEffect(() => {
-//     setDBS(prevValue => prevValue + 1);
-// }, []); 
-//     console.log("Board, debugging sequencer: ", dbs)
 
     const handleClick = props.handleClick; 
     const squares = props.squares; 
     const squaresClassName = props.squaresClassName; 
     const trainingMode = props.trainingMode; 
-    
-
-    //const trainingIterations = props.trainingIterations; 
-    //let trainingsquares = Array(9).fill(null); 
-
-
-    //console.log("in Board.js, squares is : ", squares)
+  
     if (!Array.isArray(props.squares)) {
-      //console.log("debug = ", props.debug)
       return null; // or return a loading spinner, error message, etc.
     }
-
-    // if (trainingMode) {
-    //   if (trainingIterations % 100 === 0) {trainingsquares = squares}
-    //   else trainingsquares = Array(9).fill("Z"); 
-    // }
     
     if (!trainingMode) return (
       
@@ -56,21 +36,6 @@ export default function Board( props ) {
     else  return (
       
       <div>
-      {/* <div className = "board-row">
-      <Square className = {squaresClassName} value={trainingsquares[0]} />
-      <Square className = {squaresClassName} value={trainingsquares[1]} />
-      <Square className = {squaresClassName} value={trainingsquares[2]} />
-      </div>
-      <div className = "board-row">
-      <Square className = {squaresClassName} value={trainingsquares[3]} />
-      <Square className = {squaresClassName} value={trainingsquares[4]} />
-      <Square className = {squaresClassName} value={trainingsquares[5]} />
-      </div>
-      <div className = "board-row">
-      <Square className = {squaresClassName} value={trainingsquares[6]} />
-      <Square className = {squaresClassName} value={trainingsquares[7]} />
-      <Square className = {squaresClassName} value={trainingsquares[8]} />
-      </div> */}
       <div className = "board-row">
       <Square  className = {squaresClassName}  />
       <Square  className = {squaresClassName}  />

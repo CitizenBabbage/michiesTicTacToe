@@ -1,6 +1,5 @@
 import React from 'react';
 import "./SquareComponent.css"
-import { useState, useEffect} from 'react';
 
 
 export default function Square( props ) {
@@ -11,6 +10,6 @@ export default function Square( props ) {
     // }, []); 
     // console.log("squareComponent, debugging sequencer: ", dbs)
     
-    const [cn, setCn] = useState(props.className)
-    return <button className= {cn} onClick={props.onSquareClick}> {props.value} </button>;
+    
+    return <button className= {props.className} onClick={props.onSquareClick}> {props.value} </button>;
     }

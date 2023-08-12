@@ -1,15 +1,6 @@
 import React from 'react';
-import { useState, useEffect} from 'react';
-// import { useState } from 'react';
-// import Square from "./SquareComponent" 
 
-export default function ClearBoard( props ) {
-  //   const dbs = props.dbs, setDBS = props.setDBS; 
-  //   useEffect(() => {
-  //     setDBS(prevValue => prevValue + 1);
-  // }, []); 
-  //   console.log("ClearBoardButton, debugging sequencer: ", dbs)
-    
+export default function ClearBoard( props ) { 
     const clearBoard = props.clear; 
     const reset = props.reset; 
     return (

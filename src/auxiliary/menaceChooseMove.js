@@ -1,13 +1,18 @@
 import {areEquivalent, equivalenceScore, areIdentical, reverseTransformBoard} from "./usefulFunctions.js"
-
+import { checkSum, checkDbase, checkArchetype } from "./errorCheckers.js";
 
 export function menaceChooseMove(board, dbase){
+    checkDbase(dbase,"menaceChooseMove")
     testForChangeInFirstObjectInDataBase(dbase); // just a test to make sure learning is updating
     const obj = getBoardObject(board, dbase); 
+    console.log("obj.response is", obj.response)
+    checkSum(obj.response, "menaceChooseMove");  
     if (obj) {return [chooseMoveFromObject(obj),obj.response]}
-    else console.log(`Error: no object returned for board state ${board}`)
+    else throw new Error(`Error in menaceChooseMove: no object returned for board state ${board}`)
 
 }
+
+
 
 // just a test that helps make sure the database is updating
 function testForChangeInFirstObjectInDataBase(dbase){
@@ -55,10 +60,7 @@ export function getBoardArchetype(boardState, dbase){
 // according to the transform 
 export function getBoardObject(boardState, dbase){
     let arche = getBoardArchetype(boardState, dbase) 
-    // console.log(`1. corresponding archetype to ${boardState} is: `, JSON.parse(JSON.stringify(arche)));
-    // console.log("2. transform is: ", JSON.parse(JSON.stringify(arche.transform)));
-    // console.log("3. arche.state BEFORE transform is: ", JSON.parse(JSON.stringify(arche.state)));
-    // console.log(`4. corresponding archetype to ${boardState} is: `, JSON.parse(JSON.stringify(arche)));
+    checkArchetype(arche)
     arche.state = reverseTransformBoard(arche.state, arche.transform);
     // console.log(arche.state);
     // console.log("5. arche.state AFTER transform is: ", JSON.parse(JSON.stringify(arche.state)));
@@ -67,9 +69,14 @@ export function getBoardObject(boardState, dbase){
     return arche; 
 }
 
+
+
+
+
 // takes object, returns move chosen 
 
 export function chooseMoveFromObject(object){
+    checkSum(object.response, "chooseMoveFromObject"); 
     let rand = Math.random(); 
     let probSum = 0; 
     for (let i = 0; i < object.response.length; i++){
@@ -77,8 +84,9 @@ export function chooseMoveFromObject(object){
         probSum += object.response[i]; // add the first probability in the response array to probsum
         if (rand < probSum){return i} // if rand is less than that, that's the move
     }
-    console.log(`Error: object scanned without probability satisfaction`)
+    throw new Error(`Error in menaceChooseMove/chooseMoveFromObject: object scanned without probability satisfaction`)
 }
+
 
 
 

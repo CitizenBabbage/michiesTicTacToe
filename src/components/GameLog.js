@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRef, useState, useEffect} from 'react';
+import { useRef, useEffect} from 'react';
 import {includes} from "../auxiliary/usefulFunctions.js"
 import "./GameLog.css"
 import Board from "./Board" 
