@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useRef} from 'react';
+import { useState, useEffect, useRef} from 'react';
 //import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
 import { isOdd,  reverseTransformation, dataBaseDuplicator, normalizeResponses, areEquivalent , equivalenceScore, isNumber} from '../auxiliary/usefulFunctions.js';
 import { checkDbase, checkIsANumber } from '../auxiliary/errorCheckers.js';
@@ -22,6 +22,7 @@ export default function Updater(props){
     const setGameLog = props.setGameLog; 
     const setSquares = props.setSquares; 
     const trainingMode = props.trainingMode; 
+    const [naturalLanguageLog, setNaturalLanguageLog] = useState([])
     
 
     useEffect(() => {console.log(`useEffect reports: Value of winner changed to ${winner}`)},[winner])
@@ -51,15 +52,15 @@ export default function Updater(props){
         //console.log("RESTARTING with training iterations remaining: ", trainingIterations-1)
         setSquares(Array(9).fill(null)); 
         setWinner(null); 
-        setGameLog([]); 
+        setGameLog([Array(9).fill(null)]); 
         setTrainingIterations(trainingIterations - 1)
     }
 
 
     function learnFromGame(){
         console.log("initiating learnFromGame, winner is ", winner)
-        if (winner === undefined || winner == null || gameLog === undefined || !trainingMode) {
-            console.log("Either winner or gamelog is undefined or null, or we're not in trainingmode. Aborting learnFromGame")
+        if (winner === undefined || winner == null || gameLog === undefined) {
+            console.log("Either winner or gamelog is undefined or null. Aborting learnFromGame")
             return
          }  
         else {
@@ -75,9 +76,9 @@ export default function Updater(props){
 // returns an updated database, with the response arrays from all the games in the log 
 // updated depending on whether they led to a win or a loss. 
     function updateEachBoardPlayed(log, gameResult){
+        let nLLog = []; 
         let newData = dataBaseDuplicator(database); 
         checkDbase(newData, "updateEachBoardPlayed A")
-        gameResult = gameResult/10; 
         checkIsANumber(gameResult, "updateEachBoardPlayed", "gameResult")
         for (let i = 0; i < gameLog.length -1; i++){                //for each state in the game log
             let move = getPositionThatChanged(log[i], log[i+1]);    //find the position that changed 
@@ -87,21 +88,44 @@ export default function Updater(props){
             } 
             else update = gameResult; 
             checkIsANumber(update, "updateEachBoardPlayed", "update")
-            // *see explanation of the following formula below. 
-            update = update * (1 - (gameLog.length/10)); 
+            // the formula makes moves closer to the final move more important
+            update = update * (1 - (log.length - i)/10)  
+            update = Math.round(update * 100) / 100;
             newData = findAndUpdateEquivalent(newData, update, move, gameLog[i]); 
+            nLLog = updateNLLog(nLLog, i, gameResult, update, log[i], move)
             }
+        setNaturalLanguageLog(nLLog); 
         checkDbase(newData, "updateEachBoardPlayed Z")
         return newData; 
     }
 
-    //  updateEachBoardPlayed tested and is not responsible
+    function updateNLLog(nLLog, turn, whoWon, update, initialBoardState, move){
+        let winnerTerm, turnPhrase, evaluation, conjunction; 
+        if (whoWon === 1){winnerTerm = `X`}
+        else if (whoWon === -1){winnerTerm = `O`}
+        else winnerTerm = `Nobody`
+        if (turn % 2 === 0){turnPhrase = `X`}
+        else turnPhrase = `O`
+        if (winnerTerm === 'Nobody') {
+            evaluation = `neither good nor bad`
+            conjunction = 'and'
+        }
+        else if (winnerTerm === turnPhrase) {
+            evaluation = `a good move`
+            conjunction = `and`
+        }
+        else {
+            evaluation = `a bad move`
+            conjunction = `but`
+        }
+        let newLog = dataBaseDuplicator(naturalLanguageLog)
+        console.log("newLog is : " , newLog)
+        let newString = `${winnerTerm} won, ${conjunction} this was ${turnPhrase}'s turn, so playing move ${move} on board [${initialBoardState}] was ${evaluation}. Hence I am updating move ${move} on board [${initialBoardState}] by ${update}.`
+        nLLog[turn] = newString; 
+        return nLLog;     
+    }
 
-    //         // *The longer the game, the worse for the winner and better for the loser
-    //         // thus the longer the game, the more the reward should approximate a tie. 
-    //         // 1 - gameLog.length/10 is large for short games and small for long games 
-    //         // when multiplied by update it becomes positive for wins and negative for losses
-
+    
     
 
     function findAndUpdateEquivalent(data, update, move, boardState){
@@ -145,6 +169,15 @@ export default function Updater(props){
     return (
         <div>
             <DatabaseDisplay devMode = {props.devMode} database = {database} trainingIterations = {trainingIterations} trainingMode = {trainingMode}/>
+            <ol>
+                {naturalLanguageLog.map((item, index) => 
+                     (
+                        <li key={index}>
+                            <p>{item}</p>
+                        </li>
+                    )
+                )}
+            </ol>
         </div>
     )
     

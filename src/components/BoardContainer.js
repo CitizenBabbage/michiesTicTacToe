@@ -42,7 +42,7 @@ export default function BoardContainer( props ) {
   function clearBoard() {
       setSquares(Array(9).fill(null)); 
       setWinner(undefined); 
-      setGameLog([]); 
+      setGameLog([Array(9).fill(null)]); 
   }
 
 

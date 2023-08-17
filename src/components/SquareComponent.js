@@ -3,5 +3,8 @@ import "./SquareComponent.css"
 
 
 export default function Square( props ) {
-    return <button className= {props.className} onClick={props.onSquareClick}> {props.value} </button>;
-    }
+    const style = {
+        backgroundColor: props.squareColor
+    };
+    return <button style = {style} className= {props.className} onClick={props.onSquareClick}> {props.value} </button>;
+}

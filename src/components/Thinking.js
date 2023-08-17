@@ -24,6 +24,7 @@ export default function Thinking( props ) {
 
     const [thinkBoard, setThinkBoard] = useState(Array(9).fill(null)); 
     const foe = props.foe; 
+    const setFoe = props.setFoe; 
     const [isCalculatingTurn, setIsCalculatingTurn] = useState(false)
     const setSquares = props.setSquares; 
     const squares = props.squares; 
@@ -110,10 +111,9 @@ export default function Thinking( props ) {
             if (!trainingMode) {
                 setPlayersTurn(true)
             }
-            // else {
-            //     setOpponent(opposite(opponent));
-            //     //reverseFoe(); 
-            // }
+            else {
+                reverseFoe(); 
+            }
         }
     }
     
@@ -127,15 +127,17 @@ export default function Thinking( props ) {
         return; 
     }
     
-
-    // function reverseFoe(){
-    //     let foes = ["menace","minimax"]
-    //     if (foe === "menace"){
-    //         let randomFoe = foes[Math.floor(Math.random() * foes.length)];
-    //         setFoe(randomFoe)
-    //     }
-    //     else setFoe("menace"); 
-    // }
+    // this sets menace to play every other turn during training mode, with a random player 
+    // making the opposite move. This ensures menace is exposed to better moves than it picks at random, 
+    // speeding up training. 
+    function reverseFoe(){
+        let foes = ["menace","minimax"]
+        if (foe === "menace"){
+            let randomFoe = foes[Math.floor(Math.random() * foes.length)];
+            setFoe(randomFoe)
+        }
+        else setFoe("menace"); 
+    }
   
     
  

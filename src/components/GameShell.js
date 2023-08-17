@@ -16,7 +16,7 @@ import { checkDbase } from '../auxiliary/errorCheckers';
 export default function GameShell( props ) {
 
   const [letterToPlay, setletterToPlay] = useState( null ); 
-  const [opponent, setOpponent] = useState( null ); 
+  //const [opponent, setOpponent] = useState( null ); 
   const [promptText, setPromptText ] = useState( `Choose side, X or O` ); 
   const [buttonActivation, setButtonActivation] = useState( true ); 
   const [playersTurn, setPlayersTurn] = useState(  ); 
@@ -24,7 +24,7 @@ export default function GameShell( props ) {
   const [database,setDatabase] = useState(dataBaseDuplicator(db));                     // this is the main database that is updated as learning progresses
   //const [database,setDatabase] = useState(db);                     // this is the main database that is updated as learning progresses
 
-  const [gameLog, setGameLog] = useState([]);
+  const [gameLog, setGameLog] = useState([Array(9).fill(null)]);
   const [trainingMode, setTrainingMode] = useState(); 
   const [value, setValue] = useState("");
   const [trainingIterations, setTrainingIterations] = useState(0); 
@@ -47,25 +47,18 @@ export default function GameShell( props ) {
   checkGameShell()
 
   function handleXClick () {
-    console.log("X selected!")
     setletterToPlay('X');
-    console.log("setletterToPlay as X completed")
-    setOpponent('O');  
-    console.log("setOpponent as O completed")
+    //setOpponent('O');  
     setPlayersTurn(true); 
-    console.log("setPlayersTurn as true completed")
-    setPromptText('Player is X, Computer is O'); 
-    console.log("setPromptText completed")
+    // setPromptText('Player is X, Computer is O'); 
     setButtonActivation(false);
-    console.log("setButtonActivation as false completed")
     setTrainingMode(false) ;
-    console.log("setTrainingMode as false completed")
   }
   function handleOClick () {
     setletterToPlay('O');
-    setOpponent('X');
+    //setOpponent('X');
     setPlayersTurn(false)
-    setPromptText('Player is O, Computer is X'); 
+    // setPromptText('Player is O, Computer is X'); 
     setButtonActivation(false); 
     setTrainingMode(false) ;
   }
@@ -75,7 +68,7 @@ export default function GameShell( props ) {
     if (isAnInteger(event.target.elements[0].value)){
       setTrainingIterations(event.target.elements[0].value); 
       setletterToPlay('O'); //not sure which way round these two should be
-      setOpponent('X');
+      //setOpponent('X');
       setPlayersTurn(false)
       setButtonActivation(false);
       setTrainingMode(true) ; 
@@ -89,7 +82,7 @@ export default function GameShell( props ) {
 
   function reset () {
     setletterToPlay(null);
-    setOpponent(null);
+    //setOpponent(null);
     //setPromptText('Player is O, Computer is X'); 
     setButtonActivation(true);
     //setTrainingMode(false); 
