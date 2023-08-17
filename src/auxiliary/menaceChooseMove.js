@@ -1,14 +1,24 @@
 import {areEquivalent, equivalenceScore, areIdentical, reverseTransformBoard} from "./usefulFunctions.js"
 import { checkSum, checkDbase, checkArchetype } from "./errorCheckers.js";
 
+
+//this choosemove function works by: 
+//  1. Finding the object in the database (the "archetype") that is the equivalent of the boardstate presented. 
+//  2. recording the rotation and flip needed to get from the board state to the archetype as "transform" 
+//  3. Getting the response array from the archetype
+//  4. applying the reverse of the transform to the response array to get the applicable response array. 
+
 export function menaceChooseMove(board, dbase){
-    checkDbase(dbase,"menaceChooseMove")
-    testForChangeInFirstObjectInDataBase(dbase); // just a test to make sure learning is updating
-    const obj = getBoardObject(board, dbase); 
-    console.log("obj.response is", obj.response)
-    checkSum(obj.response, "menaceChooseMove");  
-    if (obj) {return [chooseMoveFromObject(obj),obj.response]}
-    else throw new Error(`Error in menaceChooseMove: no object returned for board state ${board}`)
+    // ///////////tests///////////////
+    // checkDbase(dbase,"menaceChooseMove")
+    // testForChangeInFirstObjectInDataBase(dbase); // just a test to make sure learning is updating
+    // ///////////code///////////////
+    let arche = JSON.parse(JSON.stringify(getBoardArchetype(board, dbase))) // returns an object from database with learned response array and transform set to indicate rotation/flip required
+    //checkArchetype(arche)
+    const probabilityArray = getProbabilityArray(board, arche); // reverses the transformation needed to find the archetype on the response array, to yield a probability array for the initial board state
+    //checkSum(obj.response, "menaceChooseMove");  
+    if (probabilityArray) {return [chooseMoveFromProbabilityArray(probabilityArray),probabilityArray]} //return the chosen move and the response array that led to it. 
+    else throw new Error(`Error in menaceChooseMove: no array returned for board state ${board}`)
 
 }
 
@@ -42,31 +52,27 @@ function testForChangeInFirstObjectInDataBase(dbase){
 export function getBoardArchetype(boardState, dbase){
     for (let i = 0; i < dbase.length; i++){
         if (areEquivalent(boardState, dbase[i].state)){
-            //console.log(`BoardState[0] is ${boardState[0]} and boardStatesDB[i].state[8] is ${boardStatesDB[i].state[8]}`)
-
-            //console.log(`type of BoardState is ${typeof boardState} and type of boardStatesDB[i].state is ${typeof boardStatesDB[i].state}`)
-            //console.log(`BoardState is ${boardState} and boardStatesDB[i].state is ${boardStatesDB[i].state}`)
             let boardObject = dbase[i]; 
             boardObject.transform = equivalenceScore(boardState, dbase[i].state)
-            //console.log("1. transform is: ", boardObject.transform)
             return boardObject; 
         }
     }
     return dummyObject; //if all else fails, return something
 }
 
-// this gets an archetypal board state + transform using getBoardArchetype and 
-// returns an object with the board state and response array back-rotated and back-flipped
-// according to the transform 
-export function getBoardObject(boardState, dbase){
-    let arche = getBoardArchetype(boardState, dbase) 
-    checkArchetype(arche)
-    arche.state = reverseTransformBoard(arche.state, arche.transform);
-    // console.log(arche.state);
-    // console.log("5. arche.state AFTER transform is: ", JSON.parse(JSON.stringify(arche.state)));
-    if (!areIdentical(arche.state,boardState)){console.log(`Error: ${arche.state} not equal to ${boardState}`); return}
-    arche.response = reverseTransformBoard(arche.response, arche.transform)
-    return arche; 
+
+// returns an array of probabilities from the response array of the archetype,
+// back-rotated and back-flipped according to the transform 
+
+export function getProbabilityArray(boardState, arche){ 
+    checkTransformReversesState(boardState,arche.state, arche.transform,"menaceChooseMove/getProbabilityArray")
+    const probabilityArray = reverseTransformBoard(arche.response, arche.transform)
+    return probabilityArray; 
+}
+
+function checkTransformReversesState(boardState, archetypeState, transform, funcName){
+    const reverseTransformedArcheState = reverseTransformBoard(archetypeState,transform); 
+    if (!areIdentical(reverseTransformedArcheState,boardState)) new Error(`in ${funcName}: ${reverseTransformedArcheState} not equal to ${boardState}`)
 }
 
 
@@ -75,16 +81,15 @@ export function getBoardObject(boardState, dbase){
 
 // takes object, returns move chosen 
 
-export function chooseMoveFromObject(object){
-    checkSum(object.response, "chooseMoveFromObject"); 
+export function chooseMoveFromProbabilityArray(probabilityArray){
+    checkSum(probabilityArray, "chooseMoveFromProbabilityArray"); 
     let rand = Math.random(); 
     let probSum = 0; 
-    for (let i = 0; i < object.response.length; i++){
-        // console.log("probSum is now:", probSum)
-        probSum += object.response[i]; // add the first probability in the response array to probsum
+    for (let i = 0; i < probabilityArray.length; i++){
+        probSum += probabilityArray[i]; // add the first probability in the array to probsum
         if (rand < probSum){return i} // if rand is less than that, that's the move
     }
-    throw new Error(`Error in menaceChooseMove/chooseMoveFromObject: object scanned without probability satisfaction`)
+    throw new Error(`Error in menaceChooseMove/chooseMoveFromProbabilityArray: object scanned without probability satisfaction`)
 }
 
 
@@ -100,27 +105,27 @@ export function chooseMoveFromObject(object){
 const dummyObject = {
     "id":-1,
     "state":[
-       "Err",
-       "Err",
-       "Err",
-       "Err",
-       "Err",
-       "Err",
-       "Err",
-       "Err",
-       "Err"
+       "DummyState",
+       "DummyState",
+       "DummyState",
+       "DummyState",
+       "DummyState",
+       "DummyState",
+       "DummyState",
+       "DummyState",
+       "DummyState"
     ],
-    "turn":"Err",
+    "turn":"DummyTurn",
     "response":[
-        "Err",
-        "Err",
-        "Err",
-        "Err",
-        "Err",
-        "Err",
-        "Err",
-        "Err",
-        "Err"
+        "DummyResponse",
+        "DummyResponse",
+        "DummyResponse",
+        "DummyResponse",
+        "DummyResponse",
+        "DummyResponse",
+        "DummyResponse",
+        "DummyResponse",
+        "DummyResponse"
     ],
     "transform":[
        NaN,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { calculateWinner } from '../auxiliary/checkWinner';
+import { checkWinner } from '../auxiliary/checkWinner';
 
 export default function GameEnd(props){
     const squares = props.squares; 
@@ -10,40 +10,49 @@ export default function GameEnd(props){
     const playersTurn = props.playersTurn; 
     const trainingMode = props.trainingMode; 
     const isCalculatingWinner = props.isCalculatingWinner
-    const [toggle, setToggle] = useState(true); 
     
+// console.log(checkWinner(squares))
+// console.log(checkWinner(squares).then(writeGameResults))
 
 
-    useEffect(() => {
-        //console.log("About to reset IsCalculatingWinner based on change in squares")
-        setIsCalculatingWinner(true);
-      }, [squares]);
+    useEffect(checkForEmptySquares, [squares]);
+
+    function checkForEmptySquares(){
+        if (squares.some(value => value !== null)){setIsCalculatingWinner(true);}
+    }
   
-    useEffect(()=>{
-        const result = calculateWinner(squares);
-        setToggle(!toggle); // this is just to trigger useEffect below
-        setWinner(result); 
-    },[isCalculatingWinner])
+    useEffect(fixWinner,[isCalculatingWinner])
 
-    useEffect(()=>{
-        //console.log("About to reset IsCalculatingWinner based on change in toggle")
-        setIsCalculatingWinner(false);
-        },[toggle])
+    function fixWinner() {
+        if (isCalculatingWinner){
+            checkWinner(squares).then(writeGameResults)
+            .catch(error => {
+                console.error("Error from checkWinner:", error);
+            })
+        } 
+    }
+
+    function writeGameResults(results){
+        if (!winner){
+            console.log("Resetting winner in writeGameResults to ", results)
+            setWinner(results);
+            
+        }
+        setIsCalculatingWinner(false)
+    }
 
 
 
     
       if (!trainingMode) return (
         <div>
-            {props.devMode? `boardstate is: ${squares}
-            ` : ""}
-            {winner === 'D'? "It is a draw!": winner? `${winner} is the winner!` : `Next player: ${playersTurn ? props.player : props.opponent}`} 
+            <p> {props.devMode? `boardstate is: ${squares}` : ""}</p>
+            <p> {winner === 'D'? "It is a draw!": winner? `${winner} is the winner!` : `Next player: ${playersTurn ? props.player : props.opponent}`} </p>
         </div>
       )
       else return (
         <div>
-            {props.devMode? `boardstate is: ${squares}
-            ` : ""}
+            <p>{props.devMode? `boardstate is: ${squares}` : ""}</p> 
         </div>
       )
 

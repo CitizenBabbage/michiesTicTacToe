@@ -4,13 +4,14 @@
 import React from 'react';
 import { useEffect, useState} from 'react'
 import { chooseMove } from '../auxiliary/chooseMove.js';
-import { checkDbase } from "../auxiliary/errorCheckers.js"
-import {opposite} from "../auxiliary/usefulFunctions.js"
+import { checkDbase, checkBoard } from "../auxiliary/errorCheckers.js"
+import {roundOffElementsInArray, placeMark} from "../auxiliary/usefulFunctions.js"
 import Board from "./Board" 
 
 
 
 export default function Thinking( props ) {
+    
 
     const renderComputersMove = props.renderComputersMove; 
     const playersTurn = props.playersTurn;
@@ -19,48 +20,112 @@ export default function Thinking( props ) {
     const setPlayersTurn = props.setPlayersTurn; 
     const [thinkingWord, setThinkingWord] = useState("");
     const trainingMode = props.trainingMode; 
-    const opponent = props.opponent; 
-    const setOpponent = props.setOpponent; 
-    const database = props.database; 
+    const database = props.database;
+
     const [thinkBoard, setThinkBoard] = useState(Array(9).fill(null)); 
     const foe = props.foe; 
+    const [isCalculatingTurn, setIsCalculatingTurn] = useState(false)
+    const setSquares = props.setSquares; 
+    const squares = props.squares; 
+    const trainingIterations = props.trainingIterations; 
+    const [computersTurn, setComputersTurn] = useState(false)
+    const [probabilityArray, setProbabilityArray] = useState(Array(9).fill(null))
     //const setFoe = props.setFoe; 
-    
-    checkDbase(database,"Thinking")
+
+
 
     // Whenever isCalculatingWinner changes value, ask the computer to check whether it needs to take a turn
-    useEffect(() => {
-        if (isCalculatingWinner) return; 
-        if (playersTurn) {setThinkingWord("Player's Turn"); return;} 
-        if (winner) return;
-        if (trainingMode){
-            setThinkingWord("Training...")
-            if (props.trainingIterations === 0){setThinkingWord("Training Complete!")}
-        }
-        else setThinkingWord("Thinking..."); 
-        computerPlay().then(resolvedSquares => {
-            renderComputersMove(resolvedSquares); // make sure computerPlay resolves before passing it to renderComputersMove
-            if (!trainingMode) {
-                setPlayersTurn(true);}
-        })
-        } 
-        , [isCalculatingWinner]);
+    useEffect(
+        checkForComputersTurn,
+        [isCalculatingWinner,trainingIterations]
+        );
 
 
+    function checkForComputersTurn(){
+        console.log("checking For Computers Turn..."); 
+        if (isCalculatingWinner) {
+            console.log("isCalculatingWinner is still in progress...")
+            return
+        }; 
+        if (playersTurn) {
+            console.log("checkForComputersTurn: Player's turn detected!"); 
+            return; 
+        };
+        if (winner) {
+            console.log("Winner is determined. Canceling checkForComputersTurn!")
+            return
+        };
+        setComputersTurn(true); 
+    }
 
-      function computerPlay() {
-        let nextSquares = props.squares.slice();                        // create duplicate board in memory
-        if (!nextSquares.includes(null)) return                         // if there are no empty squares left, finish. 
-        return delayAndChoose(nextSquares).then(choiceAndBoard => {
-            nextSquares[choiceAndBoard[0]] = props.opponent;            // set the board square to X or O, as appropriate
-            setThinkBoard(roundOff(choiceAndBoard[1])); 
-            if (trainingMode) {
-                setOpponent(opposite(opponent));
-                //reverseFoe(); 
+    useEffect(
+        takeComputersTurn,
+        [computersTurn]
+        );
+
+    function takeComputersTurn(){
+        //console.log("passed Thinking/takeComputersTurn 1")
+        if (computersTurn) {
+            if (squares.includes(null)){                        // if there are empty squares left...
+                computerPlay().then(resolvedSquares => {
+                    checkBoard(resolvedSquares, "takeComputersTurn");
+                    console.log("squares are ", resolvedSquares)
+                    setSquares(resolvedSquares);
+                    }
+                ).catch(error => {
+                    console.error("Error in takeComputersTurn:", error);
+                    // Handle the error as appropriate for your application here
+                });
             }
-            return Promise.resolve(nextSquares); 
-        });
+            setComputersTurn(false)
         }
+        // console.log("passed Thinking/takeComputersTurn 2")
+    }
+
+
+    function computerPlay() {
+        console.log("current player is ", )
+        console.log("passed Thinking/computerPlay 1")
+        let nextSquares = [...squares];                                             // create duplicate board in memory
+        return delayAndChoose(nextSquares).then(choiceAndProbabilityArray => {
+            nextSquares = placeMark(choiceAndProbabilityArray[0], nextSquares)      // set the board square to X or O, as appropriate
+            // nextSquares[choiceAndProbabilityArray[0]] = props.opponent;             
+            setProbabilityArray(choiceAndProbabilityArray[1])
+            console.log("passed Thinking/computerPlay 2")
+            return Promise.resolve(nextSquares); 
+            }
+        )
+        }
+        
+    
+
+    useEffect(
+        changeTurns,
+        [computersTurn]
+    )
+    
+    function changeTurns(){
+
+        if (!computersTurn){
+            if (!trainingMode) {
+                setPlayersTurn(true)
+            }
+            // else {
+            //     setOpponent(opposite(opponent));
+            //     //reverseFoe(); 
+            // }
+        }
+    }
+    
+    useEffect(
+        updateProbabilityBoard,
+        [probabilityArray]
+    )
+
+    function updateProbabilityBoard(){
+        setThinkBoard(roundOffElementsInArray(probabilityArray)); 
+        return; 
+    }
     
 
     // function reverseFoe(){
@@ -72,13 +137,7 @@ export default function Thinking( props ) {
     //     else setFoe("menace"); 
     // }
   
-    function roundOff(array){
-        let newArray = []; 
-        for (let i = 0; i < array.length; i++){
-            newArray.push(Math.round(array[i] * 100) / 100)
-        }
-        return newArray; 
-    }
+    
  
     // the purpose of this is just to create a small delay so that the computer appears to be thinking
     // without it the computer tends to respond simultaneously with the player's move, which is unnatural
@@ -96,7 +155,7 @@ export default function Thinking( props ) {
             if (!trainingMode){delayms = 3000}
             delay(delayms)
             .then(() => {
-                checkDbase(database,"Thinking/delayAndChoose")
+                console.log("choosing move")
                 const choiceAndBoard = chooseMove(board, database, foe);  
                 console.log("foe is: ", foe)
                 //console.log("delayAndChoose, selected move is :", choice)
@@ -109,7 +168,6 @@ export default function Thinking( props ) {
             });
         });
     }
-
 
     return (
         <div>

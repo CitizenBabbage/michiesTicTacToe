@@ -1,5 +1,21 @@
+import { checkBoard } from "./errorCheckers";
+
+export function checkWinner(squares) {
+  checkBoard(squares, "checkWinner"); 
+  return new Promise((resolve, reject) => {
+      const result = calculateWinner(squares);
+      if ((typeof result === 'string' && result.length === 1)|| result === null) {
+        resolve(result);
+    } else {
+        reject(`Result is ${result} which is not a single character string`);
+    }
+  });
+}
+
 export function calculateWinner(squares) { 
+    checkBoard(squares, "calculateWinner");
     if (!squares) {
+      console.log(`Warning: squares has value ${squares} when calculateWinner called!`)
       return null;
     }
     //part I: check for a winning line 
@@ -20,16 +36,9 @@ export function calculateWinner(squares) {
       }
     }
     // part ii: check if the board is full
-    for (let i = 0; i < squares.length; i++) {
-      if (squares[i] !== 'X' && squares[i] !== 'O'){
-        break // we've found an empty square so exit the loop
-      }
-      else {
-        // if i = 8 then there are no empty squares and it's a draw. 
-        if (i === 8){return 'D'} 
-        else continue
-      }
-    }
+    if (squares.every(square => square === 'X' || square === 'O')) {
+      return 'D';
+    } 
     return null;
   }
 

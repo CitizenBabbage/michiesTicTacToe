@@ -1,0 +1,13 @@
+
+
+.array {
+    list-Style-Type: '';
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.array li {
+    list-style-type: none;
+    margin-right: 10px; 
+    margin-bottom: 10px;
+}

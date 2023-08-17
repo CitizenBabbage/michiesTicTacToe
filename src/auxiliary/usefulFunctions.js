@@ -85,6 +85,13 @@ export function areIdentical(board1,board2){
     return true;
 }
 
+export function areExactlyTheSame(item1,item2){
+    const string1 = JSON.stringify(item1)
+    const string2 = JSON.stringify(item2)
+    if (string1 === string2) return true
+    else return false;
+}
+
 function equals(x,y){
     if (x === y) {return true}
     else if (x === null && y === undefined){return true}
@@ -156,19 +163,6 @@ export function reverseTransformBoard(boardState, transform){
 
 // console.log("arche transformed is : ", reverseTransformBoard([null, 'X', 'X', 'O', 'X', 'X', 'O', 'O', null], [0,1]))
 
-
-// // Returns an array representing the board state (reverse) transformed
-// export function transformBoard(boardState, transform){
-//     // console.log("board state is ", boardState)
-//     // console.log("3. transform is ", transform)
-//     let newBoard; 
-//     if (transform[0] === 1) {
-//         newBoard = boardState.map((item, index) => boardState[reverseRotation(index,transform[1])]);
-//         return newBoard.map((item) => reflectNumber(item))
-//     }
-//     else return boardState.map((item, index) => boardState[rotation(index,transform[1])])
-//     //console.log("newBoard is ", newBoard)
-// }
 
 
 //F1.4.1.1.1.2.1 areRotationalVariants//
@@ -285,3 +279,22 @@ export function isNumber(value) {
 }
 
 
+// returns a new board state with the appropriate letter placed in the given place
+export function placeMark(squareNumber, board){
+    if (board[squareNumber]) return;            // if the square is occupied, do nothing 
+    let symbolCount = board.reduce((acc,item) => item? acc+1: acc, 0)
+    console.log("symbol count is ", symbolCount)
+    if (symbolCount % 2 === 0){ board[squareNumber] = 'X'} 
+    else board[squareNumber] = 'O'; 
+    return board
+  }
+
+  //console.log(placeMark(3, [null, null, null, null, null, null, null, null, null]))
+
+  export function roundOffElementsInArray(array){
+    let newArray = []; 
+    for (let i = 0; i < array.length; i++){
+        newArray.push(Math.round(array[i] * 100) / 100)
+    }
+    return newArray; 
+}

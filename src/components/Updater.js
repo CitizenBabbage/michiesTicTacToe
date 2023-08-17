@@ -1,58 +1,81 @@
 import React from 'react';
-import { useEffect} from 'react';
+import { useEffect, useRef} from 'react';
 //import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
 import { isOdd,  reverseTransformation, dataBaseDuplicator, normalizeResponses, areEquivalent , equivalenceScore, isNumber} from '../auxiliary/usefulFunctions.js';
 import { checkDbase, checkIsANumber } from '../auxiliary/errorCheckers.js';
+import { roundOffElementsInArray } from '../auxiliary/usefulFunctions.js';
+import "./Updater.css"
+import DatabaseDisplay from './DatabaseDisplay.js';
 
 
 
 export default function Updater(props){
+    const winner = props.winner; 
 
     const database = props.database; 
     const setDatabase = props.setDatabase; 
-    const winner = props.winner; 
+    
     const gameLog = props.gameLog; 
     const trainingIterations = props.trainingIterations;
     const setTrainingIterations = props.setTrainingIterations;
     const setWinner = props.setWinner;  
     const setGameLog = props.setGameLog; 
     const setSquares = props.setSquares; 
-    const setOpponent = props.setOpponent; 
+    const trainingMode = props.trainingMode; 
     
 
-      
+    useEffect(() => {console.log(`useEffect reports: Value of winner changed to ${winner}`)},[winner])
+
+    useEffect(() => {console.log(`useEffect reports: Value of database changed. New first response state is ${database[0].response}`)},[winner])
+    const previousDatabaseRef = useRef();
 
     useEffect(() => {
-        if (gameLog === undefined){
-            return
-        } ; 
-        learnFromGame()
-        if (trainingIterations > 0){startNewTrainingIteration()}
-    },[winner])
+        if (previousDatabaseRef.current && JSON.stringify(database) !== JSON.stringify(previousDatabaseRef.current)) {
+            console.log('Database has changed!');
+        }
+        // After checking, update the ref for the next render
+        previousDatabaseRef.current = database;
+    }, [database]);
+
+    // checkDbase(database, "upDater")
+
+    useEffect(learnFromGame,[winner])
+
+    
+
+    useEffect(startNewTrainingIteration, [database])
 
 
     function startNewTrainingIteration(){
+        if (trainingIterations <= 0) return; 
         //console.log("RESTARTING with training iterations remaining: ", trainingIterations-1)
-        setTrainingIterations(trainingIterations - 1)
         setSquares(Array(9).fill(null)); 
-        setWinner(undefined); 
+        setWinner(null); 
         setGameLog([]); 
-        setOpponent("X"); /// 
+        setTrainingIterations(trainingIterations - 1)
     }
 
 
     function learnFromGame(){
-        let gameResult = gameresult(winner); // 1 for a win for X, 0 for a draw, -1 for a loss
-        if (!isNumber(gameResult)) return; 
-        checkIsANumber(gameResult, "learnFromGame", "gameResult")
-        let newData = updateEachBoardPlayed(gameLog, gameResult, database)
-        checkDbase(newData, "learnFromGame--newData")
-        setDatabase(newData); 
+        console.log("initiating learnFromGame, winner is ", winner)
+        if (winner === undefined || winner == null || gameLog === undefined || !trainingMode) {
+            console.log("Either winner or gamelog is undefined or null, or we're not in trainingmode. Aborting learnFromGame")
+            return
+         }  
+        else {
+            let gameResult = gameresult(winner); // 1 for a win for X, 0 for a draw, -1 for a loss
+            checkIsANumber(gameResult, "learnFromGame", "gameResult")
+            let newData = updateEachBoardPlayed(gameLog, gameResult)
+            console.log("About to reset database")
+            setDatabase(newData); 
+            checkDbase(database, "2. learnFromGame--database")
+        }
     }
 
-
-    function updateEachBoardPlayed(log, gameResult, data){
-        let newData = dataBaseDuplicator(data); 
+// returns an updated database, with the response arrays from all the games in the log 
+// updated depending on whether they led to a win or a loss. 
+    function updateEachBoardPlayed(log, gameResult){
+        let newData = dataBaseDuplicator(database); 
         checkDbase(newData, "updateEachBoardPlayed A")
         gameResult = gameResult/10; 
         checkIsANumber(gameResult, "updateEachBoardPlayed", "gameResult")
@@ -72,10 +95,12 @@ export default function Updater(props){
         return newData; 
     }
 
-            // *The longer the game, the worse for the winner and better for the loser
-            // thus the longer the game, the more the reward should approximate a tie. 
-            // 1 - gameLog.length/10 is large for short games and small for long games 
-            // when multiplied by update it becomes positive for wins and negative for losses
+    //  updateEachBoardPlayed tested and is not responsible
+
+    //         // *The longer the game, the worse for the winner and better for the loser
+    //         // thus the longer the game, the more the reward should approximate a tie. 
+    //         // 1 - gameLog.length/10 is large for short games and small for long games 
+    //         // when multiplied by update it becomes positive for wins and negative for losses
 
     
 
@@ -85,17 +110,10 @@ export default function Updater(props){
         checkDbase(data, "findAndUpdateEquivalent B")
         for (let j = 0; j < newData.length; j++){                                                   // look through the db for equivalent board state
             if (areEquivalent(boardState, newData[j].state)){                                       // when you find it
-                console.log("1.here")
                 let equivScore = equivalenceScore(boardState, newData[j].state)                     // get the equivalence score 
-                console.log("2", equivScore)
                 let newMove = reverseTransformation(move, equivScore)                               // modify move by that quantity
-                console.log("3", newMove)
-                console.log("3.1", newData[j].response[newMove])
-                console.log("3.2", update)
                 newData[j].response[newMove] = Math.max(0, newData[j].response[newMove] + update);  // modify 
-                console.log("4", newData[j].response)
                 newData[j].response = normalizeResponses(newData[j].response); 
-                console.log("5", newData[j].response)
                 }
         }
         checkDbase(data, "findAndUpdateEquivalent Z")
@@ -113,8 +131,9 @@ export default function Updater(props){
 
 
 
-    //takes in winner as a symbol 'O' or 'X', determines whether computer won, and returns either 1 or -1 
+    // //takes in winner as a symbol 'O' or 'X', determines whether computer won, and returns either 1 or -1 
     function gameresult(winner){
+        console.log("winner is", winner)
         if (winner !== 'X' && winner !== 'O' && winner !== "D") return; //ignore incomplete games
         if (winner === "X") return 1 // 
         else if (winner === "O") return -1 //
@@ -122,12 +141,12 @@ export default function Updater(props){
     }
 
     
-
-
-      return (
+    // checkDbase(database, "2. upDater")
+    return (
         <div>
-            {props.devMode? `First probability distribution is ${JSON.stringify(database[0].response)}`:""}
+            <DatabaseDisplay devMode = {props.devMode} database = {database} trainingIterations = {trainingIterations} trainingMode = {trainingMode}/>
         </div>
-      )
+    )
+    
 
 }

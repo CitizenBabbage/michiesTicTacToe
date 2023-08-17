@@ -17,8 +17,9 @@ export function chooseMove(board, dbase, foe){
     checkDbase(dbase, "chooseMove")
     checkBoard(board, "chooseMove")
     console.log("1. board is ", board)
+    let tempDB = [...dbase]
     let whoseTurn = whoseMove(board); 
-    if (foe === "menace"){return menaceChooseMove(board, dbase)}
+    if (foe === "menace"){return menaceChooseMove(board, tempDB)}
     else if (foe === "minimax"){
         return [minimaxChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]} 
 }
