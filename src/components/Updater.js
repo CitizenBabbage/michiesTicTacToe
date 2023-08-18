@@ -1,11 +1,10 @@
 import React from 'react';
 import { useState, useEffect, useRef} from 'react';
 //import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
-import { isOdd,  reverseTransformation, dataBaseDuplicator, normalizeResponses, areEquivalent , equivalenceScore, isNumber} from '../auxiliary/usefulFunctions.js';
+import { isOdd,  reverseTransformation, dataBaseDuplicator, basicNormalization, areEquivalent , equivalenceScore, isNumber} from '../auxiliary/usefulFunctions.js';
 import { checkDbase, checkIsANumber } from '../auxiliary/errorCheckers.js';
-import { roundOffElementsInArray } from '../auxiliary/usefulFunctions.js';
 import "./Updater.css"
-import DatabaseDisplay from './DatabaseDisplay.js';
+import DatabaseDisplay from './DBDisplay.js';
 
 
 
@@ -129,18 +128,15 @@ export default function Updater(props){
     
 
     function findAndUpdateEquivalent(data, update, move, boardState){
-        checkDbase(data, "findAndUpdateEquivalent A")
         let newData = dataBaseDuplicator(data); 
-        checkDbase(data, "findAndUpdateEquivalent B")
         for (let j = 0; j < newData.length; j++){                                                   // look through the db for equivalent board state
             if (areEquivalent(boardState, newData[j].state)){                                       // when you find it
                 let equivScore = equivalenceScore(boardState, newData[j].state)                     // get the equivalence score 
                 let newMove = reverseTransformation(move, equivScore)                               // modify move by that quantity
                 newData[j].response[newMove] = Math.max(0, newData[j].response[newMove] + update);  // modify 
-                newData[j].response = normalizeResponses(newData[j].response); 
+                newData[j].response = basicNormalization(newData[j].response); 
                 }
         }
-        checkDbase(data, "findAndUpdateEquivalent Z")
         return newData; 
     }
 

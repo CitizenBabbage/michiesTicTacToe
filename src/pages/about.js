@@ -7,8 +7,9 @@ const About = ( props ) => {
         <div>
         <h1>Choose your opponent</h1>
         
-            <NavigationButton  devMode = {props.devMode} path = '/menace' label = 'menace'/>
-            <NavigationButton  devMode = {props.devMode} path = '/minimax' label = 'minimax'/>
+            <NavigationButton  devMode = {props.devMode} path = '/menace' label = 'Menace'/>
+            <NavigationButton  devMode = {props.devMode} path = '/minimax' label = 'Minimax'/>
+            <NavigationButton  devMode = {props.devMode} path = '/huris' label = 'Huris'/>
         </div>
     );
 };

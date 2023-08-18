@@ -1,4 +1,4 @@
-import { isNumber } from "./usefulFunctions";
+import { isNumber, hasTwoOrFewerDecimalPlaces } from "./usefulFunctions.js";
 
 
 export function checkSum(array, funcName){
@@ -27,6 +27,16 @@ export function checkDbase(dbase, funcName){
         throw new Error(` in ${funcName}: dbase isn't right. Board state 2 should have seventh place X, but has ${arbitraryTest} instead. Board state 2 = ${JSON.stringify(dbase[2].state)}, from object ${JSON.stringify(dbase[2])}. dblength = ${dblength}.`)
     }
     if (!isNumber(dbase[0].response[0])) throw new Error(` in ${funcName}: dbase isn't right. Board state 0 should have all numbers for response array, but has ${JSON.stringify(dbase[0].response)} instead. dblength = ${dblength}.`)
+    // for (let i = 0; i < dbase.length; i++){
+    //     for (let j = 0; j < dbase[i].response.length; j++)
+    //     if (!hasTwoOrFewerDecimalPlaces(dbase[i].response[j])) throw new Error(` in ${funcName}: dbase isn't right. Board state ${i} should have all numbers rounded to 2dp in response array, but element ${j} is ${dbase[i].response[j]}.`)
+    // }
+    for (let i = 0; i < dbase.length; i++){
+        for (let j = 0; j < dbase[i].response.length; j++){
+            if (dbase[i].response[j] < 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is smaller than 0.`)
+            if (dbase[i].response[j] > 1 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is larger than 1.`)
+    }
+}
 }
 
 export function showFirstnElements(array, num){
@@ -39,8 +49,19 @@ export function checkIsANumber(value, funcName, valName){
     if (!isNumber(value)) throw new Error(` in ${funcName}: ${valName} is ${value}, not a number.`)
 } 
 
+export function checkIsTernaryNumber(value, funcName, valName){
+    if (!isNumber(value)) throw new Error(` in ${funcName}: ${valName} is ${value}, not a number.`)
+    if (value !== 0 && value !== 1 && value !== -1) throw new Error(` in ${funcName}: ${valName} is ${value}, not 1, -1, or 0.`)
+} 
+
 export function checkArchetype(obj){
     if (!isNumber(obj.response[0])) {
         throw new Error(` in menaceChooseMove/getBoardObject: got a bad archetype, namely: ${JSON.stringify(obj)}`)
     }
+}
+
+export function checkNormalized(rounded, funcName){
+    let sum = rounded.reduce((accumulator, current) => accumulator + current, 0);
+    const epsilon = 0.0001;
+    if (sum - 1 > epsilon || 1 - sum > epsilon ) throw new Error(`in ${funcName}: normalized array does not sum to 1`)
 }

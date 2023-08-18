@@ -1,6 +1,7 @@
 import { minimaxChooseMove } from "./minimaxChooseMove.js";
 import { menaceChooseMove } from "./menaceChooseMove.js";
 import { checkBoard, checkDbase } from './errorCheckers.js';
+import { hurisChooseMove } from "./hurisChooseMove.js";
 
 
 //For testing
@@ -21,8 +22,11 @@ export function chooseMove(board, dbase, foe){
     let whoseTurn = whoseMove(board); 
     if (foe === "menace"){return menaceChooseMove(board, tempDB)}
     else if (foe === "minimax"){
-        return [minimaxChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]} 
-}
+        return [minimaxChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
+    else if (foe === "huris"){
+        return [hurisChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
+    } 
+
 
 
     

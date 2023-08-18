@@ -1,4 +1,5 @@
 import {corner, edge, lines, reverseCorner, reverseEdge} from './globals.js'
+import { checkNormalized } from './errorCheckers.js';
 
 //////////////AUXILIARY FUNCTIONS////////////
 
@@ -235,13 +236,46 @@ export function structureTest(array){
 
 
 
-export function normalizeResponses(array){
+export function basicNormalization(array){
     let sum = array.reduce((accumulator, current) => accumulator + current, 0)
     let normalized = array.map((item)=>(item /sum))
     // let checkSum = normalized.reduce((accumulator, current) => accumulator + current, 0) 
     // if (checkSum >= 0.99 && checkSum <= 1) {console.log("yup")}
     return normalized
 }
+
+// this rounds off the normalized figures to two dp. If they don't sum to 1, the difference is removed 
+// from a random element (in the case where the difference is negative, that means it's effectively added)
+export function roundedNormalization(array){
+    let normalized = basicNormalization(array)
+    let roundedTimes100 = normalized.map(value => Math.round(value * 100));
+    let sum = roundedTimes100.reduce((accumulator, current) => accumulator + current, 0);
+    if (sum !== 100){
+        let difference = sum - 100; 
+        let randomIndex = getIndexOfSufficientlyLargeElement(roundedTimes100,difference);
+        roundedTimes100[randomIndex] -= difference; 
+    }
+    let rounded = roundedTimes100.map(value => value/100);
+    checkNormalized(rounded, "roundedNormalization"); 
+    return rounded; 
+}
+
+
+// this keeps running itself until it returns the index of an element = or larger than lowerBound
+function getIndexOfSufficientlyLargeElement(array, lowerBound){
+    let randomIndex = Math.floor(Math.random() * array.length);
+    if (array[randomIndex]>=lowerBound) {
+        return randomIndex
+    }
+    else return getIndexOfSufficientlyLargeElement(array, lowerBound)
+}
+
+
+export function hasTwoOrFewerDecimalPlaces(num) {
+    const epsilon = 0.0001;
+    return Math.abs(Math.round(num * 100) - num * 100) < epsilon;
+}
+
 
 export function dataBaseDuplicator(database){
     let duplicate = JSON.parse(JSON.stringify(database)); 

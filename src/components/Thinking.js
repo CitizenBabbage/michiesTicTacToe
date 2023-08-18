@@ -69,13 +69,12 @@ export default function Thinking( props ) {
         if (computersTurn) {
             if (squares.includes(null)){                        // if there are empty squares left...
                 computerPlay().then(resolvedSquares => {
-                    checkBoard(resolvedSquares, "takeComputersTurn");
                     console.log("squares are ", resolvedSquares)
+                    checkBoard(resolvedSquares, "takeComputersTurn");
                     setSquares(resolvedSquares);
                     }
                 ).catch(error => {
-                    console.error("Error in takeComputersTurn:", error);
-                    // Handle the error as appropriate for your application here
+                    console.error("Error in takeComputersTurn:", error); 
                 });
             }
             setComputersTurn(false)

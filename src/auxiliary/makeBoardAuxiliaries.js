@@ -1,4 +1,4 @@
-import {containsXline, containsOline, xCounter, oCounter} from "./usefulFunctions.js"
+import {roundedNormalization, containsXline, containsOline, xCounter, oCounter} from "./usefulFunctions.js"
 import {corner, edge, lines} from './globals.js'
 import {areEquivalent} from './usefulFunctions.js'
 
@@ -12,7 +12,12 @@ import {areEquivalent} from './usefulFunctions.js'
 export function createAllBoardStateObjects(num){
     const allBoards = generateGoodBoardStates(num);
     let database = allBoards.map((item,index) => buildObject(item,index))
-    return reduceOptionsOnFirstMove(database)
+    database = reduceOptionsOnFirstMove(database)
+    return roundTo2DP(database)
+}
+
+function roundTo2DP(db){
+    return db.map(value => ({ ...value, response: roundedNormalization(value.response) }));
 }
 
 

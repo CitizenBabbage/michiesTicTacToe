@@ -1,7 +1,5 @@
 import React from 'react';
-import {} from 'react';
-import { roundOffElementsInArray } from '../auxiliary/usefulFunctions.js';
-import "./DatabaseDisplay.css"
+import "./DBDisplay.css"
 import Board from "./Board.js"
 
 function databaseDisplay(props){
@@ -11,8 +9,11 @@ function databaseDisplay(props){
     const trainingMode = props.trainingMode; 
     
     function getColor(value) {
-        const redComponent = Math.round(value * 255);
-        return `rgb(${redComponent}, 0, 0)`;
+        let redComponent = 0; 
+        let greenComponent = 0; 
+        if (value >= 0) redComponent = Math.round(value * 255);
+        else greenComponent = Math.round(-value * 255)
+        return `rgb(${redComponent}, ${greenComponent}, 0)`;
     }
     
     // checkDbase(database, "2. upDater")
@@ -37,16 +38,6 @@ function databaseDisplay(props){
                     );
                 })}
             </ul>
-            {/* <ul className='array'>
-                {database.map((item, index) => {
-                    const colors = item.response.map(getColor);
-                    return(
-                    <li key={index}>
-                    <Board squaresClassName = {"probBoardButton"} trainingMode = {props.trainingMode} squareColors = {colors} />
-                    </li>
-                    )
-                })}
-            </ul> */}
         </div>
     )
     
