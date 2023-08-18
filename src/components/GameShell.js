@@ -4,6 +4,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import BoardContainer from './BoardContainer';
+import GameEnd from './GameEnd';
+import GameLog from './GameLog';
+import Thinking from './Thinking';
 import {db} from '../auxiliary/databaseFormatted' //assert { type: "json" };
 import { Button } from 'primereact/button';
 import Updater from './Updater';
@@ -23,6 +26,7 @@ export default function GameShell( props ) {
   const [winner, setWinner] = useState(); 
   const [database,setDatabase] = useState(dataBaseDuplicator(db));                     // this is the main database that is updated as learning progresses
   //const [database,setDatabase] = useState(db);                     // this is the main database that is updated as learning progresses
+  const [isCalculatingWinner, setIsCalculatingWinner] = useState(false); 
 
   const [gameLog, setGameLog] = useState([Array(9).fill(null)]);
   const [trainingMode, setTrainingMode] = useState(); 
@@ -127,6 +131,10 @@ export default function GameShell( props ) {
       <div>
       <BoardContainer devMode = {props.devMode} setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} ></BoardContainer>
       <Updater trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog} trainingIterations = {trainingIterations} setTrainingIterations = {setTrainingIterations} setWinner = {setWinner}  setGameLog = {setGameLog} setSquares = {setSquares} /> 
+      <Thinking trainingIterations = {trainingIterations} devMode = {props.devMode} setSquares = {setSquares} setFoe = { props.setFoe } foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares } playersTurn = { playersTurn } winner = { winner }/>   
+      <GameLog devMode = {props.devMode} trainingMode = {trainingMode} winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
+      <GameEnd devMode = {props.devMode} isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
+      
       </div>
   )
 }

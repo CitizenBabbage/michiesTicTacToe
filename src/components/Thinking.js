@@ -173,7 +173,7 @@ export default function Thinking( props ) {
     return (
         <div>
             <p> {thinkingWord} </p>
-            <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" squares = {thinkBoard}/>
+            <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>
         </div>
       
     )

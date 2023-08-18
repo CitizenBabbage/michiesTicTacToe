@@ -150,7 +150,7 @@ function myWins(array, mySymbol){
     return threats.filter(threatPair => threatPair[1] === mySymbol)
 }
 
-//win: If the player has two in a row, they can place a third to get three in a row.
+//rule 0: win: If the player has two in a row, they can place a third to get three in a row.
 function win(array, mySymbol){
     let opportunities = myWins(array, mySymbol); 
     if (opportunities.length > 0){
@@ -159,15 +159,11 @@ function win(array, mySymbol){
     else return null; 
 }
 
-//Block: If the opponent has two in a row, the player must play the third themselves to block the opponent.
-// as win but with opponentsSymbol as second argument
-// function Block(array, opponentsSymbol){
-//     let opportunities = myWins(array, opponentsSymbol); 
-//     if (opportunities.length > 0){return opportunities[0][0]}
-//     else return null; 
-// }
+//rule 1: Block: If the opponent has two in a row, the player must play the third themselves to block the opponent.
+// As win but with opponentsSymbol as second argument
 
-//Fork: Cause a scenario where the player has two ways to win (two non-blocked lines of 2).
+
+//Rule 2: Fork: Cause a scenario where the player has two ways to win (two non-blocked lines of 2).
 function fork(array, mySymbol){
     for (let i = 0; i < array.length; i++){
         if (!array[i]){
@@ -180,11 +176,12 @@ function fork(array, mySymbol){
     return null; 
 }
 
-//Blocking an opponent's fork: If there is only one possible fork for the opponent, the player should block it. Otherwise, the player should block all forks in any way that simultaneously allows them to make two in a row. Otherwise, the player should make a two in a row to force the opponent into defending, as long as it does not result in them producing a fork. For example, if "X" has two opposite corners and "O" has the center, "O" must not play a corner move to win. (Playing a corner move in this scenario produces a fork for "X" to win.)
-// as fork but with opponentsSymbol as second argument
+//Rule 3: Blocking an opponent's fork: If there is only one possible fork for the opponent, the player should block it. Otherwise, the player should block all forks in any way that simultaneously allows them to make two in a row. Otherwise, the player should make a two in a row to force the opponent into defending, as long as it does not result in them producing a fork. For example, if "X" has two opposite corners and "O" has the center, "O" must not play a corner move to win. (Playing a corner move in this scenario produces a fork for "X" to win.)
+// As fork but with opponentsSymbol as second argument
 //function BlockFork(){}
 
-// if first move, play corner. 
+
+// Rule 4: if first move, play corner. 
 function cornerOnFirst(array){
     if (array.every(element => element === null || element === undefined)) {
         return corner[Math.floor(Math.random()*4)]
@@ -196,14 +193,14 @@ function cornerOnFirst(array){
 
 
 
-//Center: A player marks the center. 
+//Rule 5: Center: A player marks the center. 
 function center(array){
     if (!array[4]) return 4
     else return null; 
 }
 
 
-//Opposite corner: If the opponent is in the corner, the player plays the opposite corner.
+//Rule 6: Opposite corner: If the opponent is in the corner, the player plays the opposite corner.
 function oppositeCorner(array, mySymbol){
     if (!array[0] && array[8] === opposite(mySymbol)) return 0; 
     else if (!array[2] && array[6] === opposite(mySymbol)) return 2;
@@ -213,7 +210,7 @@ function oppositeCorner(array, mySymbol){
 }
 
 
-//Empty corner: The player plays in a corner square.
+//Rule 7: Empty corner: The player plays in a corner square.
 function emptyCorner(array){
     for (let i of corner) {
         if (!array[i]) return i;
@@ -222,7 +219,7 @@ function emptyCorner(array){
 }
 
 
-//Empty side: The player plays in a middle square on any of the four sides.
+//Rule 8: Empty side: The player plays in a middle square on any of the four sides.
 function emptySide(array){
     for (let i of edge) {
         if (!array[i]) return i;
@@ -231,7 +228,7 @@ function emptySide(array){
 }
 
 //distractors
-// if first move, play centre. 
+// Rule 9: if first move, play centre. 
 function centreOnFirst(array){
     if (array.every(element => element === null || element === undefined)) {
         return 4
@@ -241,7 +238,7 @@ function centreOnFirst(array){
 
 
 
-//next corner clockwise: If the opponent is in the corner, the player plays the next corner clockwise.
+// Rule 10: next corner clockwise: If the opponent is in the corner, the player plays the next corner clockwise.
 function nextCornerClockwise(array, mySymbol){
     if (!array[0] && array[6] === opposite(mySymbol)) return 0; 
     else if (!array[2] && array[0] === opposite(mySymbol)) return 2;
@@ -252,7 +249,7 @@ function nextCornerClockwise(array, mySymbol){
 
 
 
-//next corner anticlockwise: If the opponent is in the corner, the player plays the next corner anticlockwise.
+// Rule 11: Next corner anticlockwise: If the opponent is in the corner, the player plays the next corner anticlockwise.
 function nextCornerAntiClockwise(array, mySymbol){
     if (!array[0] && array[2] === opposite(mySymbol)) return 0; 
     else if (!array[2] && array[8] === opposite(mySymbol)) return 2;

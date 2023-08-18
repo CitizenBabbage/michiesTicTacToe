@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useRef} from 'react';
 //import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
-import { isOdd,  reverseTransformation, dataBaseDuplicator, basicNormalization, areEquivalent , equivalenceScore, isNumber} from '../auxiliary/usefulFunctions.js';
+import { areExactlyTheSame, isOdd,  reverseTransformation, dataBaseDuplicator, basicNormalization, areEquivalent , equivalenceScore, isNumber} from '../auxiliary/usefulFunctions.js';
 import { checkDbase, checkIsANumber } from '../auxiliary/errorCheckers.js';
 import "./Updater.css"
 import DatabaseDisplay from './DBDisplay.js';
@@ -22,7 +22,37 @@ export default function Updater(props){
     const setSquares = props.setSquares; 
     const trainingMode = props.trainingMode; 
     const [naturalLanguageLog, setNaturalLanguageLog] = useState([])
-    
+    const [allPlayedBoards, setAllPlayedBoards] = useState([{
+        "id":0,
+        "state":[
+           null,
+           null,
+           null,
+           null,
+           null,
+           null,
+           null,
+           null,
+           null
+        ],
+        "turn":"X",
+        "response":[
+           0.33,
+           0.33,
+           0.01,
+           0,
+           0.33,
+           0,
+           0,
+           0,
+           0
+        ],
+        "transform":[
+           0,
+           0
+        ]
+     }]); 
+
 
     useEffect(() => {console.log(`useEffect reports: Value of winner changed to ${winner}`)},[winner])
 
@@ -37,7 +67,6 @@ export default function Updater(props){
         previousDatabaseRef.current = database;
     }, [database]);
 
-    // checkDbase(database, "upDater")
 
     useEffect(learnFromGame,[winner])
 
@@ -68,7 +97,6 @@ export default function Updater(props){
             let newData = updateEachBoardPlayed(gameLog, gameResult)
             console.log("About to reset database")
             setDatabase(newData); 
-            checkDbase(database, "2. learnFromGame--database")
         }
     }
 
@@ -77,7 +105,6 @@ export default function Updater(props){
     function updateEachBoardPlayed(log, gameResult){
         let nLLog = []; 
         let newData = dataBaseDuplicator(database); 
-        checkDbase(newData, "updateEachBoardPlayed A")
         checkIsANumber(gameResult, "updateEachBoardPlayed", "gameResult")
         for (let i = 0; i < gameLog.length -1; i++){                //for each state in the game log
             let move = getPositionThatChanged(log[i], log[i+1]);    //find the position that changed 
@@ -94,7 +121,6 @@ export default function Updater(props){
             nLLog = updateNLLog(nLLog, i, gameResult, update, log[i], move)
             }
         setNaturalLanguageLog(nLLog); 
-        checkDbase(newData, "updateEachBoardPlayed Z")
         return newData; 
     }
 
@@ -135,9 +161,26 @@ export default function Updater(props){
                 let newMove = reverseTransformation(move, equivScore)                               // modify move by that quantity
                 newData[j].response[newMove] = Math.max(0, newData[j].response[newMove] + update);  // modify 
                 newData[j].response = basicNormalization(newData[j].response); 
+                addToAllPlayedBoards(newData[j])
                 }
         }
         return newData; 
+    }
+
+    function addToAllPlayedBoards(object){
+        let newData = dataBaseDuplicator(allPlayedBoards); 
+        let presentInSet = false; 
+        for (let i = 0; i < newData.length; i++){
+            if (areExactlyTheSame(i.state,object.state)){
+                presentInSet = true; 
+                break; 
+        }
+        }
+        if (!presentInSet) {
+            console.log(`Adding ${object} to allPlayedBoards`)
+            newData = [...newData,object]; 
+            setAllPlayedBoards(newData); 
+        }
     }
 
     
@@ -161,10 +204,9 @@ export default function Updater(props){
     }
 
     
-    // checkDbase(database, "2. upDater")
     return (
         <div>
-            <DatabaseDisplay devMode = {props.devMode} database = {database} trainingIterations = {trainingIterations} trainingMode = {trainingMode}/>
+            <DatabaseDisplay devMode = {props.devMode} allPlayedBoards = {allPlayedBoards} squares = {props.squares} database = {database} trainingIterations = {trainingIterations} trainingMode = {trainingMode}/>
             <ol>
                 {naturalLanguageLog.map((item, index) => 
                      (

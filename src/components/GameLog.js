@@ -1,6 +1,6 @@
 import React from 'react';
-import { useRef, useEffect} from 'react';
-import {includes} from "../auxiliary/usefulFunctions.js"
+import { useState, useRef, useEffect} from 'react';
+import {areIdentical, includes} from "../auxiliary/usefulFunctions.js"
 import "./GameLog.css"
 import Board from "./Board" 
 
@@ -18,21 +18,25 @@ export default function GameLog( props ){
     //const winner = props.winner; 
     const initialRender = useRef(true);
     //const [logBoardButton, setLogBoardButton] = useState("logBoardButton"); 
-    const trainingMode = props.trainingMode; 
+    const trainingMode = props.trainingMode;
     
 
-    useEffect(()=>{
+    useEffect(addBoardStateToLog,[squares])
+
+
+    function addBoardStateToLog(){
         //console.log("1. gameLog is ", gameLog)
         if (initialRender.current) {
             initialRender.current = false;
             return;
         }
         if (!includes(gameLog,squares)) {
-            //console.log(`${JSON.stringify(gameLog)} does not include ${JSON.stringify(squares)}`)
             setGameLog((gameLog) => [...gameLog,squares])
         }
-    },
-    [squares])
+
+    }
+
+    
 
    
 
@@ -42,7 +46,7 @@ export default function GameLog( props ){
             <ul className='list'>
                 {gameLog.map((item, index) => (
                     <li key={index}>
-                    <Board squaresClassName = {"logBoardButton"} trainingMode = {props.trainingMode} squares = {item} />
+                    <Board squaresClassName = {"logBoardButton"} trainingMode = {props.trainingMode} values = {item} />
                     <p>
                         {/* space between boards */}
                     </p>
