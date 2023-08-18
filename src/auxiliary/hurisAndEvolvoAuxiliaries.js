@@ -13,7 +13,9 @@ export function readGenome(genome, board, mySymbol){
         }
         console.log("Genome is all zeroes (end of recursion?). Returning null")
         const emptySpaces = returnEmptySpaces(genome); 
+        console.log("The only remaining empty spaces are ", emptySpaces)
         const randomIndex = Math.floor(Math.random()*emptySpaces.length)
+        console.log(`Choosing ${randomIndex} at random from those.`)
         return emptySpaces[randomIndex]  // if all the elements of the genome are 0, make a move at random
     }
     else {
@@ -23,15 +25,27 @@ export function readGenome(genome, board, mySymbol){
         console.log("Suggesting rule ", suggestion)
         if (suggestion) return suggestion; 
         else {
+            console.log(`Rule ${suggestion} rejected!`)
             genomeClone[indexOfMostHigh] = 0; 
             return readGenome(genomeClone, board, mySymbol)
         }
     }
 }
 
-function returnEmptySpaces(array){
-    return array.filter(item => item === null)
+function returnEmptySpaces(array) {
+    let result = [];
+    
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] === undefined) {
+            result.push(i);
+        }
+    }
+    
+    return result;
 }
+
+
+
 
 function indexOfHighest(array){
     if (!array.length) return -1; // Handle empty arrays
@@ -39,7 +53,7 @@ function indexOfHighest(array){
 }
 
 function runRule(number, board, symbol){
-    console.log("Initiating runRule with number ", number)
+    console.log(`Initiating runRule with number ${number} for board ${board}`)
     if (number === 0) {
         let suggestion = win(board, symbol)
         console.log("Suggestion within runRule is ", suggestion)
@@ -54,6 +68,8 @@ function runRule(number, board, symbol){
         return fork(board, symbol)
     }
     else if (number === 3) {
+        let suggestion = win(board, symbol)
+        console.log("Suggestion within runRule is ", suggestion)
         return fork(board, opposite(symbol))
     }
     else if (number === 4) {
@@ -97,7 +113,7 @@ function listThreats(array){
     }
     if (array[2] === null){
         if (array[0] === array[1]){threats.push([2,array[0]])}
-        if (array[3] === array[6]){threats.push([2,array[3]])}
+        if (array[4] === array[6]){threats.push([2,array[3]])}
         if (array[5] === array[8]){threats.push([2,array[5]])}
     }
     if (array[3] === null){
@@ -137,9 +153,7 @@ function myWins(array, mySymbol){
 //win: If the player has two in a row, they can place a third to get three in a row.
 function win(array, mySymbol){
     let opportunities = myWins(array, mySymbol); 
-    console.log("opportunities is ", opportunities)
     if (opportunities.length > 0){
-        console.log("opportunities[0][0] is ", opportunities[0][0])
         return opportunities[0][0]
     }
     else return null; 
@@ -156,7 +170,7 @@ function win(array, mySymbol){
 //Fork: Cause a scenario where the player has two ways to win (two non-blocked lines of 2).
 function fork(array, mySymbol){
     for (let i = 0; i < array.length; i++){
-        if (array[i] === null){
+        if (!array[i]){
             let hypotheticalArray = [...array]
             hypotheticalArray[i] = mySymbol; 
             let opportunities = myWins(hypotheticalArray, mySymbol);
@@ -172,7 +186,7 @@ function fork(array, mySymbol){
 
 // if first move, play corner. 
 function cornerOnFirst(array){
-    if (array.every(element => element === null)) {
+    if (array.every(element => element === null || element === undefined)) {
         return corner[Math.floor(Math.random()*4)]
     }
     else return null; 
@@ -180,33 +194,38 @@ function cornerOnFirst(array){
 
 
 
+
+
 //Center: A player marks the center. 
 function center(array){
-    if (array[4] === null) return 4
+    if (!array[4]) return 4
     else return null; 
 }
 
+
 //Opposite corner: If the opponent is in the corner, the player plays the opposite corner.
 function oppositeCorner(array, mySymbol){
-    if (array[0] === null && array[8] === opposite(mySymbol)) return 0; 
-    else if (array[2] === null && array[6] === opposite(mySymbol)) return 2;
-    else if (array[6] === null && array[2] === opposite(mySymbol)) return 6;
-    else if (array[8] === null && array[0] === opposite(mySymbol)) return 8;
+    if (!array[0] && array[8] === opposite(mySymbol)) return 0; 
+    else if (!array[2] && array[6] === opposite(mySymbol)) return 2;
+    else if (!array[6] && array[2] === opposite(mySymbol)) return 6;
+    else if (!array[8] && array[0] === opposite(mySymbol)) return 8;
     else return null; 
 }
+
 
 //Empty corner: The player plays in a corner square.
 function emptyCorner(array){
     for (let i of corner) {
-        if (array[i] === null) return i;
+        if (!array[i]) return i;
     }
     return null; 
 }
 
+
 //Empty side: The player plays in a middle square on any of the four sides.
 function emptySide(array){
     for (let i of edge) {
-        if (array[i] === null) return i;
+        if (!array[i]) return i;
     }
     return null; 
 }
@@ -214,26 +233,30 @@ function emptySide(array){
 //distractors
 // if first move, play centre. 
 function centreOnFirst(array){
-    if (array.every(element => element === null)) {
+    if (array.every(element => element === null || element === undefined)) {
         return 4
     }
     else return null; 
 }
 
+
+
 //next corner clockwise: If the opponent is in the corner, the player plays the next corner clockwise.
 function nextCornerClockwise(array, mySymbol){
-    if (array[0] === null && array[6] === opposite(mySymbol)) return 0; 
-    else if (array[2] === null && array[0] === opposite(mySymbol)) return 2;
-    else if (array[6] === null && array[8] === opposite(mySymbol)) return 6;
-    else if (array[8] === null && array[2] === opposite(mySymbol)) return 8;
+    if (!array[0] && array[6] === opposite(mySymbol)) return 0; 
+    else if (!array[2] && array[0] === opposite(mySymbol)) return 2;
+    else if (!array[6] && array[8] === opposite(mySymbol)) return 6;
+    else if (!array[8] && array[2] === opposite(mySymbol)) return 8;
     else return null; 
 }
 
+
+
 //next corner anticlockwise: If the opponent is in the corner, the player plays the next corner anticlockwise.
 function nextCornerAntiClockwise(array, mySymbol){
-    if (array[0] === null && array[2] === opposite(mySymbol)) return 0; 
-    else if (array[2] === null && array[8] === opposite(mySymbol)) return 2;
-    else if (array[6] === null && array[0] === opposite(mySymbol)) return 6;
-    else if (array[8] === null && array[6] === opposite(mySymbol)) return 8;
+    if (!array[0] && array[2] === opposite(mySymbol)) return 0; 
+    else if (!array[2] && array[8] === opposite(mySymbol)) return 2;
+    else if (!array[6] && array[0] === opposite(mySymbol)) return 6;
+    else if (!array[8] && array[6] === opposite(mySymbol)) return 8;
     else return null; 
 }

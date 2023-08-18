@@ -11,12 +11,15 @@ export default function GameEnd(props){
     const trainingMode = props.trainingMode; 
     const isCalculatingWinner = props.isCalculatingWinner
     
-// console.log(checkWinner(squares))
-// console.log(checkWinner(squares).then(writeGameResults))
+    // console.log(checkWinner(squares))
+    // console.log(checkWinner(squares).then(writeGameResults))
 
 
     useEffect(checkForEmptySquares, [squares]);
 
+    // this is called if there is a change in squares. To avoid triggering at the beginning,
+    // when squares is changed to all blank, it checks to see that at least one square is occupied, 
+    // before setting isCalculatingWinner to true.   
     function checkForEmptySquares(){
         if (squares.some(value => value !== null)){setIsCalculatingWinner(true);}
     }
