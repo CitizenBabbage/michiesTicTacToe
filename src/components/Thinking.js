@@ -12,6 +12,7 @@ import Board from "./Board"
 
 export default function Thinking( props ) {
     
+    let apexCritter = [1,2,3,4,5,6,7,8,9,10,11,12]; // for now this is just a dummy. 
 
     const renderComputersMove = props.renderComputersMove; 
     const playersTurn = props.playersTurn;
@@ -157,7 +158,7 @@ export default function Thinking( props ) {
             delay(delayms)
             .then(() => {
                 console.log("choosing move")
-                const choiceAndBoard = chooseMove(board, database, foe);  
+                const choiceAndBoard = chooseMove(board, database, [foe,apexCritter]);  //apexCritter will only be defined for evolvo
                 console.log("foe is: ", foe)
                 //console.log("delayAndChoose, selected move is :", choice)
                 resolve(choiceAndBoard);

@@ -2,7 +2,7 @@ import { minimaxChooseMove } from "./minimaxChooseMove.js";
 import { menaceChooseMove } from "./menaceChooseMove.js";
 import { checkBoard, checkDbase } from './errorCheckers.js';
 import { hurisChooseMove } from "./hurisChooseMove.js";
-
+import { evolvoChooseMove } from "./evolvoChooseMove.js";
 
 //For testing
 // eslint-disable-next-line no-unused-vars
@@ -20,12 +20,15 @@ export function chooseMove(board, dbase, foe){
     console.log("1. board is ", board)
     let tempDB = [...dbase]
     let whoseTurn = whoseMove(board); 
-    if (foe === "menace"){return menaceChooseMove(board, tempDB)}
-    else if (foe === "minimax"){
+    if (foe[0] === "menace"){return menaceChooseMove(board, tempDB)}
+    else if (foe[0] === "minimax"){
         return [minimaxChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
-    else if (foe === "huris"){
+    else if (foe[0] === "huris"){
         return [hurisChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
-    } 
+    else if (foe[0] === "evolvo"){
+        return [evolvoChooseMove(board, whoseTurn, foe[1]),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
+    }
+
 
 
 

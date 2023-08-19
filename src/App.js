@@ -14,6 +14,7 @@ import Contact from './pages/contact';
 import Menace from './pages/menace';
 import Minimax from './pages/minimax'; 
 import Huris from './pages/huris';
+import Evolvo from './pages/Evolvo'
  
 export default function App() {
     // eslint-disable-next-line no-unused-vars
@@ -30,6 +31,7 @@ export default function App() {
                 <Route path="/menace" element={<Menace devMode = {developmentMode}/>} />
                 <Route path="/minimax" element={<Minimax devMode = {developmentMode}/>} />
                 <Route path="/huris" element={<Huris devMode = {developmentMode}/>} />
+                <Route path="/evolvo" element={<Evolvo devMode = {developmentMode}/>} />
             </Routes>
         </Router>
     );
