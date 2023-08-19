@@ -1,26 +1,32 @@
 import React from "react";
-import { Nav, NavLink, NavMenu }
-    from "./NavbarElements";
+import './navbar.css';
+import { Link } from "react-router-dom"; // Assuming you're using React Router.
+
+// import { Nav, NavLink, NavMenu }
+//     from "./NavbarElements";
  
 const Navbar = () => {
     return (
         <div>
-            <Nav>
-                <NavMenu>
-                    <NavLink to="/about" activeStyle>
-                        About
-                    </NavLink>
-                    <NavLink to="/contact" activeStyle>
-                        Contact Us
-                    </NavLink>
-                    <NavLink to="/blogs" activeStyle>
-                        Blogs
-                    </NavLink>
-                    <NavLink to="/sign-up" activeStyle>
-                        Sign Up
-                    </NavLink>
-                </NavMenu>
-            </Nav>
+            <div className = "Nav">
+                <div className = "NavMenu">
+                    <Link className = "NavLink" to="/about" >
+                        Main
+                    </Link>
+                    <Link className = 'NavLink' to="/menace" >
+                        Menace
+                    </Link>
+                    <Link className = 'NavLink' to="/minimax" >
+                        Minimax
+                    </Link>
+                    <Link className = 'NavLink' to="/huris" >
+                        Huris
+                    </Link>
+                    <Link className = 'NavLink' to="/evolvo" >
+                        Evolvo
+                    </Link>
+                </div>
+            </div>
         </div>
     );
 };

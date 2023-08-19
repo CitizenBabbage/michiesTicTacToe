@@ -23,9 +23,12 @@ export function chooseMove(board, dbase, foe){
     if (foe[0] === "menace"){return menaceChooseMove(board, tempDB)}
     else if (foe[0] === "minimax"){
         return [minimaxChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
+    // else if (foe[0] === "huris"){
+    //     return [evolvoChooseMove(board, whoseTurn, [100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 89]),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
     else if (foe[0] === "huris"){
         return [hurisChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
-    else if (foe[0] === "evolvo"){
+    
+        else if (foe[0] === "evolvo"){
         return [evolvoChooseMove(board, whoseTurn, foe[1]),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
     }
 

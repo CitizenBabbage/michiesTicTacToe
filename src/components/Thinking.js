@@ -14,11 +14,11 @@ export default function Thinking( props ) {
     
     let apexCritter = [1,2,3,4,5,6,7,8,9,10,11,12]; // for now this is just a dummy. 
 
-    const renderComputersMove = props.renderComputersMove; 
     const playersTurn = props.playersTurn;
+    const setPlayersTurn = props.setPlayersTurn; 
+    
     const winner = props.winner; 
     const isCalculatingWinner = props.isCalculatingWinner
-    const setPlayersTurn = props.setPlayersTurn; 
     const [thinkingWord, setThinkingWord] = useState("");
     const trainingMode = props.trainingMode; 
     const database = props.database;
@@ -26,12 +26,15 @@ export default function Thinking( props ) {
     const [thinkBoard, setThinkBoard] = useState(Array(9).fill(null)); 
     const foe = props.foe; 
     const setFoe = props.setFoe; 
-    const [isCalculatingTurn, setIsCalculatingTurn] = useState(false)
     const setSquares = props.setSquares; 
     const squares = props.squares; 
     const trainingIterations = props.trainingIterations; 
     const [computersTurn, setComputersTurn] = useState(false)
     const [probabilityArray, setProbabilityArray] = useState(Array(9).fill(null))
+    const testMode = props.testMode; 
+    const computerOff = props.computerOff 
+    const setComputerOff = props.setComputerOff; 
+
     //const setFoe = props.setFoe; 
 
 
@@ -42,6 +45,13 @@ export default function Thinking( props ) {
         [isCalculatingWinner,trainingIterations]
         );
 
+    useEffect(
+        () => {if (testMode && !playersTurn) {
+            console.log('useEffect triggered in thinking, based on change in playersTurn')
+            setComputerOff(false)
+            checkForComputersTurn()}
+        }, [playersTurn]
+    )
 
     function checkForComputersTurn(){
         console.log("checking For Computers Turn..."); 
@@ -53,10 +63,15 @@ export default function Thinking( props ) {
             console.log("checkForComputersTurn: Player's turn detected!"); 
             return; 
         };
+        if (playersTurn) {
+            console.log("I should not be here."); 
+            return; 
+        };
         if (winner) {
             console.log("Winner is determined. Canceling checkForComputersTurn!")
             return
         };
+        console.log("checkForComputersTurn: Passed!"); 
         setComputersTurn(true); 
     }
 
@@ -66,7 +81,7 @@ export default function Thinking( props ) {
         );
 
     function takeComputersTurn(){
-        //console.log("passed Thinking/takeComputersTurn 1")
+        console.log("passed Thinking/takeComputersTurn 1")
         if (computersTurn) {
             if (squares.includes(null)){                        // if there are empty squares left...
                 computerPlay().then(resolvedSquares => {
@@ -85,8 +100,7 @@ export default function Thinking( props ) {
 
 
     function computerPlay() {
-        console.log("current player is ", )
-        console.log("passed Thinking/computerPlay 1")
+        console.log("Thinking/computerplay: playersTurn is ", playersTurn  )
         let nextSquares = [...squares];                                             // create duplicate board in memory
         return delayAndChoose(nextSquares).then(choiceAndProbabilityArray => {
             nextSquares = placeMark(choiceAndProbabilityArray[0], nextSquares)      // set the board square to X or O, as appropriate

@@ -10,6 +10,7 @@ export default function Board( props ) {
     const winner = props.winner; 
     const setSquares = props.setSquares; 
     const setPlayersTurn = props.setPlayersTurn;
+    const testMode = props.testMode; 
     
     if (!Array.isArray(props.values)) {
       return null; // or return a loading spinner, error message, etc.
@@ -18,13 +19,18 @@ export default function Board( props ) {
    // then handles the placing of an X or an O as appropriate. 
    
   function placePlayersMark(i) {                          // i = number of square 0 through 8
+    console.log("Placing player's mark!")
     let nextSquares = values.slice();                    // create duplicate board
     if (winner || !playersTurn || values[i]) {           // if the winner has been decided, it's not player's turn, or the square is occupied, do nothing
       return;
     }
     nextSquares = placeMark(i, nextSquares);              // puts an X or O in the array depending on who is the player
     setSquares(nextSquares);                              // sets the board equal to the duplicate board
-    setPlayersTurn(false);
+    
+    console.log("props.computerOff is ", props.computerOff)
+    if (!props.computerOff) {
+      setPlayersTurn(false);
+    }
   }
   let squareColors = props.squareColors; 
   if (!squareColors){squareColors = Array(9).fill(null)}

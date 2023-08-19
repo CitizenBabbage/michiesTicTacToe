@@ -11,6 +11,7 @@ const About = ( props ) => {
             <NavigationButton  devMode = {props.devMode} path = '/minimax' label = 'Minimax'/>
             <NavigationButton  devMode = {props.devMode} path = '/huris' label = 'Huris'/>
             <NavigationButton  devMode = {props.devMode} path = '/evolvo' label = 'Evolvo'/>
+            {props.devMode && (<NavigationButton  devMode = { true } path = '/test' label = 'Test'/>)}
         </div>
     );
 };
