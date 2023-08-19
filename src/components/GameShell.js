@@ -98,7 +98,6 @@ export default function GameShell( props ) {
  
 
  
-  checkDbase(database, "2. GameShell---database")
   // if player is null, show the choose side options. Else display the game container. 
   if (letterToPlay === null){
     return (
@@ -116,14 +115,17 @@ export default function GameShell( props ) {
         className={`player-button ${letterToPlay === 'O' ? 'active' : ''}`}>
         O
       </Button>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Training Iterations:
-          <input type="number" value={value} onChange={handleChange} />
-        </label>
-      <input type="submit" value="Submit" />
-      </form>
-      <p>{submissionError}</p> 
+        <div>
+        {foe === "menace" && (
+          <form onSubmit={handleSubmit}>
+            <label>
+              Training Iterations:
+              <input type="number" value={value} onChange={handleChange} />
+            </label>
+          <input type="submit" value="Submit" />
+          </form>
+        )}
+        </div>
       </div>
       )
     }
