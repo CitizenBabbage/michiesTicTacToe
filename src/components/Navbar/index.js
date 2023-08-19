@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"; // Assuming you're using React Router.
 // import { Nav, NavLink, NavMenu }
 //     from "./NavbarElements";
  
-const Navbar = () => {
+const Navbar = ( props ) => {
     return (
         <div>
             <div className = "Nav">
@@ -25,6 +25,9 @@ const Navbar = () => {
                     <Link className = 'NavLink' to="/evolvo" >
                         Evolvo
                     </Link>
+                    {props.devMode && (<Link className = 'NavLink' to="/test" >
+                        Test
+                    </Link>)}
                 </div>
             </div>
         </div>

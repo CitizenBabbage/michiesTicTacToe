@@ -8,9 +8,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './pages';
 import About from './pages/about';
-import Blogs from './pages/blogs';
-import SignUp from './pages/signup';
-import Contact from './pages/contact';
 import Menace from './pages/menace';
 import Minimax from './pages/minimax'; 
 import Huris from './pages/huris';
@@ -25,13 +22,10 @@ export default function App() {
 
     return (
         <Router>
-            <Navbar />
+            <Navbar devMode = { developmentMode } />
             <Routes>
                 <Route path='/' element= {<Home  devMode = {developmentMode} />} />
                 <Route path='/about' element={<About devMode = {developmentMode}/>} />
-                {/* <Route path='/contact' element={<Contact />} />
-                <Route path='/blogs' element={<Blogs />} />
-                <Route path='/sign-up' element={<SignUp />} /> */}
                 <Route path="/menace" element={<Menace devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe } />} />
                 <Route path="/minimax" element={<Minimax devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>} />
                 <Route path="/huris" element={<Huris devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>} />
