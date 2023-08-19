@@ -1,4 +1,4 @@
-function runOneGeneration(genepool){
+function createPairings(genepool){
     const sizeOfInitialGenepool = genepool.length; 
     const pairings = []; 
     for (let i = 0; i < sizeOfInitialGenepool; i ++){
