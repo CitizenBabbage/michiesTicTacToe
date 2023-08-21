@@ -1,5 +1,5 @@
 import {corner, edge, lines, reverseCorner, reverseEdge} from './globals.js'
-import { checkNormalized } from './errorCheckers.js';
+import { checkNormalized } from '../testers/errorCheckers.js';
 
 //////////////AUXILIARY FUNCTIONS////////////
 

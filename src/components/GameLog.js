@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useRef, useEffect} from 'react';
-import {areIdentical, includes} from "../auxiliary/usefulFunctions.js"
+import {areIdentical, includes} from "../auxiliary/general/usefulFunctions.js"
 import "./GameLog.css"
 import Board from "./Board" 
 

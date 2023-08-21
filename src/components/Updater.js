@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState, useEffect, useRef} from 'react';
 //import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
-import { areExactlyTheSame, isOdd,  reverseTransformation, dataBaseDuplicator, basicNormalization, areEquivalent , equivalenceScore, isNumber} from '../auxiliary/usefulFunctions.js';
-import { checkDbase, checkIsANumber } from '../auxiliary/errorCheckers.js';
+import { areExactlyTheSame, isOdd,  reverseTransformation, dataBaseDuplicator, basicNormalization, areEquivalent , equivalenceScore, isNumber} from '../auxiliary/general/usefulFunctions.js';
+import { checkDbase, checkIsANumber } from '../auxiliary/testers/errorCheckers.js';
 import "./Updater.css"
 import DatabaseDisplay from './DBDisplay.js';
 

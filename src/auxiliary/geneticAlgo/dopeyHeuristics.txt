@@ -1,0 +1,1133 @@
+// Rule 24 Play position 0 on turn 1
+
+            export function play0on1(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 0 && !array[0]) return 0; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 25 Play position 0 on turn 2
+
+            export function play0on2(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 1 && !array[0]) return 0; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 26 Play position 0 on turn 3
+
+            export function play0on3(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 2 && !array[0]) return 0; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 27 Play position 0 on turn 4
+
+            export function play0on4(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 3 && !array[0]) return 0; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 28 Play position 0 on turn 5
+
+            export function play0on5(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 4 && !array[0]) return 0; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 29 Play position 0 on turn 6
+
+            export function play0on6(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 5 && !array[0]) return 0; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 30 Play position 0 on turn 7
+
+            export function play0on7(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 6 && !array[0]) return 0; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 31 Play position 0 on turn 8
+
+            export function play0on8(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 7 && !array[0]) return 0; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 32 Play position 0 on turn 9
+
+            export function play0on9(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 8 && !array[0]) return 0; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 33 Play position 1 on turn 1
+
+            export function play1on1(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 0 && !array[1]) return 1; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 34 Play position 1 on turn 2
+
+            export function play1on2(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 1 && !array[1]) return 1; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 35 Play position 1 on turn 3
+
+            export function play1on3(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 2 && !array[1]) return 1; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 36 Play position 1 on turn 4
+
+            export function play1on4(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 3 && !array[1]) return 1; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 37 Play position 1 on turn 5
+
+            export function play1on5(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 4 && !array[1]) return 1; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 38 Play position 1 on turn 6
+
+            export function play1on6(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 5 && !array[1]) return 1; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 39 Play position 1 on turn 7
+
+            export function play1on7(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 6 && !array[1]) return 1; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 40 Play position 1 on turn 8
+
+            export function play1on8(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 7 && !array[1]) return 1; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 41 Play position 1 on turn 9
+
+            export function play1on9(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 8 && !array[1]) return 1; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 42 Play position 2 on turn 1
+
+            export function play2on1(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 0 && !array[2]) return 2; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 43 Play position 2 on turn 2
+
+            export function play2on2(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 1 && !array[2]) return 2; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 44 Play position 2 on turn 3
+
+            export function play2on3(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 2 && !array[2]) return 2; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 45 Play position 2 on turn 4
+
+            export function play2on4(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 3 && !array[2]) return 2; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 46 Play position 2 on turn 5
+
+            export function play2on5(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 4 && !array[2]) return 2; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 47 Play position 2 on turn 6
+
+            export function play2on6(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 5 && !array[2]) return 2; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 48 Play position 2 on turn 7
+
+            export function play2on7(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 6 && !array[2]) return 2; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 49 Play position 2 on turn 8
+
+            export function play2on8(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 7 && !array[2]) return 2; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 50 Play position 2 on turn 9
+
+            export function play2on9(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 8 && !array[2]) return 2; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 51 Play position 3 on turn 1
+
+            export function play3on1(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 0 && !array[3]) return 3; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 52 Play position 3 on turn 2
+
+            export function play3on2(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 1 && !array[3]) return 3; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 53 Play position 3 on turn 3
+
+            export function play3on3(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 2 && !array[3]) return 3; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 54 Play position 3 on turn 4
+
+            export function play3on4(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 3 && !array[3]) return 3; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 55 Play position 3 on turn 5
+
+            export function play3on5(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 4 && !array[3]) return 3; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 56 Play position 3 on turn 6
+
+            export function play3on6(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 5 && !array[3]) return 3; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 57 Play position 3 on turn 7
+
+            export function play3on7(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 6 && !array[3]) return 3; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 58 Play position 3 on turn 8
+
+            export function play3on8(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 7 && !array[3]) return 3; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 59 Play position 3 on turn 9
+
+            export function play3on9(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 8 && !array[3]) return 3; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 60 Play position 4 on turn 1
+
+            export function play4on1(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 0 && !array[4]) return 4; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 61 Play position 4 on turn 2
+
+            export function play4on2(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 1 && !array[4]) return 4; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 62 Play position 4 on turn 3
+
+            export function play4on3(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 2 && !array[4]) return 4; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 63 Play position 4 on turn 4
+
+            export function play4on4(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 3 && !array[4]) return 4; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 64 Play position 4 on turn 5
+
+            export function play4on5(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 4 && !array[4]) return 4; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 65 Play position 4 on turn 6
+
+            export function play4on6(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 5 && !array[4]) return 4; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 66 Play position 4 on turn 7
+
+            export function play4on7(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 6 && !array[4]) return 4; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 67 Play position 4 on turn 8
+
+            export function play4on8(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 7 && !array[4]) return 4; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 68 Play position 4 on turn 9
+
+            export function play4on9(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 8 && !array[4]) return 4; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 69 Play position 5 on turn 1
+
+            export function play5on1(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 0 && !array[5]) return 5; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 70 Play position 5 on turn 2
+
+            export function play5on2(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 1 && !array[5]) return 5; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 71 Play position 5 on turn 3
+
+            export function play5on3(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 2 && !array[5]) return 5; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 72 Play position 5 on turn 4
+
+            export function play5on4(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 3 && !array[5]) return 5; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 73 Play position 5 on turn 5
+
+            export function play5on5(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 4 && !array[5]) return 5; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 74 Play position 5 on turn 6
+
+            export function play5on6(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 5 && !array[5]) return 5; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 75 Play position 5 on turn 7
+
+            export function play5on7(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 6 && !array[5]) return 5; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 76 Play position 5 on turn 8
+
+            export function play5on8(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 7 && !array[5]) return 5; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 77 Play position 5 on turn 9
+
+            export function play5on9(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 8 && !array[5]) return 5; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 78 Play position 6 on turn 1
+
+            export function play6on1(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 0 && !array[6]) return 6; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 79 Play position 6 on turn 2
+
+            export function play6on2(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 1 && !array[6]) return 6; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 80 Play position 6 on turn 3
+
+            export function play6on3(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 2 && !array[6]) return 6; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 81 Play position 6 on turn 4
+
+            export function play6on4(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 3 && !array[6]) return 6; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 82 Play position 6 on turn 5
+
+            export function play6on5(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 4 && !array[6]) return 6; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 83 Play position 6 on turn 6
+
+            export function play6on6(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 5 && !array[6]) return 6; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 84 Play position 6 on turn 7
+
+            export function play6on7(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 6 && !array[6]) return 6; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 85 Play position 6 on turn 8
+
+            export function play6on8(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 7 && !array[6]) return 6; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 86 Play position 6 on turn 9
+
+            export function play6on9(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 8 && !array[6]) return 6; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 87 Play position 7 on turn 1
+
+            export function play7on1(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 0 && !array[7]) return 7; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 88 Play position 7 on turn 2
+
+            export function play7on2(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 1 && !array[7]) return 7; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 89 Play position 7 on turn 3
+
+            export function play7on3(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 2 && !array[7]) return 7; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 90 Play position 7 on turn 4
+
+            export function play7on4(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 3 && !array[7]) return 7; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 91 Play position 7 on turn 5
+
+            export function play7on5(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 4 && !array[7]) return 7; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 92 Play position 7 on turn 6
+
+            export function play7on6(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 5 && !array[7]) return 7; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 93 Play position 7 on turn 7
+
+            export function play7on7(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 6 && !array[7]) return 7; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 94 Play position 7 on turn 8
+
+            export function play7on8(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 7 && !array[7]) return 7; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 95 Play position 7 on turn 9
+
+            export function play7on9(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 8 && !array[7]) return 7; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 96 Play position 8 on turn 1
+
+            export function play8on1(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 0 && !array[8]) return 8; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 97 Play position 8 on turn 2
+
+            export function play8on2(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 1 && !array[8]) return 8; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 98 Play position 8 on turn 3
+
+            export function play8on3(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 2 && !array[8]) return 8; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 99 Play position 8 on turn 4
+
+            export function play8on4(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 3 && !array[8]) return 8; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 100 Play position 8 on turn 5
+
+            export function play8on5(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 4 && !array[8]) return 8; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 101 Play position 8 on turn 6
+
+            export function play8on6(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 5 && !array[8]) return 8; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 102 Play position 8 on turn 7
+
+            export function play8on7(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 6 && !array[8]) return 8; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 103 Play position 8 on turn 8
+
+            export function play8on8(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 7 && !array[8]) return 8; 
+
+            	    else return null; 
+
+            }
+
+
+
+// Rule 104 Play position 8 on turn 9
+
+            export function play8on9(array){
+
+            	    let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
+
+            	    if (filledSquares === 8 && !array[8]) return 8; 
+
+            	    else return null; 
+
+            }
+
+

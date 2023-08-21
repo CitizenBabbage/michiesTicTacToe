@@ -3,9 +3,9 @@
 
 import React from 'react';
 import { useEffect, useState} from 'react'
-import { chooseMove } from '../auxiliary/chooseMove.js';
-import { checkDbase, checkBoard } from "../auxiliary/errorCheckers.js"
-import {roundOffElementsInArray, placeMark} from "../auxiliary/usefulFunctions.js"
+import { chooseMove } from '../auxiliary/choiceFunctions/chooseMove.js';
+import { checkDbase, checkBoard } from "../auxiliary/testers/errorCheckers.js"
+import {roundOffElementsInArray, placeMark} from "../auxiliary/general/usefulFunctions.js"
 import Board from "./Board" 
 
 
@@ -55,6 +55,7 @@ export default function Thinking( props ) {
 
     function checkForComputersTurn(){
         console.log("checking For Computers Turn..."); 
+        if (computerOff) return; 
         if (isCalculatingWinner) {
             console.log("isCalculatingWinner is still in progress...")
             return

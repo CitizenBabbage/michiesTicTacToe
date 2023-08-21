@@ -14,7 +14,8 @@ export default function Test( props ) {
 
 
   function handleClick(){
-    setPlayersTurn(false)
+    setPlayersTurn(false); 
+    setComputerOff(false); 
   }
   
   return (

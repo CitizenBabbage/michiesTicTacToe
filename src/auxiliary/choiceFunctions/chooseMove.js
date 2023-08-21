@@ -1,6 +1,6 @@
 import { minimaxChooseMove } from "./minimaxChooseMove.js";
 import { menaceChooseMove } from "./menaceChooseMove.js";
-import { checkBoard, checkDbase } from './errorCheckers.js';
+import { checkBoard, checkDbase } from '../testers/errorCheckers.js';
 import { hurisChooseMove } from "./hurisChooseMove.js";
 import { evolvoChooseMove } from "./evolvoChooseMove.js";
 

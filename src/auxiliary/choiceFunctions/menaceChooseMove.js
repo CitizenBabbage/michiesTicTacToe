@@ -1,5 +1,5 @@
-import {areEquivalent, equivalenceScore, areIdentical, reverseTransformBoard} from "./usefulFunctions.js"
-import { checkSum, checkDbase, checkArchetype } from "./errorCheckers.js";
+import {areEquivalent, equivalenceScore, areIdentical, reverseTransformBoard} from "../general/usefulFunctions.js"
+import { checkSum, checkDbase, checkArchetype } from "../testers/errorCheckers.js";
 
 
 //this choosemove function works by: 

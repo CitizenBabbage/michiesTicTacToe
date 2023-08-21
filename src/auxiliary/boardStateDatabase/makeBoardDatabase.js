@@ -1,6 +1,6 @@
 import fs from 'fs'; 
 import { createAllBoardStateObjects } from "./makeBoardAuxiliaries.js";
-import { checkDbase } from './errorCheckers.js';
+import { checkDbase } from '../testers/errorCheckers.js';
 
 
 

@@ -1,4 +1,4 @@
-import learnFromGame from "../components/Updater.js"
+import learnFromGame from "../../components/Updater.js"
 import {db} from "./databaseFormatted.js"
 let gameResult = 'X';
 const database = db.slice(); 

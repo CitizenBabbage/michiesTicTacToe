@@ -1,4 +1,4 @@
-import { checkBoard } from "./errorCheckers";
+import { checkBoard } from "../testers/errorCheckers";
 
 export function checkWinner(squares) {
   checkBoard(squares, "checkWinner"); 

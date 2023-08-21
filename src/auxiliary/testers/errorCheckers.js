@@ -1,4 +1,4 @@
-import { isNumber, hasTwoOrFewerDecimalPlaces } from "./usefulFunctions.js";
+import { isNumber, hasTwoOrFewerDecimalPlaces } from "../general/usefulFunctions.js";
 
 
 export function checkSum(array, funcName){

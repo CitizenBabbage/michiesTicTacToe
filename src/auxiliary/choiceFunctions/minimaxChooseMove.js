@@ -1,4 +1,4 @@
-import { calculateWinner } from "./checkWinner.js";
+import { calculateWinner } from "../engineHelpers/checkWinner.js";
 import { whoseMove } from "./chooseMove.js";
 
 export function minimaxChooseMove(board, whoseTurn){

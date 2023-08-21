@@ -7,11 +7,11 @@ import BoardContainer from './BoardContainer';
 import GameEnd from './GameEnd';
 import GameLog from './GameLog';
 import Thinking from './Thinking';
-import {db} from '../auxiliary/databaseFormatted' //assert { type: "json" };
+import {db} from '../auxiliary/boardStateDatabase/databaseFormatted' //assert { type: "json" };
 import { Button } from 'primereact/button';
 import Updater from './Updater';
-import { isAnInteger, dataBaseDuplicator } from '../auxiliary/usefulFunctions';
-import { checkDbase } from '../auxiliary/errorCheckers';
+import { isAnInteger, dataBaseDuplicator } from '../auxiliary/general/usefulFunctions';
+import { checkDbase } from '../auxiliary/testers/errorCheckers';
 
 
 

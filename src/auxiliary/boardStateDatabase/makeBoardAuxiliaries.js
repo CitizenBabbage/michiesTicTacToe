@@ -1,6 +1,6 @@
-import {roundedNormalization, containsXline, containsOline, xCounter, oCounter} from "./usefulFunctions.js"
-import {corner, edge, lines} from './globals.js'
-import {areEquivalent} from './usefulFunctions.js'
+import {roundedNormalization, containsXline, containsOline, xCounter, oCounter} from "../general/usefulFunctions.js"
+import {corner, edge, lines} from '../general/globals.js'
+import {areEquivalent} from '../general/usefulFunctions.js'
 
 //////////////FUNCTIONS//////////////
 
@@ -248,7 +248,7 @@ function countFilledSquares(array){
 ////F1////
 
 
-function generateGoodBoardStates(num){
+export function generateGoodBoardStates(num){
     const allBoardStates = generateAllBoards(num); 
     let legalStates = removeNumericallyIllegalBoards(allBoardStates);
     let newLegalStates = removeUnreachables(legalStates); 

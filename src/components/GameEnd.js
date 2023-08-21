@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { checkWinner } from '../auxiliary/checkWinner';
+import { checkWinner } from '../auxiliary/engineHelpers/checkWinner';
 
 export default function GameEnd(props){
     const squares = props.squares; 

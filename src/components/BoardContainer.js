@@ -22,7 +22,8 @@ export default function BoardContainer( props ) {
   const setWinner = props.setWinner; 
   const setGameLog = props.setGameLog;  
   const trainingMode = props.trainingMode; 
-  const squaresClassName = "mainBoardButton"; 
+  const squaresClassName = "mainBoardButton";
+  const setComputerOff = props.setComputerOff;  
 
 
   
@@ -33,7 +34,10 @@ export default function BoardContainer( props ) {
   function clearBoard() {
       setSquares(Array(9).fill(null)); 
       setWinner(undefined); 
-      setGameLog([Array(9).fill(null)]); 
+      setGameLog([Array(9).fill(null)]);
+      console.log("trainingMode is ", trainingMode)
+      if (props.testMode) {setPlayersTurn(true); setComputerOff(true)}
+      console.log("setComputerOff is ", props.computerOff)
   }
 
 
