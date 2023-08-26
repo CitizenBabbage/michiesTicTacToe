@@ -1,0 +1,1 @@
+export const minximaBlurb = `Minxima was designed purely as a "mentor-bot" for MENACE, to provide it with opportunities to practice its end game. Minxima is like Minimax, but she always tries to lose. It's easy to win against Minxima but the challenge, if you choose to accept it, is to see if you can LOSE. Most can only manage a draw... `

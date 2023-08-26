@@ -27,7 +27,6 @@ export default function Board( props ) {
     nextSquares = placeMark(i, nextSquares);              // puts an X or O in the array depending on who is the player
     setSquares(nextSquares);                              // sets the board equal to the duplicate board
     
-    console.log("props.computerOff is ", props.computerOff)
     if (!props.computerOff) {
       setPlayersTurn(false);
     }

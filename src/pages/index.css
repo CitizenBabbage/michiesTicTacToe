@@ -1,0 +1,19 @@
+body {
+    background-color: black;
+    color: white; /* Set default text color to white */
+    font-family: 'Press Start 2P';
+    src: url('../fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+    margin: 20px;
+    padding: 0;
+  
+  }
+
+  /* div {
+    background-color: black;
+    color: white; 
+    font-family: 'Press Start 2P';
+    src: url('../fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+    margin: 20px;
+    padding: 0;
+  
+  } */

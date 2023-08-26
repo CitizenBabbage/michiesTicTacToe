@@ -15,7 +15,6 @@ import { checkDbase } from '../auxiliary/testers/errorCheckers';
 
 
 
-
 export default function GameShell( props ) {
 
   const [letterToPlay, setletterToPlay] = useState( null ); 
@@ -95,7 +94,7 @@ export default function GameShell( props ) {
   // if player is null, show the choose side options. Else display the game container. 
   if (letterToPlay === null && !props.testMode){   //CHANGE HERE
     return (
-      <div className="app"> 
+      <div className="gameshell"> 
       <p>{ promptText }</p>
       <Button 
         disabled = { !buttonActivation } 
@@ -124,7 +123,7 @@ export default function GameShell( props ) {
       )
     }
   else return (
-      <div>
+      <div className='gameshell'>
       <BoardContainer devMode = {props.devMode} testMode = { props.testMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} ></BoardContainer>
       <p>{submissionError} </p>
       <Updater trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog} trainingIterations = {trainingIterations} setTrainingIterations = {setTrainingIterations} setWinner = {setWinner}  setGameLog = {setGameLog} setSquares = {setSquares} /> 
