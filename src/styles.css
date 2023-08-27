@@ -5,8 +5,8 @@
 
 #root {
   width: 100vw;  /* 100% of the viewport width */
-  height: 100vh; /* 100% of the viewport height */
-  /* outline: 1px solid rgb(213, 245, 6) !important; */
+  height: 90vh; /* 100% of the viewport height */
+  outline: 1px solid rgb(213, 245, 6) !important;
 }
 
 /* .wholePage {
@@ -22,7 +22,7 @@
 .page {
   position: absolute; 
   width: 100% ;
-  height: 100vh; 
+  height: 90vh; 
   /* box-sizing: border-box; */
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -53,6 +53,27 @@
   align-items: center;
   justify-content: center; */
   height: 100%; 
+}
+
+.intropage {
+  background-color: black;
+  height: 100vh;
+  color: white; /* Set default text color to white */
+  font-family: 'Press Start 2P';
+  src: url('./fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+  margin: 20px;
+  padding: 0;
+  margin: auto;
+  display: grid;
+  place-items: center;
+}
+
+.logoContainer {
+width: 100%; 
+height: 100%; 
+display: grid;
+place-items: center;
+
 }
 
 .block-container {

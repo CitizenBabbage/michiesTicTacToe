@@ -1,19 +1,34 @@
-body {
+.highlightedButton {
+  background-color: black;
+  border-color: white;
+  color: white; 
+  font-family: 'Press Start 2P';
+  src: url('../fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+}
+
+.normalButton {
     background-color: black;
-    color: white; /* Set default text color to white */
+    border-color: rgb(76, 2, 2); 
+    color: rgb(76, 2, 2); 
     font-family: 'Press Start 2P';
     src: url('../fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
-    margin: 20px;
-    padding: 0;
-  
+}
+
+.audioSelectPage {
+    background-color: black;
+    height: 90vh;
+    max-height: 90vh;  /* 100% of the viewport height */
+    overflow: hidden;
+    outline: 1px solid rgb(245, 6, 6) !important;
   }
 
-  /* div {
-    background-color: black;
-    color: white; 
-    font-family: 'Press Start 2P';
-    src: url('../fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
-    margin: 20px;
-    padding: 0;
-  
-  } */
+  .buttonContainer {
+    height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px; /* Adjust this value according to your design */
+    justify-items: center;
+    align-content: center;
+    max-height: 100vh;  /* 100% of the viewport height */
+  overflow: hidden;
+  }
