@@ -39,6 +39,21 @@ export function checkDbase(dbase, funcName){
 }
 }
 
+export function checkBeadbase(dbase, funcName){
+    let dblength = dbase.length; 
+    let arbitraryTest = dbase[2].state[7]; 
+    if (arbitraryTest !== 'X') {
+        throw new Error(` in ${funcName}: dbase isn't right. Board state 2 should have seventh place X, but has ${arbitraryTest} instead. Board state 2 = ${JSON.stringify(dbase[2].state)}, from object ${JSON.stringify(dbase[2])}. dblength = ${dblength}.`)
+    }
+    if (!isNumber(dbase[0].response[0])) throw new Error(` in ${funcName}: dbase isn't right. Board state 0 should have all numbers for response array, but has ${JSON.stringify(dbase[0].response)} instead. dblength = ${dblength}.`)
+    for (let i = 0; i < dbase.length; i++){
+        for (let j = 0; j < dbase[i].response.length; j++){
+            if (dbase[i].response[j] < 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is smaller than 0.`)
+            if (dbase[i].response[j] % 1 !== 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is non integral.`)
+    }
+}
+}
+
 export function showFirstnElements(array, num){
     for (let i = 0; i < num; i++){
         console.log(`Element ${num}: ${JSON.stringify(array[num])}`)

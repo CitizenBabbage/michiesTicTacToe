@@ -9,9 +9,15 @@ import { checkSum, checkDbase, checkArchetype } from "../testers/errorCheckers.j
 //  4. applying the reverse of the transform to the response array to get the applicable response array. 
 
 export function menaceChooseMove(board, dbase){
+    // ///////////tests///////////////
+    // checkDbase(dbase,"menaceChooseMove")
+    // testForChangeInFirstObjectInDataBase(dbase); // just a test to make sure learning is updating
+    // ///////////code///////////////
     let arche = JSON.parse(JSON.stringify(getBoardArchetype(board, dbase))) // returns an object from database with learned response array and transform set to indicate rotation/flip required
-    const beadArray = getBeadArray(board, arche); // reverses the transformation needed to find the archetype on the response array, to yield a probability array for the initial board state
-    if (beadArray) {return [chooseMoveFromBeadArray(beadArray),beadArray]} //return the chosen move and the response array that led to it. 
+    //checkArchetype(arche)
+    const probabilityArray = getProbabilityArray(board, arche); // reverses the transformation needed to find the archetype on the response array, to yield a probability array for the initial board state
+    //checkSum(obj.response, "menaceChooseMove");  
+    if (probabilityArray) {return [chooseMoveFromProbabilityArray(probabilityArray),probabilityArray]} //return the chosen move and the response array that led to it. 
     else throw new Error(`Error in menaceChooseMove: no array returned for board state ${board}`)
 
 }
@@ -21,18 +27,24 @@ export function menaceChooseMove(board, dbase){
 // just a test that helps make sure the database is updating
 function testForChangeInFirstObjectInDataBase(dbase){
     if (areIdentical(dbase[0].response, [
-        4,
-        4,
-        0,
-        0,
-        4,
-        0,
-        0,
-        0,
-        0
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111
      ])){console.log("WARNING: First board state unchanged in database")}
 }
 
+//console.log(chooseMove(example))
+// console.log(equivalenceScore(example, [
+//     'X', null, 'O',
+//     'X', null, 'X',
+//     'O', null, 'O'
+//   ]))
 
 // db contains ARCHETYPAL board states---i.e. not every equivalent flip and rotation
 // this function takes board state, and returns the archetype of which it is a flip/rotation
@@ -52,10 +64,10 @@ export function getBoardArchetype(boardState, dbase){
 // returns an array of probabilities from the response array of the archetype,
 // back-rotated and back-flipped according to the transform 
 
-export function getBeadArray(boardState, arche){ 
-    checkTransformReversesState(boardState,arche.state, arche.transform,"menaceChooseMove/getBeadArray")
-    const beadArray = reverseTransformBoard(arche.response, arche.transform)
-    return beadArray; 
+export function getProbabilityArray(boardState, arche){ 
+    checkTransformReversesState(boardState,arche.state, arche.transform,"menaceChooseMove/getProbabilityArray")
+    const probabilityArray = reverseTransformBoard(arche.response, arche.transform)
+    return probabilityArray; 
 }
 
 function checkTransformReversesState(boardState, archetypeState, transform, funcName){
@@ -69,15 +81,15 @@ function checkTransformReversesState(boardState, archetypeState, transform, func
 
 // takes object, returns move chosen 
 
-export function chooseMoveFromBeadArray(beadArray){
-    const sum = beadArray.reduce((acc, val) => acc + val, 0);
-    let rand = Math.floor(Math.random()*sum); 
+export function chooseMoveFromProbabilityArray(probabilityArray){
+    checkSum(probabilityArray, "chooseMoveFromProbabilityArray"); 
+    let rand = Math.random(); 
     let probSum = 0; 
-    for (let i = 0; i < beadArray.length; i++){
-        probSum += beadArray[i]; // add the beads in the ith position in the array to probsum
+    for (let i = 0; i < probabilityArray.length; i++){
+        probSum += probabilityArray[i]; // add the first probability in the array to probsum
         if (rand < probSum){return i} // if rand is less than that, that's the move
     }
-    throw new Error(`Error in menaceChooseMove/chooseMoveFromBeadArray: object scanned without probability satisfaction`)
+    throw new Error(`Error in menaceChooseMove/chooseMoveFromProbabilityArray: object scanned without probability satisfaction`)
 }
 
 

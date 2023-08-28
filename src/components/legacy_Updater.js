@@ -104,7 +104,7 @@ export default function Updater(props){
 
 // returns an updated database, with the response arrays from all the games in the log 
 // updated depending on whether they led to a win or a loss. 
-    function updateEachBoardPlayed(log, gameResult){ // gameResult = 1: X won, =0 : draw, =-1: O won 
+    function updateEachBoardPlayed(log, gameResult){
         let nLLog = []; 
         let newData = dataBaseDuplicator(database); 
         checkIsANumber(gameResult, "updateEachBoardPlayed", "gameResult")
@@ -112,12 +112,13 @@ export default function Updater(props){
             let move = getPositionThatChanged(log[i], log[i+1]);    //find the position that changed 
             let update; 
             if (isOdd(i)) {                                         // if it was an odd round, that was O's turn. 
-                update = gameResult * (-1)                          // uninvert result for O
+                update = gameResult * (-1)                          // results for 0 are inverted
             } 
             else update = gameResult; 
-            if (update > 0) update *= 3 // 3 points for a win
-            else if (update === 0) update = 1; // 1 point for a draw
-            checkIsANumber(update, "updateEachBoardPlayed", "update")  
+            checkIsANumber(update, "updateEachBoardPlayed", "update")
+            // the formula makes moves closer to the final move more important
+            update = update * (1 - (log.length - i)/10)  
+            update = Math.round(update * 100) / 100;
             newData = findAndUpdateEquivalent(newData, update, move, gameLog[i]); 
             nLLog = [...nLLog, [gameResult, update, log[i], move]]
             }
@@ -136,8 +137,8 @@ export default function Updater(props){
         for (let j = 0; j < newData.length; j++){                                                   // look through the db for equivalent board state
             if (areEquivalent(boardState, newData[j].state)){                                       // when you find it
                 let equivScore = equivalenceScore(boardState, newData[j].state)                     // get the equivalence score 
-                let newMove = reverseTransformation(move, equivScore)                               // use that to rotate/flip move appropriately
-                newData[j].response[newMove] = Math.max(0, newData[j].response[newMove] + update);  // update response array accordingly 
+                let newMove = reverseTransformation(move, equivScore)                               // modify move by that quantity
+                newData[j].response[newMove] = Math.max(0, newData[j].response[newMove] + update);  // modify 
                 newData[j].response = basicNormalization(newData[j].response); 
                 addToAllPlayedBoards(newData[j])
                 }
@@ -185,7 +186,7 @@ export default function Updater(props){
     return (
         <div>
             <DatabaseDisplay devMode = {props.devMode} allPlayedBoards = {allPlayedBoards} squares = {props.squares} database = {database} trainingIterations = {trainingIterations} trainingMode = {trainingMode}/>
-            <NLlog naturalLanguageLog = { naturalLanguageLog } setNaturalLanguageLog = { setNaturalLanguageLog } nLLogStats = { nLLogStats }/>
+            {/* <NLlog naturalLanguageLog = { naturalLanguageLog } setNaturalLanguageLog = { setNaturalLanguageLog } nLLogStats = { nLLogStats }/> */}
         </div>
     )
     
