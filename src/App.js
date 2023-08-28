@@ -3,7 +3,7 @@ import { useState , useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 //import useSound from 'use-sound';
-import introTune from './music/INTRO_David_Renda_2021-08-30_-_Boss_Time_-_www.FesliyanStudios.com.mp3'
+import introTune from './music/tektoktao.mp3'
 
 //import './App.css';
 import Navbar from './components/Navbar';
