@@ -10,7 +10,6 @@ import './index.css'
 
  
 const Home = ( props ) => {
-    // const [audioSelected, setAudioSelected] = useState(false); 
     const [highlightedButton, setHighlightedButton] = useState("topButton")
     const navigate = useNavigate();
 
@@ -24,8 +23,9 @@ const Home = ( props ) => {
 
             else if (event.key === "Enter") {
                 if (highlightedButton === "topButton"){
-                    props.setAudioSelected(true)
-                    console.log("audioSelected at child level")
+                    // props.setAudioSelected(true)
+                    // console.log("audioSelected at child level. AudioSelected = ", props.audioSelected)
+                    props.playAudio(); 
                     navigate("/intro?AudioSelected=true")
                 }
                 else if (highlightedButton === "bottomButton"){
