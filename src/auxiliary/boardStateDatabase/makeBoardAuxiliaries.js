@@ -16,6 +16,14 @@ export function createAllBoardStateObjects(num){
     return roundTo2DP(database)
 }
 
+// As above but puts together bead arrays rather than probability arrays 
+export function createAllBeadStateObjects(num){
+    const allBoards = generateGoodBoardStates(num);
+    let database = allBoards.map((item,index) => buildBeadObject(item,index))
+    database = reduceOptionsOnFirstMove(database)
+    return roundTo2DP(database)
+}
+
 function roundTo2DP(db){
     return db.map(value => ({ ...value, response: roundedNormalization(value.response) }));
 }
@@ -226,6 +234,16 @@ function buildObject(board,id){
     }
 }
 
+function buildBeadObject(board,id){
+    return {
+        id: id,
+        state: board,
+        turn: calculateTurn(board),
+        response: initializeBeadArray(board),
+        transform: [0,0]
+    }
+}
+
 //takes a board state as input and returns whose turn it is to play
 function calculateTurn(board){
     return xCounter(board) > oCounter(board)? 'O' : 'X';
@@ -237,6 +255,26 @@ function calculateTurn(board){
 function initializeProbabilityArray(array){
     let emptySquares = array.length - countFilledSquares(array); 
     return array.map((item, index) => {return array[index]? 0: 1/emptySquares})
+}
+
+function initializeBeadArray(array){
+    let filledSquares = countFilledSquares(array);
+    let emptySquares = array.length - filledSquares; 
+    if (filledSquares > 7){ // this is a forced move, but to keep a consistent algo, I just give it 100 beads. 
+        return array.map((item, index) => {return array[index]? 0: 100})
+    }
+    else if (filledSquares > 5){ // 6 or 7 squares filled
+        return array.map((item, index) => {return array[index]? 0: 1})
+    }
+    else if (filledSquares > 3){ // 4 or 5 squares filled
+        return array.map((item, index) => {return array[index]? 0: 2})
+    }
+    else if (filledSquares > 1){ // 2 or 3 squares filled 
+        return array.map((item, index) => {return array[index]? 0: 3})
+    }
+    else { // 0 or 1 squares filled 
+        return array.map((item, index) => {return array[index]? 0: 4})
+    }
 }
 
 // counts the squares that are filled. 

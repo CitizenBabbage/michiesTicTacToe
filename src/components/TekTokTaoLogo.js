@@ -18,6 +18,8 @@ export default function TekTokTaoLogo(  ) {
     return (
         <div>
         {showImage && (<img src= { logo } alt="Tek Tok Tao logo" />)}
+        {!showImage && (<p>Loading...</p>)}
+        {showImage && (<p style={{ textAlign: 'center' }}>  {`  `}Press Any Key</p>)}
         </div>
         )
 

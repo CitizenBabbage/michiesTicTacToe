@@ -5,7 +5,7 @@ export default function ClearBoard( props ) {
     const reset = props.reset; 
     return (
       <div>
-      <button className="restart-button" onClick = { () => {clearBoard(); reset()} }>Restart</button>
+      <button className = 'retro-button' onClick = { () => {clearBoard(); reset()} }>Restart</button>
       </div>
     )
   }

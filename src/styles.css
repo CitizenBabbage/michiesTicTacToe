@@ -68,6 +68,23 @@
   place-items: center;
 }
 
+.gamelog {
+  width: 360px; 
+  display: flex;
+  flex-wrap: wrap; /* prevents wrapping */
+  list-style: none; /* removes bullet points */
+  overflow-x: auto; /* adds horizontal scroll if items overflow */
+}
+
+.board-row {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.gamelog-item {
+  margin-right: 20px; 
+}
+
 .logoContainer {
 width: 100%; 
 height: 100%; 
@@ -210,6 +227,14 @@ body {
 
 .retro-text {
   font-family: 'Press Start 2P', cursive;
+}
+
+.retro-button {
+  background-color: black;
+  border-color: white;
+  color: white; 
+  font-family: 'Press Start 2P';
+  src: url('./fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
 }
 
 p {

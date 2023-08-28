@@ -38,10 +38,9 @@ const Home = ( props ) => {
     if (audioSelected) return (
         <div className = 'intropage'>
             <div className = 'logoContainer'>
-                <IntroTheme/>
+                {/* <IntroTheme/> */}
                 <TekTokTaoLogo/>
-                <p>Audio IS selected</p>
-                <p>Press Any Key</p>
+                {/* <p>Press Any Key</p> */}
             </div> 
         </div>
     )

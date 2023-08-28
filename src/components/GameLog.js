@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState, useRef, useEffect} from 'react';
 import {areIdentical, includes} from "../auxiliary/general/usefulFunctions.js"
-import "./GameLog.css"
 import Board from "./Board" 
 
 
@@ -43,9 +42,9 @@ export default function GameLog( props ){
     if (!trainingMode) return (
         <div>
             <p>Game Log:</p>
-            <ul className='list'>
+            <ul className='gamelog'>
                 {gameLog.map((item, index) => (
-                    <li key={index}>
+                    <li key={index} className = 'gamelog-item'>
                     <Board squaresClassName = {"logBoardButton"} trainingMode = {props.trainingMode} values = {item} />
                     <p>
                         {/* space between boards */}

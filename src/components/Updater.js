@@ -4,6 +4,7 @@ import { useState, useEffect, useRef} from 'react';
 import { areExactlyTheSame, isOdd,  reverseTransformation, dataBaseDuplicator, basicNormalization, areEquivalent , equivalenceScore, isNumber} from '../auxiliary/general/usefulFunctions.js';
 import { checkDbase, checkIsANumber } from '../auxiliary/testers/errorCheckers.js';
 import "./Updater.css"
+import { NLlog } from './NLlog.js';
 import DatabaseDisplay from './DBDisplay.js';
 
 
@@ -52,11 +53,12 @@ export default function Updater(props){
            0
         ]
      }]); 
+    const [nLLogStats, setNLLogStats] = useState([])
 
 
-    useEffect(() => {console.log(`useEffect reports: Value of winner changed to ${winner}`)},[winner])
+    //useEffect(() => {console.log(`useEffect reports: Value of winner changed to ${winner}`)},[winner])
 
-    useEffect(() => {console.log(`useEffect reports: Value of database changed. New first response state is ${database[0].response}`)},[winner])
+    //useEffect(() => {console.log(`useEffect reports: Value of database changed. New first response state is ${database[0].response}`)},[winner])
     const previousDatabaseRef = useRef();
 
     useEffect(() => {
@@ -118,37 +120,14 @@ export default function Updater(props){
             update = update * (1 - (log.length - i)/10)  
             update = Math.round(update * 100) / 100;
             newData = findAndUpdateEquivalent(newData, update, move, gameLog[i]); 
-            nLLog = updateNLLog(nLLog, i, gameResult, update, log[i], move)
+            nLLog = [...nLLog, [gameResult, update, log[i], move]]
             }
-        setNaturalLanguageLog(nLLog); 
+        setNLLogStats(nLLog)
+        // setNaturalLanguageLog(nLLog); 
         return newData; 
     }
 
-    function updateNLLog(nLLog, turn, whoWon, update, initialBoardState, move){
-        let winnerTerm, turnPhrase, evaluation, conjunction; 
-        if (whoWon === 1){winnerTerm = `X`}
-        else if (whoWon === -1){winnerTerm = `O`}
-        else winnerTerm = `Nobody`
-        if (turn % 2 === 0){turnPhrase = `X`}
-        else turnPhrase = `O`
-        if (winnerTerm === 'Nobody') {
-            evaluation = `neither good nor bad`
-            conjunction = 'and'
-        }
-        else if (winnerTerm === turnPhrase) {
-            evaluation = `a good move`
-            conjunction = `and`
-        }
-        else {
-            evaluation = `a bad move`
-            conjunction = `but`
-        }
-        let newLog = dataBaseDuplicator(naturalLanguageLog)
-        console.log("newLog is : " , newLog)
-        let newString = `${winnerTerm} won, ${conjunction} this was ${turnPhrase}'s turn, so playing move ${move} on board [${initialBoardState}] was ${evaluation}. Hence I am updating move ${move} on board [${initialBoardState}] by ${update}.`
-        nLLog[turn] = newString; 
-        return nLLog;     
-    }
+    
 
     
     
@@ -207,15 +186,7 @@ export default function Updater(props){
     return (
         <div>
             <DatabaseDisplay devMode = {props.devMode} allPlayedBoards = {allPlayedBoards} squares = {props.squares} database = {database} trainingIterations = {trainingIterations} trainingMode = {trainingMode}/>
-            <ol>
-                {naturalLanguageLog.map((item, index) => 
-                     (
-                        <li key={index}>
-                            <p>{item}</p>
-                        </li>
-                    )
-                )}
-            </ol>
+            {/* <NLlog naturalLanguageLog = { naturalLanguageLog } setNaturalLanguageLog = { setNaturalLanguageLog } nLLogStats = { nLLogStats }/> */}
         </div>
     )
     
