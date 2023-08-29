@@ -22,6 +22,7 @@ export default function Board( props ) {
     console.log("Placing player's mark!")
     let nextSquares = values.slice();                    // create duplicate board
     if (winner || !playersTurn || values[i]) {           // if the winner has been decided, it's not player's turn, or the square is occupied, do nothing
+      console.log(`Cannot play because ${winner? 'game is already won': !playersTurn? "it's not player's turn" : 'space is occuped'}`)
       return;
     }
     nextSquares = placeMark(i, nextSquares);              // puts an X or O in the array depending on who is the player

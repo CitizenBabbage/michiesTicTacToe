@@ -16,7 +16,7 @@ import { isAnInteger, dataBaseDuplicator } from '../auxiliary/general/usefulFunc
 
 export default function GameShell( props ) {
   console.log("db[0] is ", db[0])
-  const [letterToPlay, setletterToPlay] = useState( null ); 
+  const [humansLetter, setHumansLetter] = useState( null ); 
   //const [opponent, setOpponent] = useState( null ); 
   const [promptText, setPromptText ] = useState( `Choose side, X or O` ); 
   const [buttonActivation, setButtonActivation] = useState( true ); 
@@ -33,6 +33,7 @@ export default function GameShell( props ) {
   const [trainingIterations, setTrainingIterations] = useState(0); 
   const [submissionError, setSubmissionError] = useState(""); 
   const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
+  const [resigned, setResigned] = useState(null); 
   const foe = props.foe; 
   
   
@@ -49,13 +50,13 @@ export default function GameShell( props ) {
   checkGameShell()
 
   function handleXClick () {
-    setletterToPlay('X');
+    setHumansLetter('X');
     setPlayersTurn(true); 
     setButtonActivation(false);
     setTrainingMode(false) ;
   }
   function handleOClick () {
-    setletterToPlay('O');
+    setHumansLetter('O');
     setPlayersTurn(false)
     setButtonActivation(false); 
     setTrainingMode(false) ;
@@ -65,7 +66,7 @@ export default function GameShell( props ) {
     event.preventDefault();
     if (isAnInteger(event.target.elements[0].value)){
       setTrainingIterations(event.target.elements[0].value); 
-      setletterToPlay('O'); 
+      setHumansLetter('O'); 
       setPlayersTurn(false)
       setButtonActivation(false);
       setTrainingMode(true) ; 
@@ -78,7 +79,7 @@ export default function GameShell( props ) {
   };
 
   function reset () {
-    setletterToPlay(null);
+    setHumansLetter(null);
     setButtonActivation(true);
   }
 
@@ -89,20 +90,20 @@ export default function GameShell( props ) {
 
  
   // if player is null, show the choose side options. Else display the game container. 
-  if (letterToPlay === null && !props.testMode){   //CHANGE HERE
+  if (humansLetter === null && !props.testMode){   //CHANGE HERE
     return (
       <div className="gameshell"> 
       <p>{ promptText }</p>
       <Button 
         disabled = { !buttonActivation } 
         onClick = { handleXClick }
-        className={`player-button ${letterToPlay === 'X' ? 'active' : ''}`}>
+        className={`player-button ${humansLetter === 'X' ? 'active' : ''}`}>
         X
       </Button>
       <Button 
         disabled = { !buttonActivation }
         onClick = { handleOClick }
-        className={`player-button ${letterToPlay === 'O' ? 'active' : ''}`}>
+        className={`player-button ${humansLetter === 'O' ? 'active' : ''}`}>
         O
       </Button>
         <div>
@@ -121,12 +122,12 @@ export default function GameShell( props ) {
     }
   else return (
       <div className='gameshell'>
-      <BoardContainer devMode = {props.devMode} testMode = { props.testMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} ></BoardContainer>
+      <BoardContainer devMode = {props.devMode} testMode = { props.testMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} setResigned = {setResigned} humansLetter = {humansLetter} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} ></BoardContainer>
       <p>{submissionError} </p>
       <Updater trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog} trainingIterations = {trainingIterations} setTrainingIterations = {setTrainingIterations} setWinner = {setWinner}  setGameLog = {setGameLog} setSquares = {setSquares} /> 
       <Thinking devMode = {props.devMode} testMode = { props.testMode } computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } trainingIterations = {trainingIterations} setSquares = {setSquares} setFoe = { props.setFoe } foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} playersTurn = { playersTurn } setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares }  winner = { winner }/>   
       <GameLog devMode = {props.devMode} trainingMode = {trainingMode} winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
-      <GameEnd devMode = {props.devMode} isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
+      <GameEnd devMode = {props.devMode} resigned = { resigned } isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
       </div>
   )
 }

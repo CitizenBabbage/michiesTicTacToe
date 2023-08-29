@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { checkWinner } from '../auxiliary/engineHelpers/checkWinner';
+import { opposite } from '../auxiliary/general/usefulFunctions';
 
 export default function GameEnd(props){
     const squares = props.squares; 
@@ -9,11 +10,17 @@ export default function GameEnd(props){
     const winner = props.winner; 
     const playersTurn = props.playersTurn; 
     const trainingMode = props.trainingMode; 
-    const isCalculatingWinner = props.isCalculatingWinner
+    const isCalculatingWinner = props.isCalculatingWinner; 
+    const resigned = props.resigned; 
     
     // console.log(checkWinner(squares))
     // console.log(checkWinner(squares).then(writeGameResults))
 
+    useEffect(() =>{
+        if (resigned){writeGameResults(opposite(resigned))}
+    }
+        ,[resigned]//resigned takes values undefined, null, 'X' or 'O'
+        )
 
     useEffect(checkForEmptySquares, [squares]);
 
@@ -36,7 +43,7 @@ export default function GameEnd(props){
     }
 
     function writeGameResults(results){
-        if (!winner){
+        if (!winner){ // if the winner hasn't already been written
             console.log("Resetting winner in writeGameResults to ", results)
             setWinner(results);
             

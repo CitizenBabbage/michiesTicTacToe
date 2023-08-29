@@ -12,6 +12,7 @@ export function checkWinner(squares) {
   });
 }
 
+//returns 'X', 'O' or 'D'
 export function calculateWinner(squares) { 
     checkBoard(squares, "calculateWinner");
     if (!squares) {
@@ -35,7 +36,7 @@ export function calculateWinner(squares) {
         return squares[a];
       }
     }
-    // part ii: check if the board is full
+    // part II: check if the board is full
     if (squares.every(square => square === 'X' || square === 'O')) {
       return 'D';
     } 

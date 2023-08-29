@@ -9,6 +9,7 @@ import React from 'react';
 import { useState } from 'react';
 import Board from "./Board" 
 import ClearButton from "./ClearBoardButton"
+import { ResignButton } from './ResignButton';
 
 
 
@@ -24,6 +25,7 @@ export default function BoardContainer( props ) {
   const trainingMode = props.trainingMode; 
   const squaresClassName = "mainBoardButton";
   const setComputerOff = props.setComputerOff;  
+  const setResigned = props.setResigned; 
 
 
   
@@ -34,6 +36,7 @@ export default function BoardContainer( props ) {
   function clearBoard() {
       setSquares(Array(9).fill(null)); 
       setWinner(undefined); 
+      setResigned(null); 
       setGameLog([Array(9).fill(null)]);
       console.log("trainingMode is ", trainingMode)
       if (props.testMode) {setPlayersTurn(true); setComputerOff(true)}
@@ -44,7 +47,10 @@ export default function BoardContainer( props ) {
   return (
       <div>
         <Board devMode = {props.devMode} testMode = { props.testMode } computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } trainingMode = {trainingMode} trainingIterations = {props.trainingIterations} squaresClassName = {squaresClassName} values = { squares } playersTurn = {playersTurn} winner = {winner} setSquares = {setSquares} setPlayersTurn = {setPlayersTurn}></Board> 
+        <div className = 'horizontal-button-container'>
+        <ResignButton setResigned = {props.setResigned} humansLetter = {props.humansLetter}/>
         <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
+        </div>
       </div> 
   )
 

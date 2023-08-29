@@ -189,6 +189,11 @@ body {
   flex-direction: row;
 }
 
+.horizontal-button-container{
+  display: flex;
+  flex-direction: row;
+}
+
 .game-info {
   margin-left: 20px;
 }
@@ -235,6 +240,7 @@ body {
   color: white; 
   font-family: 'Press Start 2P';
   src: url('./fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+  height: 50px
 }
 
 p {
