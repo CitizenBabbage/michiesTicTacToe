@@ -1,6 +1,6 @@
-import GameShell from "../components/GameShell.js"
+import GameShell from "../components/gameEngine/GameShell.js"
 import React, { useState } from 'react';
-import { IdFacts } from "../components/IdFacts.js";
+import { IdFacts } from "../components/presentational/IdFacts.js";
 import {minximaBlurb} from '../blurbs/minximaBlurb.js'
 import minximaPortrait from '../images/minxima/af896fd40d0249c88c952f8308485f6888596ec3.webp'
 

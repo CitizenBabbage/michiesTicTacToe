@@ -1,8 +1,8 @@
-import GameShell from "../components/GameShell.js"
+import GameShell from "../components/gameEngine/GameShell.js"
 import React, { useState } from 'react';
 import { evolvoBlurb } from "../blurbs/evolvoBlurb.js";
 
-import { IdFacts } from "../components/IdFacts.js";
+import { IdFacts } from "../components/presentational/IdFacts.js";
 import evolvoPortrait from '../images/evolvo4.webp'
 
 

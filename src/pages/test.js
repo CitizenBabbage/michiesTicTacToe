@@ -1,6 +1,6 @@
-import GameShell from "../components/GameShell.js"
+import GameShell from "../components/gameEngine/GameShell.js"
 import React, { useState } from 'react';
-import DropdownMenu from "../components/dropDown.js";
+import DropdownMenu from "../components/presentational/dropDown.js";
 
 
 

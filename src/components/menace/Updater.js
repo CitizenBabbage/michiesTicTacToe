@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState, useEffect, useRef} from 'react';
 //import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
-import { areExactlyTheSame, isOdd,  reverseTransformation, dataBaseDuplicator, basicNormalization, areEquivalent , equivalenceScore, isNumber} from '../auxiliary/general/usefulFunctions.js';
-import { checkDbase, checkIsANumber } from '../auxiliary/testers/errorCheckers.js';
+import { areExactlyTheSame, isOdd,  reverseTransformation, dataBaseDuplicator, basicNormalization, areEquivalent , equivalenceScore, isNumber} from '../../auxiliary/general/usefulFunctions.js';
+import { checkDbase, checkIsANumber } from '../../auxiliary/testers/errorCheckers.js';
 import "./Updater.css"
-import { NLlog } from './NLlog.js';
+import { NLlog } from '../presentational/NLlog.js';
 import DatabaseDisplay from './DBDisplay.js';
 
 
@@ -104,7 +104,7 @@ export default function Updater(props){
 
 // returns an updated database, with the response arrays from all the games in the log 
 // updated depending on whether they led to a win or a loss. 
-    function updateEachBoardPlayed(log, gameResult){
+    function updateEachBoardPlayed(log, gameResult){ // gameResult = 1: X won, =0 : draw, =-1: O won 
         let nLLog = []; 
         let newData = dataBaseDuplicator(database); 
         checkIsANumber(gameResult, "updateEachBoardPlayed", "gameResult")
@@ -112,13 +112,12 @@ export default function Updater(props){
             let move = getPositionThatChanged(log[i], log[i+1]);    //find the position that changed 
             let update; 
             if (isOdd(i)) {                                         // if it was an odd round, that was O's turn. 
-                update = gameResult * (-1)                          // results for 0 are inverted
+                update = gameResult * (-1)                          // uninvert result for O
             } 
             else update = gameResult; 
-            checkIsANumber(update, "updateEachBoardPlayed", "update")
-            // the formula makes moves closer to the final move more important
-            update = update * (1 - (log.length - i)/10)  
-            update = Math.round(update * 100) / 100;
+            if (update > 0) update *= 3 // 3 points for a win
+            else if (update === 0) update = 1; // 1 point for a draw
+            checkIsANumber(update, "updateEachBoardPlayed", "update")  
             newData = findAndUpdateEquivalent(newData, update, move, gameLog[i]); 
             nLLog = [...nLLog, [gameResult, update, log[i], move]]
             }
@@ -137,9 +136,10 @@ export default function Updater(props){
         for (let j = 0; j < newData.length; j++){                                                   // look through the db for equivalent board state
             if (areEquivalent(boardState, newData[j].state)){                                       // when you find it
                 let equivScore = equivalenceScore(boardState, newData[j].state)                     // get the equivalence score 
-                let newMove = reverseTransformation(move, equivScore)                               // modify move by that quantity
-                newData[j].response[newMove] = Math.max(0, newData[j].response[newMove] + update);  // modify 
-                newData[j].response = basicNormalization(newData[j].response); 
+                let newMove = reverseTransformation(move, equivScore)                               // use that to rotate/flip move appropriately
+                let newBeadCount = Math.max(0, newData[j].response[newMove] + update); 
+                console.log("newBeadCount is", newBeadCount); 
+                newData[j].response[newMove] = newBeadCount;                                        // update response array accordingly 
                 addToAllPlayedBoards(newData[j])
                 }
         }
@@ -186,7 +186,7 @@ export default function Updater(props){
     return (
         <div>
             <DatabaseDisplay devMode = {props.devMode} allPlayedBoards = {allPlayedBoards} squares = {props.squares} database = {database} trainingIterations = {trainingIterations} trainingMode = {trainingMode}/>
-            {/* <NLlog naturalLanguageLog = { naturalLanguageLog } setNaturalLanguageLog = { setNaturalLanguageLog } nLLogStats = { nLLogStats }/> */}
+            <NLlog naturalLanguageLog = { naturalLanguageLog } setNaturalLanguageLog = { setNaturalLanguageLog } nLLogStats = { nLLogStats }/>
         </div>
     )
     

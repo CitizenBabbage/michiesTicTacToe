@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
-import PortraitButton from '../components/PortraitButton'
+import PortraitButton from '../components/buttons/PortraitButton'
 
 import hurisPortrait from '../images/huris/10a7f78f1fd64265a7df0efd71c8c959bc63d032.webp'
 import evolvoPortrait from '../images/evolvo4.webp'

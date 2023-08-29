@@ -1,8 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from 'react'; 
-import { areExactlyTheSame, roundOffElementsInArray } from '../auxiliary/general/usefulFunctions';
+import { areExactlyTheSame, roundOffElementsInArray } from '../../auxiliary/general/usefulFunctions';
 import "./DatabaseDisplay.css"
-import Board from "./Board.js"
+import Board from "../board/Board.js"
 
 function databaseDisplay(props){
     

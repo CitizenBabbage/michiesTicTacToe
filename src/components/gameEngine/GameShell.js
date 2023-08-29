@@ -3,14 +3,14 @@
 
 import React from 'react';
 import { useState, useEffect } from 'react';
-import BoardContainer from './BoardContainer';
+import BoardContainer from '../board/BoardContainer';
 import GameEnd from './GameEnd';
 import GameLog from './GameLog';
 import Thinking from './Thinking';
-import {db} from '../auxiliary/boardStateDatabase/dataBeadsFormatted'
+import {db} from '../../auxiliary/boardStateDatabase/dataBeadsFormatted'
 import { Button } from 'primereact/button';
-import Updater from './Updater';
-import { isAnInteger, dataBaseDuplicator } from '../auxiliary/general/usefulFunctions';
+import Updater from '../menace/Updater';
+import { isAnInteger, dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions';
 
 
 

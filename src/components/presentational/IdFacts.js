@@ -1,5 +1,5 @@
 import React from 'react';
-import TypingText from "../components/TypingText.js";
+import TypingText from "./TypingText.js";
 
 export function IdFacts( props ) {
 

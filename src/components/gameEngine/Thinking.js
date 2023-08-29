@@ -3,10 +3,10 @@
 
 import React from 'react';
 import { useEffect, useState} from 'react'
-import { chooseMove } from '../auxiliary/choiceFunctions/chooseMove.js';
-import { checkDbase, checkBoard } from "../auxiliary/testers/errorCheckers.js"
-import {roundOffElementsInArray, placeMark} from "../auxiliary/general/usefulFunctions.js"
-import Board from "./Board" 
+import { chooseMove } from '../../auxiliary/choiceFunctions/chooseMove.js';
+import { checkDbase, checkBoard } from "../../auxiliary/testers/errorCheckers.js"
+import {roundOffElementsInArray, placeMark} from "../../auxiliary/general/usefulFunctions.js"
+import Board from "../board/Board.js" 
 
 
 

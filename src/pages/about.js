@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavigationButton} from '../components/NavigationButton'
+import {NavigationButton} from '../components/buttons/NavigationButton'
  
 const About = ( props ) => {
 

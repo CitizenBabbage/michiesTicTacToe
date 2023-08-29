@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import logo from '../images/logo-williams.png'
+import logo from '../../images/logo-williams.png'
 import './TekTokTaoLogo.css'
 
 export default function TekTokTaoLogo(  ) {

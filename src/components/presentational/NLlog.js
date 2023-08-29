@@ -1,6 +1,6 @@
 import React from 'react';
 import {useEffect} from 'react';
-import { dataBaseDuplicator } from '../auxiliary/general/usefulFunctions.js';
+import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions.js';
 
 export function NLlog( props ) {
     const naturalLanguageLog = props.naturalLanguageLog; 

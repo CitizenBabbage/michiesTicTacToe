@@ -1,8 +1,8 @@
-import GameShell from "../components/GameShell.js"
+import GameShell from "../components/gameEngine/GameShell.js"
 import React, { useState } from 'react';
 import hurisPortrait from '../images/huris/10a7f78f1fd64265a7df0efd71c8c959bc63d032.webp'
 import { hurisBlurb } from "../blurbs/hurisBlurb.js";
-import { IdFacts } from "../components/IdFacts.js";
+import { IdFacts } from "../components/presentational/IdFacts.js";
 
 
 

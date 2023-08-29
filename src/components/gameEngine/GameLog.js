@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useRef, useEffect} from 'react';
-import {areIdentical, includes} from "../auxiliary/general/usefulFunctions.js"
-import Board from "./Board" 
+import {areIdentical, includes} from "../../auxiliary/general/usefulFunctions.js"
+import Board from "../board/Board.js" 
 
 
 export default function GameLog( props ){
