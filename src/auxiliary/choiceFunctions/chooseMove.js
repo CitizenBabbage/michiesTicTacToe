@@ -15,7 +15,6 @@ let example = [
 // takes board state, returns move chosen
 
 export function chooseMove(board, dbase, foe){
-    checkDbase(dbase, "chooseMove")
     checkBoard(board, "chooseMove")
     console.log("1. board is ", board)
     let tempDB = [...dbase]

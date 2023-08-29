@@ -137,8 +137,9 @@ export default function Updater(props){
             if (areEquivalent(boardState, newData[j].state)){                                       // when you find it
                 let equivScore = equivalenceScore(boardState, newData[j].state)                     // get the equivalence score 
                 let newMove = reverseTransformation(move, equivScore)                               // use that to rotate/flip move appropriately
-                newData[j].response[newMove] = Math.max(0, newData[j].response[newMove] + update);  // update response array accordingly 
-                newData[j].response = basicNormalization(newData[j].response); 
+                let newBeadCount = Math.max(0, newData[j].response[newMove] + update); 
+                console.log("newBeadCount is", newBeadCount); 
+                newData[j].response[newMove] = newBeadCount;                                        // update response array accordingly 
                 addToAllPlayedBoards(newData[j])
                 }
         }

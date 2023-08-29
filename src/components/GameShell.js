@@ -7,16 +7,15 @@ import BoardContainer from './BoardContainer';
 import GameEnd from './GameEnd';
 import GameLog from './GameLog';
 import Thinking from './Thinking';
-import {db} from '../auxiliary/boardStateDatabase/databaseFormatted' //assert { type: "json" };
+import {db} from '../auxiliary/boardStateDatabase/dataBeadsFormatted'
 import { Button } from 'primereact/button';
 import Updater from './Updater';
 import { isAnInteger, dataBaseDuplicator } from '../auxiliary/general/usefulFunctions';
-import { checkDbase } from '../auxiliary/testers/errorCheckers';
 
 
 
 export default function GameShell( props ) {
-
+  console.log("db[0] is ", db[0])
   const [letterToPlay, setletterToPlay] = useState( null ); 
   //const [opponent, setOpponent] = useState( null ); 
   const [promptText, setPromptText ] = useState( `Choose side, X or O` ); 
@@ -26,7 +25,6 @@ export default function GameShell( props ) {
 
   const [winner, setWinner] = useState(); 
   const [database,setDatabase] = useState(dataBaseDuplicator(db));                     // this is the main database that is updated as learning progresses
-  //const [database,setDatabase] = useState(db);                     // this is the main database that is updated as learning progresses
   const [isCalculatingWinner, setIsCalculatingWinner] = useState(false); 
 
   const [gameLog, setGameLog] = useState([Array(9).fill(null)]);
@@ -36,8 +34,7 @@ export default function GameShell( props ) {
   const [submissionError, setSubmissionError] = useState(""); 
   const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
   const foe = props.foe; 
-  checkDbase(db, "GameShell---db")
-  checkDbase(database, "GameShell---database")
+  
   
   function checkGameShell(){
     useEffect(() => {
