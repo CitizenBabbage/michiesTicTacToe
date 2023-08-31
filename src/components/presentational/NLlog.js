@@ -57,7 +57,7 @@ export function NLlog( props ) {
     },naturalLanguageLog)
 
     return (
-        <ol>
+        <ol className = 'retro-text'>
             {naturalLanguageLog.map((item, index) => 
                 (
                     <li key={index}>

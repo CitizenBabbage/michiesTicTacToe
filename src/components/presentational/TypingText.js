@@ -5,6 +5,7 @@ export default function TypingText({ text }) {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
+        if (!text) return
         if (index < text.length) {
             const timer = setTimeout(() => {
                 setDisplayedText((prevText) => prevText + text[index]);
@@ -17,7 +18,7 @@ export default function TypingText({ text }) {
 
     return (
     <div class="block-container">
-        <span className="retro-text">{displayedText}</span>
+        <span className="retro-text"style={{ fontSize: '12px' }}>{displayedText}</span>
     </div>
         
     )

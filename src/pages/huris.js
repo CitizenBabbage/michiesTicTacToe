@@ -11,9 +11,7 @@ export default function Huris( props ) {
   const [foe, setFoe] = useState("huris")
   return (
       <div className="page">
-      <GameShell devMode = {props.devMode} playersTurn = {props.playersTurn} setPlayersTurn = {props.setPlayersTurn} foe = {foe} setFoe = { setFoe }/>
-      <IdFacts name = "Huris" blurb = {hurisBlurb} src = {hurisPortrait}/> 
-
+      <GameShell name = "Huris" blurb = {hurisBlurb} src = {hurisPortrait} devMode = {props.devMode} playersTurn = {props.playersTurn} setPlayersTurn = {props.setPlayersTurn} foe = {foe} setFoe = { setFoe }/>
       </div>
   )
 }

@@ -8,7 +8,7 @@ export function minimaxChooseMove(board, whoseTurn){
 
 function minimaxRecurse(board, turn){
     
-    let moveArray = [null,null,null,null,null,null,null,null,null]
+    let moveArray = [null,null,null,null,null,null,null,null,null] 
     let whoseTurn = whoseMove(board); 
     //console.log(`local turn for ${board} is set to `, whoseTurn)
     for (let i = 0; i < board.length; i++){
@@ -18,38 +18,35 @@ function minimaxRecurse(board, turn){
         tempboard[i] = whoseTurn; // place whoever's turn it is into empty slot
         let winner = calculateWinner(tempboard)
         //console.log(`for board ${tempboard} we have winner ${winner} and last turn ${turn}`)
-        if (winner === turn){ // if this is a winning position for the player evaluating the series of plays
-            moveArray[i] = 10; 
+        if (winner === turn){ // if this is a winning position 
+            moveArray[i] = 10; // give that move 10 points
             }
         else if (["X","O"].includes(winner)){ // otherwise if there's a winner defined, it's the other guy
-            moveArray[i] = -10; 
+            moveArray[i] = -10; // so give that move -10 points
         }
-        else if (winner === "D"){
-            moveArray[i] = 0; 
+        else if (winner === "D"){ //if it's a draw
+            moveArray[i] = 0; // that's worth nothing
             }
-        else {
-            let mr = minimaxRecurse(tempboard, turn); 
-            moveArray[i] = mr[1]; 
+        else { //if the game doesn't terminate with this move
+            let mr = minimaxRecurse(tempboard, turn); // imagine making the move and take the game from there
+            moveArray[i] = mr[1]; // the score for that move is then equal to the score for the recursion (which is in argument place 1)
             }
         }
-        //console.log(` moveArray for ${board} when it's ${whoseTurn}'s turn is `, moveArray)
-        let moveAndAssociatedScore = getMoveAndAssociatedScore(board, moveArray, turn, whoseTurn)
+        let moveAndAssociatedScore = getMoveAndAssociatedScore(moveArray, turn, whoseTurn)
         return moveAndAssociatedScore
     }
 
-    function getMoveAndAssociatedScore(board, moveArray, turn, whoseTurn){
+    function getMoveAndAssociatedScore(moveArray, turn, whoseTurn){
         let recommendedMove = 0, highestSoFar = -11, lowestSoFar = 11, recommendedMoveScore = -1; 
-        // console.log("getMoveAndAssociatedScore, received board ", board) 
-        // console.log("getMoveAndAssociatedScore, received moveArray ", moveArray) 
         if (whoseTurn === turn){
             for (let i = 0; i < moveArray.length; i++){
                 if (moveArray[i] === null) continue; 
+                // find the highest valued move in moveArray
                 if (moveArray[i] > highestSoFar){
                     highestSoFar = moveArray[i]; 
                     recommendedMove = i; 
                     recommendedMoveScore = highestSoFar; 
                 }
-                //if (moveArray[i] === 10){console.log(`It's my (${turn}'s) turn, and moving to position ${i} on board ${board} leads to a winning position for me`)}
             }
         }
         else {

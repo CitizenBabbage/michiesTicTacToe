@@ -10,8 +10,7 @@ export default function Minimax( props ) {
   const [foe, setFoe] = useState("minimax")
   return (
       <div className="page">
-      <GameShell devMode = {props.devMode} playersTurn = {props.playersTurn} setPlayersTurn = {props.setPlayersTurn} foe = {foe} setFoe = { setFoe } />
-      <IdFacts name = "Minimax" blurb = {minimaxBlurb} src = {minimaxPortrait}/> 
+      <GameShell name = "Minimax" blurb = {minimaxBlurb} src = {minimaxPortrait} devMode = {props.devMode} playersTurn = {props.playersTurn} setPlayersTurn = {props.setPlayersTurn} foe = {foe} setFoe = { setFoe } />
       </div>
   )
 }

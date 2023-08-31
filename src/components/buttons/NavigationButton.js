@@ -8,5 +8,5 @@ export function NavigationButton( props ) {
         navigate(props.path);
     };
 
-    return <button onClick={handleClick}>{props.label}</button>;
+    return <button className = 'retro-button' onClick={handleClick}>{props.label}</button>;
 }

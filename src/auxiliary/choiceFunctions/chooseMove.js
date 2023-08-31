@@ -3,6 +3,7 @@ import { menaceChooseMove } from "./menaceChooseMove.js";
 import { checkBoard, checkDbase } from '../testers/errorCheckers.js';
 import { hurisChooseMove } from "./hurisChooseMove.js";
 import { evolvoChooseMove } from "./evolvoChooseMove.js";
+import { neuroChooseMove } from "./neuroChooseMove.js"; 
 
 //For testing
 // eslint-disable-next-line no-unused-vars
@@ -13,22 +14,32 @@ let example = [
   ]
 
 // takes board state, returns move chosen
-
-export function chooseMove(board, dbase, foe){
+//board, foeSpec, foe
+export function chooseMove(board, foeSpec, foe){
+    console.log("foeSpec is", foeSpec)
     checkBoard(board, "chooseMove")
-    console.log("1. board is ", board)
-    let tempDB = [...dbase]
+    //let tempDB = [...dbase]
     let whoseTurn = whoseMove(board); 
-    if (foe[0] === "menace"){return menaceChooseMove(board, tempDB)}
-    else if (foe[0] === "minimax"){
-        return [minimaxChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
-    // else if (foe[0] === "huris"){
+    if (foe === "menace"){
+        let tempDB = [...foeSpec] // foeSpec[0] in this case should be the board object database
+        return menaceChooseMove(board, tempDB)
+    }
+    else if (foe === "minimax"){
+        return [minimaxChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]
+    }
+    // else if (foe === "huris"){
     //     return [evolvoChooseMove(board, whoseTurn, [100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 89]),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
-    else if (foe[0] === "huris"){
-        return [hurisChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
+    else if (foe === "huris"){
+        return [hurisChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]
+    }
     
-        else if (foe[0] === "evolvo"){
-        return [evolvoChooseMove(board, whoseTurn, foe[1]),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]}
+    else if (foe === "evolvo"){
+        return [evolvoChooseMove(board, whoseTurn, foeSpec),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]
+    }
+    else if (foe === "Neuro"){
+        console.log("choosemove: foe is neuro")
+        return [neuroChooseMove(board, foeSpec),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]
+    }
     }
 
 

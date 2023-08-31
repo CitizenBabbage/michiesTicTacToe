@@ -223,6 +223,11 @@ body {
   height: 300px; 
 }
 
+.thumbnail {
+  width: 50px; 
+  /* height: 300px;  */
+}
+
 @font-face {
   font-family: 'Press Start 2P';
   src: url('./fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');

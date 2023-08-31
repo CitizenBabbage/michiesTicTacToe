@@ -45,11 +45,17 @@ export default function BoardContainer( props ) {
 
 
   return (
+    trainingMode?
+      <div>
+          <img src = {props.src} className = 'thumbnail'/>
+          <Board devMode = {props.devMode} testMode = { props.testMode } computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } trainingMode = {trainingMode} trainingIterations = {props.trainingIterations} squaresClassName = {squaresClassName} values = { squares } playersTurn = {playersTurn} winner = {winner} setSquares = {setSquares} setPlayersTurn = {setPlayersTurn}></Board> 
+      </div>
+      :
       <div>
         <Board devMode = {props.devMode} testMode = { props.testMode } computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } trainingMode = {trainingMode} trainingIterations = {props.trainingIterations} squaresClassName = {squaresClassName} values = { squares } playersTurn = {playersTurn} winner = {winner} setSquares = {setSquares} setPlayersTurn = {setPlayersTurn}></Board> 
         <div className = 'horizontal-button-container'>
-        <ResignButton setResigned = {props.setResigned} humansLetter = {props.humansLetter}/>
-        <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
+          <ResignButton setResigned = {props.setResigned} humansLetter = {props.humansLetter}/>
+          <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
         </div>
       </div> 
   )

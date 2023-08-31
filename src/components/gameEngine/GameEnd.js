@@ -56,13 +56,13 @@ export default function GameEnd(props){
     
       if (!trainingMode) return (
         <div>
-            <p> {props.devMode? `boardstate is: ${squares}` : ""}</p>
-            <p> {winner === 'D'? "It is a draw!": winner? `${winner} is the winner!` : `Next player: ${playersTurn ? props.player : props.opponent}`} </p>
+            {/* <p> {props.devMode? `boardstate is: ${squares}` : ""}</p> */}
+            <p> {winner === 'D'? "It is a draw!": winner? `${winner} is the winner!` : ``} </p>
         </div>
       )
       else return (
         <div>
-            <p>{props.devMode? `boardstate is: ${squares}` : ""}</p> 
+            {/* <p>{props.devMode? `boardstate is: ${squares}` : ""}</p>  */}
         </div>
       )
 
