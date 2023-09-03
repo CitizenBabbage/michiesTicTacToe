@@ -32,8 +32,8 @@ function minimaxRecurse(board, turn){
             moveArray[i] = mr[1]; // the score for that move is then equal to the score for the recursion (which is in argument place 1)
             }
         }
-        let moveAndAssociatedScore = getMoveAndAssociatedScore(moveArray, turn, whoseTurn)
-        return moveAndAssociatedScore
+        let moveScoreAndMoveArray = [...getMoveAndAssociatedScore(moveArray, turn, whoseTurn),moveArray]
+        return moveScoreAndMoveArray; 
     }
 
     function getMoveAndAssociatedScore(moveArray, turn, whoseTurn){

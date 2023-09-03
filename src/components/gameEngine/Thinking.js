@@ -216,7 +216,9 @@ export default function Thinking( props ) {
           0.49137472606075216
         ]
       ]
-    let network = [connections1,connections2] 
+    let bias1 = [0.4, 0.2, 0.3, 0.1, 0, -0.2, -0.1, -0.2, 0]
+    let bias2 = [0.4, 0.2, 0.3, 0.1, 0, -0.2, -0.1, -0.2, 1]
+    let network = [connections1,connections2, bias1, bias2] 
 
     const playersTurn = props.playersTurn;
     const setPlayersTurn = props.setPlayersTurn; 
@@ -400,7 +402,7 @@ export default function Thinking( props ) {
     return (
         <div>
             <p> {thinkingWord} </p>
-            <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>
+            {foe === 'menace' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>}
         </div>
       
     )

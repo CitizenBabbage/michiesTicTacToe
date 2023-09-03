@@ -1,0 +1,19 @@
+[null, 'X', null, null, null, null, null, null, null]
+
+tActIc tao
+minxima
+
+A different evolution might be based around set pairings. 
+Basically, heuristics that look like this: 
+If your opponent has a tile in any of the positions SET1, choose a tile from the positions SET2. 
+
+We can write this as a simple pair of arrays, given an appropriate reader. 
+A genome could then consist of a set of such pairs. 
+
+If opponent is in spot X, take spot X+n around edge. 
+
+take the next/previous square. take the next/previous L. 
+
+A program that challenges you to approximate a curve. 
+
+The body keeps the score. 

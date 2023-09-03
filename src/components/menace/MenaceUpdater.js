@@ -9,13 +9,14 @@ import DatabaseDisplay from './DBDisplay.js';
 
 
 
-export default function Updater(props){
+export default function MenaceUpdater(props){
     const winner = props.winner; 
 
     const database = props.database; 
     const setDatabase = props.setDatabase; 
     
     const gameLog = props.gameLog; 
+    
     const trainingIterations = props.trainingIterations;
     const setTrainingIterations = props.setTrainingIterations;
     const setWinner = props.setWinner;  
@@ -23,7 +24,7 @@ export default function Updater(props){
     const setSquares = props.setSquares; 
     const trainingMode = props.trainingMode; 
     const [naturalLanguageLog, setNaturalLanguageLog] = useState([])
-    const [allPlayedBoards, setAllPlayedBoards] = useState([{
+    const [allPlayedBoards, setAllPlayedBoards] = useState([{ // allPlayedBoards always starts with the starting board
         "id":0,
         "state":[
            null,

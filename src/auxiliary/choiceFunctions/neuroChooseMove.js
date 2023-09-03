@@ -13,32 +13,30 @@ const practiceBoardState = tf.tensor1d([1, 0, -1, 0, 0.3, 0, 0, 0, 0]).reshape([
 // the input net should be an array with two items
 // each item is itself an array of arrays representing a matrix
 export function neuroChooseMove(board, net){
-    console.log("neuroChooseMove: net received is: ", net)
     board = numerizeBoard(board); 
-    console.log("neuroChooseMove: board after numerization is: ", board)
     // turn board into vector
     const inputVector = tf.tensor1d(board).reshape([1, 9]);
     // turn connection arrays into matrices 
     const connectionsInputToHidden =  tf.tensor2d(net[0])
     const connectionsHiddenToOutput = tf.tensor2d(net[1])
+    const bias1 = tf.tensor1d(net[2]), bias2 = tf.tensor1d(net[3]); 
     // run forward pass on inputVector
-    const outputArray = forwardPass(inputVector, connectionsInputToHidden, connectionsHiddenToOutput)
-    // // change it back to an ordinary array
-    // const outputArray = outputTensor.arraySync(); 
+    const outputAndForwardPassData = forwardPass(inputVector, connectionsInputToHidden, connectionsHiddenToOutput, bias1, bias2)
     // return index of highest value from array (ties decided randomly)
-    const highest = randomHighestNotOccupied(board, outputArray)
-    console.log("neuroChooseMove: move chosen is: ", highest)
-    return highest;
+    const highest = randomHighestNotOccupied(board, outputAndForwardPassData[3]) //outputAndForwardPassData[0] is the output array from forwardpass
+    return [highest, ...outputAndForwardPassData]; // the forward pass data is passed along for training purposes
 }
 
-function forwardPass(inputTensor, connectionsInputToHidden, connectionsHiddenToOutput){
-    const hiddenSums = inputTensor.matMul(connectionsInputToHidden); 
-    const hiddenValuesArray = clippedReLUonTensor(hiddenSums);
-    console.log("forwardPass: hiddenValuesArray is: ", JSON.stringify(hiddenValuesArray))
-    const hiddenValuesTensor = tf.tensor1d(hiddenValuesArray).reshape([1, 9]); 
-    const outputSums = hiddenValuesTensor.matMul(connectionsHiddenToOutput); 
-    const outputArray = clippedReLUonTensor(outputSums);
-    return outputArray; 
+function forwardPass(inputTensor, connectionsInputToHidden, connectionsHiddenToOutput, bias1, bias2){
+    const hiddenSumsTensor = tf.add(inputTensor.matMul(connectionsInputToHidden), bias1); 
+    const hiddenValuesTensor = tf.tensor1d(reLUonTensor(hiddenSumsTensor)).reshape([1, 9]);
+    
+    console.log("forwardPass: hiddenValuesTensor is: ", JSON.stringify(hiddenValuesTensor))
+    const outputSums = tf.add(hiddenValuesTensor.matMul(connectionsHiddenToOutput), bias2); 
+    const outputArray = reLUonTensor(outputSums);
+    console.log("forwardPass: outputArray is: ", JSON.stringify(outputArray))
+
+    return [hiddenSumsTensor.dataSync(),hiddenValuesTensor.dataSync(),outputSums.dataSync(),outputArray ]; 
 }
 
 // returns the index of the highest value from an array, deciding ties randomly. 
@@ -92,11 +90,20 @@ function clippedReLU(value) {
     return Math.min(Math.max(value, 0), 1);
   }
 
-function clippedReLUonTensor(tensor){
-    let x = tensor.dataSync()
-    x = Array.from(x);
-    console.log('x is ', JSON.stringify(x))
-    return tensor.dataSync().map(item => clippedReLU(item))
+function clippedreLUonTensor(array){
+    // let x = array.dataSync()
+    // x = Array.from(x);
+    return array.dataSync().map(item => clippedReLU(item))
+  }
+
+function reLU(value) {
+    return Math.max(value, 0);
+  }
+
+function reLUonTensor(array){
+    // let x = array.dataSync()
+    // x = Array.from(x);
+    return array.dataSync().map(item => reLU(item))
   }
 
 function numerizeBoard(board){
@@ -109,4 +116,4 @@ function numerizeBoard(board){
     return numberBoard; 
 }
 
-console.log(clippedReLUonTensor(practiceBoardState))
+console.log(clippedreLUonTensor(practiceBoardState))

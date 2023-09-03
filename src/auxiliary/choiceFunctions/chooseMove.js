@@ -38,7 +38,8 @@ export function chooseMove(board, foeSpec, foe){
     }
     else if (foe === "Neuro"){
         console.log("choosemove: foe is neuro")
-        return [neuroChooseMove(board, foeSpec),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]
+        //neuroChooseMove returns processing data along with the move choice, but we only need the move choice here, which is the first item
+        return [neuroChooseMove(board, foeSpec)[0],["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]
     }
     }
 

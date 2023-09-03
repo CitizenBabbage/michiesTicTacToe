@@ -1,0 +1,95 @@
+I need to go fetch the calculated, pre-relued values for each layer and somehow make them available to the update function. 
+
+1. Add a bias. 
+	Go to thinking and add two bias useStates with dummy values
+	Arrange so these are passed to the choice function inside the foeSpecs
+DONE
+
+2. Make the forwardPass function output an array with the layer sums also outputted.
+DONE
+
+3. Pass that to the neuro choice function.
+DONE
+
+4. Make the general choice function grab the first value from the array. 
+DONE
+
+5. write a function that takes a minimax array and changes 10 into 1, -10 into -1, 0 into 0 and null into -2. 
+DONE
+
+6. Get the neuro update function to call the neuro choice function and take the layer sums (i.e. elements 2 and 3) from the array returned by the neuro choice function
+DONE
+
+7. finish the error function by inputting the sum into the derivative. 
+DONE
+
+8a. Add the activation values of the presynaptic neurons to the outputted data from the choice function. 
+DONE
+
+8b. Finish the update function for the final layer. 
+DONE
+
+8c. Write the error function for the hidden layers. 
+DONE
+
+8d. Write the update function for the hidden layers. 
+DONE
+
+8e. Get the differentials array by applying the differential formula to every member of the sumArrays returned in the forwardPass data. 
+DONE
+
+
+
+9. wrap the error function in a function that (a) calls the choice function for an inputted board state and gets the returned values, (b) calls minimax on the same board state and uses its output to create the label array. 
+10. write a function that takes a percentage input and calls that percent of the board states from the database at random, returning the new database. 
+11. write a wrapper that takes a percentage input, calls function 9 to create a new db then, for each element in the db, runs the update function on it. 
+
+XXXXXXXXXXXXXXXXXXXXXX
+
+
+revise choice function so that the mathematical operations are distinct and called by the main function. 
+
+encase the choice functions in a recorder of the form 
+
+const grad = tf.grad(f);
+
+Now I can compute the gradient as follows: 
+
+const dydx = grad();
+
+
+
+
+
+XXXXXXXXXXXXXXXXXXXXXX
+
+
+boardstate
+connections from boardstate to hidden layer
+hiddenLayer
+connections from hiddenlayer to outputNodes
+outputNode
+
+error function compares two arrays: 
+	the array of nine produced by the neural net. Each element is a score for what moving to that square is (predicted to be) worth
+	the array of nine produced by minimax, likewise. 
+
+Training occurs by picking (legal) boardstates from the database at random and asking the net to produce an array. 
+
+Q: What should occupied squares be scored as? 
+
+// returns a number from 0 through 8 
+function forwardPass(){}
+
+function predictAndCalculateError(boardState){
+	prediction = forwardPass(boardState)
+	actual = minimaxChooseMove(...)
+	return calculateError(prediction,actual)
+}
+
+function calculateError(prediction,actual){
+	if prediction === actual return 0
+	else if prediction has same minimax score as actual return 0 
+	else if prediction is on same line as actual return 1
+	else return 2
+}

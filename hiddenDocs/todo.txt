@@ -1,0 +1,34 @@
+Clean up intro so there aren't unnecessary conditional renders and URL queries. 
+Put natural language log in its own component and then remove from displayed elements. (OR replace blurb). 
+Update MENACE algo. 
+Finish evolvo algo. 
+Sound effects for opponents. 
+Move MENACE training cycle to different page/ layout/ option
+Introduce contingencies if menace has no moves. switch sides?
+maybe get menace to pick the side with the strongest starting response array during iterative training? 
+offer draw function
+check why audio sometimes starts on refresh
+update MENACE learning log so that colors represent number of beads, not probabilities
+change styling of numbers on NL log
+Maybe pretrain Neuro on one letter, where it learns by predicting the next move in successful games, or by watching minimax. Then, when it plays the human, it can play well with that letter, while training itself on the other letter versus the human. 
+implement cursor controls for navigation
+implement mouse controls where not already present 
+center board etc in playing area
+check whether dropdown is legacy
+think abut the difference between the file structure and the component tree structure
+AI Playlab
+Allow user to change lookahead settings on minimax
+Stop player from playing in training mode. 
+SOLVED Make sure iterations field always appears in training mode. SOLVED?
+Check whether all updates are showing in DB display. Number of boardstates is only increasing by one per game. 
+put cursor arrows beneath opponent select
+rewrite whoseMove in chooseMove to just count odd/even. Check that it returns the same outputs for all inputs. 
+get minimax to be non-deterministic by having it randomly settle tied scores for moves
+Question: Minimax incorporates both 0s for draws and nulls for occupied squares. How do we deal with that? Suggestion: Make 10 equal to 1, -10 equal to -1, 0 equal to 0 for draw, and null equal to -2. 
+ADD BIASES TO NETWORK. 
+Let the user play around with the size of the training set, e.g. 20% of the database, to see how well it learns. 
+Add resonance to music. 
+Add ambient theme tune.
+add sound effects 
+split sound fx option from music option on intro screen
+add mouse vs cursors option on intro screen

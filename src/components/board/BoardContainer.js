@@ -56,6 +56,7 @@ export default function BoardContainer( props ) {
         <div className = 'horizontal-button-container'>
           <ResignButton setResigned = {props.setResigned} humansLetter = {props.humansLetter}/>
           <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>
+          
         </div>
       </div> 
   )

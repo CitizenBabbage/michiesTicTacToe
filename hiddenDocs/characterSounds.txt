@@ -1,0 +1,5 @@
+neuro: xylon
+minimax: shouts 'look ahead' in the style of space harrier
+menace: growl, occasionally says "I've seen this before". 
+huris: "obey the rules" "there's a rule for this"
+evolvo: 
