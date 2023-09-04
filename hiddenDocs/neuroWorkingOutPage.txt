@@ -1,3 +1,9 @@
+0. Mend training page for menace. 
+1. Put the training option in the choose side page for neuro
+2. break the training page up into distnct training pages based on who is training. 
+
+
+XXXXXXXXXXXXXXXXXXXXXX
 I need to go fetch the calculated, pre-relued values for each layer and somehow make them available to the update function. 
 
 1. Add a bias. 

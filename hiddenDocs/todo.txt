@@ -32,3 +32,5 @@ Add ambient theme tune.
 add sound effects 
 split sound fx option from music option on intro screen
 add mouse vs cursors option on intro screen
+remove dropdown for foe selection
+change training iterations field to ordinary type in field not dropdown

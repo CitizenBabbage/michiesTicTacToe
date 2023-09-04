@@ -1,12 +1,12 @@
-import { calculateWinner } from "../engineHelpers/checkWinner.js";
-import { whoseMove } from "./chooseMove.js";
+import { calculateWinner } from "../engineHelpers/checkWinner.js"
+import { whoseMove } from "../general/usefulFunctions.js";
 
 export function minimaxChooseMove(board, whoseTurn){
     return minimaxRecurse(board,whoseTurn)[0]
 }
 
 
-function minimaxRecurse(board, turn){
+export function minimaxRecurse(board, turn){
     
     let moveArray = [null,null,null,null,null,null,null,null,null] 
     let whoseTurn = whoseMove(board); 
@@ -65,5 +65,5 @@ function minimaxRecurse(board, turn){
     
     }
 
-
+console.log(minimaxChooseMove([,,,,,,,], 'X'))
     

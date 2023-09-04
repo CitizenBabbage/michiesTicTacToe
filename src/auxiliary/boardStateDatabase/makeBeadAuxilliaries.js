@@ -1,5 +1,4 @@
-import {roundedNormalization, containsXline, containsOline, xCounter, oCounter} from "../general/usefulFunctions.js"
-import {corner, edge, lines} from '../general/globals.js'
+import {containsXline, containsOline, xCounter, oCounter} from "../general/usefulFunctions.js"
 import {areEquivalent} from '../general/usefulFunctions.js'
 
 //////////////FUNCTIONS//////////////

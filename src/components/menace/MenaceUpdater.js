@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState, useEffect, useRef} from 'react';
 //import {db} from '../auxiliary/databaseFormatted.js' //assert { type: "json" };
-import { areExactlyTheSame, isOdd,  reverseTransformation, dataBaseDuplicator, basicNormalization, areEquivalent , equivalenceScore, isNumber} from '../../auxiliary/general/usefulFunctions.js';
-import { checkDbase, checkIsANumber } from '../../auxiliary/testers/errorCheckers.js';
+import { boardFull, areExactlyTheSame, isOdd,  reverseTransformation, dataBaseDuplicator, areEquivalent , equivalenceScore, isNumber} from '../../auxiliary/general/usefulFunctions.js';
+import { checkIsIntegral, checkBeadSubbase, checkIsANumber } from '../../auxiliary/testers/errorCheckers.js';
 import "./Updater.css"
 import { NLlog } from '../presentational/NLlog.js';
 import DatabaseDisplay from './DBDisplay.js';
@@ -24,36 +24,37 @@ export default function MenaceUpdater(props){
     const setSquares = props.setSquares; 
     const trainingMode = props.trainingMode; 
     const [naturalLanguageLog, setNaturalLanguageLog] = useState([])
-    const [allPlayedBoards, setAllPlayedBoards] = useState([{ // allPlayedBoards always starts with the starting board
-        "id":0,
-        "state":[
-           null,
-           null,
-           null,
-           null,
-           null,
-           null,
-           null,
-           null,
-           null
-        ],
-        "turn":"X",
-        "response":[
-           0.33,
-           0.33,
-           0.01,
-           0,
-           0.33,
-           0,
-           0,
-           0,
-           0
-        ],
-        "transform":[
-           0,
-           0
-        ]
-     }]); 
+    const [allPlayedBoards, setAllPlayedBoards] = useState([ // allPlayedBoards always starts with the starting board
+            {
+            "id":0,
+            "state":[
+               null,
+               null,
+               null,
+               null,
+               null,
+               null,
+               null,
+               null,
+               null
+            ],
+            "turn":"X",
+            "response":[
+               4,
+               4,
+               0,
+               0,
+               4,
+               0,
+               0,
+               0,
+               0
+            ],
+            "transform":[
+               0,
+               0
+            ]
+         }]); 
     const [nLLogStats, setNLLogStats] = useState([])
 
 
@@ -77,6 +78,47 @@ export default function MenaceUpdater(props){
 
     useEffect(startNewTrainingIteration, [database])
 
+    // when the database is updated, get the updated objects, with new response arrays, and add them to the history
+    useEffect(updateHistoryLog,[database]) 
+
+    function updateHistoryLog(){ 
+        console.log(`updateHistoryLog called: allPlayedBoards has length ${allPlayedBoards.length} and is as follows: ${JSON.stringify(allPlayedBoards)}. gameLog has length ${gameLog.length}`)
+        let newAllPlayedBoards = dataBaseDuplicator(allPlayedBoards);
+        checkBeadSubbase(newAllPlayedBoards, "updateHistoryLog")
+        for (let j = 0; j < gameLog.length; j++){ //for each item in the new gameLog, find the corresponding object and update the history log with it
+            console.log(`checking gamelog[${j}], which is `, gameLog[j])
+            let gameLogObject = returnCorrespondingObjectFromDatabase(gameLog[j]); 
+            if (!gameLogObject && !(boardFull(gameLog[j]))) throw new Error(` at updateHistoryLog: board state ${gameLog[j]} has no corresponding object`)
+            newAllPlayedBoards = updateHistory(newAllPlayedBoards,gameLogObject)
+        }
+        //console.log(`icounter is ${icounter}, jcounter is ${jcounter} and kcounter is ${kcounter} `)
+        console.log(`newAllPlayedBoards has length ${newAllPlayedBoards.length} and is `, newAllPlayedBoards)
+        setAllPlayedBoards(newAllPlayedBoards);
+    }
+
+    function returnCorrespondingObjectFromDatabase(boardstate){
+        for (let k = 0; k < database.length; k++){ // find the database object it corresponds to
+            if (areEquivalent(database[k].state,boardstate)){
+                return database[k]; 
+            }
+        }
+    }
+
+    function updateHistory(historyBase, object){
+        if (!object) return historyBase; // we get an undefined object for full board states, ignore. 
+        let isInHistoryAlready = false; 
+        for (let i = 0; i < historyBase.length; i++){ // for each board object in historyBase
+            if (areExactlyTheSame(historyBase[i].state,object.state)){
+                console.log("Updating a board state that is already in history...  ")
+                historyBase = [...historyBase.slice(0,i),object, ...historyBase.slice(i+1)]
+                isInHistoryAlready = true; 
+                break; 
+                }
+            }
+        if (!isInHistoryAlready) historyBase = [...historyBase,object] // if it wasnt anywhere in the set, push it to the end
+        console.log("historyBase is ", historyBase)
+        return historyBase; 
+        }
 
     function startNewTrainingIteration(){
         if (trainingIterations <= 0) return; 
@@ -98,7 +140,7 @@ export default function MenaceUpdater(props){
             let gameResult = gameresult(winner); // 1 for a win for X, 0 for a draw, -1 for a loss
             checkIsANumber(gameResult, "learnFromGame", "gameResult")
             let newData = updateEachBoardPlayed(gameLog, gameResult)
-            console.log("About to reset database")
+            console.log("About to update database")
             setDatabase(newData); 
         }
     }
@@ -128,11 +170,17 @@ export default function MenaceUpdater(props){
     }
 
     
+useEffect(()=>{ ///just a checker. can be deleted. 
+    console.log(`USEEFFECT triggered: allPlayedBoards has length ${allPlayedBoards.length} and is as follows: ${JSON.stringify(allPlayedBoards)}`)
+    checkBeadSubbase(allPlayedBoards, "useEffect") 
+}
+    ,[allPlayedBoards])
 
-    
+
     
 
     function findAndUpdateEquivalent(data, update, move, boardState){
+        console.log(`Updating for ${JSON.stringify(boardState)}`)
         let newData = dataBaseDuplicator(data); 
         for (let j = 0; j < newData.length; j++){                                                   // look through the db for equivalent board state
             if (areEquivalent(boardState, newData[j].state)){                                       // when you find it
@@ -140,26 +188,35 @@ export default function MenaceUpdater(props){
                 let newMove = reverseTransformation(move, equivScore)                               // use that to rotate/flip move appropriately
                 let newBeadCount = Math.max(0, newData[j].response[newMove] + update); 
                 console.log("newBeadCount is", newBeadCount); 
+                checkIsIntegral(newBeadCount, "findAndUpdateEquivalent")
                 newData[j].response[newMove] = newBeadCount;                                        // update response array accordingly 
-                addToAllPlayedBoards(newData[j])
+                //addToAllPlayedBoards(newData[j])
                 }
         }
         return newData; 
     }
 
+    //remove if not called 
     function addToAllPlayedBoards(object){
-        let newData = dataBaseDuplicator(allPlayedBoards); 
+        let newAllPlayedBoards = dataBaseDuplicator(allPlayedBoards);
+        checkBeadSubbase(newAllPlayedBoards, "addToAllPlayedBoards") 
         let presentInSet = false; 
-        for (let i = 0; i < newData.length; i++){
-            if (areExactlyTheSame(i.state,object.state)){
+        for (let i = 0; i < newAllPlayedBoards.length; i++){
+            if (areEquivalent(newAllPlayedBoards[i].state,object.state)){
+                newAllPlayedBoards = [...newAllPlayedBoards.slice(0,i),object, ...newAllPlayedBoards.slice(i+1)]
                 presentInSet = true; 
                 break; 
         }
         }
         if (!presentInSet) {
-            console.log(`Adding ${object} to allPlayedBoards`)
-            newData = [...newData,object]; 
-            setAllPlayedBoards(newData); 
+            console.log(`Adding ${JSON.stringify(object)} to allPlayedBoards`)
+            console.log(`Prior to addition allPlayedBoards has length: ${allPlayedBoards.length}`)
+            newAllPlayedBoards = [...newAllPlayedBoards,object]; 
+            setAllPlayedBoards(newAllPlayedBoards); 
+            console.log(`After addition allPlayedBoards has length: ${allPlayedBoards.length}`)
+        }
+        else {
+            console.log(`1. ${JSON.stringify(object)} is already in allPlayedBoards`)
         }
     }
 

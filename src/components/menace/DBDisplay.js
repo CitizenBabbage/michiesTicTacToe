@@ -11,8 +11,13 @@ function databaseDisplay(props){
     const trainingMode = props.trainingMode; 
     const squares = props.squares; 
     const allPlayedBoards = props.allPlayedBoards; 
-
+    const [updateLog, setUpdateLog] = useState([]) 
     
+    
+    // useEffect(() => {setUpdateLog(database.filter(item => allPlayedBoards.some(apbItem => areExactlyTheSame(apbItem.state, item.state))))},[allPlayedBoards])
+
+
+
     function getColor(value) {
         let redComponent = 0; 
         let greenComponent = 0; 
@@ -26,13 +31,15 @@ function databaseDisplay(props){
         return array.map(item => item / sum)
     }
     
+    
     // checkDbase(database, "2. upDater")
     if (trainingMode) return (
         <div>
             {/* <p> {props.devMode? `First probability distribution is ${JSON.stringify(roundOffElementsInArray(database[0].response))}`:""}</p>  */}
-            <p> {props.devMode? `Number of training iterations remaining is ${trainingIterations}`:""}</p> 
+            <p style = {{fontSize: 12}}> {`Training Iterations Remaining: ${trainingIterations}`}</p> 
             <ul className = 'array'>
-                {database.filter(item => allPlayedBoards.some(apbItem => areExactlyTheSame(apbItem.state, item.state))).map((item, index) => {
+                {
+                    allPlayedBoards.map((item, index) => {
                     // Assuming item.response is an array of values between 0 and 1
                     const colors = getNormalValues(item.response).map(getColor);
                     const values = item.state;

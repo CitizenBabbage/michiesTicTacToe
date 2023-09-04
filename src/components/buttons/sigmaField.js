@@ -2,10 +2,9 @@ import React from 'react';
 import {useState} from 'react';
 import { isAnInteger } from '../../auxiliary/general/usefulFunctions';
 
-export function TrainingIterationsField( props ) {
+export function SetSigmaField( props ) {
     const trainingMode = props.trainingMode; 
-    const setTrainingIterations = props.setTrainingIterations; 
-    const setPlayersTurn = props.setPlayersTurn; 
+    const setSigma = props.setSigma; 
     const value = props.value; 
     const setValue = props.setValue; 
     const [submissionError, setSubmissionError] = useState(""); 
@@ -18,19 +17,17 @@ export function TrainingIterationsField( props ) {
     function handleSubmit (event) {
         event.preventDefault();
         if (isAnInteger(event.target.elements[0].value)){
-          setTrainingIterations(event.target.elements[0].value); 
-          setPlayersTurn(false)
+          setSigma(event.target.elements[0].value); 
         }
         else setSubmissionError("Please enter an integer")
       }
       
-console.log("trainingMode in TrainingIteratonsField is " , trainingMode)
 
     if (trainingMode) return (
         <div>
             <form onSubmit={handleSubmit}>
                 <label>
-                Training Iterations:
+                Stop Learning When Error Is Below:
                 <input type="number" value={value} onChange={handleChange} />
                 </label>
                 <input type="submit" value="Submit" />

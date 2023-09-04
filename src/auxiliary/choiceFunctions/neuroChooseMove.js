@@ -4,7 +4,7 @@ import * as tf from '@tensorflow/tfjs';
 // const connectionsHiddenToOutput = tf.zeros([9, 9]);
 
 const practiceBoardState = tf.tensor1d([1, 0, -1, 0, 0.3, 0, 0, 0, 0]).reshape([1, 9]);
-
+const matrixShape = [9, 9];
 
 // const result = practiceBoardState.matMul(connectionsInputToHidden)
 
@@ -17,8 +17,8 @@ export function neuroChooseMove(board, net){
     // turn board into vector
     const inputVector = tf.tensor1d(board).reshape([1, 9]);
     // turn connection arrays into matrices 
-    const connectionsInputToHidden =  tf.tensor2d(net[0])
-    const connectionsHiddenToOutput = tf.tensor2d(net[1])
+    const connectionsInputToHidden =  tf.tensor2d(net[0],matrixShape)
+    const connectionsHiddenToOutput = tf.tensor2d(net[1],matrixShape)
     const bias1 = tf.tensor1d(net[2]), bias2 = tf.tensor1d(net[3]); 
     // run forward pass on inputVector
     const outputAndForwardPassData = forwardPass(inputVector, connectionsInputToHidden, connectionsHiddenToOutput, bias1, bias2)

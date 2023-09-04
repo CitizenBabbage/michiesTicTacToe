@@ -35,7 +35,7 @@ export function NLlog( props ) {
                 evaluation = `a bad move`
                 conjunction = `but`
             }
-            let newString = `${winnerTerm} won, ${conjunction} this was ${turnPhrase}'s turn, so playing move ${move} on board [${initialBoardState}] was ${evaluation}. Hence I am updating move ${move} on board [${initialBoardState}] by ${update}.`
+            let newString = `${turnPhrase}'s turn: Since ${winnerTerm} won, this was ${evaluation}. Updating move ${move} on board [${initialBoardState}] by ${update}.`
             nLLog.push(newString); 
         }
         
@@ -57,7 +57,7 @@ export function NLlog( props ) {
     },naturalLanguageLog)
 
     return (
-        <ol className = 'retro-text'>
+        <ol className = 'retro-text' style = {{fontSize : 12}}>
             {naturalLanguageLog.map((item, index) => 
                 (
                     <li key={index}>

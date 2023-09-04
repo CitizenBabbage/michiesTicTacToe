@@ -27,7 +27,7 @@ export function ChooseSide( props ){
         className={`player-button ${humansLetter === 'O' ? 'active' : ''}`}>
         <p className = 'retro-text' style = {{ fontSize: '16px'}}>O</p>
       </Button>
-      {foe === 'menace' && 
+      {(foe === 'menace' || foe === 'Neuro') && 
         <Button 
           disabled = { !buttonActivation } 
           onClick = { handleTrainingModeClick }

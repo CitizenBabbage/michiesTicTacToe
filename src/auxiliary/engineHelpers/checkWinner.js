@@ -1,7 +1,5 @@
-import { checkBoard } from "../testers/errorCheckers";
 
 export function checkWinner(squares) {
-  checkBoard(squares, "checkWinner"); 
   return new Promise((resolve, reject) => {
       const result = calculateWinner(squares);
       if ((typeof result === 'string' && result.length === 1)|| result === null) {
@@ -14,7 +12,6 @@ export function checkWinner(squares) {
 
 //returns 'X', 'O' or 'D'
 export function calculateWinner(squares) { 
-    checkBoard(squares, "calculateWinner");
     if (!squares) {
       console.log(`Warning: squares has value ${squares} when calculateWinner called!`)
       return null;

@@ -54,6 +54,27 @@ export function checkBeadbase(dbase, funcName){
 }
 }
 
+export function checkBeadSubbase(dbase, funcName){
+    let dblength = dbase.length; 
+    if (dbase.length ===0){
+        console.log(`Warning: ${funcName}: checkBeadSubbase has only passed because dbase is empty!`)
+        return; 
+    }
+    if (!isNumber(dbase[0].response[0])) throw new Error(` in ${funcName}: dbase isn't right. Board state 0 should have all numbers for response array, but has ${JSON.stringify(dbase[0].response)} instead. dblength = ${dblength}.`)
+    for (let i = 0; i < dbase.length; i++){
+        for (let j = 0; j < dbase[i].response.length; j++){
+            if (dbase[i].response[j] < 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is smaller than 0.`)
+            if (dbase[i].response[j] % 1 !== 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is non integral.`)
+    }
+}
+}
+
+export function checkIsIntegral(num, funcName){
+    let remainder = num%1; 
+    if (!remainder === 0) throw new Error(` in ${funcName}: number ${num} isn't integral, but has remainder ${remainder} when divided by one!`)
+    return; 
+}
+
 export function showFirstnElements(array, num){
     for (let i = 0; i < num; i++){
         console.log(`Element ${num}: ${JSON.stringify(array[num])}`)

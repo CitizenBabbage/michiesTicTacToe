@@ -4,6 +4,8 @@ import { checkBoard, checkDbase } from '../testers/errorCheckers.js';
 import { hurisChooseMove } from "./hurisChooseMove.js";
 import { evolvoChooseMove } from "./evolvoChooseMove.js";
 import { neuroChooseMove } from "./neuroChooseMove.js"; 
+import { whoseMove } from "../general/usefulFunctions.js";
+
 
 //For testing
 // eslint-disable-next-line no-unused-vars
@@ -48,14 +50,4 @@ export function chooseMove(board, foeSpec, foe){
 
     
    
-export function whoseMove(board){
-    let xes = 0; 
-    let oes = 0; 
-    for (let i = 0; i < board.length; i++){
-        if (board[i] === "X"){xes+=1}
-        else if (board[i] === "O"){oes+=1}
-        else continue; 
-    }
-    if (oes === xes) return "X"; 
-    else return "O"; 
-}
+

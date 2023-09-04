@@ -44,6 +44,11 @@ export function xCounter (boardState){
         return currentValue === 'X'? accumulator + 1: accumulator}, 0);
     }
 
+export function boardFull(boardstate){
+    if (oCounter(boardstate) === 4) return true
+    else return false; 
+}
+
 export function arrayEquals(array1,array2){
     return array1.every((element, index) => element === array2[index])
     }
@@ -331,4 +336,16 @@ export function placeMark(squareNumber, board){
         newArray.push(Math.round(array[i] * 100) / 100)
     }
     return newArray; 
+}
+
+export function whoseMove(board){
+    let xes = 0; 
+    let oes = 0; 
+    for (let i = 0; i < board.length; i++){
+        if (board[i] === "X"){xes+=1}
+        else if (board[i] === "O"){oes+=1}
+        else continue; 
+    }
+    if (oes === xes) return "X"; 
+    else return "O"; 
 }
