@@ -101,3 +101,59 @@ export function checkNormalized(rounded, funcName){
     const epsilon = 0.0001;
     if (sum - 1 > epsilon || 1 - sum > epsilon ) throw new Error(`in ${funcName}: normalized array does not sum to 1`)
 }
+
+export function checkArray(array, arrayName, funcName){
+    if (!Array.isArray(array)) throw new Error(` in ${funcName}, ${arrayName} is not an array but is ${array}.`)
+}
+
+export function checkforNonFalseyValue(value, valueName, funcName){
+    if (!value) throw new Error(` in ${funcName}, ${valueName} has a falsey value.`)
+}
+
+export function checkforNonFalseyValueOtherThan0(value, valueName, funcName){
+    if (value === 0) return; 
+    if (!value) throw new Error(` in ${funcName}, ${valueName} has a falsey value.`)
+}
+
+export function checkArrayHasDefinedValues(array, arrayName, funcName, inputArray){
+    if (!Array.isArray(array) && !array instanceof Float32Array) throw new Error(` in ${funcName}, ${arrayName} is not an array.`)
+    for (let i = 0; i < array.length; i++){
+        if (array[i] === 0) continue; 
+        if (!array[i]) throw new Error(`For input arguments ${listInputArguments(inputArray, funcName)} in ${funcName}, the ${i}th member of ${arrayName} has a falsey value.`)
+    }
+}
+
+export function listInputArguments(array, funcName){
+    checkArray(array, "value passed to listInputArguments", funcName)
+    let returnString = ""; 
+    for (let i = 0; i < array.length; i++){
+        if (array.length = 1) {returnString = returnString + `${JSON.stringify(array[0])}`}
+        else if (i === array.length - 1) {returnString = returnString + `
+        
+        and ${JSON.stringify(array[i])}
+        
+        `}
+        else returnString = returnString + `,
+        
+        ${JSON.stringify(array[i])}`
+    }
+    return JSON.stringify(returnString); 
+}
+
+export function checkConnections(connectionsArray, arrayName, funcName){
+    if (!Array.isArray(connectionsArray) && !connectionsArray instanceof Float32Array) throw new Error(`Bad connection list in ${funcName}, outer array ${arrayName} is not an array, but is ${connectionsArray}.`)
+    if (connectionsArray.length !==9) throw new Error(`Bad connection list in ${funcName}, the outer array ${arrayName} is not the right length, but is length ${connectionsArray.length}.`)
+    for (let i = 0; i < connectionsArray.length; i++){
+        if (!Array.isArray(connectionsArray[i]) && !connectionsArray[i] instanceof Float32Array) throw new Error(`Bad connection list in ${funcName}, the ${i}th inner array of ${arrayName} is not an array, but is ${connectionsArray[i]}.`)
+        if (connectionsArray[i].length !==9) throw new Error(`Bad connection list in ${funcName}, the ${i}th inner array of ${arrayName} is not the right length, but is length ${connectionsArray[i].length}.`)
+        checkArrayHasDefinedValues(connectionsArray[i], `the ${i}th array of ${arrayName}`, funcName, ["n/a"])
+    }
+}
+
+export function checkArrayOfArrays(arrayOfArrays, arrayName, funcName){
+    if (!Array.isArray(arrayOfArrays) && !arrayOfArrays instanceof Float32Array) throw new Error(` in ${funcName}, outer array ${arrayName} is not an array, but is ${arrayOfArrays}.`)
+    for (let i = 0; i < arrayOfArrays.length; i++){
+        if (!Array.isArray(arrayOfArrays[i]) && !arrayOfArrays[i] instanceof Float32Array) throw new Error(` in ${funcName}, the ${i}th inner array of ${arrayName} is not an array, but is ${arrayOfArrays[i]}.`)
+        checkArrayHasDefinedValues(arrayOfArrays[i], `the ${i}th array of ${arrayName}`, funcName, ["n/a"])
+    }
+}

@@ -46,9 +46,9 @@ export function NeuroTrainingPage (props) {
     const reset = props.reset; 
     const returnToGame = props.returnToGame; 
 
-    const [percentTraining, setPercentTraining] = useState(0);
-    const [learningRate, setLearningRate] = useState(1); 
-    const [maxCycle, setMaxCycle] = useState(1); 
+    const [percentTraining, setPercentTraining] = useState(20);
+    const [learningRate, setLearningRate] = useState(0.5); 
+    const [maxCycle, setMaxCycle] = useState(20); 
     const [sigma, setSigma] = useState(0.1)
     const [neuroLearning, setNeuroLearning] = useState(false); 
 
@@ -60,9 +60,9 @@ export function NeuroTrainingPage (props) {
     <div className='page'> 
       <div className='gameshell'>
             <PercentTrainingSetField setPercentTraining = {setPercentTraining} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
-            <LearningRateField setLearningRate = {setLearningRate} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
-            <MaxCycleField setMaxCycle = {setMaxCycle} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
-            <SetSigmaField setSigma = {setSigma} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
+            <LearningRateField setLearningRate = {setLearningRate} learningRate = {learningRate} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
+            <MaxCycleField setMaxCycle = {setMaxCycle} maxCycle = {maxCycle} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
+            <SetSigmaField setSigma = {setSigma} sigma = {sigma} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
             <StartNeuroLearningButton setNeuroLearning = {setNeuroLearning}/>
             {trainingMode && <Button className = 'retro-button' onClick = {returnToGame}> Back To Game </Button> }
             
@@ -70,7 +70,7 @@ export function NeuroTrainingPage (props) {
       </div>
       <div>
         <IdFacts name = {props.name} blurb = {props.blurb} src = {props.src} trainingMode = { trainingMode }/>
-        <NeuroUpdater trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} percentTraining = {percentTraining} db = {database} net = {net} setNet = {setNet} learningRate = {learningRate} maxCycle = {maxCycle} /> 
+        <NeuroUpdater trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} percentTraining = {percentTraining} db = {database} net = {net} setNet = {setNet} learningRate = {learningRate} maxCycle = {maxCycle} sigma = {sigma} neuroLearning = {neuroLearning} setNeuroLearning = {setNeuroLearning}/> 
       </div>
     </div>  
     )

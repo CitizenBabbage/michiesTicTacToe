@@ -1,11 +1,11 @@
 import React from 'react';
 import {useState} from 'react';
-import { isAnInteger } from '../../auxiliary/general/usefulFunctions';
+import { isNumber } from '../../auxiliary/general/usefulFunctions';
 
 export function MaxCycleField( props ) {
     const trainingMode = props.trainingMode; 
     const setMaxCycle = props.setMaxCycle; 
-    const value = props.value; 
+    const maxCycle = props.maxCycle; 
     const setValue = props.setValue; 
     const [submissionError, setSubmissionError] = useState(""); 
     
@@ -16,10 +16,11 @@ export function MaxCycleField( props ) {
 
     function handleSubmit (event) {
         event.preventDefault();
-        if (isAnInteger(event.target.elements[0].value)){
-          setMaxCycle(event.target.elements[0].value); 
+        const input = Number(event.target.elements[0].value)
+        if (isNumber(input)){
+          setMaxCycle(input); 
         }
-        else setSubmissionError("Please enter an integer")
+        else setSubmissionError("Please enter a number")
       }
       
 
@@ -28,7 +29,7 @@ export function MaxCycleField( props ) {
             <form onSubmit={handleSubmit}>
                 <label>
                 Max Cycle:
-                <input type="number" value={value} onChange={handleChange} />
+                <input type="number" onChange={handleChange} defaultValue={maxCycle} />
                 </label>
                 <input type="submit" value="Submit" />
             </form>

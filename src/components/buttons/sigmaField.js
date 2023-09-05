@@ -1,11 +1,11 @@
 import React from 'react';
 import {useState} from 'react';
-import { isAnInteger } from '../../auxiliary/general/usefulFunctions';
+import { isNumber } from '../../auxiliary/general/usefulFunctions';
 
 export function SetSigmaField( props ) {
     const trainingMode = props.trainingMode; 
     const setSigma = props.setSigma; 
-    const value = props.value; 
+    const sigma = props.sigma; 
     const setValue = props.setValue; 
     const [submissionError, setSubmissionError] = useState(""); 
     
@@ -16,10 +16,12 @@ export function SetSigmaField( props ) {
 
     function handleSubmit (event) {
         event.preventDefault();
-        if (isAnInteger(event.target.elements[0].value)){
-          setSigma(event.target.elements[0].value); 
+        const input = Number(event.target.elements[0].value)
+
+        if (isNumber(input)){
+          setSigma(input); 
         }
-        else setSubmissionError("Please enter an integer")
+        else setSubmissionError("Please enter a number")
       }
       
 
@@ -28,7 +30,7 @@ export function SetSigmaField( props ) {
             <form onSubmit={handleSubmit}>
                 <label>
                 Stop Learning When Error Is Below:
-                <input type="number" value={value} onChange={handleChange} />
+                <input type="number"  onChange={handleChange} defaultValue={sigma}/>
                 </label>
                 <input type="submit" value="Submit" />
             </form>

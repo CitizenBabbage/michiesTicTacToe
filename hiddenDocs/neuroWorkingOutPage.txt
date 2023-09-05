@@ -1,3 +1,7 @@
+I think the board being passed as priorlayer is in the form of nulls, X's and O's instead of numerical. 
+
+XXXXXXXXXXXXXXXXXXXXX
+
 0. Mend training page for menace. 
 1. Put the training option in the choose side page for neuro
 2. break the training page up into distnct training pages based on who is training. 

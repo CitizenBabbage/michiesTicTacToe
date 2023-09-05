@@ -1,11 +1,11 @@
 import React from 'react';
 import {useState} from 'react';
-import { isAnInteger } from '../../auxiliary/general/usefulFunctions';
+import { isNumber } from '../../auxiliary/general/usefulFunctions';
 
 export function LearningRateField( props ) {
     const trainingMode = props.trainingMode; 
     const setLearningRate = props.setLearningRate; 
-    const value = props.value; 
+    const learningRate = props.learningRate; 
     const setValue = props.setValue; 
     const [submissionError, setSubmissionError] = useState(""); 
     
@@ -16,10 +16,11 @@ export function LearningRateField( props ) {
 
     function handleSubmit (event) {
         event.preventDefault();
-        if (isAnInteger(event.target.elements[0].value)){
-          setLearningRate(event.target.elements[0].value); 
+        const input = Number(event.target.elements[0].value)
+        if (isNumber(input)){
+          setLearningRate(input); 
         }
-        else setSubmissionError("Please enter an integer")
+        else setSubmissionError("Please enter a number")
       }
       
 
@@ -28,7 +29,7 @@ export function LearningRateField( props ) {
             <form onSubmit={handleSubmit}>
                 <label>
                 Learning Rate
-                <input type="number" value={value} onChange={handleChange} />
+                <input type="number" onChange={handleChange} defaultValue={learningRate}/>
                 </label>
                 <input type="submit" value="Submit" />
             </form>

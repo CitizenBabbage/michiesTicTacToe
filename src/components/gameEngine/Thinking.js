@@ -14,7 +14,6 @@ export default function Thinking( props ) {
     
     let genome = [1,2,3,4,5,6,7,8,9,10,11,12]; // for now this is just a dummy.
     const network = props.net; 
-    const setNet = props.setNet;
     
     const playersTurn = props.playersTurn;
     const setPlayersTurn = props.setPlayersTurn; 

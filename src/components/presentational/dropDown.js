@@ -8,7 +8,7 @@ function DropdownMenu( props ) {
   const setFoe = props.setFoe; 
   const dropdownText = props.dropdownText; 
 
-  function handleClickOutside (event) {
+  function handleClickOutside (event) { //if you click anywhere except the dropdown
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpen(false); // Close the dropdown
     }

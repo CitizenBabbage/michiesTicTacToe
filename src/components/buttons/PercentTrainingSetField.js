@@ -1,11 +1,11 @@
 import React from 'react';
 import {useState} from 'react';
-import { isAnInteger } from '../../auxiliary/general/usefulFunctions';
+import { isNumber } from '../../auxiliary/general/usefulFunctions';
 
 export function PercentTrainingSetField( props ) {
     const trainingMode = props.trainingMode; 
     const setPercentTraining = props.setPercentTraining; 
-    const value = props.value; 
+    let value = 20;  
     const setValue = props.setValue; 
     const [submissionError, setSubmissionError] = useState(""); 
     
@@ -16,8 +16,10 @@ export function PercentTrainingSetField( props ) {
 
     function handleSubmit (event) {
         event.preventDefault();
-        if (isAnInteger(event.target.elements[0].value)){
-          setPercentTraining(event.target.elements[0].value); 
+        const input = Number(event.target.elements[0].value)
+
+        if (isNumber(input)){
+          setPercentTraining(input); 
         }
         else setSubmissionError("Please enter an integer")
       }
@@ -28,7 +30,7 @@ export function PercentTrainingSetField( props ) {
             <form onSubmit={handleSubmit}>
                 <label>
                 Percent Training:
-                <input type="number" value={value} onChange={handleChange} />
+                <input type="number" onChange={handleChange} defaultValue={value}/>
                 </label>
                 <input type="submit" value="Submit" />
             </form>

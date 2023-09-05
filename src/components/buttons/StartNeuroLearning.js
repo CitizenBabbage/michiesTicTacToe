@@ -5,6 +5,7 @@ export function StartNeuroLearningButton( props ) {
     const setNeuroLearning = props.setNeuroLearning; 
 
     const handleClick = () => {
+        console.log("start learning button clicked")
         setNeuroLearning(true);
     };
 

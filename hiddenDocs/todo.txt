@@ -34,3 +34,7 @@ split sound fx option from music option on intro screen
 add mouse vs cursors option on intro screen
 remove dropdown for foe selection
 change training iterations field to ordinary type in field not dropdown
+when you change the numbers on neuro parameters it demands an integer. fix this. 
+IMPORTANT: Relu units won't return negative values. You might have to change the minimax targets to 0 (taken) 1 (will lose) 2 (will draw) and 3 (will win) DONE, but check. 
+IMPORTANT: the loop that takes every board state from the training set... it only returns the last results. Are they being aggregated somehow? 
+Maybe add up all the squared errors for all the board states? 

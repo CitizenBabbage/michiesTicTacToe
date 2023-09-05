@@ -12,6 +12,7 @@ export function minimaxRecurse(board, turn){
     let whoseTurn = whoseMove(board); 
     //console.log(`local turn for ${board} is set to `, whoseTurn)
     for (let i = 0; i < board.length; i++){
+         
         let tempboard = [...board]; 
         
         if (tempboard[i] !== undefined && tempboard[i] !== null) continue; 
@@ -35,6 +36,8 @@ export function minimaxRecurse(board, turn){
         let moveScoreAndMoveArray = [...getMoveAndAssociatedScore(moveArray, turn, whoseTurn),moveArray]
         return moveScoreAndMoveArray; 
     }
+
+    console.log(minimaxRecurse([null, null, null, null, null, null, null, 'O', 'X'],'X'))
 
     function getMoveAndAssociatedScore(moveArray, turn, whoseTurn){
         let recommendedMove = 0, highestSoFar = -11, lowestSoFar = 11, recommendedMoveScore = -1; 

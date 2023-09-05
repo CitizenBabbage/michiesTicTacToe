@@ -293,7 +293,7 @@ function returnToGame(){
   setTrainingMode(false);
   setHumansLetter(null);
   setButtonActivation(true);
-  setFoe('menace'); 
+  // setFoe('menace'); 
 }
 
 
