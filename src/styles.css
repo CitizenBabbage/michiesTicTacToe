@@ -30,6 +30,26 @@
   
 }
 
+.threeBoards {
+  width: 100% ;
+  padding-top: 10px;
+  padding-bottom: 10px; 
+  /* box-sizing: border-box; */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  outline: 1px solid rgb(6, 58, 245) !important;
+}
+
+.textList {
+  width: 100% ;
+  padding-top: 10px;
+  padding-bottom: 10px; 
+  /* box-sizing: border-box; */
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  outline: 1px solid rgb(221, 245, 6) !important;
+}
+
 .idFacts, .gameshell {
   flex: 1;  
   min-width: 0;  

@@ -10,7 +10,8 @@ import {areEquivalent} from '../general/usefulFunctions.js'
 // returns array of objects 
 
 export function createAllBeadStateObjects(num){
-    const allBoards = generateGoodBoardStates(num);
+    let allBoards = generateGoodBoardStates(num);
+    allBoards = removeEquivalents(allBoards) // remove all but one of rotational/symmetrical equivalent boards
     let database = allBoards.map((item,index) => buildBeadObject(item,index))
     database = reduceOptionsOnFirstMove(database)
     return database
@@ -234,14 +235,14 @@ function countFilledSquares(array){
 
 export function generateGoodBoardStates(num){
     const allBoardStates = generateAllBoards(num); 
-    let legalStates = removeNumericallyIllegalBoards(allBoardStates);
-    let newLegalStates = removeUnreachables(legalStates); 
-    newLegalStates = removeFullBoardStates(newLegalStates); 
-    return removeEquivalents(newLegalStates)
+    let legalStates = removeNumericallyIllegalBoards(allBoardStates); // remove all boards where X is not equal to or one greater than O
+    let newLegalStates = removeUnreachables(legalStates); // remove all boards that occur only if the game continues past a win
+    newLegalStates = removeFullBoardStates(newLegalStates); // full boards can't be responded to, so no use for training
+    return newLegalStates; 
 }
 
 // these may be legal but they do not present an opportunity for a move, and hence do not belong
-// n our database
+// in our database
 export function removeFullBoardStates(db){
     return db.filter((item) => item.includes(undefined))
 }

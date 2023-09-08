@@ -14,6 +14,7 @@ const matrixShape = [9, 9];
 
 // the input net should be an array with two items
 // each item is itself an array of arrays representing a matrix
+// returns [0.recommended move, 1.hiddenSums, 2.hiddenValues, 3.outputSums, 4.output values]
 export function neuroChooseMove(board, net){
     board = numerizeBoard(board); 
     // turn board into vector
@@ -27,8 +28,8 @@ export function neuroChooseMove(board, net){
     // run forward pass on inputVector
     const outputAndForwardPassData = forwardPass(inputVector, connectionsInputToHidden, connectionsHiddenToOutput, bias1, bias2)
     // return index of highest value from array (ties decided randomly)
-    const highest = randomHighestNotOccupied(board, outputAndForwardPassData[3]) //outputAndForwardPassData[0] is the output array from forwardpass
-    return [highest, ...outputAndForwardPassData]; // the forward pass data is passed along for training purposes
+    const highest = randomHighestNotOccupied(board, outputAndForwardPassData[3]) //outputAndForwardPassData[3] is the output array from forwardpass
+    return [highest, ...outputAndForwardPassData]; // the forward pass data is passed along for training purposes & for presentational data 
 }
 
 //returns an array of hiddenSums, hiddenValues ,outputSums and finally an array of the output values themselves  

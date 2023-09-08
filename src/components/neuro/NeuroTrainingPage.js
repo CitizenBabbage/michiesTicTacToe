@@ -16,44 +16,46 @@ import { LearningRateField } from '../buttons/learningRateField';
 import { MaxCycleField } from '../buttons/maxCycleField';
 import { SetSigmaField } from '../buttons/sigmaField';
 import { StartNeuroLearningButton } from '../buttons/StartNeuroLearning';
+import { generateGoodBoardStates } from '../../auxiliary/boardStateDatabase/makeBeadAuxilliaries';
+import NeuroComparison from '../presentational/neuroComparison';
 
 
 export function NeuroTrainingPage (props) {
-    const humansLetter = props.humansLetter;  
-    const playersTurn = props.playersTurn; 
-    const setPlayersTurn = props.setPlayersTurn; 
-  
-    const winner = props.winner; 
-    const setWinner = props.setWinner;  
+      
     const database = props.database;
-    const setDatabase = props.setDatabase; 
-    const isCalculatingWinner = props.isCalculatingWinner; 
-    const setIsCalculatingWinner = props.setIsCalculatingWinner; 
+    
   
-    const gameLog = props.gameLog; 
-    const setGameLog = props.setGameLog; 
+    
     const trainingMode = props.trainingMode; 
-    const setTrainingMode = props.setTrainingMode;
     const value = props.value; 
     const setValue = props.setValue; 
-    const trainingIterations = props.trainingIterations; 
-    const setTrainingIterations = props.setTrainingIterations
-    const squares = props.squares; 
-    const setSquares = props.setSquares; 
-    const resigned = props.resigned; 
-    const setResigned = props.setResigned; 
-    const foe = props.foe; 
-    const reset = props.reset; 
     const returnToGame = props.returnToGame; 
 
     const [percentTraining, setPercentTraining] = useState(20);
-    const [learningRate, setLearningRate] = useState(0.5); 
-    const [maxCycle, setMaxCycle] = useState(20); 
+    const [learningRate, setLearningRate] = useState(0.001); 
+    const [maxCycle, setMaxCycle] = useState(2); 
     const [sigma, setSigma] = useState(0.1)
     const [neuroLearning, setNeuroLearning] = useState(false); 
+    const [trainingSet, setTrainingSet] = useState([[null, null, null, null, null, null, null, null, null]]); 
 
     const net = props.net; 
     const setNet = props.setNet;  
+
+    useEffect(getTrainingSet, [neuroLearning]) // the change in this should trigger the useEffect in NeuroUpdater.js
+
+    function getTrainingSet(){
+      const fraction = percentTraining/100; 
+      const goodStates = generateGoodBoardStates(9);
+      let trainingSet = [goodStates[0]]; 
+      for (let i = 1; i < goodStates.length; i++){
+          const rando = Math.random(); 
+          if (rando < fraction) {
+              trainingSet.push(goodStates[i]); 
+          }
+      }
+      setTrainingSet(trainingSet)
+      //return trainingSet; 
+      }
 
  
     return (
@@ -63,14 +65,14 @@ export function NeuroTrainingPage (props) {
             <LearningRateField setLearningRate = {setLearningRate} learningRate = {learningRate} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
             <MaxCycleField setMaxCycle = {setMaxCycle} maxCycle = {maxCycle} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
             <SetSigmaField setSigma = {setSigma} sigma = {sigma} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
-            <StartNeuroLearningButton setNeuroLearning = {setNeuroLearning}/>
+            <StartNeuroLearningButton getTrainingSet = {getTrainingSet} setNeuroLearning = {setNeuroLearning}/>
             {trainingMode && <Button className = 'retro-button' onClick = {returnToGame}> Back To Game </Button> }
             
             
       </div>
       <div>
-        <IdFacts name = {props.name} blurb = {props.blurb} src = {props.src} trainingMode = { trainingMode }/>
-        <NeuroUpdater trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} percentTraining = {percentTraining} db = {database} net = {net} setNet = {setNet} learningRate = {learningRate} maxCycle = {maxCycle} sigma = {sigma} neuroLearning = {neuroLearning} setNeuroLearning = {setNeuroLearning}/> 
+        <NeuroUpdater trainingSet = {trainingSet} trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} percentTraining = {percentTraining} db = {database} net = {net} setNet = {setNet} learningRate = {learningRate} maxCycle = {maxCycle} sigma = {sigma} neuroLearning = {neuroLearning} setNeuroLearning = {setNeuroLearning}/> 
+        <NeuroComparison trainingStates = {trainingSet} net = {net}/>
       </div>
     </div>  
     )

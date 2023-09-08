@@ -38,3 +38,5 @@ when you change the numbers on neuro parameters it demands an integer. fix this.
 IMPORTANT: Relu units won't return negative values. You might have to change the minimax targets to 0 (taken) 1 (will lose) 2 (will draw) and 3 (will win) DONE, but check. 
 IMPORTANT: the loop that takes every board state from the training set... it only returns the last results. Are they being aggregated somehow? 
 Maybe add up all the squared errors for all the board states? 
+
+I need to think about why errorArray = correctArray.map((num, i) => (num - predictionArray[i])*differentialArray[i]); when differentialArray[i] will often be 0, and so the error will come out as 0, even if there is a difference between prediction and actual. 

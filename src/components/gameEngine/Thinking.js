@@ -94,7 +94,7 @@ export default function Thinking( props ) {
         if (computersTurn) {
             if (squares.includes(null)){                        // if there are empty squares left...
                 computerPlay().then(resolvedSquares => {
-                    console.log("squares are ", resolvedSquares)
+                    console.log("takeComputersTurn: squares are ", resolvedSquares)
                     checkBoard(resolvedSquares, "takeComputersTurn");
                     setSquares(resolvedSquares);
                     }
@@ -112,6 +112,7 @@ export default function Thinking( props ) {
         let nextSquares = [...squares];                                             // create duplicate board in memory
         return delayAndChoose(nextSquares).then(choiceAndProbabilityArray => {
             nextSquares = placeMark(choiceAndProbabilityArray[0], nextSquares)      // set the board square to X or O, as appropriate
+            console.log("computerPlay: choiceAndProbabilityArray[1] is", choiceAndProbabilityArray[1])
             setProbabilityArray(choiceAndProbabilityArray[1])
             return Promise.resolve(nextSquares); 
             }
@@ -143,6 +144,7 @@ export default function Thinking( props ) {
     )
 
     function updateProbabilityBoard(){
+        console.log("updateProbabilityBoard: probabilityArray is ", probabilityArray)
         setThinkBoard(roundOffElementsInArray(probabilityArray)); 
         return; 
     }
@@ -199,6 +201,9 @@ export default function Thinking( props ) {
         <div>
             <p> {thinkingWord} </p>
             {foe === 'menace' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>}
+            {foe === 'Neuro' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "neuroPredictions" values = {thinkBoard}/>}
+            {foe === 'minimax' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "minimaxBoard" values = {thinkBoard}/>}
+
         </div>
       
     )

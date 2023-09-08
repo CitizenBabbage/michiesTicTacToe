@@ -1,3 +1,5 @@
+///this page is just for temporarily holding code as a reference. Periodically, everything below this line should be deleted. 
+
 import { whoseMove , numerizeBoard} from "../../auxiliary/general/usefulFunctions";
 import { neuroChooseMove } from "../../auxiliary/choiceFunctions/neuroChooseMove";
 import { minimaxRecurse } from "../../auxiliary/choiceFunctions/minimaxChooseMove";
@@ -19,7 +21,7 @@ export function oneTrainingCycle(trainingSet, net, learningRate, sigma){
         board = numerizeBoard(board); 
         if (net.length > 4) throw new Error(`Problem in oneTrainingCycle 2: net in loop is too long at iteration ${i}! length = ${net.length}, should equal 4. net[4] is ${net[4]}`)
 
-        results = oneLearningIteration(board, net[0], net[1], net[2], net[3], learningRate, sigma) // returns an array [hiddenLayerWeights, finalLayerWeights, hiddenLayerBias, finalLayerBias, residualError, rawErrors]
+        results = oneLearningIteration(board, net, learningRate, sigma) // returns an array [hiddenLayerWeights, finalLayerWeights, hiddenLayerBias, finalLayerBias, residualError, rawErrors]
         //console.log("in oneTrainingCycle, received results of type:", returnArrayOfTypesOf(results))
         checkArrayHasDefinedValues(results[5], "results[5]", "oneTrainingCycle test 1", [JSON.stringify(board)])
         //console.log("oneTrainingCycle: results[5] is... ", results[5])
@@ -70,41 +72,38 @@ export function oneTrainingCycle(trainingSet, net, learningRate, sigma){
 //     }
 
 // returns an array [hiddenLayerWeights, finalLayerWeights, hiddenLayerBias, finalLayerBias, residualError, rawErrors]
-export function oneLearningIteration(board, firstConnections, finalConnections, firstBiases, finalBiases, learningRate, sigma){
-    const net = [firstConnections, finalConnections, firstBiases, finalBiases]; 
+export function oneLearningIteration(board, net, learningRate, sigma){
     console.log("starting oneLearningIteration")
+    if (net.length > 4) throw new Error(`Problem in oneLearningIteration: net as input is too long! length = ${net.length}, should equal 4. net[4] is ${net[4]}`)
     const predictionData = neuroChooseMove(board, net); // returns [0.recommended move, 1.hiddenSums, 2.hiddenValues, 3.outputSums, 4.output values]
+    const recommendedMove = predictionData[0];
     const hiddenSums = predictionData[1];
     const hiddenValues = predictionData[2];
-    const outputSums = predictionData[3]; 
+    const outputSuums = predictionData[3]; 
     const outputValues = predictionData[4]; 
     const correctArray = getCorrectArray(board); 
 
     // const data = getComparisonArraysAndForwardPassData(board,net); // returns [0. minimaxArray, 1.recommended move, 2.hiddenSums, 3.hiddenValues, 4.outputSums, 5.output values]
 
-    const [newWeights, newBiases, squrdError, finalErrors, rawErrors] = calculateFinalLayerUpdate(correctArray, hiddenValues, outputSums, outputValues, finalConnections, finalBiases, learningRate, sigma, board) // returns [newWeights, newBiases, squrdError, finalErrors, rawErrors] 
-    
-    let output; 
-    if (squrdError < sigma) {
-        checkArrayHasDefinedValues(rawErrors, "rawErrors", "oneLearningIteration test 1", [JSON.stringify(board)])
-        output = [firstConnections, finalConnections, firstBiases, finalBiases, squrdError,rawErrors]; 
+    const finalWeights = calculateFinalLayerUpdate([correctArray,...predictionData], net, learningRate, sigma, board) // returns [newWeights, newBiases, squrdError, finalErrors, rawErrors] 
+    if (finalWeights[2] < sigma) {
+        checkArrayHasDefinedValues(finalWeights[4], "finalWeights[4]", "oneLearningIteration test 1", [JSON.stringify(board)])
+        return [...net, finalWeights[2],finalWeights[4]]; 
     }
-    else {
-        const hiddenWeights = calculateHiddenLayerUpdate(hiddenSums, firstConnections, firstBiases, board, learningRate, finalErrors);
-        output = [hiddenWeights[0],newWeights,hiddenWeights[1],newBiases,squrdError, rawErrors]
-    }
-    
+    checkforNonFalseyValueOtherThan0(finalWeights[2], "finalWeights[2]", "oneLearningIteration")
+    const hiddenWeights = calculateHiddenLayerUpdate([correctArray,...predictionData], net, board, learningRate, finalWeights[3]);
+    const output = [hiddenWeights[0],finalWeights[0],hiddenWeights[1],finalWeights[1],finalWeights[2], finalWeights[4]]//finalWeights[2] carries the residual error, finalWeights[4] the raw errors
+    checkArrayHasDefinedValues(output[5], "output[5]", "oneLearningIteration test 2", [JSON.stringify(board)])
     console.log("ending oneLearningIteration")
     return output;  
 }
 
-
-
 // returns [newWeights, newBiases, squrdError, finalErrors] 
 // data = [0. minimaxArray, 1.recommended move, 2.hiddenSums, 3.hiddenValues, 4.outputSums, 5.output values]
-export function calculateFinalLayerUpdate(minimaxArray, hiddenValues, outputSums, outputValues, secondWeights, secondBias, learningRate, sigma, board){
+export function calculateFinalLayerUpdate([minimaxArray, recommendedMove, hiddenSums, hiddenValues, outputSums, outputValues], net, learningRate, sigma, board){
     console.log("starting calculateFinalLayerUpdate")
     const predictionArray = outputValues; //for readability
+    const secondWeights = net[1], secondBias = net[3]; //likewise
 
     //const correctArray = convertMinimax(minimaxArray);
     const correctArray = [7,7,7,7,7,7,7,7,7] // for debugging, to check if error correction happens in the upper direction
@@ -118,7 +117,7 @@ export function calculateFinalLayerUpdate(minimaxArray, hiddenValues, outputSums
     let output; 
     if (squrdError < sigma) {
 
-        output = [secondWeights,secondBias, squrdError,finalErrors, rawErrors]
+        output = [net[1],net[3], squrdError,finalErrors, rawErrors]
         //console.log("in calculateFinalLayerUpdate 1, preparing output of types:", returnArrayOfTypesOf(output))
 
     }
@@ -150,13 +149,11 @@ export function squaredError(array){
 }
 
 //returns [newWeights,newBiases]
-export function calculateHiddenLayerUpdate(
-    hiddenSums, 
-    firstConnections, firstBiases, board, learningRate, finalErrors){
+export function calculateHiddenLayerUpdate(data, net, board, learningRate, finalErrors){
     console.log("starting calculateHiddenLayerUpdate")
-    const differentialArray1 = getDifferentials(hiddenSums) 
-    const hiddenErrors = computeErrorForHiddenLayers(firstConnections, finalErrors, differentialArray1)
-    const hiddenWeights = update(firstConnections, firstBiases, hiddenErrors, board, learningRate);
+    const differentialArray1 = getDifferentials(data[2])
+    const hiddenErrors = computeErrorForHiddenLayers(net[0], finalErrors, differentialArray1)
+    const hiddenWeights = update(net[0], net[2], hiddenErrors, board, learningRate);
     checkConnections(hiddenWeights[0], "hiddenWeights[0]", "calculateHiddenLayerUpdate")
     console.log("ending calculateHiddenLayerUpdate")
 

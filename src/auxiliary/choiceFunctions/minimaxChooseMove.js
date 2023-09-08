@@ -2,7 +2,7 @@ import { calculateWinner } from "../engineHelpers/checkWinner.js"
 import { whoseMove } from "../general/usefulFunctions.js";
 
 export function minimaxChooseMove(board, whoseTurn){
-    return minimaxRecurse(board,whoseTurn)[0]
+    return minimaxRecurse(board,whoseTurn)
 }
 
 
@@ -20,13 +20,13 @@ export function minimaxRecurse(board, turn){
         let winner = calculateWinner(tempboard)
         //console.log(`for board ${tempboard} we have winner ${winner} and last turn ${turn}`)
         if (winner === turn){ // if this is a winning position 
-            moveArray[i] = 10; // give that move 10 points
+            moveArray[i] = 4; // give that move 4 points
             }
         else if (["X","O"].includes(winner)){ // otherwise if there's a winner defined, it's the other guy
-            moveArray[i] = -10; // so give that move -10 points
+            moveArray[i] = 2; // so give that move 2 points
         }
         else if (winner === "D"){ //if it's a draw
-            moveArray[i] = 0; // that's worth nothing
+            moveArray[i] = 3; // that's worth 3
             }
         else { //if the game doesn't terminate with this move
             let mr = minimaxRecurse(tempboard, turn); // imagine making the move and take the game from there
@@ -60,7 +60,6 @@ export function minimaxRecurse(board, turn){
                     recommendedMove = i; 
                     recommendedMoveScore = lowestSoFar; 
                 }
-                //if (moveArray[i] === -10){console.log(`Its my opponent's turn, and moving to position ${i} on board ${board} leads to a losing position for me, ${turn}`)}
             }
         }
         // console.log("getMoveAndAssociatedScore, recommending move ", recommendedMove) 

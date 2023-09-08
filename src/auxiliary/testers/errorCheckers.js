@@ -116,7 +116,9 @@ export function checkforNonFalseyValueOtherThan0(value, valueName, funcName){
 }
 
 export function checkArrayHasDefinedValues(array, arrayName, funcName, inputArray){
-    if (!Array.isArray(array) && !array instanceof Float32Array) throw new Error(` in ${funcName}, ${arrayName} is not an array.`)
+    if (!array) throw new Error(` in ${funcName}, ${arrayName} is not defined!`)
+
+    if (!Array.isArray(array) && !array instanceof Float32Array) throw new Error(` in ${funcName}, ${arrayName} is not an array but is ${JSON.stringify(array)}`)
     for (let i = 0; i < array.length; i++){
         if (array[i] === 0) continue; 
         if (!array[i]) throw new Error(`For input arguments ${listInputArguments(inputArray, funcName)} in ${funcName}, the ${i}th member of ${arrayName} has a falsey value.`)
@@ -156,4 +158,12 @@ export function checkArrayOfArrays(arrayOfArrays, arrayName, funcName){
         if (!Array.isArray(arrayOfArrays[i]) && !arrayOfArrays[i] instanceof Float32Array) throw new Error(` in ${funcName}, the ${i}th inner array of ${arrayName} is not an array, but is ${arrayOfArrays[i]}.`)
         checkArrayHasDefinedValues(arrayOfArrays[i], `the ${i}th array of ${arrayName}`, funcName, ["n/a"])
     }
+}
+
+export function returnArrayOfTypesOf(array){
+    let typesOfArray = []
+    for (let i = 0; i < array.length; i++){
+        typesOfArray.push(typeof array[i])
+    }
+    return typesOfArray; 
 }

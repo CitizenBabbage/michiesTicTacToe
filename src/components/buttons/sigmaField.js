@@ -30,7 +30,7 @@ export function SetSigmaField( props ) {
             <form onSubmit={handleSubmit}>
                 <label>
                 Stop Learning When Error Is Below:
-                <input type="number"  onChange={handleChange} defaultValue={sigma}/>
+                <input type="number" step="0.01" onChange={handleChange} defaultValue={sigma}/>
                 </label>
                 <input type="submit" value="Submit" />
             </form>

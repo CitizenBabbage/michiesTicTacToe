@@ -1,3 +1,24 @@
+get the calculated error to appear beneath the displayed test case. 
+
+XXXXXXXXXXXXXXXXXXXX
+
+Rewrite gettrainingSet so that it selects from the complete array of boardstates, not just the archetypal ones. DONE
+
+Create a testing display that selects randomly from the TRAINING set and shows the prediction vs the minimax response. This is to ensure that the training set, at least, has been mastered to the degree advertised, and that the control is working accordingly. DONE
+	call new component on neurotraining page
+	new component calls two board states side by side
+	it runs neurochoose move on one and minimax on the other and displays the results
+
+write a button that lets you keep getting new comparisons DONE
+write another button that lets you get comparisons from the total set DONE
+XXXXXXXXXXXXXXXXXXXXX
+
+
+rewrite neuroChooseMove so that it returns an array, first argument is the usual return but second is the board prediction. DONE
+Then rewrite choosemove so that it takes that in.  DONE
+
+XXXXXXXXXXXXXXXXXXXXX
+
 I think the board being passed as priorlayer is in the form of nulls, X's and O's instead of numerical. 
 
 XXXXXXXXXXXXXXXXXXXXX
