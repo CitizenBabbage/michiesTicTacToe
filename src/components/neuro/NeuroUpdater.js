@@ -1,8 +1,9 @@
-import { oneTrainingCycle, getTrainingSet, oneLearningIteration, convertMinimax, reluPrime, getDifferentials, getComparisonArraysAndForwardPassData, computeErrorForLastLayer, update, computeErrorForHiddenLayers } from "./updaterHelpers";
+import { oneTrainingCycle } from './iteratorsGeneral';
 import React from 'react';
 import { useState, useEffect, useRef} from 'react';
-import { returnArrayOfTypesOf, checkConnections } from "../../auxiliary/testers/errorCheckers";
+import { returnArrayOfTypesOf, checkConnections, checkNetData } from "../../auxiliary/testers/errorCheckers";
 import { ErrorDisplay } from "../presentational/ErrorDisplay";
+import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions';
 
 export default function NeuroUpdater(props){
     const percentTraining = props.percentTraining
@@ -32,38 +33,33 @@ export default function NeuroUpdater(props){
         console.log("neuro learning has begun")
         if (!neuroLearning) return; 
         // const trainingSet = getTrainingSet(percentTraining); 
-        let newNet = net, results; 
-        if (newNet.length > 4) throw new Error(`Problem in neuroLearn: net is too long! length = ${net.length}, should equal 4. net[4] is ${net[4]}`)
+        let newNet = dataBaseDuplicator(net); 
 
         checkConnections(newNet[0], "first layer of connections", neuroLearn)
-        runToMaxCycle(trainingSet, newNet, results); 
+        runToMaxCycle(trainingSet, newNet); 
     }
 
-    function runToMaxCycle(trainingSet, newNet, results){
-        if (newNet.length > 4) throw new Error(`Problem in runToMaxCycle: net as input is too long! length = ${newNet.length}, should equal 4. net[4] is ${newNet[4]}`)
-        let err
+    function runToMaxCycle(trainingSet, newNet){
+        let err; 
+        // let worstErrorThisCycle = 0
         checkConnections(newNet[0], "first layer of connections", runToMaxCycle)
         for (let i = 0; i < maxCycle; i++){
             console.log("cycles remaining: ", maxCycle - i)
-            if (newNet.length > 4) throw new Error(`Problem in runToMaxCycle loop at iteration ${i}: net to be passed to oneTrainingCycle is too long! length = ${newNet.length}, should equal 4. net[4] is ${newNet[4]}`)
+            // if (newNet.length !== 6) throw new Error(`Problem in runToMaxCycle loop at iteration ${i}: net to be passed to oneTrainingCycle is wrong length! length = ${newNet.length}, should equal 6. `)
             // console.log("runToMaxCycle 1: newNet length is ", newNet.length)
-            results = oneTrainingCycle(trainingSet, newNet, learningRate, sigma); 
-            // the above returns an array [hiddenLayerWeights, finalLayerWeights, hiddenLayerBias, finalLayerBias, residualError]
-            checkConnections(results[0], "first layer of connections from results", runToMaxCycle)
-            err = results[4]; 
+            const [returnedNetwork, residualError, rawErrors] = oneTrainingCycle(trainingSet, newNet, learningRate, sigma); 
+            const [hiddenLayerWeights1, finalLayerWeights, hiddenLayerBias1, finalLayerBias] = returnedNetwork; 
+            // checkConnections(hiddenLayerWeights, "first layer of connections from results", runToMaxCycle)
             // console.log("runToMaxCycle: Error is ", err)
-            if (err < sigma) {
-                console.log(`Error is ${err}, which is below sigma of ${sigma}. Stopping.`)
+            if (residualError < sigma) {
+                console.log(`Error is ${residualError}, which is below sigma of ${sigma}. Stopping.`)
                 break; 
             }
-            newNet = results; 
-            // console.log(returnArrayOfTypesOf(newNet))
-            // console.log("runToMaxCycle 2: newNet length before pop is ", newNet.length)
-            newNet.pop(); // but remove the error ...
-            newNet.pop(); //... and the error array to get the net
-            // console.log("runToMaxCycle 3: newNet length after pop is ", newNet.length)
-            // if (i%5===0) setNet(newNet); 
+            newNet = returnedNetwork; // don't assume this step is eliminable
+            err = residualError;  
         }
+        checkNetData(newNet, "newNet, before net is set in state")
+        console.log("checknet passed!")
         setNet(newNet); 
         setError(err);
     }

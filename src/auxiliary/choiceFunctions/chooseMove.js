@@ -3,7 +3,7 @@ import { menaceChooseMove } from "./menaceChooseMove.js";
 import { checkBoard, checkDbase } from '../testers/errorCheckers.js';
 import { hurisChooseMove } from "./hurisChooseMove.js";
 import { evolvoChooseMove } from "./evolvoChooseMove.js";
-import { neuroChooseMove } from "./neuroChooseMove.js"; 
+import { neuroChooseMove } from "./neuroChooseMoveGeneral.js";
 import { whoseMove } from "../general/usefulFunctions.js";
 
 
@@ -46,7 +46,7 @@ export function chooseMove(board, foeSpec, foe){
         //neuroChooseMove returns processing data along with the move choice, but we only need the move choice here, which is the first item
         netOutput = neuroChooseMove(board, foeSpec)
         console.log(`In chooseMove, netOutput[1][3] is `, netOutput[1][3])
-        return [netOutput[0],netOutput[4]]
+        return [netOutput[0],netOutput[2]]
     }
     }
 

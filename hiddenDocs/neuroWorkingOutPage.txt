@@ -1,4 +1,57 @@
-get the calculated error to appear beneath the displayed test case. 
+recover 2 layer neural net functionality DONE 
+	shorten inputs nets to length 4 DONE
+rewrite functions, if necessary, so that nets are passed as arrays DONE
+rewrite neuroChooseMove to have subordinate function: prepareNet DONE
+	check for functionality DONE
+	rewrite prepareNet to deal with arbitrary net DONE BUT UNTESTED ON NETS != length 4
+	check for functionality DONE BUT UNTESTED ON NETS != length 4
+rewrite neuroChooseMove to pass arbitrary sized array for net DONE BUT UNTESTED ON NETS != length 4
+	check for functionality DONE BUT UNTESTED ON NETS != length 4
+rewrite forward pass function to iterate through n layers, should still work with 2.DONE BUT UNTESTED ON NETS != length 4
+	check for functionality  DONE BUT UNTESTED ON NETS != length 4, UNTESTED FOR INTERACTION WITH LEARNING
+	
+CHANGE NET variable name!!
+
+rewrite oneLearningIteration to learn through n layers. 
+	correct receipt of forwardPass data DONE
+	remove condition for checking sigma DONE
+Rewrite all functions in cycle to pass OUTPUT nets as arrays
+	That includes oneTrainingCycle DONE
+	That includes oneLearningIteration DONE
+	That includes runToMaxCycle DONE
+remove the dummy values? DONE
+Rewrite oneLearningIteration to iterate through layers DONE
+	change runToMaxCycle to call it appropriately DONE
+write a function that takes a number and creates a net with that many layers
+test with 3
+in oneLearningIteration, return condition for checking sigma 
+	pass sqrdError as an argument, value infinity, from oneLearningCycle
+	return immediately if sqrdError < sigma
+	update sqrdError as we learn
+
+look at minimaxChooseMove. it seems to be returning full for every square in every board state. 
+
+XXXXXXXXXXXXXXXXXXXX
+
+in computeErrorForLastLayer, if we have the conditionalized error function, it tends to always send back 0s for some reason. If we change it to the non-conditionalized error function, we get all kinds of other errors. 
+
+XXXXXXXXXXXXXXXXXXXX
+
+the problem with any key returning you to the pick opponents page is still present DONE
+
+More work needs to be done on the minimax targets, to give the NN a good target to aim at. Specifically, what is the difference between "no guaranteed result" and "draw"? Can you get a no guaranteed result, or does MM always deterministically give you a win, draw or loss? Why is it giving us 1 point for takeable squares? I think the squares are reporting as 1 because they are filled in in the final analysis. DONE
+
+get the choose function to output the hiddensums for the new layer
+
+change error function so that anything within 0.49 of the right answer counts as error 0. 
+
+refactor oneTrainingCycle so that it doesn't have results[4] etc. 
+
+get a better measure of overall error DONE
+
+Change the way the board is encoded so that empty squares have a non-zero value. DONE
+
+get the calculated error to appear beneath the displayed test case. DONE
 
 XXXXXXXXXXXXXXXXXXXX
 

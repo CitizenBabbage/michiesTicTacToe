@@ -353,9 +353,10 @@ export function whoseMove(board){
 export function numerizeBoard(board){
     let numberBoard = []; 
     for (let i = 0; i < board.length; i++){
-        if (board[i] === 'X' || board[i] === 1){numberBoard[i] = 1}
-        else if (board[i] === 'O' || board[i] === -1){numberBoard[i] = -1}
-        else numberBoard[i] = 0; 
+        if (board[i] === 'X' || board[i] === 1 || board[i] === 1){numberBoard[i] = 1}
+        else if (board[i] === 'O' || board[i] === -1 || board[i] === 2){numberBoard[i] = 2}
+        else numberBoard[i] = 3; 
     }
     return numberBoard; 
 }
+

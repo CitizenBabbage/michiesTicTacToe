@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
@@ -12,16 +12,19 @@ const Home = ( props ) => {
     const location = useLocation();
     const [audioSelected, setAudioSelected] = useState(false);  
     const navigate = useNavigate();
+    const [keyPressed, setKeyPressed] = useState(false); 
 
     
     useEffect(() => {
         function handleKeyPress(){
-            //setKeyPressed(true)
-            navigate("/selectOpponent");
+            if (!keyPressed) {
+                setKeyPressed(true)
+                navigate("/selectOpponent");
+            }
+            
         }
         window.addEventListener('keydown', handleKeyPress);
-        return 
-            () => {
+        return () => {
                 window.removeEventListener('keydown', handleKeyPress);
         };
         

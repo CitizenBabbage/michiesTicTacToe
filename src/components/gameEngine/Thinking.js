@@ -184,11 +184,12 @@ export default function Thinking( props ) {
                 //foeSpec is database for menace, genome for evolvo, network for neuro
                 // NOTE that you can't just add evolvo & neuro as opponents for menace
                 // because they need to take their foespec, which will be set to menace's
-                const choiceAndBoard = chooseMove(board, foeSpec, tempComputerOpponent);  
+                const choiceAndBoard = chooseMove(board, foeSpec, tempComputerOpponent); 
+                console.log("choiceAndBoard is: ", choiceAndBoard); 
                 console.log("delayAndChoose: foe is: ", foe)
                 //console.log("delayAndChoose, selected move is :", choice)
                 resolve(choiceAndBoard);
-                console.log("choiceAndBoard is: ", choiceAndBoard);
+               
             })
             .catch((error) => {
                 console.error("Error in delayAndChoose:", error);

@@ -121,25 +121,42 @@ export function checkArrayHasDefinedValues(array, arrayName, funcName, inputArra
     if (!Array.isArray(array) && !array instanceof Float32Array) throw new Error(` in ${funcName}, ${arrayName} is not an array but is ${JSON.stringify(array)}`)
     for (let i = 0; i < array.length; i++){
         if (array[i] === 0) continue; 
-        if (!array[i]) throw new Error(`For input arguments ${listInputArguments(inputArray, funcName)} in ${funcName}, the ${i}th member of ${arrayName} has a falsey value.`)
+        if (!array[i]) throw new Error(`For input arguments ${listInputArguments(inputArray, funcName)} in ${funcName}, the ${i}th member of ${arrayName} has a falsey value, namely ${array[i]}.`)
     }
 }
 
+export function checkArrayContainsOnlyNumbers(array, arrayName, funcName, inputArray){
+    for (let i = 0; i < array.length; i++){
+        if (isNumber(array[i])) continue; 
+        if (!array[i]) throw new Error(`For input arguments ${listInputArguments(inputArray, funcName)} in ${funcName}, the ${i}th member of ${arrayName} is not a number, it's ${array[i]}.`)
+    }
+}
+
+export function check9ArrayBundle(array, arrayName, funcName, inputArray){
+    if (array === null || array === undefined) throw new Error(` in ${funcName}, ${arrayName} is not defined!`)
+    if (array.length !== 9) throw new Error(` in ${funcName}, ${arrayName} is wrong length! Is ${array.length} but should be 9.`)
+    checkArrayHasDefinedValues(array, arrayName, funcName, inputArray)
+    checkArrayContainsOnlyNumbers(array, arrayName, funcName, inputArray)
+}
+
+
+// export function listInputArguments(array, funcName){
+//     checkArray(array, "value passed to listInputArguments", funcName)
+//     let returnString = ""; 
+//     for (let i = 0; i < array.length; i++){
+//         if (array.length = 1) {returnString = returnString + `${JSON.stringify(array[0])}`}
+//         else if (i === array.length - 1) {returnString = returnString + `and ${JSON.stringify(array[i])}  
+//         `}
+//         else returnString = returnString + `,
+        
+//         ${JSON.stringify(array[i])}`
+//     }
+//     return JSON.stringify(returnString); 
+// }
+
 export function listInputArguments(array, funcName){
     checkArray(array, "value passed to listInputArguments", funcName)
-    let returnString = ""; 
-    for (let i = 0; i < array.length; i++){
-        if (array.length = 1) {returnString = returnString + `${JSON.stringify(array[0])}`}
-        else if (i === array.length - 1) {returnString = returnString + `
-        
-        and ${JSON.stringify(array[i])}
-        
-        `}
-        else returnString = returnString + `,
-        
-        ${JSON.stringify(array[i])}`
-    }
-    return JSON.stringify(returnString); 
+    return array.join(','); 
 }
 
 export function checkConnections(connectionsArray, arrayName, funcName){
@@ -166,4 +183,21 @@ export function returnArrayOfTypesOf(array){
         typesOfArray.push(typeof array[i])
     }
     return typesOfArray; 
+}
+
+
+
+
+export function checkNetData(net, funcName){
+    const midwayPoint = net.length/2; //this marks when the connections data stops and bias data begins
+
+    for (let i = 0; i < net.length; i++){
+        if (i < midwayPoint) {
+            checkConnections(net[i], `${i}th layer of connections`, funcName)
+        }
+        else {
+            console.log(`net[${i}], net is`, net[i]);
+            check9ArrayBundle(net[i], `${i}th array, which is ${i-midwayPoint}th bias array`, funcName, ['n/a'])
+        }
+    }
 }

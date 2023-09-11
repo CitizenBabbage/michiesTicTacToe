@@ -11,10 +11,11 @@ import Board from '../board/Board';
 import { returnArrayOfTypesOf } from '../../auxiliary/testers/errorCheckers';
 import { whoseMove, includes, roundOffElementsInArray } from '../../auxiliary/general/usefulFunctions';
 import { generateGoodBoardStates } from '../../auxiliary/boardStateDatabase/makeBeadAuxilliaries';
-import { neuroChooseMove } from '../../auxiliary/choiceFunctions/neuroChooseMove';
+import { neuroChooseMove } from '../../auxiliary/choiceFunctions/neuroChooseMoveGeneral';
 import { minimaxChooseMove } from '../../auxiliary/choiceFunctions/minimaxChooseMove';
 import { Button } from 'primereact/button';
-import { convertMinimax, computeErrorForLastLayer } from '../neuro/updaterHelpers';
+import { convertMinimax } from '../neuro/minimaxHandling';
+import { computeErrorForLastLayer } from '../neuro/errorFunctions';
 
 export default function NeuroComparison( props ) {
   
@@ -52,16 +53,16 @@ export default function NeuroComparison( props ) {
 
     function setPredictionAndRecommendation(board){
         const data = neuroChooseMove(board, net); 
-        const prediction  = roundOffElementsInArray([...data[4]]); 
-        console.log("prediction is: ", prediction)
+
+        const prediction  = roundOffElementsInArray([...data[2]]); 
         const whoseTurn = whoseMove(board); 
-        //const recommendations = convertMinimax(minimaxChooseMove(board, whoseTurn)[2]); 
-        const recommendations = [7,7,7,7,7,7,7,7,7] // for debugging, to check if error correction happens in the upper direction
+        const recommendations = minimaxChooseMove(board, whoseTurn)[2]; 
+        //const recommendations = [7,7,7,7,7,7,7,7,7] // for debugging, to check if error correction happens in the upper direction
         setNeuroPredictions(prediction); 
         setMinimaxRecommendations(recommendations);
         setTestBoard(board); 
         setToPlay(whoseTurn); 
-        setActivationSums(data[3]); 
+        setActivationSums(data[1][0][2]); 
     }
    
     useEffect(computeError,[neuroPredictions, minimaxRecommendations, activationSums])

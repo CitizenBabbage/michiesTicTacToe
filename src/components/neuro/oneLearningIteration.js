@@ -30,7 +30,7 @@ export function oneLearningIteration(board, net, learningRate, sigma){
         afferentBiases = net[i + halfLength];
         
 
-        if (i === arrayOfHiddenSums.length - 1){ // final layer
+        if (i === halfLength - 1){ // final layer
             [newWeights, newBiases, highestError, finalErrors, rawErrors] 
                 = calculateFinalLayerUpdate(correctArray, previousLayerValues, thisLayerSums, thisLayerValues, afferentConnections, afferentBiases, learningRate, sigma, board) 
             newNet[i] = newWeights; newNet[i+halfLength] = newBiases; 
@@ -39,34 +39,7 @@ export function oneLearningIteration(board, net, learningRate, sigma){
             [newWeights, newBiases] = calculateHiddenLayerUpdate(thisLayerSums, afferentConnections, afferentBiases, previousLayerValues, learningRate, finalErrors);
             newNet[i] = newWeights; newNet[i+halfLength] = newBiases; 
         }
+    }
          
     return [newNet, highestError, rawErrors]; 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
- 
-
-
-
-
-
-
-

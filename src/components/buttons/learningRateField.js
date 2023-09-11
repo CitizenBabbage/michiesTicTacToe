@@ -29,7 +29,7 @@ export function LearningRateField( props ) {
             <form onSubmit={handleSubmit}>
                 <label>
                 Learning Rate
-                <input type="number" onChange={handleChange} defaultValue={learningRate}/>
+                <input min="0.00001" max = "0.9" step="any" type="number" onChange={handleChange} defaultValue={learningRate}/>
                 </label>
                 <input type="submit" value="Submit" />
             </form>

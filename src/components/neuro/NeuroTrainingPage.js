@@ -32,7 +32,7 @@ export function NeuroTrainingPage (props) {
     const returnToGame = props.returnToGame; 
 
     const [percentTraining, setPercentTraining] = useState(20);
-    const [learningRate, setLearningRate] = useState(0.001); 
+    const [learningRate, setLearningRate] = useState(0.0001); 
     const [maxCycle, setMaxCycle] = useState(2); 
     const [sigma, setSigma] = useState(0.1)
     const [neuroLearning, setNeuroLearning] = useState(false); 
@@ -40,6 +40,8 @@ export function NeuroTrainingPage (props) {
 
     const net = props.net; 
     const setNet = props.setNet;  
+
+    
 
     useEffect(getTrainingSet, [neuroLearning]) // the change in this should trigger the useEffect in NeuroUpdater.js
 
