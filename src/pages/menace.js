@@ -6,11 +6,11 @@ import menacePortrait from '../images/menace/77fa83d664df40fb96fe7fb183d4004a02d
 
 
 export default function Menace( props ) {
-
+  const trainingSound = '../soundFX/menaceLoss2.mp3'
   const [foe, setFoe] = useState("menace")
   return (
       <div>
-        <GameShell name = "Menace" blurb = {menaceBlurb} src = {menacePortrait} devMode = {props.devMode} playersTurn = {props.playersTurn} setPlayersTurn = {props.setPlayersTurn} foe = {foe} setFoe = { setFoe }/>
+        <GameShell trainingSound = {trainingSound} name = "Menace" blurb = {menaceBlurb} src = {menacePortrait} devMode = {props.devMode} playersTurn = {props.playersTurn} setPlayersTurn = {props.setPlayersTurn} foe = {foe} setFoe = { setFoe }/>
       </div>
   )
 }

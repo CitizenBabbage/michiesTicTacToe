@@ -1,4 +1,3 @@
-import { convertMinimax } from "./minimaxHandling";
 import { computeErrorForLastLayer, computeErrorForHiddenLayers } from "./errorFunctions";
 import { checkNetData, checkArrayContainsOnlyNumbers, checkArrayHasDefinedValues, checkforNonFalseyValueOtherThan0, checkConnections, check9ArrayBundle } from "../../auxiliary/testers/errorCheckers";
 import { squaredError, getDifferentials } from "./errorFunctions";
@@ -6,16 +5,22 @@ import { squaredError, getDifferentials } from "./errorFunctions";
 // returns [newWeights, newBiases, squrdError, finalErrors] 
 // data = [0. minimaxArray, 1.recommended move, 2.hiddenSums, 3.hiddenValues, 4.outputSums, 5.output values]
 export function calculateFinalLayerUpdate(minimaxArray, hiddenValues, outputSums, outputValues, secondWeights, secondBias, learningRate, sigma, board){
-    console.log("calculateFinalLayerUpdate: board is ", board)
+    //console.log("calculateFinalLayerUpdate: board is ", board)
+    //console.log("calculateFinalLayerUpdate: outputSums are ", outputSums)
+
     //console.log("starting calculateFinalLayerUpdate")
-    checkArrayContainsOnlyNumbers(minimaxArray, "minimaxArray", "calculateFinalLayerUpdate 1",[minimaxArray])
+    //checkArrayContainsOnlyNumbers(minimaxArray, "minimaxArray", "calculateFinalLayerUpdate 1",[minimaxArray])
 
-    const correctArray = convertMinimax(minimaxArray);
+    //const correctArray = convertMinimax(minimaxArray);
     //const correctArray = [3,3,3,7,7,7,7,7,7] // for debugging, to check if error correction happens in the upper direction
-    checkArrayContainsOnlyNumbers(correctArray, "correctArray", "calculateFinalLayerUpdate 2",[minimaxArray])
+    //checkArrayContainsOnlyNumbers(correctArray, "correctArray", "calculateFinalLayerUpdate 2",[minimaxArray])
 
-    const [finalErrors,rawErrors] = computeErrorForLastLayer(outputValues, correctArray, outputSums);
-        console.log("calculateFinalLayerUpdate: rawErrors are", rawErrors)
+    // console.log("calculateFinalLayerUpdate: Ready to comput rawErrors. output values are", outputValues)
+    // console.log("calculateFinalLayerUpdate: Ready to comput rawErrors. correctArray is", correctArray)
+    // console.log("calculateFinalLayerUpdate: Ready to comput rawErrors. outputSums are", outputSums)
+
+    const [finalErrors,rawErrors] = computeErrorForLastLayer(outputValues, minimaxArray, outputSums);
+       // console.log("calculateFinalLayerUpdate: rawErrors are", rawErrors)
 
     if (!rawErrors){console.log("rawErrors undefined in calculateFinalLayerUpdate, after returning from computeErrorForLastLayer")}
     //checkArrayHasDefinedValues(finalErrors, "finalErrors", "calculateFinalLayerUpdate",["n/a"]) 
@@ -51,31 +56,34 @@ export function calculateHiddenLayerUpdate(
     hiddenSums, firstConnections, firstBiases, board, learningRate, finalErrors){
     // console.log("starting calculateHiddenLayerUpdate")
     // console.log("calculateHiddenLayerUpdate: hiddenSums is ", hiddenSums)
-    check9ArrayBundle(hiddenSums, "hiddenSums", "calculateHiddenLayerUpdate", ["n/a"])
+    //check9ArrayBundle(hiddenSums, "hiddenSums", "calculateHiddenLayerUpdate", ["n/a"])
 
     const differentialArray1 = getDifferentials(hiddenSums) 
-    checkArrayContainsOnlyNumbers(differentialArray1, "differentialArray1", "calculateHiddenLayerUpdate", ["n/a"])
+    //checkArrayContainsOnlyNumbers(differentialArray1, "differentialArray1", "calculateHiddenLayerUpdate", ["n/a"])
     // console.log("calculateHiddenLayerUpdate: differentialArray1 is ", differentialArray1)
     const hiddenErrors = computeErrorForHiddenLayers(firstConnections, finalErrors, differentialArray1)
-    checkArrayContainsOnlyNumbers(hiddenErrors, "hiddenErrors", "calculateHiddenLayerUpdate", ["n/a"])
+    //checkArrayContainsOnlyNumbers(hiddenErrors, "hiddenErrors", "calculateHiddenLayerUpdate", ["n/a"])
 
     // console.log("calling update for hidden layer")
     const hiddenWeights = update(firstConnections, firstBiases, hiddenErrors, board, learningRate);
     // console.log("ending calculateHiddenLayerUpdate")
-    checkNetData(hiddenWeights, "calculateHiddenLayerUpdate on hiddenweights")
+    // checkNetData(hiddenWeights, "calculateHiddenLayerUpdate on hiddenweights")
 
     return hiddenWeights; 
 }
 
 // returns [newWeights,newBiases]
 export function update(weightArray, biasArray, errorArray, priorLayer, learningRate){
+
     // console.log("starting update")
+    //console.log("update: error array is: ", errorArray)
 
     // console.log("priorLayer is ", priorLayer)
-    // checkArrayHasDefinedValues(biasArray, "biasArray", "update", ["n/a"])
-    // checkArrayHasDefinedValues(errorArray, "errorArray", "update", ["n/a"])
+    // check9ArrayBundle(biasArray, "biasArray", "update", ["n/a"])
+    // check9ArrayBundle(errorArray, "errorArray", "update", ["n/a"])
     // checkConnections(weightArray, "weightArray", "update")
-    // checkArrayHasDefinedValues(priorLayer, "priorLayer", "update", ["n/a"])
+    // check9ArrayBundle(priorLayer, "priorLayer", "update", ["n/a"])
+
     // checkforNonFalseyValueOtherThan0(learningRate, "learningRate", "update")
     let newWeights = [...weightArray];
     
@@ -92,8 +100,8 @@ export function update(weightArray, biasArray, errorArray, priorLayer, learningR
         //console.log(`The bias on postsynaptic node ${j} is being updated from ${biasArray[j]} to that plus ${learningRate} times ${errorArray[j]}, i.e. by  ${(learningRate * errorArray[j])} `)
 
     }
-    const output = [newWeights,newBiases]
     //console.log("ending update")
+    //checkConnections(newWeights, "newWeights before return", "update")
 
     return [newWeights,newBiases]
 }

@@ -1,5 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
-import { checkNetData, checkArrayHasDefinedValues, check9ArrayBundle, checkConnections } from '../testers/errorCheckers';
+import { checkTensor, checkNetData, checkArrayHasDefinedValues, check9ArrayBundle, checkConnections } from '../testers/errorCheckers';
 import { numerizeBoard } from '../general/usefulFunctions';
 
 // const connectionsInputToHidden = tf.zeros([9, 9]);
@@ -18,48 +18,50 @@ const matrixShape = [9, 9];
 export function neuroChooseMove(board, net){
     checkNetData(net,"neuroChooseMove input")
     board = numerizeBoard(board); 
+    //console.log("neuroChooseMove: numerized board is: ", board)
     // turn board into vector
+    console.log("board is ", JSON.stringify(board))
     const inputVector = tf.tensor1d(board).reshape([1, 9]);
+    checkTensor(inputVector, "inputVector", "neuroChooseMove, after creation")
+
+    //console.log("neuroChooseMove: inputVector tensor is... ");
+    //inputVector.print()
     // turn net into array of tensors
     // const [connectionsInputToHidden, connectionsHiddenToOutput, bias1, bias2] = prepareNet(net); 
     const netAsArrayOfTensors = prepareNet(net); // returns [connections0to1, connections1to2 ... bias0to1, bias0to2...]
-
+    //console.log("neuroChooseMove: netAsArrayOfTensors is ", netAsArrayOfTensors)
 
     // run forward pass on inputVector
     const sumsAndOutput = forwardPass(inputVector, netAsArrayOfTensors)
     // return index of highest value from array (ties decided randomly)
     const highest = randomHighest(board, sumsAndOutput[1]) //sumsAndOutput[1] is the output array from forwardpass
-
+    console.log(sumsAndOutput[1])
     return [highest, ...sumsAndOutput]; // the forward pass data is passed along for training purposes & for presentational data 
 }
 
 
 function prepareNet(net){
-    console.log("prepareNet, net is", net)
+    //console.log("prepareNet, net is", net)
     checkNetData(net,"prepareNet")
+    //console.log(`prepareNet: net received with length ${net.length}`)
+    if(net.length < 8){console.log("WARNING: net length is less than 8 upon receipt in prepareNet. Are you still using nets with depth 4?")}
     let newNet = []
     const midwayPoint = net.length/2; //this marks when the connections data stops and bias data begins
     for (let i = 0; i < net.length; i++){
         if (i < midwayPoint) {
             // turn connection arrays into 2d tensors 
             newNet[i] = tf.tensor2d(net[i])
+            checkTensor(newNet[i], "newNet[i]", "prepareNet, first if clause")
         }
         else {
             // turn bias arrays into 2d tensors 
-            console.log(`net[${i}], net is`, net[i]);
+            //console.log(`net[${i}], net is`, net[i]);
             newNet[i] = tf.tensor1d(net[i])
+            checkTensor(newNet[i], "newNet[i]", "prepareNet, else clause")
+
         }
     }
 
-
-
-    // const connectionsInputToHidden =  tf.tensor2d(net[0])
-    // const connectionsHiddenToOutput = tf.tensor2d(net[1])
-    // // turn bias arrays into 1d tensors 
-    // const bias1 = tf.tensor1d(net[2]), bias2 = tf.tensor1d(net[3]); 
-    // // returns array of tensors
-    // return [connectionsInputToHidden, connectionsHiddenToOutput, bias1, bias2]
-    console.log("the length of NewNet is : ", newNet)
     return newNet; 
 }
 
@@ -68,32 +70,27 @@ function prepareNet(net){
 //returns an array [[sumsRecord,valuesRecord], outputs]
 //function forwardPass(inputTensor, [connectionsInputToHidden, connectionsHiddenToOutput, bias1, bias2]){
 function forwardPass(inputTensor, netAsArrayOfTensors){
-
-    // console.log(`inputTensor has values ${inputTensor.dataSync()}`)
-    // console.log(`connectionsInputToHidden has values ${connectionsInputToHidden.dataSync()}`)
+    checkTensor(inputTensor, "inputTensor on start of function", "forwardPass")
     const halfNetArrayLength = netAsArrayOfTensors.length/2
+    checkTensor(inputTensor, `inputTensor`, "forwardPass")
     let inputsForNextLayer = inputTensor; 
     let sumsRecord = [], valuesRecord = []; // need these for backprop
     for (let i = 0; i < halfNetArrayLength; i++){
-        const sumsTensor = tf.add(inputsForNextLayer.matMul(netAsArrayOfTensors[i]), netAsArrayOfTensors[i+halfNetArrayLength]); // first argument is the weights, second is the corresponding bias 
+        checkTensor(inputsForNextLayer, `inputsForNextLayer on iteration ${i} prior to calculation of sumsTensor`, "forwardPass")
+        checkTensor(netAsArrayOfTensors[i], `netAsArrayOfTensors[${i}]`, "forwardPass")
+        checkTensor(netAsArrayOfTensors[i+halfNetArrayLength], `netAsArrayOfTensors[${i}+halfNetArrayLength]`, "forwardPass")
+        const sumsTensor = tf.add(inputsForNextLayer.matMul(netAsArrayOfTensors[i]), netAsArrayOfTensors[i+halfNetArrayLength]).mul(100).round().div(100); // first argument is the weights, second is the corresponding bias 
+        //checkTensor(sumsTensor, `sumsTensor on iteration ${i}`, "forwardPass")
         sumsRecord.push(sumsTensor.dataSync())
-        inputsForNextLayer = tf.tensor1d(reLUonTensor(sumsTensor)).reshape([1, 9]);
+        // inputsForNextLayer = tf.tensor1d(reLUonTensor(sumsTensor)).reshape([1, 9]);
+        checkTensor(inputsForNextLayer, `inputsForNextLayer on iteration ${i} prior to relu`, "forwardPass")
+        inputsForNextLayer = sumsTensor.relu(); 
+        checkTensor(inputsForNextLayer, `inputsForNextLayer on iteration ${i} after relu`, "forwardPass", sumsTensor)
+
         valuesRecord.push(inputsForNextLayer.dataSync()); 
     }
     return [[sumsRecord,valuesRecord], inputsForNextLayer.dataSync()]; // last value of inputsForNextLayer is output of net (as if to pass to next layer... but there is none)
-    // const hiddenSumsTensor = tf.add(inputTensor.matMul(connectionsInputToHidden), bias1); 
-    // //console.log(`hiddenSumsTensor has values ${hiddenSumsTensor.dataSync()}`)
-    // // console.log(`Handing some hidden values to reluOnTensor`)
-    // const hiddenValuesTensor = tf.tensor1d(reLUonTensor(hiddenSumsTensor)).reshape([1, 9]);
     
-    // // console.log("forwardPass: hiddenValuesTensor is: ", JSON.stringify(hiddenValuesTensor))
-    // const outputSums = tf.add(hiddenValuesTensor.matMul(connectionsHiddenToOutput), bias2);
-    // // console.log(`Giving reLU the following values as a tensor: `, outputSums.dataSync()) 
-    // const outputArray = reLUonTensor(outputSums);
-    // // console.log("forwardPass: outputArray is: ", JSON.stringify(outputArray))
-    // //checkArrayHasDefinedValues(outputArray, 'outputArray', 'forwardPass',[inputTensor, connectionsInputToHidden, connectionsHiddenToOutput, bias1, bias2])
-
-    //return [hiddenSumsTensor.dataSync(),hiddenValuesTensor.dataSync(),outputSums.dataSync(),outputArray ]; 
 }
 
 // returns the index of the highest value from an array, deciding ties randomly. 
@@ -102,7 +99,7 @@ function forwardPass(inputTensor, netAsArrayOfTensors){
 // else if array[i] has a higher value than highestSoFar empty the indexList and write i
 // return an index at random
 function randomHighest(array){
-    console.log("randomHighest: recieving: ", array)
+    //console.log("randomHighest: recieving: ", array)
     let highestSoFar = array[0]; 
     let indexList = [0]; 
     for (let i = 1; i < array.length; i++){
@@ -115,9 +112,9 @@ function randomHighest(array){
             highestSoFar = array[i]; 
         } 
     }
-    console.log("randomHighest: indexList is ", indexList)
+    //console.log("randomHighest: indexList is ", indexList)
 
-    console.log("randomHighest: returning: ", indexList[Math.floor(Math.random()*indexList.length)])
+    //console.log("randomHighest: returning: ", indexList[Math.floor(Math.random()*indexList.length)])
 
     return indexList[Math.floor(Math.random()*indexList.length)]; 
 }
@@ -128,7 +125,7 @@ function randomHighestNotOccupied(currentBoard, squareScores){
     // console.log("randomHighestNotOccupied: currentBoard is: ", currentBoard)
     // console.log("randomHighestNotOccupied: squareScores is: ", squareScores)
     //checkArrayHasDefinedValues(squareScores, 'squareScores', 'randomHighestNotOccupied',[currentBoard, squareScores])
-    console.log("randomHighestNotOccupied: board received is ", currentBoard); 
+    //console.log("randomHighestNotOccupied: board received is ", currentBoard); 
     let highestSoFar = 0; 
     let indexList = []; 
     for (let i = 0; i < currentBoard.length; i++){

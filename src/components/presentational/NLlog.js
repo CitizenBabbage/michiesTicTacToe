@@ -8,7 +8,6 @@ export function NLlog( props ) {
     const setNaturalLanguageLog = props.setNaturalLanguageLog; 
 
 
-    console.log("nLLogStats are", nLLogStats)
     
     function updateNLLog(listOfLists) {
         console.log("CALLING updateNLLog on input ",listOfLists )

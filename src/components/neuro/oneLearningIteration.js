@@ -11,11 +11,16 @@ import { makeBiases } from "./netBuilders";
 
 
 
-// returns an array [hiddenLayerWeights, finalLayerWeights, hiddenLayerBias, finalLayerBias, residualError, rawErrors]
+// returns an array [newNet, highestError, rawErrors]
 export function oneLearningIteration(board, net, learningRate, sigma){
+    //console.log("board is ", board)
     const correctArray = getCorrectArray(board);
+    board = numerizeBoard(board); 
+
     let thisLayerSums, thisLayerValues, previousLayerValues, afferentConnections, afferentBiases, newWeights, newBiases, highestError, finalErrors, rawErrors;  
     const [unused, [arrayOfSums, arrayOfValues], outputValues] = neuroChooseMove(board, net); // returns [0.recommended move, 1.hiddenSums arrays, 2.output values]
+    //console.log("oneLearningIteration: arrayOfSums are ", arrayOfSums)
+    
     let newNet = net.map(() => []);
     
     //using arrayOfSums +1 to control looping bc it = number of layers
@@ -25,12 +30,14 @@ export function oneLearningIteration(board, net, learningRate, sigma){
         
         previousLayerValues = i === 0? board: arrayOfValues[i-1]; 
         thisLayerSums = arrayOfSums[i]; 
+        //console.log("oneLearningIteration: 1. thisLayerSums are ", thisLayerSums)
         thisLayerValues = arrayOfValues[i];
         afferentConnections = net[i]; 
         afferentBiases = net[i + halfLength];
         
-
+       // minimaxArray, hiddenValues, outputSums, outputValues, secondWeights, secondBias, learningRate, sigma, board
         if (i === halfLength - 1){ // final layer
+            //console.log("oneLearningIteration: 2. thisLayerSums are ", thisLayerSums);
             [newWeights, newBiases, highestError, finalErrors, rawErrors] 
                 = calculateFinalLayerUpdate(correctArray, previousLayerValues, thisLayerSums, thisLayerValues, afferentConnections, afferentBiases, learningRate, sigma, board) 
             newNet[i] = newWeights; newNet[i+halfLength] = newBiases; 

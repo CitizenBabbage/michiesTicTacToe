@@ -2,10 +2,12 @@ import { calculateWinner } from "../engineHelpers/checkWinner.js"
 import { whoseMove } from "../general/usefulFunctions.js";
 
 export function minimaxChooseMove(board, whoseTurn){
+    //console.log("minimaxChooseMove, board to be handed to minimaxRecurse is: ", board)
+
     let [choice, bestScore, boardScores] = minimaxRecurse(board,whoseTurn);
-    console.log("minimaxChooseMove: boardScores are ", boardScores)
+    //console.log("minimaxChooseMove: boardScores are ", boardScores)
     boardScores = numerizeFullSquares(boardScores); // replaces 'full' with 1
-    console.log("minimaxChooseMove: boardScores after numerization are ", boardScores)
+    //console.log("minimaxChooseMove: boardScores after numerization are ", boardScores)
     return [choice, bestScore, boardScores];
 }
 

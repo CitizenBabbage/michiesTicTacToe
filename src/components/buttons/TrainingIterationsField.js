@@ -9,6 +9,7 @@ export function TrainingIterationsField( props ) {
     const value = props.value; 
     const setValue = props.setValue; 
     const [submissionError, setSubmissionError] = useState(""); 
+    const setSoundEffect = props.setSoundEffect; 
     
 
     function handleChange(event) {
@@ -18,13 +19,18 @@ export function TrainingIterationsField( props ) {
     function handleSubmit (event) {
         event.preventDefault();
         if (isAnInteger(event.target.elements[0].value)){
+          console.log("submit button pressed")
           setTrainingIterations(event.target.elements[0].value); 
           setPlayersTurn(false)
+          setSoundEffect("menaceLearn")
         }
         else setSubmissionError("Please enter an integer")
       }
+
+
+    
       
-console.log("trainingMode in TrainingIteratonsField is " , trainingMode)
+      
 
     if (trainingMode) return (
         <div>

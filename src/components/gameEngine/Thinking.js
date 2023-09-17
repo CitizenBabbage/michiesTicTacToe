@@ -7,6 +7,7 @@ import { chooseMove } from '../../auxiliary/choiceFunctions/chooseMove.js';
 import { checkDbase, checkBoard } from "../../auxiliary/testers/errorCheckers.js"
 import {roundOffElementsInArray, placeMark} from "../../auxiliary/general/usefulFunctions.js"
 import Board from "../board/Board.js" 
+import SoundComponent from '../presentational/soundFX/SoundFX.js';
 
 
 
@@ -55,7 +56,7 @@ export default function Thinking( props ) {
 
     useEffect(
         () => {if (testMode && !playersTurn) {
-            console.log('useEffect triggered in thinking, based on change in playersTurn')
+            //console.log('useEffect triggered in thinking, based on change in playersTurn')
             setComputerOff(false)
             checkForComputersTurn()}
         }, [playersTurn]
@@ -65,19 +66,19 @@ export default function Thinking( props ) {
         console.log("checking For Computers Turn..."); 
         if (computerOff) return; 
         if (isCalculatingWinner) {
-            console.log("isCalculatingWinner is still in progress...")
+            //console.log("isCalculatingWinner is still in progress...")
             return
         }; 
         if (playersTurn) {
-            console.log("checkForComputersTurn: Player's turn detected!"); 
+            //console.log("checkForComputersTurn: Player's turn detected!"); 
             return; 
         };
         if (trainingMode && !trainingIterations > 0) {
-            console.log("Training iterations not set or reduced to 0. Canceling checkForComputersTurn!"); 
+            //console.log("Training iterations not set or reduced to 0. Canceling checkForComputersTurn!"); 
             return; 
         };
         if (winner) {
-            console.log("Winner is determined. Canceling checkForComputersTurn!")
+            //console.log("Winner is determined. Canceling checkForComputersTurn!")
             return
         };
         console.log("checkForComputersTurn: Passed!"); 
@@ -90,11 +91,11 @@ export default function Thinking( props ) {
         );
 
     function takeComputersTurn(){
-        console.log("passed Thinking/takeComputersTurn 1")
+        //console.log("passed Thinking/takeComputersTurn 1")
         if (computersTurn) {
             if (squares.includes(null)){                        // if there are empty squares left...
                 computerPlay().then(resolvedSquares => {
-                    console.log("takeComputersTurn: squares are ", resolvedSquares)
+                    //console.log("takeComputersTurn: squares are ", resolvedSquares)
                     checkBoard(resolvedSquares, "takeComputersTurn");
                     setSquares(resolvedSquares);
                     }
@@ -112,7 +113,7 @@ export default function Thinking( props ) {
         let nextSquares = [...squares];                                             // create duplicate board in memory
         return delayAndChoose(nextSquares).then(choiceAndProbabilityArray => {
             nextSquares = placeMark(choiceAndProbabilityArray[0], nextSquares)      // set the board square to X or O, as appropriate
-            console.log("computerPlay: choiceAndProbabilityArray[1] is", choiceAndProbabilityArray[1])
+            //console.log("computerPlay: choiceAndProbabilityArray[1] is", choiceAndProbabilityArray[1])
             setProbabilityArray(choiceAndProbabilityArray[1])
             return Promise.resolve(nextSquares); 
             }
@@ -201,9 +202,10 @@ export default function Thinking( props ) {
     return (
         <div>
             <p> {thinkingWord} </p>
-            {foe === 'menace' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>}
+            {/* {foe === 'menace' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>} */}
             {foe === 'Neuro' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "neuroPredictions" values = {thinkBoard}/>}
             {foe === 'minimax' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "minimaxBoard" values = {thinkBoard}/>}
+            <SoundComponent computersTurn = {computersTurn} foe = {foe} whoWon = {props.whoWon} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect}/>
 
         </div>
       

@@ -7,18 +7,19 @@ import { useState, useEffect } from 'react';
 import {db} from '../../auxiliary/boardStateDatabase/dataBeadsFormatted'
 
 import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions';
-import { makeBiases, makeConnections } from '../neuro/netBuilders';
+import { makeBiases, makeConnections, makeNetwork } from '../neuro/netBuilders';
 import { checkNetData } from '../../auxiliary/testers/errorCheckers';
 
 import { ChooseSide } from './ChooseSide';
 import  PlayPage  from './PlayPage';
 import { MenaceTrainingPage } from '../menace/MenaceTrainingPage';
 import { NeuroTrainingPage } from '../neuro/NeuroTrainingPage';
+import SoundComponent from '../presentational/soundFX/SoundFX';
 
 
 
 export default function GameShell( props ) {
-  console.log("db[0] is ", db[0])
+  //console.log("db[0] is ", db[0])
   const [humansLetter, setHumansLetter] = useState( null ); 
   //const [opponent, setOpponent] = useState( null ); 
   const [promptText, setPromptText ] = useState( `Choose side, X or O` ); 
@@ -36,23 +37,18 @@ export default function GameShell( props ) {
   const [trainingIterations, setTrainingIterations] = useState(0); 
   const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
   const [resigned, setResigned] = useState(null); 
+  const [soundEffect, setSoundEffect] = useState(""); 
+  const [whoWon, setWhoWon] = useState(null) 
   const foe = props.foe; 
   const setFoe = props.setFoe; 
   // the net is set at this level so as to be available both for the training page and for the game itself
   
+  useEffect(()=>{
+    console.log("start of gameShell, soundEffect is ", props.soundEffect)
+}, [])
 
+  const [net, setNet] = useState(makeNetwork([27,32,36,3]))
 
-  const [net, setNet] = useState(makeNetwork(3))
-
-  function makeNetwork(size){
-    let connectionArray = []; 
-    let biasesArray = []; 
-    for (let i = 0; i < size; i++){
-      connectionArray.push(makeConnections());
-      biasesArray.push(makeBiases());
-    }
-    return [...connectionArray,...biasesArray]; 
-  }
 
   useEffect(
     () => {
@@ -68,7 +64,7 @@ export default function GameShell( props ) {
       if (dbResponse !== databaseResponse){
         throw new Error(`GameShell: db[0].response is ${dbResponse} but database[0].response is ${databaseResponse}`)
       }
-      else console.log("GameShell cleared on first render")
+      //else console.log("GameShell cleared on first render")
     }, [])
   }
   checkGameShell()
@@ -78,12 +74,14 @@ export default function GameShell( props ) {
     setPlayersTurn(true); 
     setButtonActivation(false);
     setTrainingMode(false) ;
+    setWhoWon(null)
   }
   function handleOClick () {
     setHumansLetter('O');
     setPlayersTurn(false)
     setButtonActivation(false); 
     setTrainingMode(false) ;
+    setWhoWon(null)
   }
 
   function handleTrainingModeClick (){
@@ -97,6 +95,7 @@ export default function GameShell( props ) {
   function reset () {
     setHumansLetter(null);
     setButtonActivation(true);
+    setWhoWon(null);
   }
 
 function returnToGame(){
@@ -121,6 +120,10 @@ function returnToGame(){
   else if (!trainingMode){
     return (
       <PlayPage
+      setWhoWon = {setWhoWon}
+      whoWon = {whoWon}
+      setSoundEffect = {setSoundEffect}
+      soundEffect = {soundEffect}
         net = {net} 
         setNet = {setNet} 
         humansLetter = {humansLetter}
@@ -157,7 +160,11 @@ function returnToGame(){
     )
   }
   else if (foe === 'menace') return (
+    <div> 
     <MenaceTrainingPage
+        setSoundEffect = {setSoundEffect}
+
+        soundEffect = {soundEffect}
         humansLetter = {humansLetter}
         playersTurn = {playersTurn}
         setPlayersTurn = {setPlayersTurn}
@@ -188,7 +195,9 @@ function returnToGame(){
         name = {props.name} 
         blurb = {props.blurb} 
         src = {props.src}
-      />    
+        trainingSound = {props.trainingSound}
+      />  
+      </div>   
   )
 
   else if (foe === 'Neuro') return (

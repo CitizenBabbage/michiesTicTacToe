@@ -12,6 +12,8 @@ export default function GameEnd(props){
     const trainingMode = props.trainingMode; 
     const isCalculatingWinner = props.isCalculatingWinner; 
     const resigned = props.resigned; 
+    const setWhoWon = props.setWhoWon; 
+    const humansLetter = props.humansLetter; 
     
     // console.log(checkWinner(squares))
     // console.log(checkWinner(squares).then(writeGameResults))
@@ -46,10 +48,15 @@ export default function GameEnd(props){
         if (!winner){ // if the winner hasn't already been written
             console.log("Resetting winner in writeGameResults to ", results)
             setWinner(results);
-            
         }
         setIsCalculatingWinner(false)
     }
+
+    //decides which of human vs computer was the winner
+    useEffect(() => {
+        setWhoWon(winner === humansLetter? "human": ['X','O'].includes(winner)? "computer": "draw")
+        console.log("setWhoWon has been triggered")
+    },[winner])
 
 
 

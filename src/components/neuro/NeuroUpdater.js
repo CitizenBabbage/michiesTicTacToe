@@ -4,6 +4,7 @@ import { useState, useEffect, useRef} from 'react';
 import { returnArrayOfTypesOf, checkConnections, checkNetData } from "../../auxiliary/testers/errorCheckers";
 import { ErrorDisplay } from "../presentational/ErrorDisplay";
 import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions';
+import TrainingCycler from './TrainingCycler';
 
 export default function NeuroUpdater(props){
     const percentTraining = props.percentTraining
@@ -17,6 +18,8 @@ export default function NeuroUpdater(props){
     const neuroLearning = props.neuroLearning;
     const setNeuroLearning = props.setNeuroLearning;
     const trainingSet = props.trainingSet; 
+    const [cycleCount, setCycleCount] = useState(0); 
+
 
     // console.log(`NeuroUpdater: percentTraining is ${percentTraining}, net is of length ${net.length}, sigma is ${sigma}, learningRate is ${learningRate} and maxCycle is ${maxCycle}`)
 
@@ -36,13 +39,16 @@ export default function NeuroUpdater(props){
         let newNet = dataBaseDuplicator(net); 
 
         checkConnections(newNet[0], "first layer of connections", neuroLearn)
-        runToMaxCycle(trainingSet, newNet); 
+        //runToMaxCycle(trainingSet, newNet); 
+        console.log("setting cycle count")
+        setCycleCount(maxCycle);
+        console.log("cycle count set") 
     }
 
     function runToMaxCycle(trainingSet, newNet){
         let err; 
         // let worstErrorThisCycle = 0
-        checkConnections(newNet[0], "first layer of connections", runToMaxCycle)
+        //checkConnections(newNet[0], "first layer of connections", runToMaxCycle)
         for (let i = 0; i < maxCycle; i++){
             console.log("cycles remaining: ", maxCycle - i)
             // if (newNet.length !== 6) throw new Error(`Problem in runToMaxCycle loop at iteration ${i}: net to be passed to oneTrainingCycle is wrong length! length = ${newNet.length}, should equal 6. `)
@@ -66,7 +72,7 @@ export default function NeuroUpdater(props){
 
     return (
         <div>
-            <ErrorDisplay error = {error}/>
+            <TrainingCycler cycleCount = {cycleCount} setCycleCount = {setCycleCount} trainingSet = {trainingSet} learningRate = {learningRate} sigma = {sigma} error = {error} maxCycle = {maxCycle} setError = {setError} net = {net} setNet = {setNet}/>
         </div>
     )
 }

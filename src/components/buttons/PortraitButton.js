@@ -30,6 +30,7 @@ export default function PortraitButton(props) {
         <button className="portrait">
             <img src={activeSrc} alt={props.alt} className={animationClass} />
             <p>{`\n${props.characterName}`}</p>
+            <p>Style: {`\n${props.characterStyle}`}</p>
         </button>
     );
 }

@@ -1,3 +1,50 @@
+XXXXXXXXXXXXXXXXXXXXXXXXXX
+
+1. Recode the net generator to take an input of 27. 
+2. hidden layers should be size 32
+3. output layers should be size 36
+4. checks are going to go haywire. Remove nine check from tensor check. 
+5. softmax outputs in groups of four
+6. translate from softmax output to boardstate
+7. Change the minimax numerize function to return binary arrays of four digits. 
+
+Reorganize the network architecture as follows: 
+
+1. Encode the input data as a vector of length 3 using one hot encoding. I.e. 
+X = [1, 0, 0]
+O = [0, 1, 0]
+_ = [0, 0, 1]
+
+2. That means the whole input board can be flattened to an array of 27. 
+
+3. The task is to train up a classifier for each square, where there are four possible classifications per square, namely: win, draw, loss, impossible
+
+4. We can train up the net to predict one square for the sake of time efficiency while settling on the architecture. Once we know that an architecture that predicts for one square works, it follows that it will work if we simply expand the output layer to make nine squares. 
+
+5. We can encode the outputs using softmax as follows: 
+win = [1,0,0,0]
+draw = [0,1,0,0]
+loss = [0,0,1,0]
+impossible = [0,0,0,1]
+
+6. So the architecture (to predict one square) will have 27 inputs and four outputs. To predict all nine, it will ultimately have 27 inputs and 36 outputs. 
+
+XXXXXXXXXXXXXXXXXXXXXXXXXX
+
+create a simple value setter for the minimax values. 
+
+make sure what's coming out as an array is an array of nine elements, not an array containing an array of nine elements. 
+
+XXXXXXXXXXXXXXXXXXXXXXXXXX
+
+1. run one iteration. 
+2. one iteration ends by changing the net. 
+3. useEffect, d: net, sets new error value. 
+4. useEffect, d: error value, if iteration > 0, drops the iteration count by 1. 
+5. useEffect d: iteration count: if the iteration count is > 1, launch one iteration. 
+
+XXXXXXXXXXXXXXXXXXXXXXXX
+
 recover 2 layer neural net functionality DONE 
 	shorten inputs nets to length 4 DONE
 rewrite functions, if necessary, so that nets are passed as arrays DONE

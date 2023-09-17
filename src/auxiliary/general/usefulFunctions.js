@@ -350,6 +350,7 @@ export function whoseMove(board){
     else return "O"; 
 }
 
+// X = 1, O = 2, _ = 3
 export function numerizeBoard(board){
     let numberBoard = []; 
     for (let i = 0; i < board.length; i++){

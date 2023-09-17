@@ -25,7 +25,10 @@ export function chooseMove(board, foeSpec, foe){
     let netOutput;  
     if (foe === "menace"){
         let tempDB = [...foeSpec] // foeSpec[0] in this case should be the board object database
-        return menaceChooseMove(board, tempDB)
+        let x = menaceChooseMove(board, tempDB)
+        console.log(`menaceChooseMove has returned ${x[1]} as second argument`)
+        return x; 
+        //return menaceChooseMove(board, tempDB)
     }
     else if (foe === "minimax"){
         netOutput = minimaxChooseMove(board, whoseTurn); 

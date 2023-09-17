@@ -82,17 +82,17 @@ export default function MenaceUpdater(props){
     useEffect(updateHistoryLog,[database]) 
 
     function updateHistoryLog(){ 
-        console.log(`updateHistoryLog called: allPlayedBoards has length ${allPlayedBoards.length} and is as follows: ${JSON.stringify(allPlayedBoards)}. gameLog has length ${gameLog.length}`)
+        //console.log(`updateHistoryLog called: allPlayedBoards has length ${allPlayedBoards.length} and is as follows: ${JSON.stringify(allPlayedBoards)}. gameLog has length ${gameLog.length}`)
         let newAllPlayedBoards = dataBaseDuplicator(allPlayedBoards);
         checkBeadSubbase(newAllPlayedBoards, "updateHistoryLog")
         for (let j = 0; j < gameLog.length; j++){ //for each item in the new gameLog, find the corresponding object and update the history log with it
-            console.log(`checking gamelog[${j}], which is `, gameLog[j])
+            //console.log(`checking gamelog[${j}], which is `, gameLog[j])
             let gameLogObject = returnCorrespondingObjectFromDatabase(gameLog[j]); 
             if (!gameLogObject && !(boardFull(gameLog[j]))) throw new Error(` at updateHistoryLog: board state ${gameLog[j]} has no corresponding object`)
             newAllPlayedBoards = updateHistory(newAllPlayedBoards,gameLogObject)
         }
         //console.log(`icounter is ${icounter}, jcounter is ${jcounter} and kcounter is ${kcounter} `)
-        console.log(`newAllPlayedBoards has length ${newAllPlayedBoards.length} and is `, newAllPlayedBoards)
+        //console.log(`newAllPlayedBoards has length ${newAllPlayedBoards.length} and is `, newAllPlayedBoards)
         setAllPlayedBoards(newAllPlayedBoards);
     }
 
@@ -109,14 +109,14 @@ export default function MenaceUpdater(props){
         let isInHistoryAlready = false; 
         for (let i = 0; i < historyBase.length; i++){ // for each board object in historyBase
             if (areExactlyTheSame(historyBase[i].state,object.state)){
-                console.log("Updating a board state that is already in history...  ")
+                //console.log("Updating a board state that is already in history...  ")
                 historyBase = [...historyBase.slice(0,i),object, ...historyBase.slice(i+1)]
                 isInHistoryAlready = true; 
                 break; 
                 }
             }
         if (!isInHistoryAlready) historyBase = [...historyBase,object] // if it wasnt anywhere in the set, push it to the end
-        console.log("historyBase is ", historyBase)
+        //console.log("historyBase is ", historyBase)
         return historyBase; 
         }
 
@@ -131,7 +131,7 @@ export default function MenaceUpdater(props){
 
 
     function learnFromGame(){
-        console.log("initiating learnFromGame, winner is ", winner)
+        //console.log("initiating learnFromGame, winner is ", winner)
         if (winner === undefined || winner == null || gameLog === undefined) {
             console.log("Either winner or gamelog is undefined or null. Aborting learnFromGame")
             return
@@ -140,7 +140,7 @@ export default function MenaceUpdater(props){
             let gameResult = gameresult(winner); // 1 for a win for X, 0 for a draw, -1 for a loss
             checkIsANumber(gameResult, "learnFromGame", "gameResult")
             let newData = updateEachBoardPlayed(gameLog, gameResult)
-            console.log("About to update database")
+            //console.log("About to update database")
             setDatabase(newData); 
         }
     }
@@ -170,24 +170,20 @@ export default function MenaceUpdater(props){
     }
 
     
-useEffect(()=>{ ///just a checker. can be deleted. 
-    console.log(`USEEFFECT triggered: allPlayedBoards has length ${allPlayedBoards.length} and is as follows: ${JSON.stringify(allPlayedBoards)}`)
-    checkBeadSubbase(allPlayedBoards, "useEffect") 
-}
-    ,[allPlayedBoards])
+
 
 
     
 
     function findAndUpdateEquivalent(data, update, move, boardState){
-        console.log(`Updating for ${JSON.stringify(boardState)}`)
+        //console.log(`Updating for ${JSON.stringify(boardState)}`)
         let newData = dataBaseDuplicator(data); 
         for (let j = 0; j < newData.length; j++){                                                   // look through the db for equivalent board state
             if (areEquivalent(boardState, newData[j].state)){                                       // when you find it
                 let equivScore = equivalenceScore(boardState, newData[j].state)                     // get the equivalence score 
                 let newMove = reverseTransformation(move, equivScore)                               // use that to rotate/flip move appropriately
                 let newBeadCount = Math.max(0, newData[j].response[newMove] + update); 
-                console.log("newBeadCount is", newBeadCount); 
+                //console.log("newBeadCount is", newBeadCount); 
                 checkIsIntegral(newBeadCount, "findAndUpdateEquivalent")
                 newData[j].response[newMove] = newBeadCount;                                        // update response array accordingly 
                 //addToAllPlayedBoards(newData[j])
@@ -209,11 +205,11 @@ useEffect(()=>{ ///just a checker. can be deleted.
         }
         }
         if (!presentInSet) {
-            console.log(`Adding ${JSON.stringify(object)} to allPlayedBoards`)
-            console.log(`Prior to addition allPlayedBoards has length: ${allPlayedBoards.length}`)
+            // console.log(`Adding ${JSON.stringify(object)} to allPlayedBoards`)
+            // console.log(`Prior to addition allPlayedBoards has length: ${allPlayedBoards.length}`)
             newAllPlayedBoards = [...newAllPlayedBoards,object]; 
             setAllPlayedBoards(newAllPlayedBoards); 
-            console.log(`After addition allPlayedBoards has length: ${allPlayedBoards.length}`)
+            //console.log(`After addition allPlayedBoards has length: ${allPlayedBoards.length}`)
         }
         else {
             console.log(`1. ${JSON.stringify(object)} is already in allPlayedBoards`)
@@ -233,7 +229,7 @@ useEffect(()=>{ ///just a checker. can be deleted.
 
     // //takes in winner as a symbol 'O' or 'X', determines whether computer won, and returns either 1 or -1 
     function gameresult(winner){
-        console.log("winner is", winner)
+        //console.log("winner is", winner)
         if (winner !== 'X' && winner !== 'O' && winner !== "D") return; //ignore incomplete games
         if (winner === "X") return 1 // 
         else if (winner === "O") return -1 //

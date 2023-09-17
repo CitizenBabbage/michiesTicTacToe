@@ -18,7 +18,7 @@ import { SetSigmaField } from '../buttons/sigmaField';
 import { StartNeuroLearningButton } from '../buttons/StartNeuroLearning';
 import { generateGoodBoardStates } from '../../auxiliary/boardStateDatabase/makeBeadAuxilliaries';
 import NeuroComparison from '../presentational/neuroComparison';
-
+import { DownloadError } from '../errorHandling/DownloadError';
 
 export function NeuroTrainingPage (props) {
       
@@ -73,8 +73,10 @@ export function NeuroTrainingPage (props) {
             
       </div>
       <div>
-        <NeuroUpdater trainingSet = {trainingSet} trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} percentTraining = {percentTraining} db = {database} net = {net} setNet = {setNet} learningRate = {learningRate} maxCycle = {maxCycle} sigma = {sigma} neuroLearning = {neuroLearning} setNeuroLearning = {setNeuroLearning}/> 
-        <NeuroComparison trainingStates = {trainingSet} net = {net}/>
+        <DownloadError net = {net} trainingSet = {trainingSet}>
+          <NeuroUpdater trainingSet = {trainingSet} trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} percentTraining = {percentTraining} db = {database} net = {net} setNet = {setNet} learningRate = {learningRate} maxCycle = {maxCycle} sigma = {sigma} neuroLearning = {neuroLearning} setNeuroLearning = {setNeuroLearning}/> 
+          <NeuroComparison trainingStates = {trainingSet} net = {net}/>
+        </DownloadError>
       </div>
     </div>  
     )

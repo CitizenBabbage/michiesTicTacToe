@@ -35,14 +35,20 @@ const [audioSelected, setAudioSelected] = useState(false);
 
 
 
+// function playAudio(){
+//     if (audioRef.current) {
+//         audioRef.current.play().then(() => {
+//             // Playback started successfully
+//         }).catch((error) => {
+//             console.error("Playback failed because: ", error);
+//         });
+//     }
+// }
+
 function playAudio(){
-    if (audioRef.current) {
-        audioRef.current.play().then(() => {
-            // Playback started successfully
-        }).catch((error) => {
-            console.error("Playback failed because: ", error);
-        });
-    }
+  if (audioRef.current) {
+      audioRef.current.play();
+  }
 }
 
   return (

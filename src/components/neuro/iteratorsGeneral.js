@@ -21,15 +21,15 @@ export function oneTrainingCycle(trainingSet, net, learningRate, sigma){
     checkConnections(net[0], "first layer of connections after start of function", "oneTrainingCycle") 
     for (let i = 0; i < trainingSet.length; i++){
         let board = trainingSet[i]; 
-        board = numerizeBoard(board); 
+        // board = numerizeBoard(board); 
 
 
         results = oneLearningIteration(board, net, learningRate, sigma) // returns an array [hiddenLayerWeights, finalLayerWeights, hiddenLayerBias, finalLayerBias, residualError, rawErrors]
         const errorOnRun = Math.sqrt(squaredError(results[2])); 
         net = results[0]; // copy this so that we can recycle the net while keeping the additional data in results
-        console.log("net before pops is ", returnArrayOfTypesOf(net))
+        //console.log("net before pops is ", returnArrayOfTypesOf(net))
 
-        checkNetData(net, "oneTrainingCycle, after net extracted from results")
+        //checkNetData(net, "oneTrainingCycle, after net extracted from results") // this captures major error
 
         //console.log("after pops, net length is ", net.length)
 

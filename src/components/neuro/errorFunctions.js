@@ -2,20 +2,20 @@ import { checkArrayContainsOnlyNumbers, check9ArrayBundle } from "../../auxiliar
 
 export function computeErrorForLastLayer(predictionArray, correctArray, sums){
     //console.log("starting computeErrorForLastLayer")
-    console.log("computeErrorForLastLayer: sums is ", sums)
+    //console.log("computeErrorForLastLayer: sums is ", sums)
 
     const differentialArray = getDifferentials(sums);
-    console.log("computeErrorForLastLayer: differentialArray is ", differentialArray)
-
+    // console.log("computeErrorForLastLayer: differentialArray is ", differentialArray)
+    // console.log("computeErrorForLastLayer: predictionArray is ", predictionArray)
+    // console.log("computeErrorForLastLayer: correctArray is ", correctArray)
+    
+    
     //const rawErrorArray = correctArray.map((num, i) => (Math.abs(num - predictionArray[i]) > 0.5? num - predictionArray[i]:0));
-    console.log("computeErrorForLastLayer: predictionArray is ", predictionArray)
-    console.log("computeErrorForLastLayer: correctArray is ", correctArray)
-
     const rawErrorArray = correctArray.map((num, i) => (num - predictionArray[i]));
-    console.log("computeErrorForLastLayer: rawErrorArray is ", rawErrorArray)
+    //console.log("computeErrorForLastLayer: rawErrorArray is ", rawErrorArray)
 
     const learningErrorArray = rawErrorArray.map((num,i) => num * differentialArray[i])
-    console.log("computeErrorForLastLayer: learningErrorArray is:", learningErrorArray)
+    //console.log("computeErrorForLastLayer: learningErrorArray is:", learningErrorArray)
     //console.log("ending computeErrorForLastLayer")
     return [learningErrorArray, rawErrorArray]; 
 }
@@ -26,9 +26,9 @@ export function computeErrorForLastLayer(predictionArray, correctArray, sums){
 // returns an error array
 export function computeErrorForHiddenLayers(weights, errors, differentials){
     //console.log("starting computeErrorForHiddenLayers")
-    check9ArrayBundle(differentials, "differentials", "computeErrorForHiddenLayers", ["n/a"])
-    console.log("computeErrorForHiddenLayers: receiving errors: ", errors)
-    console.log("computeErrorForHiddenLayers: receiving differentials: ", differentials)
+    // check9ArrayBundle(differentials, "differentials", "computeErrorForHiddenLayers", ["n/a"])
+    // console.log("computeErrorForHiddenLayers: receiving errors: ", errors)
+    // console.log("computeErrorForHiddenLayers: receiving differentials: ", differentials)
     let errorArray = new Array(weights.length).fill(0);
     for (let i = 0; i < weights.length; i++){ // for each node at the hidden layer
         let runningSum = 0; 
@@ -42,7 +42,7 @@ export function computeErrorForHiddenLayers(weights, errors, differentials){
     // console.log("computeErrorForHiddenLayers: errorArray has length ", errorArray.length)
     // console.log("computeErrorForHiddenLayers: errorArray is ", errorArray)
     // console.log("ending computeErrorForHiddenLayers")
-    checkArrayContainsOnlyNumbers(errorArray, "errorArray", "computeErrorForHiddenLayers", ["n/a"])
+    // checkArrayContainsOnlyNumbers(errorArray, "errorArray", "computeErrorForHiddenLayers", ["n/a"])
 
 
     return errorArray;

@@ -9,8 +9,8 @@ import hurisPortrait from '../images/huris/10a7f78f1fd64265a7df0efd71c8c959bc63d
 import evolvoPortrait from '../images/evolvo4.webp'
 import menacePortrait from '../images/menace/77fa83d664df40fb96fe7fb183d4004a02d73734.webp'
 import minimaxPortrait from '../images/minimax/2c5a7d46e7f04555884426495b8cb09c4d07a752.webp'
-import minximaPortrait from '../images/minxima/af896fd40d0249c88c952f8308485f6888596ec3.webp'
-import neuroPortrait from '../images/neuro/7cd6bd08398c4f948061c6e50555f7da5c4145b4.webp'
+// import minximaPortrait from '../images/minxima/af896fd40d0249c88c952f8308485f6888596ec3.webp'
+import neuroPortrait from '../images/neuro/gingerNeuro.gif'
 
 export default function selectOpponent(){
     
@@ -25,7 +25,7 @@ export default function selectOpponent(){
         minimaxPortrait,
         evolvoPortrait, 
         neuroPortrait,
-        minximaPortrait
+        // minximaPortrait
     ];
 
     const names = [
@@ -34,7 +34,16 @@ export default function selectOpponent(){
         'Minimax',
         'Evolvo', 
         'Neuro',
-        'Minxima'
+        // 'Minxima'
+    ];
+
+    const styles = [
+        'Brute Force Memorization',
+        'Rule Bound',
+        'Anticipatory',
+        'Darwinian', 
+        'Connectionist',
+        // 'Minxima'
     ];
 
     const currentPortraitIndexRef = useRef(currentPortraitIndex); 
@@ -78,9 +87,9 @@ export default function selectOpponent(){
                     case 4:
                         navigate("/neuro");
                         break;
-                    case 5:
-                        navigate("/minxima");
-                        break;
+                    // case 5:
+                    //     navigate("/minxima");
+                    //     break;
                     default:
                         break;
                 }
@@ -99,7 +108,7 @@ export default function selectOpponent(){
         <div>
             <div className = 'intropage'>
                     <p>Select your opponent</p> 
-                    <PortraitButton src={portraits[currentPortraitIndex]} alt="Portrait" characterName = {names[currentNameIndex]}/>
+                    <PortraitButton characterStyle = {styles[currentNameIndex]} src={portraits[currentPortraitIndex]} alt="Portrait" characterName = {names[currentNameIndex]}/>
             </div>
         </div> 
     

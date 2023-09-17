@@ -1,4 +1,5 @@
 import { isNumber, hasTwoOrFewerDecimalPlaces } from "../general/usefulFunctions.js";
+import * as tf from '@tensorflow/tfjs';
 
 
 export function checkSum(array, funcName){
@@ -134,7 +135,7 @@ export function checkArrayContainsOnlyNumbers(array, arrayName, funcName, inputA
 
 export function check9ArrayBundle(array, arrayName, funcName, inputArray){
     if (array === null || array === undefined) throw new Error(` in ${funcName}, ${arrayName} is not defined!`)
-    if (array.length !== 9) throw new Error(` in ${funcName}, ${arrayName} is wrong length! Is ${array.length} but should be 9.`)
+    //if (array.length !== 9) throw new Error(` in ${funcName}, ${arrayName} is wrong length! Is ${array.length} but should be 9.`)
     checkArrayHasDefinedValues(array, arrayName, funcName, inputArray)
     checkArrayContainsOnlyNumbers(array, arrayName, funcName, inputArray)
 }
@@ -161,11 +162,11 @@ export function listInputArguments(array, funcName){
 
 export function checkConnections(connectionsArray, arrayName, funcName){
     if (!Array.isArray(connectionsArray) && !connectionsArray instanceof Float32Array) throw new Error(`Bad connection list in ${funcName}, outer array ${arrayName} is not an array, but is ${connectionsArray}.`)
-    if (connectionsArray.length !==9) throw new Error(`Bad connection list in ${funcName}, the outer array ${arrayName} is not the right length, but is length ${connectionsArray.length}.`)
+    // if (connectionsArray.length !==9) throw new Error(`Bad connection list in ${funcName}, the outer array ${arrayName} is not the right length, but is length ${connectionsArray.length}.`)
     for (let i = 0; i < connectionsArray.length; i++){
         if (!Array.isArray(connectionsArray[i]) && !connectionsArray[i] instanceof Float32Array) throw new Error(`Bad connection list in ${funcName}, the ${i}th inner array of ${arrayName} is not an array, but is ${connectionsArray[i]}.`)
-        if (connectionsArray[i].length !==9) throw new Error(`Bad connection list in ${funcName}, the ${i}th inner array of ${arrayName} is not the right length, but is length ${connectionsArray[i].length}.`)
-        checkArrayHasDefinedValues(connectionsArray[i], `the ${i}th array of ${arrayName}`, funcName, ["n/a"])
+        //if (connectionsArray[i].length !==9) throw new Error(`Bad connection list in ${funcName}, the ${i}th inner array of ${arrayName} is not the right length, but is length ${connectionsArray[i].length}.`)
+        check9ArrayBundle(connectionsArray, "connectionsArray", funcName, ["n/a"])
     }
 }
 
@@ -196,8 +197,50 @@ export function checkNetData(net, funcName){
             checkConnections(net[i], `${i}th layer of connections`, funcName)
         }
         else {
-            console.log(`net[${i}], net is`, net[i]);
+            //console.log(`net[${i}], net is`, net[i]);
             check9ArrayBundle(net[i], `${i}th array, which is ${i-midwayPoint}th bias array`, funcName, ['n/a'])
         }
     }
+}
+
+async function hasAllDefinedValues(tensor) {
+    const isNaNTensor = tf.isNaN(tensor);
+    const anyNaN = await tf.any(isNaNTensor).data();
+    return !anyNaN[0];
+}
+
+// returns true for 1d tensors of length 9 and 2d tensors with 9 columns
+function isOfLength9(tensor){
+    if (tensor.shape.length === 1) return tensor.shape[0] === 9; 
+    else if (tensor.shape.length === 2) return tensor.shape[1] === 9; 
+}
+
+// const tensorTestData = [[0.059, 0.091, 0.024, 0.074, 0.015, 0.026, 0.055, 0.023, 0.069],
+// [0.082, 0.01 , 0.023, 0.007, 0.008, 0.073, 0.069, 0.094, 0.024],
+// [0.047, 0.039, 0.008, 0.07 , 0.025, 0.057, 0.013, 0.092, 0.093],
+// [0.043, 0.007, 0.002, 0.035, 0.082, 0.013, 0.064, 0.029, 0.094],
+// [0.08 , 0.082, 0.029, 0.097, 0.036, 0.032, 0.001, 0.022, 0.066],
+// [0.091, 0.037, 0.043, 0.061, 0.014, 0.006, 0.076, 0.069, 0.04 ],
+// [0.007, 0.078, 0.05 , 0.085, 0.069, 0.023, 0.023, 0.067, 0.02 ],
+// [0.001, 0.007, 0.044, 0.098, 0.098, 0.055, 0.009, 0.026, 0.037],
+// [0.098, 0.054, 0.078, 0.07 , 0.058, 0.01 , 0.04 , 0.014, 0.063]]
+// const tensor = tf.tensor(tensorTestData);
+
+
+// console.log(checkTensor(tensor, 'testTensor', 'console.log'))
+
+export function checkTensor(tensor, tensorName, funcName, input){
+    hasAllDefinedValues(tensor).then(result => {
+        if (!result) {
+            if (input) {
+                console.log(`tensor ${tensorName} in ${funcName} has NaN values! input that caused problem tensor was...`)
+                input.print()
+            }
+            throw new Error(`tensor ${tensorName} in ${funcName} has NaN values!`)}
+    });
+    // if (!isOfLength9(tensor)){
+    //     console.log(`in tensor ${tensorName} in ${funcName} is not of length 9! Tensor was: `)
+    //     tensor.print(); 
+    //     throw new Error(`tensor ${tensorName} in ${funcName} is not of length 9!`)
+    // }
 }
