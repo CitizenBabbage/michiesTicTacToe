@@ -2,9 +2,9 @@ export function makeNetwork(size){ // size should be a 4 array [size of input, s
     let connectionArray = []; 
     let biasesArray = []; 
     const firstConnections = makeConnections(size[0],size[1]); 
-    const firstBiases = makeBiases(size[0],size[1])
+    const firstBiases = makeBiases(size[1])
     const lastConnections = makeConnections(size[1],size[2]); 
-    const lastBiases = makeBiases(size[1],size[2])
+    const lastBiases = makeBiases(size[2])
     for (let i = 0; i < size[3]-2; i++){
       connectionArray.push(makeConnections(size[1],size[1]));
       biasesArray.push(makeBiases(size[1]));
@@ -22,6 +22,9 @@ export function makeConnections(afferentLayerSize, efferentLayerSize){
         }
         matrix.push(row)
     }
+    console.log("number of columns is ", matrix.length)
+    console.log("number of rows is ", matrix[0].length)
+
     return matrix; 
 }
 

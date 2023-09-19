@@ -36,7 +36,7 @@ function databaseDisplay(props){
     if (trainingMode) return (
         <div>
             {/* <p> {props.devMode? `First probability distribution is ${JSON.stringify(roundOffElementsInArray(database[0].response))}`:""}</p>  */}
-            <p style = {{fontSize: 12}}> {`Training Iterations Remaining: ${trainingIterations}`}</p> 
+            <p style = {{fontSize: 12}}> {`Training Games Left: ${trainingIterations}`}</p> 
             <ul className = 'array'>
                 {
                     allPlayedBoards.map((item, index) => {

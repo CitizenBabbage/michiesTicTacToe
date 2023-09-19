@@ -11,8 +11,8 @@ export default function Neuro( props ) {
 
   const [foe, setFoe] = useState("Neuro")
   return (
-      <div className = 'page'>
-        <GameShell name = "Neuro" blurb = {neuroBlurb} src = {neuroPortrait} devMode = {props.devMode} playersTurn = {props.playersTurn} setPlayersTurn = {props.setPlayersTurn} foe = {foe} setFoe = { setFoe }/>
+      <div>
+        <GameShell name = "Neuro" playStyle = "Connectionist" blurb = {neuroBlurb} src = {neuroPortrait} devMode = {props.devMode} playersTurn = {props.playersTurn} setPlayersTurn = {props.setPlayersTurn} foe = {foe} setFoe = { setFoe }/>
       </div>
   )
 }

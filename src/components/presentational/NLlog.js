@@ -1,13 +1,16 @@
 import React from 'react';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions.js';
 
 export function NLlog( props ) {
     const naturalLanguageLog = props.naturalLanguageLog; 
     const nLLogStats = props.nLLogStats; 
     const setNaturalLanguageLog = props.setNaturalLanguageLog; 
+    const [NLlogVisible, setNLlogVisible] = useState(false)
 
-
+    function handleClick(){
+        setNLlogVisible(prevValue => !prevValue)
+    }
     
     function updateNLLog(listOfLists) {
         console.log("CALLING updateNLLog on input ",listOfLists )
@@ -54,19 +57,26 @@ export function NLlog( props ) {
 
     useEffect (()=>{
         console.log("naturalLanguageLog is now ", naturalLanguageLog)
-    },naturalLanguageLog)
+    },[naturalLanguageLog])
 
-    return (
-        <ol className = 'retro-text' style = {{fontSize : 12}}>
-            {naturalLanguageLog.map((item, index) => 
-                (
-                    <li key={index}>
-                        <p>{item}</p>
-                    </li>
-                )
-            )}
-        </ol>
 
+    if (NLlogVisible === true)
+        return (
+            <div> 
+                <button className = 'retro-text' onClick = {handleClick}> Hide Menace's Diary</button>
+                <ol className = 'retro-text' style = {{fontSize : 12}}>
+                    {naturalLanguageLog.map((item, index) => 
+                        (
+                            <li key={index}>
+                                <p>{item}</p>
+                            </li>
+                        )
+                    )}
+                </ol>
+            </div>
+        )
+    else return (
+        <button className = 'retro-text' onClick = {handleClick}> Read Menace's Diary</button>
     )
     
 }

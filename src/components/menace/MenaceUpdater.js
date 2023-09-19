@@ -5,7 +5,7 @@ import "./Updater.css"
 import { NLlog } from '../presentational/NLlog.js';
 import DatabaseDisplay from './DBDisplay.js';
 import { learnFromGame, startNewTrainingIteration, updateHistoryLog } from './menaceUpdaterHelpers.js';
-
+import {MenaceTrainingPage} from './MenaceTrainingPage'
 
 
 export default function MenaceUpdater(props){
@@ -101,10 +101,62 @@ export default function MenaceUpdater(props){
 
     
     if (trainingMode) return (
-        <div>
-            <DatabaseDisplay devMode = {props.devMode} allPlayedBoards = {allPlayedBoards} squares = {props.squares} database = {database} trainingIterations = {trainingIterations} trainingMode = {trainingMode}/>
-            <NLlog naturalLanguageLog = { naturalLanguageLog } setNaturalLanguageLog = { setNaturalLanguageLog } nLLogStats = { nLLogStats }/>
-        </div>
+        <div> 
+            <MenaceTrainingPage
+
+                naturalLanguageLog = {naturalLanguageLog} 
+                setNaturalLanguageLog = {setNaturalLanguageLog}
+                nLLogStats = {nLLogStats}
+
+                setSoundEffect = {props.setSoundEffect}
+                soundEffect = {props.soundEffect}
+                trainingSound = {props.trainingSound}
+
+                humansLetter = {props.humansLetter}
+                playersTurn = {props.playersTurn}
+                setPlayersTurn = {props.setPlayersTurn}
+                setWhoWon = {props.setWhoWon}
+                
+                winner = {winner}
+                setWinner = {setWinner}
+                isCalculatingWinner = {props.isCalculatingWinner}
+                setIsCalculatingWinner = {props.setIsCalculatingWinner}
+
+                database = {database}
+                setDatabase = {setDatabase}
+
+                gameLog = {gameLog}
+                setGameLog = {setGameLog}
+                allPlayedBoards = {allPlayedBoards}
+
+                trainingMode = {trainingMode}
+                setTrainingMode = {props.setTrainingMode}
+
+                value = {props.value}
+                setValue = {props.setValue}
+
+                trainingIterations = {trainingIterations}
+                setTrainingIterations = {setTrainingIterations}
+
+                squares = {props.squares}
+                setSquares = {setSquares}
+
+                resigned = {props.resigned}
+                setResigned = {props.setResigned}
+
+                foe = {props.foe}
+                setFoe = {props.setFoe}
+
+                reset = {props.reset}
+                returnToGame = {props.returnToGame} 
+
+                name = {props.name} 
+                playStyle = {props.playStyle}
+                blurb = {props.blurb} 
+                src = {props.src}
+            />  
+      </div>   
+        
     )
     
 

@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
 import { checkTensor, checkNetData, checkArrayHasDefinedValues, check9ArrayBundle, checkConnections } from '../testers/errorCheckers';
-import { numerizeBoard } from '../general/usefulFunctions';
+import { numerizeBoard } from './neuroChooseMoveHelpers';
 
 // const connectionsInputToHidden = tf.zeros([9, 9]);
 // const connectionsHiddenToOutput = tf.zeros([9, 9]);
@@ -17,11 +17,11 @@ const matrixShape = [9, 9];
 // returns [0.recommended move, 1.[hiddenSums, hiddenValues], 2.output values]
 export function neuroChooseMove(board, net){
     checkNetData(net,"neuroChooseMove input")
-    board = numerizeBoard(board); 
-    //console.log("neuroChooseMove: numerized board is: ", board)
     // turn board into vector
-    console.log("board is ", JSON.stringify(board))
-    const inputVector = tf.tensor1d(board).reshape([1, 9]);
+    const boardvector = numerizeBoard(board); 
+    //console.log("neuroChooseMove: numerized board is: ", board)
+    console.log("neuroChooseMove: boardvector is ", JSON.stringify(boardvector))
+    const inputVector = tf.tensor1d(boardvector).reshape([1, 27]);
     checkTensor(inputVector, "inputVector", "neuroChooseMove, after creation")
 
     //console.log("neuroChooseMove: inputVector tensor is... ");
@@ -34,8 +34,9 @@ export function neuroChooseMove(board, net){
     // run forward pass on inputVector
     const sumsAndOutput = forwardPass(inputVector, netAsArrayOfTensors)
     // return index of highest value from array (ties decided randomly)
-    const highest = randomHighest(board, sumsAndOutput[1]) //sumsAndOutput[1] is the output array from forwardpass
-    console.log(sumsAndOutput[1])
+    const highest = randomHighestNotOccupied(board, sumsAndOutput[1]) //sumsAndOutput[1] is the output array from forwardpass
+    console.log("neuroChooseMove: sumsAndOutput[1] is ", sumsAndOutput[1])
+    console.log("highest is ", highest)
     return [highest, ...sumsAndOutput]; // the forward pass data is passed along for training purposes & for presentational data 
 }
 
@@ -79,6 +80,9 @@ function forwardPass(inputTensor, netAsArrayOfTensors){
         checkTensor(inputsForNextLayer, `inputsForNextLayer on iteration ${i} prior to calculation of sumsTensor`, "forwardPass")
         checkTensor(netAsArrayOfTensors[i], `netAsArrayOfTensors[${i}]`, "forwardPass")
         checkTensor(netAsArrayOfTensors[i+halfNetArrayLength], `netAsArrayOfTensors[${i}+halfNetArrayLength]`, "forwardPass")
+        console.log("netAsArrayOfTensors[i] shape is ", netAsArrayOfTensors[i].shape)
+        console.log("netAsArrayOfTensors[i+halfNetArrayLength] shape is ", netAsArrayOfTensors[i+halfNetArrayLength].shape)
+        console.log("inputsForNextLayer.matMul(netAsArrayOfTensors[i]) is ", inputsForNextLayer.matMul(netAsArrayOfTensors[i]))
         const sumsTensor = tf.add(inputsForNextLayer.matMul(netAsArrayOfTensors[i]), netAsArrayOfTensors[i+halfNetArrayLength]).mul(100).round().div(100); // first argument is the weights, second is the corresponding bias 
         //checkTensor(sumsTensor, `sumsTensor on iteration ${i}`, "forwardPass")
         sumsRecord.push(sumsTensor.dataSync())
@@ -89,8 +93,74 @@ function forwardPass(inputTensor, netAsArrayOfTensors){
 
         valuesRecord.push(inputsForNextLayer.dataSync()); 
     }
-    return [[sumsRecord,valuesRecord], inputsForNextLayer.dataSync()]; // last value of inputsForNextLayer is output of net (as if to pass to next layer... but there is none)
-    
+    console.log("inputsForNextLayer.dataSync().length is", inputsForNextLayer.dataSync().length)
+    const oneHotOutputs = cutIntoOneHots(inputsForNextLayer.dataSync(), 4) // value of inputsForNextLayer after for loop terminates is output of net (as if to pass to next layer... but there is none)
+    const softmaxedOneHots = applySoftMaxToAll(oneHotOutputs) 
+    const outputArray = reduceAllOneHotsToScores(softmaxedOneHots); 
+    return [[sumsRecord,valuesRecord], outputArray];
+}
+
+// this is to be applied to each four-digit output
+// returns an array of equal size, replacing raw outputs with probabilities
+function applySoftmax(array){
+    console.log("applySoftmax: array upon receipt is: ", JSON.stringify(array))
+    let softMaxArray = []; 
+    array = [...array]
+    console.log("applySoftmax: array after copy is: ", JSON.stringify(array))
+    const sumOfExponentials = array.reduce((accumulator, current) => accumulator + Math.exp(current), 0);
+    console.log("applySoftmax: sumOfExponentials is: ", JSON.stringify(sumOfExponentials))
+    for (let j = 0; j < array.length; j++){
+        softMaxArray[j] = Math.exp(array[j]) / sumOfExponentials
+    }
+    console.log("applySoftmax: outputArray is ", JSON.stringify(softMaxArray)) // should be an array of 4 numbers
+   
+    return softMaxArray; 
+}
+
+function applySoftMaxToAll(arrayOfArrays){
+    console.log("applySoftMaxToAll: first element of arrayOfArrays is: ", arrayOfArrays[0])
+    console.log("applySoftMaxToAll: length of of arrayOfArrays upon receipt is: ", arrayOfArrays.length)
+    console.log("applySoftMaxToAll: arrayOfArrays is an array? ", Array.isArray(arrayOfArrays))
+    let outputArray = []; 
+    for (let i = 0; i < arrayOfArrays.length; i++){
+        outputArray[i] = applySoftmax(arrayOfArrays[i])
+    }
+    console.log("applySoftMaxToAll: outputArray is ", JSON.stringify(outputArray)) // should be an array of 36 numbers
+    return outputArray; 
+}
+
+// this takes a one-hot encoding of probabilities (i.e. post-softmax) and produces a score for that move
+// by multiplying the probability of a win by 6, the probability of a draw by 2, 
+// the probability of a loss by 1 (since at least a losing move is a possible move) and adding them together.  
+function reduceOneHotEncodingToScore(arrayOf4){
+    return (3*arrayOf4[0])+(2*arrayOf4[1])+ arrayOf4[2]; 
+}
+
+function cutIntoOneHots(array, cutsize){
+    let allOneHotEncodings = []; 
+    let justOneHotEncoding = []; 
+    for (let i = 0; i < array.length; i++){
+        if ((i+1)%cutsize === 0){
+            justOneHotEncoding.push(array[i]) 
+            allOneHotEncodings.push(justOneHotEncoding); // push the current OHE to the array 
+        }
+        else if(i%cutsize === 0) {
+            justOneHotEncoding = [] // reset to empty
+            justOneHotEncoding.push(array[i]) // start the new OHE with current
+        }
+        else justOneHotEncoding.push(array[i]) 
+    }
+    return allOneHotEncodings; 
+}
+
+function reduceAllOneHotsToScores(arrayOfArrays){
+    console.log("reduceAllOneHotsToScores: arrayOfArrays is", arrayOfArrays)
+    let outputArray = []; 
+    for (let i = 0; i < arrayOfArrays.length; i++){
+        outputArray[i] = reduceOneHotEncodingToScore(arrayOfArrays[i])
+    }
+    console.log("reduceAllOneHotsToScores: outputArray is", outputArray)
+    return outputArray; 
 }
 
 // returns the index of the highest value from an array, deciding ties randomly. 
@@ -98,26 +168,26 @@ function forwardPass(inputTensor, netAsArrayOfTensors){
 // if array[i] has a value equal to highestSoFar push i onto index list
 // else if array[i] has a higher value than highestSoFar empty the indexList and write i
 // return an index at random
-function randomHighest(array){
-    //console.log("randomHighest: recieving: ", array)
-    let highestSoFar = array[0]; 
-    let indexList = [0]; 
-    for (let i = 1; i < array.length; i++){
-        if (array[i] === highestSoFar){
+// function randomHighest(array){
+//     console.log("randomHighest: recieving: ", JSON.stringify(array))
+//     let highestSoFar = array[0]; 
+//     let indexList = [0]; 
+//     for (let i = 1; i < array.length; i++){
+//         if (array[i] === highestSoFar){
         
-            indexList.push(i);
-        }
-        else if (array[i] > highestSoFar) {
-            indexList = [i]; 
-            highestSoFar = array[i]; 
-        } 
-    }
-    //console.log("randomHighest: indexList is ", indexList)
+//             indexList.push(i);
+//         }
+//         else if (array[i] > highestSoFar) {
+//             indexList = [i]; 
+//             highestSoFar = array[i]; 
+//         } 
+//     }
+//     console.log("randomHighest: indexList is ", indexList)
 
-    //console.log("randomHighest: returning: ", indexList[Math.floor(Math.random()*indexList.length)])
+//     //console.log("randomHighest: returning: ", indexList[Math.floor(Math.random()*indexList.length)])
 
-    return indexList[Math.floor(Math.random()*indexList.length)]; 
-}
+//     return indexList[Math.floor(Math.random()*indexList.length)]; 
+// }
 
 // looks through the currentBoard and an array of scores for potential moves
 // returns the highest scoring square that is still empty, randomizing ties

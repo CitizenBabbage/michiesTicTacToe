@@ -351,13 +351,34 @@ export function whoseMove(board){
 }
 
 // X = 1, O = 2, _ = 3
-export function numerizeBoard(board){
-    let numberBoard = []; 
-    for (let i = 0; i < board.length; i++){
-        if (board[i] === 'X' || board[i] === 1 || board[i] === 1){numberBoard[i] = 1}
-        else if (board[i] === 'O' || board[i] === -1 || board[i] === 2){numberBoard[i] = 2}
-        else numberBoard[i] = 3; 
-    }
-    return numberBoard; 
-}
+// export function numerizeBoard(board){
+//     let numberBoard = []; 
+//     for (let i = 0; i < board.length; i++){
+//         if (board[i] === 'X' || board[i] === 1 || board[i] === 1){numberBoard[i] = 1}
+//         else if (board[i] === 'O' || board[i] === -1 || board[i] === 2){numberBoard[i] = 2}
+//         else numberBoard[i] = 3; 
+//     }
+//     return numberBoard; 
+// }
 
+// export function numerizeBoard(board){
+//     let numberBoard = []; 
+//     for (let i = 0; i < board.length; i++){
+//         if (board[i] === 'X' || board[i] === 1 || board[i] === 1){
+//             numberBoard[i] = 1
+//             numberBoard[i+1] = 0
+//             numberBoard[i+2] = 0
+//         }
+//         else if (board[i] === 'O' || board[i] === -1 || board[i] === 2){
+//             numberBoard[i] = 0
+//             numberBoard[i+1] = 1
+//             numberBoard[i+2] = 0
+//         }
+//         else {
+//             numberBoard[i] = 0
+//             numberBoard[i+1] = 0
+//             numberBoard[i+2] = 1
+//         } 
+//     }
+//     return numberBoard; 
+// }

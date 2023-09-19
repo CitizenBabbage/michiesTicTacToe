@@ -18,13 +18,15 @@ export function TrainingIterationsField( props ) {
 
     function handleSubmit (event) {
         event.preventDefault();
-        if (isAnInteger(event.target.elements[0].value)){
+        if (isAnInteger(event.target.elements[0].value) && event.target.elements[0].value > 0){
           console.log("submit button pressed")
           setTrainingIterations(event.target.elements[0].value); 
+          console.log("training iterations set to ", event.target.elements[0].value)
+
           setPlayersTurn(false)
           setSoundEffect("menaceLearn")
         }
-        else setSubmissionError("Please enter an integer")
+        else setSubmissionError("I need a positive whole number")
       }
 
 
@@ -35,11 +37,8 @@ export function TrainingIterationsField( props ) {
     if (trainingMode) return (
         <div>
             <form onSubmit={handleSubmit}>
-                <label>
-                Training Iterations:
-                <input type="number" value={value} onChange={handleChange} />
-                </label>
-                <input type="submit" value="Submit" />
+                <input className = "retro-text" type="number" value={value} placeholder = "No. of Games" onChange={handleChange} />
+                {/* <input type="submit" value="Submit" /> */}
             </form>
             <p>{submissionError} </p>
         </div>

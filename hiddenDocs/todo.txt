@@ -1,3 +1,12 @@
+Center all stuff on Menace 
+write a display function that shows how much of the whole database menace has examined
+rewrite menace training cycle so it is interrupable
+create a stop training button
+show menace's thinkboard
+menace isn't continuing learning after playing. 
+check if menace is updating forced moves. It shouldn't be, but they're appearing in the log. 
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 Clean up intro so there aren't unnecessary conditional renders and URL queries. 
 Put natural language log in its own component and then remove from displayed elements. (OR replace blurb). 
 Update MENACE algo. 

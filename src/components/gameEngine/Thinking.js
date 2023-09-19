@@ -50,13 +50,20 @@ export default function Thinking( props ) {
 
     // Whenever isCalculatingWinner changes value, ask the computer to check whether it needs to take a turn
     useEffect(
-        checkForComputersTurn,
+        () => {
+            console.log('useffect[isCalculatingWinner,trainingIterations] winner is ', winner),
+            checkForComputersTurn()
+        },
         [isCalculatingWinner,trainingIterations]
         );
 
+
+        
     useEffect(
         () => {if (testMode && !playersTurn) {
-            //console.log('useEffect triggered in thinking, based on change in playersTurn')
+            console.log('useEffect triggered in thinking, based on change in playersTurn')
+            console.log('useffect[playersTurn] winner is ', winner)
+
             setComputerOff(false)
             checkForComputersTurn()}
         }, [playersTurn]
@@ -64,21 +71,25 @@ export default function Thinking( props ) {
 
     function checkForComputersTurn(){
         console.log("checking For Computers Turn..."); 
-        if (computerOff) return; 
+        console.log("winner should be undefined, but is ", winner)
+        if (computerOff) {
+            console.log("computerOff is set to true. Canceling checkForComputersTurn!")
+            return
+        }; 
         if (isCalculatingWinner) {
-            //console.log("isCalculatingWinner is still in progress...")
+            console.log("isCalculatingWinner is still in progress. Canceling checkForComputersTurn!")
             return
         }; 
         if (playersTurn) {
-            //console.log("checkForComputersTurn: Player's turn detected!"); 
+            console.log("checkForComputersTurn: Player's turn detected! Canceling checkForComputersTurn!"); 
             return; 
         };
         if (trainingMode && !trainingIterations > 0) {
-            //console.log("Training iterations not set or reduced to 0. Canceling checkForComputersTurn!"); 
+            console.log("Training iterations not set or reduced to 0. Canceling checkForComputersTurn!"); 
             return; 
         };
         if (winner) {
-            //console.log("Winner is determined. Canceling checkForComputersTurn!")
+            console.log("Winner is determined. Canceling checkForComputersTurn!")
             return
         };
         console.log("checkForComputersTurn: Passed!"); 
@@ -112,6 +123,7 @@ export default function Thinking( props ) {
     function computerPlay() {
         let nextSquares = [...squares];                                             // create duplicate board in memory
         return delayAndChoose(nextSquares).then(choiceAndProbabilityArray => {
+            console.log("computerPlay: Move chosen is " , choiceAndProbabilityArray[0])
             nextSquares = placeMark(choiceAndProbabilityArray[0], nextSquares)      // set the board square to X or O, as appropriate
             //console.log("computerPlay: choiceAndProbabilityArray[1] is", choiceAndProbabilityArray[1])
             setProbabilityArray(choiceAndProbabilityArray[1])
@@ -122,22 +134,21 @@ export default function Thinking( props ) {
         
     
 
-    useEffect(
-        changeTurns,
-        [computersTurn]
-    )
+    // useEffect(
+    //     changeTurns,
+    //     [computersTurn]
+    // )
     
-    function changeTurns(){
-
-        if (!computersTurn){
-            if (!trainingMode) {
-                setPlayersTurn(true)
-            }
-            else {
-                reverseFoe(); 
-            }
-        }
-    }
+    // function changeTurns(){
+    //     if (!computersTurn){
+    //         if (!trainingMode) {
+    //             setPlayersTurn(true)
+    //         }
+    //         else {
+    //             reverseFoe(); 
+    //         }
+    //     }
+    // }
     
     useEffect(
         updateProbabilityBoard,
@@ -189,6 +200,7 @@ export default function Thinking( props ) {
                 console.log("choiceAndBoard is: ", choiceAndBoard); 
                 console.log("delayAndChoose: foe is: ", foe)
                 //console.log("delayAndChoose, selected move is :", choice)
+                setPlayersTurn(true); 
                 resolve(choiceAndBoard);
                
             })
@@ -200,9 +212,9 @@ export default function Thinking( props ) {
     }
 
     return (
-        <div>
-            <p> {thinkingWord} </p>
-            {/* {foe === 'menace' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>} */}
+        <div className='center'>
+            <p> {!playersTurn && !winner?"Thinking...":'\u00A0'} </p>
+            {foe === 'menace' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>}
             {foe === 'Neuro' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "neuroPredictions" values = {thinkBoard}/>}
             {foe === 'minimax' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "minimaxBoard" values = {thinkBoard}/>}
             <SoundComponent trainingMode = {props.trainingMode} computersTurn = {computersTurn} foe = {foe} whoWon = {props.whoWon} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect}/>

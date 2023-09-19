@@ -1,4 +1,4 @@
-import { whoseMove , numerizeBoard} from "../../auxiliary/general/usefulFunctions";
+import { whoseMove } from "../../auxiliary/general/usefulFunctions";
 import { neuroChooseMove } from "../../auxiliary/choiceFunctions/neuroChooseMoveGeneral";
 import { minimaxRecurse } from "../../auxiliary/choiceFunctions/minimaxChooseMove";
 import { db } from "../../auxiliary/boardStateDatabase/dataBeadsFormatted";
@@ -8,6 +8,7 @@ import { squaredError } from "./errorFunctions";
 import { getCorrectArray } from "./minimaxHandling";
 import { calculateFinalLayerUpdate, calculateHiddenLayerUpdate } from "./updaters";
 import { makeBiases } from "./netBuilders";
+import { numerizeBoard } from "../../auxiliary/choiceFunctions/neuroChooseMoveHelpers";
 
 
 
@@ -18,6 +19,7 @@ export function oneLearningIteration(board, net, learningRate, sigma){
     board = numerizeBoard(board); 
 
     let thisLayerSums, thisLayerValues, previousLayerValues, afferentConnections, afferentBiases, newWeights, newBiases, highestError, finalErrors, rawErrors;  
+    
     const [unused, [arrayOfSums, arrayOfValues], outputValues] = neuroChooseMove(board, net); // returns [0.recommended move, 1.hiddenSums arrays, 2.output values]
     //console.log("oneLearningIteration: arrayOfSums are ", arrayOfSums)
     
@@ -25,7 +27,6 @@ export function oneLearningIteration(board, net, learningRate, sigma){
     
     //using arrayOfSums +1 to control looping bc it = number of layers
     const halfLength = arrayOfSums.length; 
-    //the input layer counts as layer -1
     for (let i = halfLength - 1; i > -1; i--){ 
         
         previousLayerValues = i === 0? board: arrayOfValues[i-1]; 

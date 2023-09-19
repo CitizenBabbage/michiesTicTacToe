@@ -41,19 +41,27 @@ export default function PlayPage (props) {
     const foe = props.foe; 
     const reset = props.reset; 
     const returnToGame = props.returnToGame;
+    const setHumansLetter = props.setHumansLetter; 
+    //const startTraining = props.startTraining; 
+    const handleTrainingModeClick = props.handleTrainingModeClick; 
 
     useEffect(()=>{
       console.log("start of playPage, props.soundEffect is ", props.soundEffect)
-  }, [])
+    }, [])
+
+    
 
     return (
     <div className='page'> 
       <div className='gameshell'>
+          <div className='space-around'>
             <NavigationButton path = "/selectOpponent" label = 'Menu'/>
+            {!trainingMode && <Button className = 'retro-button' onClick = {handleTrainingModeClick}> Train </Button> }
+          </div>
+            
             <BoardContainer devMode = {props.devMode} testMode = { props.testMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } src = {props.src} setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} setResigned = {setResigned} humansLetter = {humansLetter} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} ></BoardContainer>
             <TrainingIterationsField setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } setTrainingIterations = {setTrainingIterations}  setPlayersTurn = {setPlayersTurn} foe = {foe} value = {value} setValue = {setValue}/>
             <Thinking soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect} net = {props.net} devMode = {props.devMode} testMode = { props.testMode } computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } trainingIterations = {trainingIterations} setSquares = {setSquares} setFoe = { props.setFoe } foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} playersTurn = { playersTurn } setPlayersTurn = {setPlayersTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares }  winner = { winner }/>   
-            {trainingMode && <Button className = 'retro-button' onClick = {returnToGame}> Back To Game </Button> }
             <GameLog devMode = {props.devMode} trainingMode = {trainingMode} winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
             <GameEnd humansLetter = {humansLetter} setWhoWon = {props.setWhoWon} devMode = {props.devMode} resigned = { resigned } isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} playersTurn = { playersTurn }/>
       </div>

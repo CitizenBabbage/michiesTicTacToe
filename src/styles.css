@@ -19,8 +19,7 @@
   outline: 1px solid rgb(245, 6, 6) !important;
 } */
 
-.page, .twoColumns {
-  position: absolute; 
+.page {
   width: 100% ;
   height: 90vh; 
   /* box-sizing: border-box; */
@@ -28,6 +27,27 @@
   grid-template-columns: 1fr 1fr;
   outline: 1px solid rgb(245, 6, 6) !important;
   
+}
+
+.twoColumns {
+  width: 100% ;
+  /* box-sizing: border-box; */
+  place-items: center; 
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  outline: 1px solid rgb(245, 6, 6) !important;
+}
+
+.space-around {
+    display: flex;
+    justify-content: space-around;
+}
+
+.center {
+  display: grid;
+  place-items: center; 
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .threeBoards {
@@ -68,6 +88,7 @@
 .gameshell, .threeRows {
   outline: 1px solid rgb(9, 241, 55) !important;
   grid-template-rows: 1fr 1fr 1fr;
+  place-items: center; 
   /* display: flex;
   flex-direction: column;
   align-items: center;
@@ -245,6 +266,7 @@ body {
 
 .thumbnail {
   width: 50px; 
+  height: 50px
   /* height: 300px;  */
 }
 

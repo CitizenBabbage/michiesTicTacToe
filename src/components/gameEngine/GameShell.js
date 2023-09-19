@@ -12,7 +12,7 @@ import { checkNetData } from '../../auxiliary/testers/errorCheckers';
 
 import { ChooseSide } from './ChooseSide';
 import  PlayPage  from './PlayPage';
-import { MenaceTrainingPage } from '../menace/MenaceTrainingPage';
+import MenaceUpdater from '../menace/MenaceUpdater';
 import { NeuroTrainingPage } from '../neuro/NeuroTrainingPage';
 import { EvolvoTrainingPage } from '../evolvo/evolvoTrainingPage';
 import SoundComponent from '../presentational/soundFX/SoundFX';
@@ -86,6 +86,8 @@ export default function GameShell( props ) {
   }
 
   function handleTrainingModeClick (){
+    setSquares(Array(9).fill(null))
+    setWinner(null); 
     setPlayersTurn(false)
     setButtonActivation(false); 
     setTrainingMode(true) ;
@@ -106,6 +108,13 @@ function returnToGame(){
   // setFoe('menace'); 
 }
 
+// function startTraining(){
+//   setWinner(null); 
+//   setPlayersTurn(false);
+//   setHumansLetter(' ') ;
+//   setWhoWon(null);  
+//   setTrainingMode(true) ;
+// }
 
 
 
@@ -121,13 +130,17 @@ function returnToGame(){
   else if (!trainingMode){
     return (
       <PlayPage
+      handleTrainingModeClick = {handleTrainingModeClick}
       setWhoWon = {setWhoWon}
       whoWon = {whoWon}
+
       setSoundEffect = {setSoundEffect}
       soundEffect = {soundEffect}
+
         net = {net} 
         setNet = {setNet} 
         humansLetter = {humansLetter}
+        setHumansLetter = {setHumansLetter}
         playersTurn = {playersTurn}
         setPlayersTurn = {setPlayersTurn}
 
@@ -155,6 +168,7 @@ function returnToGame(){
         reset = {reset}
         returnToGame = {returnToGame} 
         name = {props.name} 
+        playStyle = {props.playStyle}
         blurb = {props.blurb} 
         src = {props.src}
       />    
@@ -162,10 +176,10 @@ function returnToGame(){
   }
   else if (foe === 'menace') return (
     <div> 
-    <MenaceTrainingPage
+    <MenaceUpdater
         setSoundEffect = {setSoundEffect}
-
         soundEffect = {soundEffect}
+
         humansLetter = {humansLetter}
         playersTurn = {playersTurn}
         setPlayersTurn = {setPlayersTurn}
@@ -195,6 +209,7 @@ function returnToGame(){
         reset = {reset}
         returnToGame = {returnToGame} 
         name = {props.name} 
+        playStyle = {props.playStyle}
         blurb = {props.blurb} 
         src = {props.src}
         trainingSound = {props.trainingSound}
@@ -222,6 +237,7 @@ function returnToGame(){
         reset = {reset}
         returnToGame = {returnToGame} 
         name = {props.name} 
+        playStyle = {props.playStyle}
         blurb = {props.blurb} 
         src = {props.src}
       />   
@@ -260,6 +276,7 @@ function returnToGame(){
         reset = {reset}
         returnToGame = {returnToGame} 
         name = {props.name} 
+        playStyle = {props.playStyle}
         blurb = {props.blurb} 
         src = {props.src}
         trainingSound = {props.trainingSound}

@@ -10,7 +10,7 @@ export default function Menace( props ) {
   const [foe, setFoe] = useState("menace")
   return (
       <div>
-        <GameShell trainingSound = {trainingSound} name = "Menace" blurb = {menaceBlurb} src = {menacePortrait} devMode = {props.devMode} playersTurn = {props.playersTurn} setPlayersTurn = {props.setPlayersTurn} foe = {foe} setFoe = { setFoe }/>
+        <GameShell trainingSound = {trainingSound} playStyle = "Brute Memorization" name = "Menace" blurb = {menaceBlurb} src = {menacePortrait} devMode = {props.devMode} playersTurn = {props.playersTurn} setPlayersTurn = {props.setPlayersTurn} foe = {foe} setFoe = { setFoe }/>
       </div>
   )
 }
