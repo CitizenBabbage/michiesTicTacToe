@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import debuggingSound from '../../../soundFX/menaceLoss2.mp3'
 import menaceLearn from '../../../soundFX/menaceLearn2.mp3'
 import menaceLose from '../../../soundFX/menaceLoss2.mp3'
-import evolvoBravado from '../../../soundFX/adapting2.mp3'
-import evolvoLearn from '../../../soundFX/metamorphosis2.mp3'
+import evolvoBravado from '../../../soundFX/evolvo_adapting2.mp3'
+import evolvoLearn from '../../../soundFX/evolvo_metamorphosis2.mp3'
 import neuroWin from '../../../soundFX/cylonHAHAHA.mp3'
 import neuroLearn from '../../../soundFX/cylonMoreTraining.mp3'
 import neuroLose from '../../../soundFX/cylonMoreTraining.mp3'
@@ -25,12 +25,84 @@ export default function SoundComponent( props ) {
   const whoWon = props.whoWon; 
   const foe = props.foe; 
   const computersTurn = props.computersTurn; 
+  const audioRef = useRef(null); 
+  const soundMap = {
+    menaceLearn,
+    menaceLose,
+    evolvoBravado,
+    evolvoLearn,
+    neuroWin,
+    neuroLearn,
+    neuroLose,
+    hurisBravado,
+    minimaxBravado,
+    menaceBravado,
+  };
+
+  let soundInProgress = false; 
 
 useEffect(()=>{
     console.log("start of SoundFX, soundEffect is ", soundEffect)
 }, [])
 
-function pickSound(soundCode){
+
+//whenever the sound source changes, play it. 
+useEffect(() => {
+    console.log(`playing soundSource ${soundSource} because it changed`)
+    playAudio(); 
+}, [soundSource])
+
+
+useEffect(triggerWinOrLoseSound
+    ,[whoWon])
+
+function triggerWinOrLoseSound(){
+    console.log("triggerWinOrLoseSound triggered in SoundFX")
+    console.log("1. whoWon is : ", whoWon)
+    if (whoWon === "human"){
+        console.log("2a. whoWon is now : ", whoWon)
+        const sound = pickSound("loseSound")
+        setSoundEffect(sound)
+        // if (soundEffect !== "menaceBravado") setSoundEffect("menaceBravado") 
+        // else setSoundEffect("minimaxBravado")
+        console.log("triggerWinOrLoseSound: soundEffect is ", soundEffect)
+    }
+    else if (whoWon === "computer"){
+        console.log("2b. whoWon is now : ", whoWon)
+        const sound = pickSound("winSound")
+        console.log("sound is : ", sound)
+        setSoundEffect(sound)
+    }
+    else console.log("2c. whoWon is now : ", whoWon)
+}
+
+
+useEffect(() => {if (!trainingMode) playBravadoSound()}, [computersTurn])
+
+  function playBravadoSound(){
+    const ran = Math.random(); 
+    if (ran < 0.1) {
+        const sound = pickSound("bravadoSound")
+        if (!sound) return 
+        console.log("sound is : ", sound)
+        setSoundEffect(sound)
+    }
+  }
+
+
+useEffect(() => {
+    const sound = soundMap[soundEffect];
+    if (sound) {
+      setSoundSource(sound);
+    } else {
+      setSoundSource(undefined);
+    }
+  }, [soundEffect]);
+
+
+
+  
+  function pickSound(soundCode){
     let trainingSound, winSound, loseSound, bravadoSound; 
     if (!foe) console.log("WARNING: Foe is not defined")
     else if (foe === 'menace'){
@@ -69,105 +141,11 @@ function pickSound(soundCode){
     else if (soundCode === "bravadoSound") return bravadoSound;
 }
 
-//whenever the sound source changes, play it. 
-useEffect(() => {
-    console.log(`soundSource is ${soundSource}`)
-    playAudio(); 
-}, [soundSource])
 
-
-
-
-
-function triggerWinOrLoseSound(){
-    console.log("triggerWinOrLoseSound triggered in SoundFX")
-    console.log("1. whoWon is : ", whoWon)
-    if (whoWon === "human"){
-        console.log("2a. whoWon is now : ", whoWon)
-        const sound = pickSound("loseSound")
-        console.log("sound is : ", sound)
-        setSoundEffect(sound)
-        // if (soundEffect !== "menaceBravado") setSoundEffect("menaceBravado") 
-        // else setSoundEffect("minimaxBravado")
-        console.log("soundEffect is ", soundEffect)
-    }
-    else if (whoWon === "computer"){
-        console.log("2b. whoWon is now : ", whoWon)
-        const sound = pickSound("winSound")
-        console.log("sound is : ", sound)
-        setSoundEffect(sound)
-    }
-    else console.log("2c. whoWon is now : ", whoWon)
-}
-
-useEffect(triggerWinOrLoseSound
-    ,[whoWon])
-
-// function triggerWinOrLoseSound(){
-//     console.log("soundEffect is ", soundEffect)
-//     console.log("triggerWinOrLoseSound triggered in SoundFX")
-//     setSoundEffect("menaceLearn")
-//     console.log("soundEffect is ", soundEffect)
-// }
-
-// useEffect(() => console.log("beep"), [soundEffect])
-
-useEffect(playBravadoSound, [computersTurn])
-
-  function playBravadoSound(){
-    const ran = Math.random(); 
-    if (ran < 0.1) {
-        const sound = pickSound("bravadoSound")
-        console.log("sound is : ", sound)
-        setSoundEffect(sound)
-    }
-  }
-
-useEffect(() => {
-    console.log("change in soundeffect registered")
-    console.log(`soundEffect is `, soundEffect)
-    switch(soundEffect) {
-        case "menaceLearn":
-            setSoundSource(menaceLearn); 
-            break;
-        case "menaceLose":
-            setSoundSource(menaceLose);
-            break;
-        case "evolvoBravado":
-            setSoundSource(evolvoBravado);
-            break; 
-        case "evolvoLearn":
-            setSoundSource(evolvoLearn);
-            break; 
-        case "neuroWin":
-            setSoundSource(neuroWin); 
-            break;
-        case "neuroLearn":
-            setSoundSource(neuroLearn); 
-            break;
-        case "neuroLose":
-            setSoundSource(neuroLose);
-            break;
-        case "hurisBravado":
-            setSoundSource(hurisBravado); 
-            break;
-        case "minimaxBravado":
-            setSoundSource(minimaxBravado);
-            break;
-        case "menaceBravado":
-            setSoundSource(menaceBravado);  
-            break;          
-        default:
-            setSoundSource(""); 
-      }
-},[soundEffect])
-
-
-
-  const audioRef = useRef(null); 
-  
   function playAudio(){
     console.log("playaudio triggered")
+    // if (soundInProgress) return; 
+    // soundInProgress = true; 
     if (audioRef.current) {
         console.log(`audioref has a current, namely ${audioRef.current}`)
         audioRef.current.load(); 
@@ -175,6 +153,7 @@ useEffect(() => {
         audioRef.current.play().then(() => {
                     //when the sfx ends, reset to none so that useEffect becomes responsive to it again.  
                     audioRef.current.addEventListener('ended', () => {
+                        // soundInProgress = false; 
                         setSoundEffect("");
                     });
                     }).catch((error) => {

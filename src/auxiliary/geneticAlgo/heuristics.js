@@ -98,7 +98,7 @@ function getForkSafeMoves(array, mySymbol){
 //rule NSS0: win: If the player has two in a row, they can place a third to get three in a row.
 export function win(array, mySymbol){
     let opportunities = myWins(array, mySymbol); 
-    console.log("myWins are ", opportunities)
+    //console.log("myWins are ", opportunities)
     if (opportunities.length > 0){
         let randomChoice = Math.floor(Math.random()*opportunities.length)
         return opportunities[randomChoice][0]
@@ -106,7 +106,7 @@ export function win(array, mySymbol){
     else return null; 
 }
 
-console.log(win('X',null,'X','X','O','O','O',null,'X'))
+//console.log(win('X',null,'X','X','O','O','O',null,'X'))
 
 //rule NSS1: Block: If the opponent has two in a row, the player must play the third themselves to block the opponent.
 // As win but with opponentsSymbol as second argument
@@ -182,7 +182,6 @@ export function threatenWithoutInvitingAFork(array, mySymbol){
 
 // Rule NSS6: if first move, play corner. 
 export function cornerOnFirst(array){
-    console.log("3")
     if (array.every(element => element === null || element === undefined)) {
         return corner[Math.floor(Math.random()*4)]
     }
@@ -193,11 +192,13 @@ export function cornerOnFirst(array){
 
 
 
+
+
 //Rule NSS7: Center: A player marks the center. 
 export function center(array){
-    console.log("Checking for center square!")
+    //console.log("Checking for center square!")
     if (!array[4]) return 4
-    console.log("Center square unavailable!")
+    //console.log("Center square unavailable!")
     return null; 
 }
 
@@ -236,7 +237,7 @@ export function emptySide(array){
 // non trivial. 
 
 
-// Rule 9: if first move, play centre. 
+// Rule 11: if first move, play centre. 
 export function centreOnFirst(array){
     if (array.every(element => element === null || element === undefined)) {
         return 4
@@ -246,7 +247,7 @@ export function centreOnFirst(array){
 
 
 
-// Rule 10: next corner clockwise as opponent: If the opponent is in the corner, the player plays the next corner clockwise.
+// Rule 12: next corner clockwise as opponent: If the opponent is in the corner, the player plays the next corner clockwise.
 export function nextCornerAsOpponentClockwise(array, mySymbol){
     if (!array[0] && array[6] === opposite(mySymbol)) return 0; 
     else if (!array[2] && array[0] === opposite(mySymbol)) return 2;
@@ -257,7 +258,7 @@ export function nextCornerAsOpponentClockwise(array, mySymbol){
 
 
 
-// Rule 11: Next corner anticlockwise as opponent: If the opponent is in the corner, the player plays the next corner anticlockwise.
+// Rule 13: Next corner anticlockwise as opponent: If the opponent is in the corner, the player plays the next corner anticlockwise.
 export function nextCornerAsOpponentAntiClockwise(array, mySymbol){
     if (!array[0] && array[2] === opposite(mySymbol)) return 0; 
     else if (!array[2] && array[8] === opposite(mySymbol)) return 2;
@@ -266,7 +267,7 @@ export function nextCornerAsOpponentAntiClockwise(array, mySymbol){
     else return null; 
 }
 
-// Rule 12: next corner clockwise as self: If self is in the corner, the player plays the next corner clockwise.
+// Rule 14: next corner clockwise as self: If self is in the corner, the player plays the next corner clockwise.
 export function nextCornerAsSelfClockwise(array, mySymbol){
     if (!array[0] && array[6] === mySymbol) return 0; 
     else if (!array[2] && array[0] === mySymbol) return 2;
@@ -275,7 +276,7 @@ export function nextCornerAsSelfClockwise(array, mySymbol){
     else return null; 
 }
 
-// Rule 13: Next corner anticlockwise as self: If self is in the corner, the player plays the next corner anticlockwise.
+// Rule 15: Next corner anticlockwise as self: If self is in the corner, the player plays the next corner anticlockwise.
 export function nextCornerAsSelfAntiClockwise(array, mySymbol){
     if (!array[0] && array[2] === mySymbol) return 0; 
     else if (!array[2] && array[8] === mySymbol) return 2;
@@ -285,7 +286,7 @@ export function nextCornerAsSelfAntiClockwise(array, mySymbol){
 }
 
 
-// Rule 14: next edge clockwise as opponent: If the opponent is on the edge, the player plays the next edge clockwise.
+// Rule 16: next edge clockwise as opponent: If the opponent is on the edge, the player plays the next edge clockwise.
 export function nextEdgeAsOpponentClockwise(array, mySymbol){
     if (!array[0] && array[6] === opposite(mySymbol)) return 0; 
     else if (!array[2] && array[0] === opposite(mySymbol)) return 2;
@@ -296,7 +297,7 @@ export function nextEdgeAsOpponentClockwise(array, mySymbol){
 
 
 
-// Rule 15: Next edge anticlockwise as opponent: If the opponent is on the edge, the player plays the next edge anticlockwise.
+// Rule 17: Next edge anticlockwise as opponent: If the opponent is on the edge, the player plays the next edge anticlockwise.
 export function nextEdgeAsOpponentAntiClockwise(array, mySymbol){
     if (!array[0] && array[2] === opposite(mySymbol)) return 0; 
     else if (!array[2] && array[8] === opposite(mySymbol)) return 2;
@@ -305,7 +306,7 @@ export function nextEdgeAsOpponentAntiClockwise(array, mySymbol){
     else return null; 
 }
 
-// Rule 16: next edge clockwise as self: If self is on the edge, the player plays the next edge clockwise.
+// Rule 18: next edge clockwise as self: If self is on the edge, the player plays the next edge clockwise.
 export function nextEdgeAsSelfClockwise(array, mySymbol){
     if (!array[0] && array[6] === mySymbol) return 0; 
     else if (!array[2] && array[0] === mySymbol) return 2;
@@ -314,7 +315,7 @@ export function nextEdgeAsSelfClockwise(array, mySymbol){
     else return null; 
 }
 
-// Rule 17: Next edge anticlockwise as self: If self is on the edge, the player plays the next edge anticlockwise.
+// Rule 19: Next edge anticlockwise as self: If self is on the edge, the player plays the next edge anticlockwise.
 export function nextEdgeAsSelfAntiClockwise(array, mySymbol){
     if (!array[0] && array[2] === mySymbol) return 0; 
     else if (!array[2] && array[8] === mySymbol) return 2;
@@ -323,7 +324,7 @@ export function nextEdgeAsSelfAntiClockwise(array, mySymbol){
     else return null; 
 }
 
-// Rule 18: Opposite edge as opponent: If opponent is on the edge, the player plays the opposite edge.
+// Rule 20: Opposite edge as opponent: If opponent is on the edge, the player plays the opposite edge.
 export function oppositeEdgeAsOpponent(array, mySymbol){
     if (!array[0] && array[2] === mySymbol) return 0; 
     else if (!array[2] && array[8] === mySymbol) return 2;
@@ -332,7 +333,7 @@ export function oppositeEdgeAsOpponent(array, mySymbol){
     else return null; 
 }
 
-// Rule 19: Opposite edge as self: If self is on the edge, the player plays the opposite edge.
+// Rule 21: Opposite edge as self: If self is on the edge, the player plays the opposite edge.
 export function oppositeEdgeAsSelf(array, mySymbol){
     if (!array[0] && array[2] === mySymbol) return 0; 
     else if (!array[2] && array[8] === mySymbol) return 2;
@@ -341,7 +342,7 @@ export function oppositeEdgeAsSelf(array, mySymbol){
     else return null; 
 }
 
-// Rule 21: Play center on first move. 
+// Rule 22: Play center on second move. 
 export function playCenterOnSecond(array){
     let filledSquares = array.reduce((acc,item) => item? acc + 1: acc, 0)
     if (filledSquares === 1 && !array[4]) return 4; 
@@ -349,7 +350,7 @@ export function playCenterOnSecond(array){
 }
 
 
-// Rule 22: Play randomly! 
+// Rule 23: Play randomly! 
 export function playRandom(array){
     const emptySpaces = returnEmptySpaces(array); 
     console.log("The only remaining empty spaces are ", emptySpaces)
@@ -358,6 +359,7 @@ export function playRandom(array){
     return emptySpaces[randomIndex] 
 }
 
+// Rule 24
 export function makeTwoInALine(array, mySymbol){
     const opportunities = getAllPossibleTwoInALine(array, mySymbol); 
     const randomChoice = Math.floor(Math.random()*opportunities.length); 
@@ -365,7 +367,7 @@ export function makeTwoInALine(array, mySymbol){
     else return null; 
 }
 
-// Rule XXX: block all forks NEEDS TESTING
+// Rule 25: block all forks NEEDS TESTING
 export function blockAllForks(array, mySymbol){
     let opportunities = getAllWaysOfBlockingAllForks(array, mySymbol)
     if (opportunities.length > 0){
@@ -375,7 +377,7 @@ export function blockAllForks(array, mySymbol){
     return null; 
 }
 
-// Rule XXX: make two in a line
+// Rule 26: make two in a line
 
 function getAllPossibleTwoInALine(array, mySymbol){
     let opportunities = []
@@ -395,6 +397,7 @@ function getAllPossibleTwoInALine(array, mySymbol){
     return opportunities; 
 }
 
+// Rule 27
 export function avoidInvitingAFork(array, mySymbol){
     const forkSafeMoves = getForkSafeMoves(array, mySymbol); 
     const randomChoice = Math.floor(Math.random()*forkSafeMoves.length)

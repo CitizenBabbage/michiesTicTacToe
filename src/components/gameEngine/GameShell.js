@@ -14,6 +14,7 @@ import { ChooseSide } from './ChooseSide';
 import  PlayPage  from './PlayPage';
 import { MenaceTrainingPage } from '../menace/MenaceTrainingPage';
 import { NeuroTrainingPage } from '../neuro/NeuroTrainingPage';
+import { EvolvoTrainingPage } from '../evolvo/evolvoTrainingPage';
 import SoundComponent from '../presentational/soundFX/SoundFX';
 
 
@@ -168,7 +169,8 @@ function returnToGame(){
         humansLetter = {humansLetter}
         playersTurn = {playersTurn}
         setPlayersTurn = {setPlayersTurn}
-
+        setWhoWon = {setWhoWon}
+        
         winner = {winner}
         setWinner = {setWinner}
         database = {database}
@@ -222,6 +224,46 @@ function returnToGame(){
         name = {props.name} 
         blurb = {props.blurb} 
         src = {props.src}
-      />    
+      />   
+  )
+  else if (foe === 'evolvo') return (
+    <div> 
+    <EvolvoTrainingPage
+        setSoundEffect = {setSoundEffect}
+
+        soundEffect = {soundEffect}
+        humansLetter = {humansLetter}
+        playersTurn = {playersTurn}
+        setPlayersTurn = {setPlayersTurn}
+
+        winner = {winner}
+        setWinner = {setWinner}
+        database = {database}
+        setDatabase = {setDatabase}
+        isCalculatingWinner = {isCalculatingWinner}
+        setIsCalculatingWinner = {setIsCalculatingWinner}
+
+        gameLog = {gameLog}
+        setGameLog = {setGameLog}
+        trainingMode = {trainingMode}
+        setTrainingMode = {setTrainingMode}
+        value = {value}
+        setValue = {setValue}
+        trainingIterations = {trainingIterations}
+        setTrainingIterations = {setTrainingIterations}
+        squares = {squares}
+        setSquares = {setSquares}
+        resigned = {resigned}
+        setResigned = {setResigned}
+        foe = {foe}
+        setFoe = {props.setFoe}
+        reset = {reset}
+        returnToGame = {returnToGame} 
+        name = {props.name} 
+        blurb = {props.blurb} 
+        src = {props.src}
+        trainingSound = {props.trainingSound}
+      />  
+      </div>   
   )
 }

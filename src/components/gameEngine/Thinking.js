@@ -205,7 +205,7 @@ export default function Thinking( props ) {
             {/* {foe === 'menace' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>} */}
             {foe === 'Neuro' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "neuroPredictions" values = {thinkBoard}/>}
             {foe === 'minimax' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "minimaxBoard" values = {thinkBoard}/>}
-            <SoundComponent computersTurn = {computersTurn} foe = {foe} whoWon = {props.whoWon} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect}/>
+            <SoundComponent trainingMode = {props.trainingMode} computersTurn = {computersTurn} foe = {foe} whoWon = {props.whoWon} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect}/>
 
         </div>
       

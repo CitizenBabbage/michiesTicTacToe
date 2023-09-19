@@ -16,6 +16,7 @@ export function NLlog( props ) {
         for (let i = 0; i < listOfLists.length; i++){
             let thisList = listOfLists[i]; 
             let [whoWon, update, initialBoardState, move] = thisList; 
+            if (update === 3) update = "+3"; //bc it just reads better
             let winnerTerm, turnPhrase, evaluation, conjunction; 
             if (whoWon === 1){winnerTerm = `X`}
             else if (whoWon === -1){winnerTerm = `O`}
