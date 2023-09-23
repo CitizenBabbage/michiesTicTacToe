@@ -1,6 +1,6 @@
 import React from 'react';
-import Square from "./SquareComponent" 
-import { placeMark } from '../../auxiliary/general/usefulFunctions';
+import Square from "./SquareComponent.js" 
+import { placeMark } from '../../auxiliary/general/usefulFunctions.js';
 
 export default function Board( props ) {
     // const placePlayersMark = props.placePlayersMark; 

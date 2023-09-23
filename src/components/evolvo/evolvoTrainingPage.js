@@ -1,16 +1,12 @@
 import React from 'react';
-import { Button } from 'primereact/button';
 
-import BoardContainer from '../board/BoardContainer';
-import GameEnd from '../gameEngine/GameEnd';
-import GameLog from '../gameEngine/GameLog';
-import Thinking from '../gameEngine/Thinking';
+import BoardContainer from '../board/BoardContainer.js';
 // import MenaceUpdater from './MenaceUpdater';
-import { IdFacts } from '../presentational/IdFacts';
-import { TrainingIterationsField } from '../buttons/TrainingIterationsField';
-import { NavigationButton } from '../buttons/NavigationButton';
-import SoundComponent from '../presentational/soundFX/SoundFX';
-import { EvolvoUpdater } from './evolvoUpdater';
+import { IdFacts } from '../presentational/IdFacts.js';
+import { TrainingIterationsField } from '../buttons/TrainingIterationsField.js';
+import { NavigationButton } from '../buttons/NavigationButton.js';
+import SoundComponent from '../presentational/soundFX/SoundFX.js';
+import { EvolvoUpdater } from './evolvoUpdater.js';
 
 
 export function EvolvoTrainingPage (props) {

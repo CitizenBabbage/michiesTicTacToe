@@ -7,9 +7,9 @@
 
 import React from 'react';
 import { useState } from 'react';
-import Board from "./Board" 
-import ClearButton from "../buttons/ClearBoardButton"
-import { ResignButton } from '../buttons/ResignButton';
+import Board from "./Board.js" 
+import ClearButton from "../buttons/ClearBoardButton.js"
+import { ResignButton } from '../buttons/ResignButton.js';
 
 
 

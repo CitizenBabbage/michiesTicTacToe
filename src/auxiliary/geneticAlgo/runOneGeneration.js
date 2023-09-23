@@ -3,6 +3,23 @@ import { evolvoChooseMove } from "../choiceFunctions/evolvoChooseMove.js";
 import { calculateWinner } from "../engineHelpers/checkWinner.js";
 
 
+function runOneGeneration(genepool, encountersPerCompetition, cullFraction, breedFraction, mutationRate, mutationSize){
+    genepool = runOneCompetition(genepool, encountersPerCompetition); 
+    genepool = cullGenePool(genepool, cullFraction); 
+
+    genepool = zeroFitnessScores(genepool)
+    genepool = reproduceFromSurvivors(genepool, breedFraction);
+    genepool = mutatePool(genepool, mutationRate, mutationSize);
+    return genepool; 
+}
+
+function testRunOneGeneration(numberOfCritters, genomeLength, encountersPerCompetition, cullFraction, breedFraction, mutationRate, mutationSize){
+    let genepool = createGenepool(numberOfCritters, genomeLength); 
+    genepool = runOneGeneration(genepool, encountersPerCompetition, cullFraction, breedFraction, mutationRate, mutationSize); 
+    let random = Math.floor(Math.random()*genepool.length)
+    return genepool[random]
+}
+
 function createGenepool(numberOfCritters, genomeLength){
     let genePool = []
     for (let i = 0; i < numberOfCritters; i++){
@@ -275,22 +292,7 @@ function runOneGame(genome1, genome2){
     else return 0; 
 }
 
-function runOneGeneration(genepool, encountersPerCompetition, cullFraction, breedFraction, mutationRate, mutationSize){
-    genepool = runOneCompetition(genepool, encountersPerCompetition); 
-    genepool = cullGenePool(genepool, cullFraction); 
 
-    genepool = zeroFitnessScores(genepool)
-    genepool = reproduceFromSurvivors(genepool, breedFraction);
-    genepool = mutatePool(genepool, mutationRate, mutationSize);
-    return genepool; 
-}
-
-function testRunOneGeneration(numberOfCritters, genomeLength, encountersPerCompetition, cullFraction, breedFraction, mutationRate, mutationSize){
-    let genepool = createGenepool(numberOfCritters, genomeLength); 
-    genepool = runOneGeneration(genepool, encountersPerCompetition, cullFraction, breedFraction, mutationRate, mutationSize); 
-    let random = Math.floor(Math.random()*genepool.length)
-    return genepool[random]
-}
 
 // testRunOneGeneration(100, 13, 1, 0.2, 0.2, 0.002, 5)
 

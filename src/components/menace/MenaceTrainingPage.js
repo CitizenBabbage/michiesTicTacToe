@@ -1,16 +1,15 @@
 import React from 'react';
-import { Button } from 'primereact/button';
 import { useEffect } from 'react';
 
 
-import BoardContainer from '../board/BoardContainer';
-import GameEnd from '../gameEngine/GameEnd';
-import GameLog from '../gameEngine/GameLog';
-import Thinking from '../gameEngine/Thinking';
-import { IdFacts } from '../presentational/IdFacts';
-import { TrainingIterationsField } from '../buttons/TrainingIterationsField';
-import { NavigationButton } from '../buttons/NavigationButton';
-import SoundComponent from '../presentational/soundFX/SoundFX';
+import BoardContainer from '../board/BoardContainer.js';
+import GameEnd from '../gameEngine/GameEnd.js';
+import GameLog from '../gameEngine/GameLog.js';
+import Thinking from '../gameEngine/Thinking.js';
+import { IdFacts } from '../presentational/IdFacts.js';
+import { TrainingIterationsField } from '../buttons/TrainingIterationsField.js';
+import { NavigationButton } from '../buttons/NavigationButton.js';
+import SoundComponent from '../presentational/soundFX/SoundFX.js';
 import { NLlog } from '../presentational/NLlog.js';
 import DatabaseDisplay from './DBDisplay.js';
 
@@ -55,7 +54,7 @@ export function MenaceTrainingPage (props) {
 
           <div label = "column1, row1"> 
             <NavigationButton path = "/selectOpponent" label = 'Menu'/>
-            {trainingMode && <Button className = 'retro-button' onClick = {returnToGame}> Back To Game </Button> }
+            {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Back To Game </button> }
           </div> 
 
           <div label = "column1, row2" className='twoColumns'>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from 'primereact/button';
+// import { Button } from 'primereact/button';
+// import { Button } from 'button.esm.js'
 
 
 export function ChooseSide( props ){
@@ -15,25 +16,25 @@ export function ChooseSide( props ){
     return (
     <div className="gameshell"> 
       <p>{ promptText }</p>
-      <Button 
+      <button 
         disabled = { !buttonActivation } 
         onClick = { handleXClick }
         className={`player-button ${humansLetter === 'X' ? 'active' : ''}`}>
         <p className = 'retro-text' style = {{ fontSize: '16px'}}>X</p>
-      </Button>
-      <Button 
+      </button>
+      <button 
         disabled = { !buttonActivation }
         onClick = { handleOClick }
         className={`player-button ${humansLetter === 'O' ? 'active' : ''}`}>
         <p className = 'retro-text' style = {{ fontSize: '16px'}}>O</p>
-      </Button>
+      </button>
       {(foe === 'menace' || foe === 'Neuro') && 
-        <Button 
+        <button 
           disabled = { !buttonActivation } 
           onClick = { handleTrainingModeClick }
           className={`player-button ${humansLetter === 'X' ? 'active' : ''}`}>
           <p className = 'retro-text' style = {{ fontSize: '16px'}}>Train</p>
-        </Button>
+        </button>
       }
       </div>
     )

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
-import { isNumber } from '../../auxiliary/general/usefulFunctions';
+import { isNumber } from '../../auxiliary/general/usefulFunctions.js';
 
 export function MaxCycleField( props ) {
     const trainingMode = props.trainingMode; 

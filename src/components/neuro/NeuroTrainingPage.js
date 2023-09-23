@@ -1,24 +1,22 @@
 import React from 'react';
-import { Button } from 'primereact/button';
+// import { Button } from 'primereact/button';
 import { useEffect, useState } from 'react'; 
 
 
-import BoardContainer from '../board/BoardContainer';
-import GameEnd from '../gameEngine/GameEnd';
-import GameLog from '../gameEngine/GameLog';
-import Thinking from '../gameEngine/Thinking';
-import NeuroUpdater from './NeuroUpdater';
-import { IdFacts } from '../presentational/IdFacts';
-import { TrainingIterationsField } from '../buttons/TrainingIterationsField';
-import { NavigationButton } from '../buttons/NavigationButton';
-import { PercentTrainingSetField } from '../buttons/PercentTrainingSetField';
-import { LearningRateField } from '../buttons/learningRateField';
-import { MaxCycleField } from '../buttons/maxCycleField';
-import { SetSigmaField } from '../buttons/sigmaField';
-import { StartNeuroLearningButton } from '../buttons/StartNeuroLearning';
-import { generateGoodBoardStates } from '../../auxiliary/boardStateDatabase/makeBeadAuxilliaries';
-import NeuroComparison from '../presentational/neuroComparison';
-import { DownloadError } from '../errorHandling/DownloadError';
+
+//import NeuroUpdater from './neuroOrdinaryJSarchive/NeuroUpdater.js';
+
+import { PercentTrainingSetField } from '../buttons/PercentTrainingSetField.js';
+import { LearningRateField } from '../buttons/learningRateField.js';
+import { MaxCycleField } from '../buttons/maxCycleField.js';
+import { SetSigmaField } from '../buttons/sigmaField.js';
+import { StartNeuroLearningButton } from '../buttons/StartNeuroLearning.js';
+import { generateGoodBoardStates } from '../../auxiliary/boardStateDatabase/makeBeadAuxilliaries.js';
+import { DownloadError } from '../errorHandling/DownloadError.js';
+import { dataFeeder } from './neuroTFmodel/datafeeder.js';
+import NeuroComparison from '../presentational/neuroComparison.js'
+
+//import { getTrainingSet } from './debuggingData/dummyInputs'; //DELETE AFTER DEBUGGING
 
 export function NeuroTrainingPage (props) {
       
@@ -36,28 +34,48 @@ export function NeuroTrainingPage (props) {
     const [maxCycle, setMaxCycle] = useState(2); 
     const [sigma, setSigma] = useState(0.1)
     const [neuroLearning, setNeuroLearning] = useState(false); 
-    const [trainingSet, setTrainingSet] = useState([[null, null, null, null, null, null, null, null, null]]); 
+    const [trainingSet, setTrainingSet] = useState([]); 
 
     const net = props.net; 
     const setNet = props.setNet;  
 
+
+    // useEffect(() => {
+    //   const x = getTrainingSet(); 
+    //   setTrainingSet(x); 
+    // }, [neuroLearning]) // the change in this should trigger the useEffect in NeuroUpdater.js
+
+    useEffect(() => {
+      const trainAndSetNet = async () => {
+          const dataset = getTrainingSet();
+          if (!dataset) return;
+          setTrainingSet(dataset); 
+          const trainedModel = await dataFeeder(dataset, net);
+          setNet(trainedModel);
+      };
+      
+      trainAndSetNet();
+  }, [neuroLearning]);
+
     
 
-    useEffect(getTrainingSet, [neuroLearning]) // the change in this should trigger the useEffect in NeuroUpdater.js
-
     function getTrainingSet(){
+      if (!neuroLearning) return; 
       const fraction = percentTraining/100; 
       const goodStates = generateGoodBoardStates(9);
-      let trainingSet = [goodStates[0]]; 
+      let newTrainingSet = [goodStates[0]]; 
       for (let i = 1; i < goodStates.length; i++){
           const rando = Math.random(); 
           if (rando < fraction) {
-              trainingSet.push(goodStates[i]); 
+            newTrainingSet.push(goodStates[i]); 
           }
       }
-      setTrainingSet(trainingSet)
-      //return trainingSet; 
+      return newTrainingSet; 
       }
+
+      
+
+    
 
  
     return (
@@ -68,14 +86,14 @@ export function NeuroTrainingPage (props) {
             <MaxCycleField setMaxCycle = {setMaxCycle} maxCycle = {maxCycle} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
             <SetSigmaField setSigma = {setSigma} sigma = {sigma} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
             <StartNeuroLearningButton getTrainingSet = {getTrainingSet} setNeuroLearning = {setNeuroLearning}/>
-            {trainingMode && <Button className = 'retro-button' onClick = {returnToGame}> Back To Game </Button> }
+            {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Back To Game </button> }
             
             
       </div>
       <div>
         <DownloadError net = {net} trainingSet = {trainingSet}>
-        <NeuroUpdater trainingSet = {trainingSet} trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} percentTraining = {percentTraining} db = {database} net = {net} setNet = {setNet} learningRate = {learningRate} maxCycle = {maxCycle} sigma = {sigma} neuroLearning = {neuroLearning} setNeuroLearning = {setNeuroLearning}/> 
-        <NeuroComparison trainingStates = {trainingSet} net = {net}/>
+          {/* <NeuroUpdater trainingSet = {trainingSet} trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} percentTraining = {percentTraining} db = {database} net = {net} setNet = {setNet} learningRate = {learningRate} maxCycle = {maxCycle} sigma = {sigma} neuroLearning = {neuroLearning} setNeuroLearning = {setNeuroLearning}/>  */}
+          <NeuroComparison trainingStates = {trainingSet} net = {net}/>
         </DownloadError>
       </div>
     </div>  

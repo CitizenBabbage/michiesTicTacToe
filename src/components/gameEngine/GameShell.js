@@ -4,19 +4,20 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-import {db} from '../../auxiliary/boardStateDatabase/dataBeadsFormatted'
+import {db} from '../../auxiliary/boardStateDatabase/dataBeadsFormatted.js'
 
-import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions';
-import { makeBiases, makeConnections, makeNetwork } from '../neuro/netBuilders';
-import { checkNetData } from '../../auxiliary/testers/errorCheckers';
+import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions.js';
+import { makeNetwork } from '../neuro/netBuilders.js'; // 
+// import { makeNetwork } from '../neuro/debuggingData/dummyInputs'; //for debugging DELETE afterwards
+import { checkNetData } from '../../auxiliary/testers/errorCheckers.js';
 
-import { ChooseSide } from './ChooseSide';
-import  PlayPage  from './PlayPage';
-import MenaceUpdater from '../menace/MenaceUpdater';
-import { NeuroTrainingPage } from '../neuro/NeuroTrainingPage';
-import { EvolvoTrainingPage } from '../evolvo/evolvoTrainingPage';
-import SoundComponent from '../presentational/soundFX/SoundFX';
-
+import { ChooseSide } from './ChooseSide.js';
+import  PlayPage  from './PlayPage.js';
+import MenaceUpdater from '../menace/MenaceUpdater.js';
+import { NeuroTrainingPage } from '../neuro/NeuroTrainingPage.js';
+import { EvolvoTrainingPage } from '../evolvo/evolvoTrainingPage.js';
+import SoundComponent from '../presentational/soundFX/SoundFX.js';
+import { createModel } from '../neuro/neuroTFmodel/model.js';
 
 
 export default function GameShell( props ) {
@@ -42,14 +43,20 @@ export default function GameShell( props ) {
   const [whoWon, setWhoWon] = useState(null) 
   const foe = props.foe; 
   const setFoe = props.setFoe; 
-  // the net is set at this level so as to be available both for the training page and for the game itself
   
+  
+  
+  
+  // the net is set at this level so as to be available both for the training page and for the game itself
+  //const [net, setNet] = useState(makeNetwork([27,32,36,5])) //
+  const [net, setNet] = useState(createModel([128, 64]));
+
+  
+
+
   useEffect(()=>{
     console.log("start of gameShell, soundEffect is ", props.soundEffect)
-}, [])
-
-  const [net, setNet] = useState(makeNetwork([27,32,36,3]))
-
+  }, [])
 
   useEffect(
     () => {

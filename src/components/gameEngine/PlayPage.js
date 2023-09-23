@@ -1,17 +1,17 @@
 import React from 'react';
-import { Button } from 'primereact/button';
+// import { Button } from 'primereact/button';
 import { useEffect } from 'react';
 
 
-import BoardContainer from '../board/BoardContainer';
-import GameEnd from './GameEnd';
-import GameLog from './GameLog';
-import Thinking from './Thinking';
-import MenaceUpdater from '../menace/MenaceUpdater';
-import { IdFacts } from '../presentational/IdFacts';
-import { TrainingIterationsField } from '../buttons/TrainingIterationsField';
-import { NavigationButton } from '../buttons/NavigationButton';
-import SoundComponent from '../presentational/soundFX/SoundFX';
+import BoardContainer from '../board/BoardContainer.js';
+import GameEnd from './GameEnd.js';
+import GameLog from './GameLog.js';
+import Thinking from './Thinking.js';
+import MenaceUpdater from '../menace/MenaceUpdater.js';
+import { IdFacts } from '../presentational/IdFacts.js';
+import { TrainingIterationsField } from '../buttons/TrainingIterationsField.js';
+import { NavigationButton } from '../buttons/NavigationButton.js';
+import SoundComponent from '../presentational/soundFX/SoundFX.js';
 
 
 export default function PlayPage (props) {
@@ -56,7 +56,7 @@ export default function PlayPage (props) {
       <div className='gameshell'>
           <div className='space-around'>
             <NavigationButton path = "/selectOpponent" label = 'Menu'/>
-            {!trainingMode && <Button className = 'retro-button' onClick = {handleTrainingModeClick}> Train </Button> }
+            {!trainingMode && <button className = 'retro-button' onClick = {handleTrainingModeClick}> Train </button> }
           </div>
             
             <BoardContainer devMode = {props.devMode} testMode = { props.testMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } src = {props.src} setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} setResigned = {setResigned} humansLetter = {humansLetter} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} setPlayersTurn = {setPlayersTurn} playersTurn = {playersTurn} reset = {reset} ></BoardContainer>

@@ -1,11 +1,8 @@
-import { oneTrainingCycle } from './iteratorsGeneral';
 import React from 'react';
 import { useState, useEffect, useRef} from 'react';
-import { returnArrayOfTypesOf, checkConnections, checkNetData } from "../../auxiliary/testers/errorCheckers";
-import { ErrorDisplay } from "../presentational/ErrorDisplay";
-import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions';
-import { oneLearningIteration } from './oneLearningIteration';
-import { squaredError } from './errorFunctions';
+import { checkNetData } from "../../../auxiliary/testers/errorCheckers.js";
+import { ErrorDisplay } from "../../presentational/ErrorDisplay.js";
+import { oneLearningIteration } from './oneLearningIteration.js';
 
 // currently you're thinking of this as being once per cycle, i.e. only twice when maxcycle is set to 2. 
 // but don't you want it to be once every learning iteration? 
@@ -26,6 +23,8 @@ export default function TrainingCycler(props){
     const [errorArray, setErrorArray] = useState([])
     const [trainingCounter, setTrainingCounter] = useState(0) // trainingCounter keeps track of the cases left to try out in the training set 
     
+    
+
     // setting cycleCount to some nonzero number launches the process, and dropping the cycleCount by 1 repeats it
     useEffect(
         nTrainingCycles, [cycleCount]
@@ -35,31 +34,39 @@ export default function TrainingCycler(props){
         setNewNetAndError, [trainingCounter]
     )
 
-    // during learning, the program cycles through the training set n times, this counts down n and implements that
+    // during learning, the program cycles through the training set n times, 
+    // every time useEffect calls this, it runs one cycle
     function nTrainingCycles(){
         if (cycleCount < 1) return;
-        // set a counter equal to the size of the training set 
+        // set a counter equal to the size of the training set, ready for a new cycle 
+        console.log(`nTrainingCycles, trainingSet length is: `, trainingSet.length)
         setTrainingCounter(trainingSet.length); 
         setNewNetAndError(); 
     }
 
-    // for each cycle, the program must go through each case in the training set, this counts through that
+    // for a given cycle, the program must go through each case in the training set...
     function setNewNetAndError(){
         if (trainingCounter < 1) {
             if (cycleCount > 0) decreaseCycleCount(); 
             return; 
         }
         const board = trainingSet[trainingCounter -1]
-        console.log("setNewNetAndError, trainingCounter is: ", trainingCounter)
+        checkNetData(net,`setNewNetAndError input, cycleCount: ${cycleCount}, trainingCounter: ${trainingCounter} trainingCase: ${trainingSet[trainingCounter -1]}`)
 
-        console.log("setNewNetAndError, trainingSet[0] is: ", trainingSet[0])
+        const updateData = oneLearningIteration(board, net, learningRate, sigma)    //returns [newNet, crossEntropyErrors] 
+        checkNetData(updateData[0],`setNewNetAndError output, cycleCount: ${cycleCount}, trainingCase: ${trainingSet[trainingCounter -1]}`)
 
-        console.log("setNewNetAndError, board is: ", board)
-        const updateData = oneLearningIteration(board, net, learningRate, sigma)    //returns [newNet, highestError, rawErrors]
         setNet(updateData[0])
-        setError(updateData[1])
-        setErrorArray(updateData[2])
+        console.log("updateData[1] is ", updateData[1])
+        if (updateData[1]) {
+            setError(sumErrors(updateData[1]))
+            setErrorArray(updateData[1])
+        }
         decreaseTrainingCount(); 
+     }
+
+     function sumErrors(array){
+        return array.reduce((accumulator, current) => accumulator + current, 0)
      }
 
     function decreaseCycleCount(){
@@ -90,6 +97,8 @@ export default function TrainingCycler(props){
 
     return (
         <div>
+            <p>Cycles Remaining: {cycleCount} </p> 
+            <p>Cases Remaining in Cycle: {trainingCounter}</p> 
             <ErrorDisplay error = {error} />
             {/* <NeuroComparison /> */}
         </div>

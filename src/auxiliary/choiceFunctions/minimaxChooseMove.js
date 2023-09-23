@@ -11,14 +11,7 @@ export function minimaxChooseMove(board, whoseTurn){
     return [choice, bestScore, boardScores];
 }
 
-// export function minimaxRecurseShell(board,whoseTurn){
-//     const answerButWithSomeWords = minimaxRecurse(board, whoseTurn); 
-//     const fullyNumerizedOutput = [...answerButWithSomeWords[2]]; 
-//     for (let i = 0; i < answerButWithSomeWords[2].length; i++){
-//         if (answerButWithSomeWords[2][i] === 'full'){fullyNumerizedOutput[i] = 1}
-//     }
-//     return fullyNumerizedOutput; 
-// }
+
 
 // expects an array of 'X's and 'O's
 // returns recommendedMove, recommendedMoveScore, moveArray
@@ -38,13 +31,13 @@ export function minimaxRecurse(board, turn){
         tempboard[i] = whoseTurn; // place whoever's turn it is into empty slot
         let winner = calculateWinner(tempboard) // then see if that yields a win
         if (winner === turn){ // if this is a winning position for computer
-            moveArray[i] = 512; // give that move 512 points
+            moveArray[i] = 3; // give that move 3 points
             }
         else if (["X","O"].includes(winner)){ // otherwise if there's a winner defined, it's the other guy
-            moveArray[i] = 8; // so give that move 8 points (bc, for teaching neural net, it's better than trying to play into a taken square)
+            moveArray[i] = 1; // so give that move 1 points (bc, for teaching neural net, it's better than trying to play into a taken square)
         }
         else if (winner === "D"){ //if it's a draw
-            moveArray[i] = 64; // that's worth 64 (i.e. getting this right is as important to error as getting all the other eight at 8 points each)
+            moveArray[i] = 2; // that's worth 2 
             }
         else { //if the game doesn't terminate with this move
             let mr = minimaxRecurse(tempboard, turn); // imagine making the move and take the game from there
@@ -91,7 +84,7 @@ export function minimaxRecurse(board, turn){
 
     function numerizeFullSquares(board){
         for (let i = 0; i < board.length; i++){
-            if (board[i] === 'full') board[i] = 1; 
+            if (board[i] === 'full') board[i] = 0; 
             }
         return board; 
     }

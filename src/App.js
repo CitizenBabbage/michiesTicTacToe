@@ -6,21 +6,20 @@ import { useLocation } from 'react-router-dom';
 import introTune from './music/tektoktao.mp3'
 
 //import './App.css';
-import Navbar from './components/Navbar';
+// import Navbar from './components/Navbar.js';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Home from './pages';
-import About from './pages/about';
-import Menace from './pages/menace';
-import Minimax from './pages/minimax'; 
-import Huris from './pages/huris';
-import Evolvo from './pages/Evolvo';
-import Neuro from './pages/neuro';
-import Minxima from './pages/minxima';
-import Test from './pages/test';
-import SelectOpponent from './pages/selectOpponent'
-import Intro from './pages/intro'
+import Home from './pages/intro.js';
+import About from './pages/about.js';
+import Menace from './pages/menace.js';
+import Minimax from './pages/minimax.js'; 
+import Huris from './pages/huris.js';
+import Evolvo from './pages/Evolvo.js';
+import Neuro from './pages/neuro.js';
+import Test from './pages/test.js';
+import SelectOpponent from './pages/selectOpponent.js'
+import Intro from './pages/intro.js'
  
 export default function App() {
     // eslint-disable-next-line no-unused-vars
@@ -65,7 +64,6 @@ function playAudio(){
             <Route path="/huris" element={<Huris devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>} />
             <Route path="/evolvo" element={<Evolvo devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>} />
             <Route path="/neuro" element={<Neuro devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>} />
-            <Route path="/minxima" element={<Minxima devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>} />
             <Route path="/test" element={<Test devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>}/>
             <Route path="/selectOpponent" element={<SelectOpponent devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>}/>
             <Route path="/intro" element={<Intro devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>}/>

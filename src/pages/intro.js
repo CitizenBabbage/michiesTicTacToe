@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
-import TekTokTaoLogo from '../components/presentational/TekTokTaoLogo';
-import IntroTheme from '../components/presentational/IntroTheme';
+import TekTokTaoLogo from '../components/presentational/TekTokTaoLogo.js';
+import IntroTheme from '../components/presentational/IntroTheme.js';
 
 
  

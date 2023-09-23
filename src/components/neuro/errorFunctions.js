@@ -1,51 +1,65 @@
-import { checkArrayContainsOnlyNumbers, check9ArrayBundle } from "../../auxiliary/testers/errorCheckers";
+import { checkArrayContainsOnlyNumbers, check9ArrayBundle } from "../../auxiliary/testers/errorCheckers.js";
+import { cutIntoOneHots } from "./neuroHelpers.js";
 
 export function computeErrorForLastLayer(predictionArray, correctArray, sums){
-    //console.log("starting computeErrorForLastLayer")
-    //console.log("computeErrorForLastLayer: sums is ", sums)
+    let learningErrorArray = []; 
+    let oneHotErrorArray = []; 
+    const crossEntropyArray = getAllCrossEntropyLosses(predictionArray, correctArray) // this is just for reporting. the c.e. cancels out in the back prop
+    for (let i = 0; i < predictionArray.length; i++){
+        oneHotErrorArray = predictionArray[i].map((num,j) => num - correctArray[i][j]); 
+        learningErrorArray.push(oneHotErrorArray); 
+    }
+    return ([learningErrorArray, crossEntropyArray]); 
 
-    const differentialArray = getDifferentials(sums);
-    // console.log("computeErrorForLastLayer: differentialArray is ", differentialArray)
-    // console.log("computeErrorForLastLayer: predictionArray is ", predictionArray)
-    // console.log("computeErrorForLastLayer: correctArray is ", correctArray)
-    
-    
-    //const rawErrorArray = correctArray.map((num, i) => (Math.abs(num - predictionArray[i]) > 0.5? num - predictionArray[i]:0));
-    const rawErrorArray = correctArray.map((num, i) => (num - predictionArray[i]));
-    //console.log("computeErrorForLastLayer: rawErrorArray is ", rawErrorArray)
-
-    const learningErrorArray = rawErrorArray.map((num,i) => num * differentialArray[i])
-    //console.log("computeErrorForLastLayer: learningErrorArray is:", learningErrorArray)
-    //console.log("ending computeErrorForLastLayer")
-    return [learningErrorArray, rawErrorArray]; 
 }
+
+//expects an array of (4) softmaxed probabilities and an array of (4) one hot encoded correct answers 
+function crossEntropyLoss (predictionArray, labelArray){
+    let arrayToBeSummed = []; 
+    const epsilon = 1e-15
+    for (let i = 0; i < predictionArray.length; i++){
+        if (predictionArray[i] <= epsilon || (predictionArray[i] >= 1 - epsilon && predictionArray[i] <= 1)){console.log(`WARNING::: ${predictionArray[i]} is very close to 0 or 1 in crossEntropyLoss`)}
+        const clippedValue = Math.min(Math.max(predictionArray[i], epsilon), 1 - epsilon);
+        arrayToBeSummed[i] = labelArray[i] * Math.log(clippedValue)
+    }
+    const crossEntropyError = -1 * (arrayToBeSummed.reduce((accumulator, current) => accumulator + current, 0))
+    return crossEntropyError; 
+}
+
+
+
+
+function getAllCrossEntropyLosses(arrayOfPredictions, arrayOfLabels){
+
+    let outputArray = []; 
+    for (let i = 0; i < arrayOfPredictions.length; i++){
+        outputArray[i] = crossEntropyLoss(arrayOfPredictions[i], arrayOfLabels[i])
+    }
+    return outputArray; 
+}
+
 
 
 // this computes the error for a given hidden layer given the errors from its successor layer
 // and the differentials at the actual layer
 // returns an error array
-export function computeErrorForHiddenLayers(weights, errors, differentials){
-    //console.log("starting computeErrorForHiddenLayers")
-    // check9ArrayBundle(differentials, "differentials", "computeErrorForHiddenLayers", ["n/a"])
-    // console.log("computeErrorForHiddenLayers: receiving errors: ", errors)
-    // console.log("computeErrorForHiddenLayers: receiving differentials: ", differentials)
-    let errorArray = new Array(weights.length).fill(0);
+export function computeErrorForHiddenLayers(weights, errs, differentials){
+    console.log("computeErrorForHiddenLayers, errs received are: ", errs)
+    console.log("computeErrorForHiddenLayers, weights received are: ", weights) // weights received are NaNs. 
+    console.log("computeErrorForHiddenLayers, differentials received are: ", differentials)
+
+
+    errs = errs.flat(); 
+    let errArray = new Array(weights.length).fill(0);
     for (let i = 0; i < weights.length; i++){ // for each node at the hidden layer
         let runningSum = 0; 
-        for (let j = 0; j < errors.length; j++){
-            runningSum = runningSum + (weights[i][j] * errors[j]) // sum the weights from that node times the error at the nodes to which they connect
+        for (let j = 0; j < errs.length; j++){
+            runningSum = runningSum + (weights[i][j] * errs[j]) // sum the weights from that node times the error at the nodes to which they connect
         }
-        //console.log("computeErrorForHiddenLayers: runningSum before differentials is: ", runningSum )
-        errorArray[i] = runningSum * differentials[i] // the error at that node equals the above sum times the ith differential
-        //console.log("computeErrorForHiddenLayers: errorArray[i] after differentials is: ", errorArray[i] )
+        errArray[i] = runningSum * differentials[i] // the error at that node equals the above sum times the ith differential
     }
-    // console.log("computeErrorForHiddenLayers: errorArray has length ", errorArray.length)
-    // console.log("computeErrorForHiddenLayers: errorArray is ", errorArray)
-    // console.log("ending computeErrorForHiddenLayers")
-    // checkArrayContainsOnlyNumbers(errorArray, "errorArray", "computeErrorForHiddenLayers", ["n/a"])
-
-
-    return errorArray;
+    console.log("computeErrorForHiddenLayers, errArray returned is : ", errArray)
+    return errArray;
     }
 
 
@@ -53,7 +67,7 @@ export function computeErrorForHiddenLayers(weights, errors, differentials){
         return array.reduce((acc,curr)=>acc+(curr**2),0)
     }
 
-    export function getDifferentials(array){
+    export function getReluDifferentials(array){
         let differentialsArray = []; 
         for (let i = 0; i < array.length; i++){
             differentialsArray.push(reluPrime(array[i]))
@@ -67,3 +81,5 @@ export function computeErrorForHiddenLayers(weights, errors, differentials){
         if (value > 0) return 1
         else return 0; 
     }
+
+    function softmaxPrime(){}

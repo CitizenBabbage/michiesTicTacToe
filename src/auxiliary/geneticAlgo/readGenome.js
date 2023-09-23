@@ -126,6 +126,9 @@ function runRule(number, board, symbol){
     else if (number === 13) {
         return nextCornerAsOpponentAntiClockwise(board, symbol)
     }
+    else if (number === 14) {
+        return nextCornerAsOpponentAntiClockwise(board, symbol)
+    }
 }
   
 

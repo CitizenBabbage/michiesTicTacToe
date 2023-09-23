@@ -5,7 +5,7 @@ import "./Updater.css"
 import { NLlog } from '../presentational/NLlog.js';
 import DatabaseDisplay from './DBDisplay.js';
 import { learnFromGame, startNewTrainingIteration, updateHistoryLog } from './menaceUpdaterHelpers.js';
-import {MenaceTrainingPage} from './MenaceTrainingPage'
+import {MenaceTrainingPage} from './MenaceTrainingPage.js'
 
 
 export default function MenaceUpdater(props){

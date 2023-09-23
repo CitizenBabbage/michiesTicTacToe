@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
-import { isAnInteger } from '../../auxiliary/general/usefulFunctions';
+import { isAnInteger } from '../../auxiliary/general/usefulFunctions.js';
 
 export function TrainingIterationsField( props ) {
     const trainingMode = props.trainingMode; 
