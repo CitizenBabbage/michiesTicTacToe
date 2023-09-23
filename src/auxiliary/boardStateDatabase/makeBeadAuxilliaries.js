@@ -1,5 +1,6 @@
 import {containsXline, containsOline, xCounter, oCounter} from "../general/usefulFunctions.js"
 import {areEquivalent} from '../general/usefulFunctions.js'
+import { eliminateResponseSymmetries } from "./eliminateSymmetries.js";
 
 //////////////FUNCTIONS//////////////
 
@@ -13,7 +14,10 @@ export function createAllBeadStateObjects(num){
     let allBoards = generateGoodBoardStates(num);
     allBoards = removeEquivalents(allBoards) // remove all but one of rotational/symmetrical equivalent boards
     let database = allBoards.map((item,index) => buildBeadObject(item,index))
-    database = reduceOptionsOnFirstMove(database)
+    console.log("length of database before response mod is : ", database.length)
+    //database = reduceOptionsOnFirstMove(database)
+    database = eliminateResponseSymmetries(database); 
+    console.log("length of database after response mod is : ", database.length)
     return database
 }
 
@@ -56,6 +60,8 @@ function reduceOptions(object){
         object.response = newResponseArray; 
         return object; 
     }
+
+
     
 
 function oppositeCorner(num){
@@ -150,15 +156,6 @@ function adjacentEdge(num){
             console.error("Error in adjacentEdge, must receive input 0 through 3 or 5 through 8")
     }
 }
-
-
-// function setProbability( array ){
-//     let oppositeCorners = 0, adjacentCorners = 0, oppositeEdges = 0, adjacentEdges = 0; 
-//     if (database[i].state[4] === 'X') {//if the opening move was x to centre
-//         return 0.5  // there are only two moves left (edge and corner) which should get a 50/50 probability
-//     }
-//     else return 0.2; // else there are five genuinely distinct moves
-// }
     
 
 function containsOneXOrNothing(array){
@@ -178,13 +175,6 @@ function containsOneXOrNothing(array){
 }
 
 
-// takes a board state and number as input and returns an object, with properties: 
-        // id: a number
-		// state: an array of nine elements. 
-		// turn: either "X" or "O".  
-		// response: an array of length 9
-
-
 function buildBeadObject(board,id){
     return {
         id: id,
@@ -199,11 +189,6 @@ function buildBeadObject(board,id){
 function calculateTurn(board){
     return xCounter(board) > oCounter(board)? 'O' : 'X';
 }
-
-// puts a number of beads in the response array proportional to the stage in the game
-// Early board states get 4 beads per empty square. Later boards 3, 2 and finally 1. 
-// This means losing moves in the end stages are more heavily penalized. 
-// This models Michie's system. 
 
 function initializeBeadArray(array){
     let filledSquares = countFilledSquares(array);

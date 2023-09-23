@@ -60,11 +60,10 @@ export default function Thinking( props ) {
 
         
     useEffect(
-        () => {if (testMode && !playersTurn) {
+        () => {if (testMode && !playersTurn) { // formerly () => {if (testMode && !playersTurn) 
             console.log('useEffect triggered in thinking, based on change in playersTurn')
-            console.log('useffect[playersTurn] winner is ', winner)
 
-            setComputerOff(false)
+            //setComputerOff(false)
             checkForComputersTurn()}
         }, [playersTurn]
     )

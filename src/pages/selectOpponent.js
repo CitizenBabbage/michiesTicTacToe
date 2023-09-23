@@ -8,13 +8,11 @@ import PortraitButton from '../components/buttons/PortraitButton.js'
 import hurisPortrait from '../images/huris/10a7f78f1fd64265a7df0efd71c8c959bc63d032.webp'
 import evolvoPortrait from '../images/evolvo4.webp'
 import menacePortrait from '../images/menace/77fa83d664df40fb96fe7fb183d4004a02d73734.webp'
-import minimaxPortrait from '../images/minimax/2c5a7d46e7f04555884426495b8cb09c4d07a752.webp'
+import minimaxPortrait from '../images/minimax/minimax4.png'
 // import minximaPortrait from '../images/minxima/af896fd40d0249c88c952f8308485f6888596ec3.webp'
 import neuroPortrait from '../images/neuro/gingerNeuro.gif'
 
 export default function selectOpponent(){
-    
-
     const [currentPortraitIndex, setCurrentPortraitIndex] = useState(0);
     const [currentNameIndex, setCurrentNameIndex] = useState(0);
     const navigate = useNavigate();

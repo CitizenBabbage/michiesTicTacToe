@@ -62,6 +62,8 @@ export default function MenaceUpdater(props){
     //useEffect(() => {console.log(`useEffect reports: Value of database changed. New first response state is ${database[0].response}`)},[winner])
     const previousDatabaseRef = useRef();
 
+    // whenever database changes, check if previousDatabaseRef has a value and if that value is different from the database
+    // if so , log a message. Either way, update to new db. 
     useEffect(() => {
         if (previousDatabaseRef.current && JSON.stringify(database) !== JSON.stringify(previousDatabaseRef.current)) {
             console.log('Database has changed!');
