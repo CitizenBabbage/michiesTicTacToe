@@ -24,7 +24,8 @@ import Intro from './pages/intro.js'
 export default function App() {
     // eslint-disable-next-line no-unused-vars
     const [developmentMode, setDevelopmentMode] = useState(true); 
-    const [playersTurn, setPlayersTurn] = useState( true ); 
+    //const [playersTurn, setPlayersTurn] = useState( true ); 
+    const [xsTurn, setXsTurn] = useState( false )
     const [foe, setFoe] = useState("")
 
 
@@ -59,14 +60,14 @@ function playAudio(){
         <Routes>
             <Route path='/' element= {<Home  devMode = {developmentMode} playAudio = {playAudio} setAudioSelected = { setAudioSelected } audioSelected = { audioSelected }/>} />
             <Route path='/about' element={<About devMode = {developmentMode}/>} />
-            <Route path="/menace" element={<Menace devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe } />} />
-            <Route path="/minimax" element={<Minimax devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>} />
-            <Route path="/huris" element={<Huris devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>} />
-            <Route path="/evolvo" element={<Evolvo devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>} />
-            <Route path="/neuro" element={<Neuro devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>} />
-            <Route path="/test" element={<Test devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>}/>
-            <Route path="/selectOpponent" element={<SelectOpponent devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>}/>
-            <Route path="/intro" element={<Intro devMode = {developmentMode} playersTurn = {playersTurn} setPlayersTurn = {setPlayersTurn} foe = { foe }/>}/>
+            <Route path="/menace" element={<Menace devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe } />} />
+            <Route path="/minimax" element={<Minimax devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
+            <Route path="/huris" element={<Huris devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
+            <Route path="/evolvo" element={<Evolvo devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
+            <Route path="/neuro" element={<Neuro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
+            {/* <Route path="/test" element={<Test devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/> */}
+            <Route path="/selectOpponent" element={<SelectOpponent devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/>
+            <Route path="/intro" element={<Intro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/>
 
         </Routes>
       </Router>

@@ -15,13 +15,13 @@ export default function GameEnd(props){
     const setWhoWon = props.setWhoWon; 
     const humansLetter = props.humansLetter; 
     
-    // console.log(checkWinner(squares))
-    // console.log(checkWinner(squares).then(writeGameResults))
+    // for debugging only: 
+    useEffect(()=>{console.log("USEEFFECT: IsCalculatingWinner changed to ", isCalculatingWinner)},[isCalculatingWinner])
 
     useEffect(() =>{
         if (resigned){writeGameResults(opposite(resigned))}
     }
-        ,[resigned]//resigned takes values undefined, null, 'X' or 'O'
+        ,[resigned]  //resigned takes values undefined, null, 'X' or 'O'
         )
 
     useEffect(checkForEmptySquares, [squares]);
@@ -33,7 +33,10 @@ export default function GameEnd(props){
         if (squares.some(value => value !== null)){setIsCalculatingWinner(true);}
     }
   
-    useEffect(fixWinner,[isCalculatingWinner])
+    useEffect(() => {
+        console.log("IsCalculatingWinner set to true. Running fixwinner...")
+        fixWinner(); 
+    },[isCalculatingWinner])
 
     function fixWinner() {
         if (isCalculatingWinner){
@@ -45,11 +48,15 @@ export default function GameEnd(props){
     }
 
     function writeGameResults(results){
+        console.log("fixwinner calls writeGameResults. setting winner as ", results)
+
         if (!winner){ // if the winner hasn't already been written
             console.log("Resetting winner in writeGameResults to ", results)
             setWinner(results);
         }
+        console.log(`isCalculatingWinner is ${isCalculatingWinner}. setting isCalculatingWinner to false`)
         setIsCalculatingWinner(false)
+        console.log("isCalculatingWinner set to false")
     }
 
     //decides which of human vs computer was the winner

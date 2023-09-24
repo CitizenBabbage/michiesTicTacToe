@@ -21,9 +21,9 @@ export function TrainingIterationsField( props ) {
         if (isAnInteger(event.target.elements[0].value) && event.target.elements[0].value > 0){
           console.log("submit button pressed")
           setTrainingIterations(event.target.elements[0].value); 
-          console.log("training iterations set to ", event.target.elements[0].value)
+          console.log("trainingIterationsField: training iterations set to ", event.target.elements[0].value)
 
-          setPlayersTurn(false)
+          //setPlayersTurn(false)
           setSoundEffect("menaceLearn")
         }
         else setSubmissionError("I need a positive whole number")

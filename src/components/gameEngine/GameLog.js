@@ -5,11 +5,6 @@ import Board from "../board/Board.js"
 
 
 export default function GameLog( props ){
-    // const dbs = props.dbs, setDBS = props.setDBS; 
-    // useEffect(() => {
-    //     setDBS(prevValue => prevValue + 1);
-    // }, []); 
-    // console.log("GameLog, debugging sequencer: ", dbs)
 
     const gameLog = props.gameLog; 
     const setGameLog = props.setGameLog; 

@@ -51,11 +51,12 @@ function updateHistory(historyBase, object){
 
 
 export function learnFromGame(winner, gameLog, database){
-    //console.log("initiating learnFromGame, winner is ", winner)
+    console.log("initiating learnFromGame, winner is ", winner)
     if (winner === undefined || winner == null || gameLog === undefined) {
-        console.log("Either winner or gamelog is undefined or null. Aborting learnFromGame")
+        console.log(`Either winner or gamelog is undefined or null. Aborting learnFromGame. Details: winner = ${winner}, gameLog = ${gameLog}`)
         return
      }  
+     
     else {
         let gameResult = gameresult(winner); // 1 for a win for X, 0 for a draw, -1 for a loss
         checkIsANumber(gameResult, "learnFromGame", "gameResult")

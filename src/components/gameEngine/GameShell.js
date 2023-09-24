@@ -26,13 +26,13 @@ export default function GameShell( props ) {
   //const [opponent, setOpponent] = useState( null ); 
   const [promptText, setPromptText ] = useState( `Choose side, X or O` ); 
   const [buttonActivation, setButtonActivation] = useState( true ); 
-  const playersTurn = props.playersTurn; 
-  const setPlayersTurn = props.setPlayersTurn; 
+  // const playersTurn = props.playersTurn; 
+  // const setPlayersTurn = props.setPlayersTurn; 
 
   const [winner, setWinner] = useState(); 
   const [database,setDatabase] = useState(dataBaseDuplicator(db));                     // this is the main database that is updated as learning progresses
   const [isCalculatingWinner, setIsCalculatingWinner] = useState(false); 
-
+  const [computerOff, setComputerOff] = useState(true); 
   const [gameLog, setGameLog] = useState([Array(9).fill(null)]);
   const [trainingMode, setTrainingMode] = useState(); 
   const [value, setValue] = useState("");
@@ -58,35 +58,35 @@ export default function GameShell( props ) {
     console.log("start of gameShell, soundEffect is ", props.soundEffect)
   }, [])
 
-  useEffect(
-    () => {
-      checkNetData(net, "useEffect net checker")
-    },
-    [net]
-  )
+  // useEffect(
+  //   () => {
+  //     checkNetData(net, "useEffect net checker")
+  //   },
+  //   [net]
+  // )
    
-  function checkGameShell(){
-    useEffect(() => {
-      let dbResponse = JSON.stringify(db[0].response)
-      let databaseResponse = JSON.stringify(database[0].response)
-      if (dbResponse !== databaseResponse){
-        throw new Error(`GameShell: db[0].response is ${dbResponse} but database[0].response is ${databaseResponse}`)
-      }
-      //else console.log("GameShell cleared on first render")
-    }, [])
-  }
-  checkGameShell()
+  // function checkGameShell(){
+  //   useEffect(() => {
+  //     let dbResponse = JSON.stringify(db[0].response)
+  //     let databaseResponse = JSON.stringify(database[0].response)
+  //     if (dbResponse !== databaseResponse){
+  //       throw new Error(`GameShell: db[0].response is ${dbResponse} but database[0].response is ${databaseResponse}`)
+  //     }
+  //     //else console.log("GameShell cleared on first render")
+  //   }, [])
+  // }
+  // checkGameShell()
 
   function handleXClick () {
     setHumansLetter('X');
-    setPlayersTurn(true); 
+    setComputerOff(true); 
     setButtonActivation(false);
     setTrainingMode(false) ;
     setWhoWon(null)
   }
   function handleOClick () {
     setHumansLetter('O');
-    setPlayersTurn(false)
+    setComputerOff(false)
     setButtonActivation(false); 
     setTrainingMode(false) ;
     setWhoWon(null)
@@ -95,7 +95,7 @@ export default function GameShell( props ) {
   function handleTrainingModeClick (){
     setSquares(Array(9).fill(null))
     setWinner(null); 
-    setPlayersTurn(false)
+    setComputerOff(false)
     setButtonActivation(false); 
     setTrainingMode(true) ;
     setHumansLetter(' ') ; 
@@ -129,7 +129,7 @@ function returnToGame(){
 
  
   // if player is null, show the choose side options. Else display the game container. 
-  if (humansLetter === null && !props.testMode){   
+  if (humansLetter === null){   
     return (
       <ChooseSide foe = {foe} promptText = {promptText} handleXClick = {handleXClick} handleOClick = {handleOClick} humansLetter = {humansLetter} buttonActivation = {buttonActivation} handleTrainingModeClick = {handleTrainingModeClick}/>
       )
@@ -140,6 +140,8 @@ function returnToGame(){
       handleTrainingModeClick = {handleTrainingModeClick}
       setWhoWon = {setWhoWon}
       whoWon = {whoWon}
+      setComputerOff = {setComputerOff}
+      computerOff = {computerOff}
 
       setSoundEffect = {setSoundEffect}
       soundEffect = {soundEffect}
@@ -148,8 +150,8 @@ function returnToGame(){
         setNet = {setNet} 
         humansLetter = {humansLetter}
         setHumansLetter = {setHumansLetter}
-        playersTurn = {playersTurn}
-        setPlayersTurn = {setPlayersTurn}
+        xsTurn={props.xsTurn} 
+        setXsTurn={props.setXsTurn}
 
         winner = {winner}
         setWinner = {setWinner}
@@ -188,9 +190,12 @@ function returnToGame(){
         soundEffect = {soundEffect}
 
         humansLetter = {humansLetter}
-        playersTurn = {playersTurn}
-        setPlayersTurn = {setPlayersTurn}
+        xsTurn={props.xsTurn} 
+        setXsTurn={props.setXsTurn}
         setWhoWon = {setWhoWon}
+
+        setComputerOff = {setComputerOff}
+        computerOff = {computerOff}
         
         winner = {winner}
         setWinner = {setWinner}
@@ -256,8 +261,8 @@ function returnToGame(){
 
         soundEffect = {soundEffect}
         humansLetter = {humansLetter}
-        playersTurn = {playersTurn}
-        setPlayersTurn = {setPlayersTurn}
+        xsTurn={props.xsTurn} 
+        setXsTurn={props.setXsTurn}
 
         winner = {winner}
         setWinner = {setWinner}

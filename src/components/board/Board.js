@@ -6,11 +6,12 @@ export default function Board( props ) {
     // const placePlayersMark = props.placePlayersMark; 
     const values = props.values; 
     const squaresClassName = props.squaresClassName; 
-    const playersTurn = props.playersTurn; 
+    // const playersTurn = props.playersTurn; 
+    const computerOff = props.computerOff;
     const winner = props.winner; 
     const setSquares = props.setSquares; 
     const setPlayersTurn = props.setPlayersTurn;
-    const testMode = props.testMode; 
+    //const testMode = props.testMode; 
     
     if (!Array.isArray(props.values)) {
       return null; // or return a loading spinner, error message, etc.
@@ -21,16 +22,16 @@ export default function Board( props ) {
   function placePlayersMark(i) {                          // i = number of square 0 through 8
     console.log("Placing player's mark!")
     let nextSquares = values.slice();                    // create duplicate board
-    if (winner || !playersTurn || values[i]) {           // if the winner has been decided, it's not player's turn, or the square is occupied, do nothing
-      console.log(`Cannot play because ${winner? 'game is already won': !playersTurn? "it's not player's turn" : 'space is occuped'}`)
+    if (winner || !computerOff || values[i]) {           // if the winner has been decided, it's not player's turn, or the square is occupied, do nothing
+      console.log(`Cannot play because ${winner? 'game is already won': !computerOff? "it's not player's turn" : 'space is occuped'}`)
       return;
     }
     nextSquares = placeMark(i, nextSquares);              // puts an X or O in the array depending on who is the player
     setSquares(nextSquares);                              // sets the board equal to the duplicate board
     
-    if (!props.computerOff) {
-      setPlayersTurn(false);
-    }
+    // if (!props.computerOff) {
+    //   setPlayersTurn(false);
+    // }
   }
   let squareColors = props.squareColors; 
   if (!squareColors){squareColors = Array(9).fill(null)}

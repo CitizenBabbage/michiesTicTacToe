@@ -39,7 +39,7 @@ export default function BoardContainer( props ) {
       setResigned(null); 
       setGameLog([Array(9).fill(null)]);
       console.log("trainingMode is ", trainingMode)
-      if (props.testMode) {setPlayersTurn(true); setComputerOff(true)}
+      // if (props.testMode) {setPlayersTurn(true); setComputerOff(true)}
       console.log("setComputerOff is ", props.computerOff)
   }
 
@@ -48,11 +48,11 @@ export default function BoardContainer( props ) {
     trainingMode?
       <div className='center'>
           {!trainingMode && <img src = {props.src} className = 'thumbnail'/>}
-          <Board devMode = {props.devMode} testMode = { props.testMode } computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } trainingMode = {trainingMode} trainingIterations = {props.trainingIterations} squaresClassName = {squaresClassName} values = { squares } playersTurn = {playersTurn} winner = {winner} setSquares = {setSquares} setPlayersTurn = {setPlayersTurn}></Board> 
+          <Board devMode = {props.devMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } trainingMode = {trainingMode} trainingIterations = {props.trainingIterations} squaresClassName = {squaresClassName} values = { squares } playersTurn = {playersTurn} winner = {winner} setSquares = {setSquares} setPlayersTurn = {setPlayersTurn}></Board> 
       </div>
       :
       <div className='center'>
-        <Board devMode = {props.devMode} testMode = { props.testMode } computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } trainingMode = {trainingMode} trainingIterations = {props.trainingIterations} squaresClassName = {squaresClassName} values = { squares } playersTurn = {playersTurn} winner = {winner} setSquares = {setSquares} setPlayersTurn = {setPlayersTurn}></Board> 
+        <Board devMode = {props.devMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } trainingMode = {trainingMode} trainingIterations = {props.trainingIterations} squaresClassName = {squaresClassName} values = { squares } playersTurn = {playersTurn} winner = {winner} setSquares = {setSquares} setPlayersTurn = {setPlayersTurn}></Board> 
         <div className = 'horizontal-button-container'>
           <ResignButton setResigned = {props.setResigned} humansLetter = {props.humansLetter}/>
           <ClearButton clear = { clearBoard } reset = {props.reset}> </ClearButton>

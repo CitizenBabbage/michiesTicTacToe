@@ -105,7 +105,8 @@ export default function MenaceUpdater(props){
     if (trainingMode) return (
         <div> 
             <MenaceTrainingPage
-
+                setComputerOff = {props.setComputerOff} 
+                computerOff = {props.computerOff}
                 naturalLanguageLog = {naturalLanguageLog} 
                 setNaturalLanguageLog = {setNaturalLanguageLog}
                 nLLogStats = {nLLogStats}
@@ -115,8 +116,8 @@ export default function MenaceUpdater(props){
                 trainingSound = {props.trainingSound}
 
                 humansLetter = {props.humansLetter}
-                playersTurn = {props.playersTurn}
-                setPlayersTurn = {props.setPlayersTurn}
+                xsTurn={props.xsTurn} 
+                setXsTurn={props.setXsTurn}
                 setWhoWon = {props.setWhoWon}
                 
                 winner = {winner}
