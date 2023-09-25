@@ -55,24 +55,11 @@ export default function MenaceUpdater(props){
             ]
          }]); 
     const [nLLogStats, setNLLogStats] = useState([])
-
-
-    //useEffect(() => {console.log(`useEffect reports: Value of winner changed to ${winner}`)},[winner])
-
-    //useEffect(() => {console.log(`useEffect reports: Value of database changed. New first response state is ${database[0].response}`)},[winner])
     const previousDatabaseRef = useRef();
 
-    // whenever database changes, check if previousDatabaseRef has a value and if that value is different from the database
-    // if so , log a message. Either way, update to new db. 
-    useEffect(() => {
-        if (previousDatabaseRef.current && JSON.stringify(database) !== JSON.stringify(previousDatabaseRef.current)) {
-            console.log('Database has changed!');
-        }
-        // After checking, update the ref for the next render
-        previousDatabaseRef.current = database;
-    }, [database]);
+    
 
-
+    // updates database based on game 
     useEffect(() => {
         const newDataAndLog = learnFromGame(winner, gameLog, database)
         if (newDataAndLog) {
@@ -81,15 +68,24 @@ export default function MenaceUpdater(props){
         }
     },[winner])
 
+    // reports change to database
+    useEffect(() => {
+        if (previousDatabaseRef.current && JSON.stringify(database) !== JSON.stringify(previousDatabaseRef.current)) {
+            console.log('Database has changed!');
+        }
+        // After checking, update the ref for next time
+        previousDatabaseRef.current = database;
+    }, [database]);
+
     
 
-    useEffect(() => { //start new training iteration
-        if (trainingIterations <= 0) return; 
-        setSquares(Array(9).fill(null)); 
-        setWinner(null); 
-        setGameLog([Array(9).fill(null)]); 
-        setTrainingIterations(trainingIterations - 1)
-    }, [database])
+    // useEffect(() => { //start new training iteration
+    //     if (trainingIterations <= 0) return; 
+    //     setSquares(Array(9).fill(null)); 
+    //     setWinner(null); 
+    //     setGameLog([Array(9).fill(null)]); 
+    //     setTrainingIterations(trainingIterations - 1)
+    // }, [database])
 
 
     // when the database is updated, get the updated objects, with new response arrays, and add them to the history

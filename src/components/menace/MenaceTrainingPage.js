@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 
 
 import BoardContainer from '../board/BoardContainer.js';
-import GameEnd from '../gameEngine/GameEnd.js';
+import GameCycle from '../gameEngine/GameCycle.js';
 import GameLog from '../gameEngine/GameLog.js';
-import Thinking from '../gameEngine/Thinking.js';
+// import Thinking from '../gameEngine/AI_DecisionModule.js';
 import { IdFacts } from '../presentational/IdFacts.js';
 import { TrainingIterationsField } from '../buttons/TrainingIterationsField.js';
 import { NavigationButton } from '../buttons/NavigationButton.js';
@@ -65,9 +65,9 @@ export function MenaceTrainingPage (props) {
             </div>
           </div> 
           <div label = "column1, row3">
-            <GameEnd setWhoWon = {props.setWhoWon} humansLetter = {humansLetter}  devMode = {props.devMode} resigned = { resigned } isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn}/>
+            {/* <GameEnd setWhoWon = {props.setWhoWon} humansLetter = {humansLetter}  devMode = {props.devMode} resigned = { resigned } isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn}/> */}
             {trainingMode && <NLlog naturalLanguageLog = { props.naturalLanguageLog } setNaturalLanguageLog = { props.setNaturalLanguageLog } nLLogStats = { props.nLLogStats }/>}
-            {trainingMode && <Thinking setComputerOff = {props.setComputerOff} computerOff = {props.computerOff} setSoundEffect = {props.setSoundEffect} devMode = {props.devMode} trainingIterations = {trainingIterations} setSquares = {setSquares} setFoe = { props.setFoe } foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares }  setWinner = {setWinner} winner = { winner }/>}   
+            <GameCycle ranking = {props.ranking} setComputerOff = {props.setComputerOff} computerOff = {props.computerOff} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect} net = {props.net} devMode = {props.devMode} trainingIterations = {trainingIterations} setSquares = {setSquares} setFoe = { props.setFoe } foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {props.setTrainingMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares }  winner = { winner }/>   
             {trainingMode && <GameLog devMode = {props.devMode} trainingMode = {trainingMode} winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> }
 
           </div>

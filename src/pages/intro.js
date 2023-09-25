@@ -8,7 +8,7 @@ import IntroTheme from '../components/presentational/IntroTheme.js';
 
 
  
-const Home = ( props ) => {
+const Intro = ( props ) => {
     const location = useLocation();
     const [audioSelected, setAudioSelected] = useState(false);  
     const navigate = useNavigate();
@@ -57,4 +57,4 @@ const Home = ( props ) => {
     )
 };
  
-export default Home;
+export default Intro;

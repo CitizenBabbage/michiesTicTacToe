@@ -47,6 +47,7 @@ export function readGenome(genome, board, mySymbol){
     //console.log(`Initiating readGenome with genome: ${genome}, board: ${board} and mySymbol: ${mySymbol} `) 
     let genomeClone = [...genome];
     while (genomeClone.some(element => element > 0)){
+        //console.log("readGenome: while loop started")
         const blanks = numberOfBlanks(board); 
         //if (board.every(element => element !== null)) {
         if (blanks === 0){

@@ -10,7 +10,7 @@ import introTune from './music/tektoktao.mp3'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Home from './pages/intro.js';
+import Home from './pages/index.js';
 import About from './pages/about.js';
 import Menace from './pages/menace.js';
 import Minimax from './pages/minimax.js'; 
@@ -67,7 +67,7 @@ function playAudio(){
             <Route path="/neuro" element={<Neuro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
             {/* <Route path="/test" element={<Test devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/> */}
             <Route path="/selectOpponent" element={<SelectOpponent devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/>
-            <Route path="/intro" element={<Intro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/>
+            <Route path="/intro" element={<Intro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/> 
 
         </Routes>
       </Router>

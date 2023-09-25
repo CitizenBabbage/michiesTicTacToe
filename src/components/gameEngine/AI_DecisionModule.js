@@ -11,103 +11,67 @@ import SoundComponent from '../presentational/soundFX/SoundFX.js';
 
 
 
-export default function Thinking( props ) {
+export default function AI_DecisionModule( props ) {
     
-    let genome = [1,2,3,4,5,6,7,8,9,10,11,12]; // for now this is just a dummy.
     const network = props.net; 
     
-    // const playersTurn = props.playersTurn;
-    // const setPlayersTurn = props.setPlayersTurn; 
-    const setXsTurn = props.setXsTurn; 
-    const xsTurn = props.xsTurn; 
-
-    
     const winner = props.winner; 
-    const isCalculatingWinner = props.isCalculatingWinner
-    const [thinkingWord, setThinkingWord] = useState("");
     const trainingMode = props.trainingMode; 
     const database = props.database;
 
     const [thinkBoard, setThinkBoard] = useState(Array(9).fill(null)); 
     const foe = props.foe; 
-    const setFoe = props.setFoe; 
+    // const setFoe = props.setFoe; 
     const setSquares = props.setSquares; 
     const squares = props.squares; 
-    const trainingIterations = props.trainingIterations; 
-    const [computersTurn, setComputersTurn] = useState(false)
+     
+
     const [probabilityArray, setProbabilityArray] = useState(Array(9).fill(null))
     // const testMode = props.testMode; 
     const computerOff = props.computerOff 
-    const setComputerOff = props.setComputerOff; 
     const [foeSpec,setFoeSpec] = useState([]); 
     const [tempComputerOpponent, setTempComputerOpponent] = useState(foe); 
+    const ranking = props.ranking; 
+    const [controllingGenome, setControllingGenome] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13]); 
+    const trainingTurn = props.trainingTurn; 
 
+
+    // the following useEffect updates the controller after learning or change in opponent 
+    useEffect(setFoeSpecifications,[database, ranking, network, foe])
 
     function setFoeSpecifications(){
         if (foe === 'menace') {setFoeSpec(database)}
-        else if (foe === 'evolvo') {setFoeSpec(genome)}
+        else if (foe === 'evolvo') {setFoeSpec(ranking[0])}
         else if (foe === 'Neuro') {setFoeSpec(network)}
     }
 
-    useEffect(setFoeSpecifications,[])
+    // the following useEffect triggers the AI
+    useEffect(()=>{
+        if (!computersTurn()) return;
+        takeComputersTurn(); 
+    },[trainingTurn, computerOff]) // these values are changed in GameCycle at the right time to trigger the AI
 
-    // Whenever isCalculatingWinner changes value, ask the computer to check whether it needs to take a turn
-    useEffect(
-        () => {
-            console.log('Thinking: useffect triggered by change in isCalculatingWinner. Setting Xsturn.')
-            if (!isCalculatingWinner) {
-                setXsTurn(prevValue => !prevValue)
-                if (!trainingMode) setComputerOff(prevValue => !prevValue)
+
+    function takeComputersTurn(){
+        computerPlay().then(resolvedSquares => {
+            checkBoard(resolvedSquares, "takeComputersTurn");
+            setSquares(resolvedSquares); // this triggers restart of gameCycle in gameCycle
             }
-        },
-        [isCalculatingWinner]  
-        );
+        ).catch(error => {
+            console.error("Error in takeComputersTurn:", error); 
+        });
+    }
 
-
-    useEffect(() => {
-        console.log("thinking: trainingIterations changed to ", trainingIterations)
-        if (trainingIterations > 0) {
-            console.log("setting X's Turn to true")
-            setXsTurn(true); 
-        }
-    },[trainingIterations])
-
-    useEffect(() => {
-        if (winner) setXsTurn(false); 
-    },[winner])
-
-    useEffect(
-        () => {
-            console.log('Thinking: useEffect triggered by change in xsTurn. Launching checkForComputersTurn. '),
-            checkForComputersTurn();
-        },
-        [xsTurn] 
-        );
-
-        // removed 23 sept
-    // useEffect(
-    //     () => {if (!playersTurn) { // formerly () => {if (testMode && !playersTurn) 
-    //         console.log('useEffect triggered in thinking, based on change in playersTurn')
-
-    //         //setComputerOff(false)
-    //         checkForComputersTurn()}
-    //     }, [playersTurn]
-    // )
-
-    function checkForComputersTurn(){
+    function computersTurn(){ //returns true if it is time for the computer to move
         console.log("checking For Computers Turn..."); 
         if (computerOff) {
             console.log("computerOff is set to true. Canceling checkForComputersTurn!")
             return
         }; 
-        if (isCalculatingWinner) {
-            console.log("isCalculatingWinner is still in progress. Canceling checkForComputersTurn!")
-            return
-        }; 
-        // if (playersTurn) {
-        //     console.log("checkForComputersTurn: Player's turn detected! Canceling checkForComputersTurn!"); 
-        //     return; 
-        // };
+        // if (isCalculatingWinner) {
+        //     console.log("isCalculatingWinner is still in progress. Canceling checkForComputersTurn!")
+        //     return
+        // }; 
         if (trainingMode && !trainingIterations > 0) {
             console.log("Training iterations not set or reduced to 0. Canceling checkForComputersTurn!"); 
             return; 
@@ -117,39 +81,16 @@ export default function Thinking( props ) {
             return
         };
         console.log("checkForComputersTurn: Passed!"); 
-        setComputersTurn(true); 
-    }
-
-    useEffect(
-        takeComputersTurn,
-        [computersTurn]
-        );
-
-    function takeComputersTurn(){
-        //console.log("passed Thinking/takeComputersTurn 1")
-        if (computersTurn) {
-            if (squares.includes(null)){                        // if there are empty squares left...
-                computerPlay().then(resolvedSquares => {
-                    //console.log("takeComputersTurn: squares are ", resolvedSquares)
-                    checkBoard(resolvedSquares, "takeComputersTurn");
-                    setSquares(resolvedSquares);
-                    }
-                ).catch(error => {
-                    console.error("Error in takeComputersTurn:", error); 
-                });
-            }
-            setComputersTurn(false)
-        }
-        // console.log("passed Thinking/takeComputersTurn 2")
+        return true; 
     }
 
 
-    function computerPlay() {
+    // computerPlay is async because an artificial delay is introduced to make the timing feel natural 
+    async function computerPlay() {
         let nextSquares = [...squares];                                             // create duplicate board in memory
         return delayAndChoose(nextSquares).then(choiceAndProbabilityArray => {
             console.log("computerPlay: Move chosen is " , choiceAndProbabilityArray[0])
             nextSquares = placeMark(choiceAndProbabilityArray[0], nextSquares)      // set the board square to X or O, as appropriate
-            //console.log("computerPlay: choiceAndProbabilityArray[1] is", choiceAndProbabilityArray[1])
             setProbabilityArray(choiceAndProbabilityArray[1])
             return Promise.resolve(nextSquares); 
             }
@@ -189,6 +130,8 @@ export default function Thinking( props ) {
     // making the opposite move. This ensures menace is exposed to better moves than it picks at random, 
     // speeding up training. 
     // DON'T add evolvo or neuro to the foes list without checking the note below re foeSpecs. 
+                // NOTE that you can't just add evolvo & neuro as opponents for menace
+                // because they need to take their foespec, which will be set to menace's
     function reverseFoe(){
         let foes = ["menace","minimax","huris"]
         if (tempComputerOpponent === "menace"){
@@ -200,8 +143,8 @@ export default function Thinking( props ) {
   
     
  
-    // the purpose of this is just to create a small delay so that the computer appears to be thinking
-    // without it the computer tends to respond simultaneously with the player's move, which is unnatural
+    // the purpose of this is just to create a small delay so that the computer appears to be thinking.
+    // Without this the computer responds almost simultaneously with player move, which feels unnatural
 
     function delay(delay) {
         return new Promise((resolve) => {
@@ -237,12 +180,14 @@ export default function Thinking( props ) {
 
     return (
         <div className='center'>
-            <p> {!computerOff && !winner?"Thinking...":'\u00A0'} </p>
+            {!trainingMode && <p> {winner === 'D'? "It is a draw!": winner? `${winner} is the winner!` : !computerOff && !winner?"Thinking...":'\u00A0'} </p>}
+
+            {/* <p> {!computerOff && !winner?"Thinking...":'\u00A0'} </p> */}
             {foe === 'menace' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>}
             {foe === 'Neuro' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "neuroPredictions" values = {thinkBoard}/>}
             {foe === 'minimax' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "minimaxBoard" values = {thinkBoard}/>}
             <SoundComponent trainingMode = {props.trainingMode} computersTurn = {computersTurn} foe = {foe} whoWon = {props.whoWon} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect}/>
-
+            {foe === 'evolvo' && <p> Controlling genome is: {JSON.stringify(ranking[0])}</p>  }
         </div>
       
     )

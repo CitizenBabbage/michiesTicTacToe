@@ -3,7 +3,7 @@ import { evolvoChooseMove } from "../choiceFunctions/evolvoChooseMove.js";
 import { calculateWinner } from "../engineHelpers/checkWinner.js";
 
 
-function runOneGeneration(genepool, encountersPerCompetition, cullFraction, breedFraction, mutationRate, mutationSize){
+export function runOneGeneration(genepool, encountersPerCompetition, cullFraction, breedFraction, mutationRate, mutationSize){
     genepool = runOneCompetition(genepool, encountersPerCompetition); 
     genepool = cullGenePool(genepool, cullFraction); 
 

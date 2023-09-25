@@ -12,6 +12,7 @@ export function ChooseSide( props ){
     const buttonActivation = props.buttonActivation; 
     const handleTrainingModeClick = props.handleTrainingModeClick; 
     const foe = props.foe; 
+    const trainingWord = foe === 'evolvo'? 'Evolve': 'Train'
 
     return (
     <div className="gameshell"> 
@@ -19,21 +20,21 @@ export function ChooseSide( props ){
       <button 
         disabled = { !buttonActivation } 
         onClick = { handleXClick }
-        className={`player-button ${humansLetter === 'X' ? 'active' : ''}`}>
+        className={`player-button`}>
         <p className = 'retro-text' style = {{ fontSize: '16px'}}>X</p>
       </button>
       <button 
         disabled = { !buttonActivation }
         onClick = { handleOClick }
-        className={`player-button ${humansLetter === 'O' ? 'active' : ''}`}>
+        className={`player-button`}>
         <p className = 'retro-text' style = {{ fontSize: '16px'}}>O</p>
       </button>
-      {(foe === 'menace' || foe === 'Neuro') && 
+      {(foe === 'menace' || foe === 'Neuro' || foe === 'evolvo') && 
         <button 
           disabled = { !buttonActivation } 
           onClick = { handleTrainingModeClick }
-          className={`player-button ${humansLetter === 'X' ? 'active' : ''}`}>
-          <p className = 'retro-text' style = {{ fontSize: '16px'}}>Train</p>
+          className={`player-button`}>
+          <p className = 'retro-text' style = {{ fontSize: '14px'}}>{trainingWord}</p>
         </button>
       }
       </div>

@@ -3,7 +3,7 @@ import React from 'react';
 import BoardContainer from '../board/BoardContainer.js';
 // import MenaceUpdater from './MenaceUpdater';
 import { IdFacts } from '../presentational/IdFacts.js';
-import { TrainingIterationsField } from '../buttons/TrainingIterationsField.js';
+import { EnterGenerations } from '../buttons/EnterGenerations.js';
 import { NavigationButton } from '../buttons/NavigationButton.js';
 import SoundComponent from '../presentational/soundFX/SoundFX.js';
 import { EvolvoUpdater } from './evolvoUpdater.js';
@@ -36,16 +36,31 @@ export function EvolvoTrainingPage (props) {
     const returnToGame = props.returnToGame; 
 
     return (
-    <div className='page'> 
-      <div className='gameshell'>
-            <NavigationButton path = "/selectOpponent" label = 'Menu'/>
+      <div className='page'> 
+
+      <div className='threeRows'>
+
+        <div label = "column1, row1"> 
+          <NavigationButton path = "/selectOpponent" label = 'Menu'/>
+          {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Back To Game </button> }
+        </div> 
+
+        <div label = "column1, row2" className='twoColumns'>
+          <div>
             <BoardContainer devMode = {props.devMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } src = {props.src} setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} setResigned = {setResigned} humansLetter = {humansLetter} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} reset = {reset} ></BoardContainer>
-            <TrainingIterationsField setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } setTrainingIterations = {setTrainingIterations}  xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} value = {value} setValue = {setValue}/>
-            
+            <EnterGenerations setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } setGenerations = {props.setGenerations}  xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} value = {value} setValue = {setValue}/>
+          </div>
+          <div>
+            <IdFacts name = {props.name} playStyle = {props.playStyle} blurb = {props.blurb} src = {props.src} trainingMode = { trainingMode }/>
+          </div>
+        </div> 
+        <div label = "column1, row3">
+
+        </div>
+
       </div>
-      <div>
-        <IdFacts name = {props.name} blurb = {props.blurb} src = {props.src} trainingMode = { trainingMode }/>
-        <EvolvoUpdater trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog} trainingIterations = {trainingIterations} setTrainingIterations = {setTrainingIterations} setWinner = {setWinner}  setGameLog = {setGameLog} setSquares = {setSquares} /> 
+
+      <div label = "second column">
         <SoundComponent 
           setSoundEffect = {props.setSoundEffect}
           soundEffect = {props.soundEffect} 
@@ -55,6 +70,7 @@ export function EvolvoTrainingPage (props) {
           bravadoSound = {props.bravadoSound}
           startSound = {props.startSound} 
           trainingMode = {props.trainingMode}
+          
         />
       </div>
     </div>  

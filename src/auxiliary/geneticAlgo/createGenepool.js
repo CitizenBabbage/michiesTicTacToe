@@ -1,10 +1,11 @@
-function createGenepool (numberOfCritters){
+export default function createGenepool (numberOfCritters, genomeLength){
     let genePool = []; 
     for (let i = 0; i < numberOfCritters; i++){
         let genome = []; 
-        for (j = 0; j < 12; j++){
+        for (let j = 0; j < genomeLength; j++){
             genome[j] = Math.floor(Math.random()*100);
         }
-        genePool.push({'genome':genome,'fitness':0})
+        genePool.push([genome,0])
     }
+    return genePool; 
 }

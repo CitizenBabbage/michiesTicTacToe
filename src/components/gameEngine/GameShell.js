@@ -9,13 +9,12 @@ import {db} from '../../auxiliary/boardStateDatabase/dataBeadsFormatted.js'
 import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions.js';
 import { makeNetwork } from '../neuro/netBuilders.js'; // 
 // import { makeNetwork } from '../neuro/debuggingData/dummyInputs'; //for debugging DELETE afterwards
-import { checkNetData } from '../../auxiliary/testers/errorCheckers.js';
-
+import createGenepool from '../../auxiliary/geneticAlgo/createGenepool.js'
 import { ChooseSide } from './ChooseSide.js';
 import  PlayPage  from './PlayPage.js';
 import MenaceUpdater from '../menace/MenaceUpdater.js';
 import { NeuroTrainingPage } from '../neuro/NeuroTrainingPage.js';
-import { EvolvoTrainingPage } from '../evolvo/evolvoTrainingPage.js';
+import { EvolvoUpdater } from '../evolvo/evolvoUpdater.js';
 import SoundComponent from '../presentational/soundFX/SoundFX.js';
 import { createModel } from '../neuro/neuroTFmodel/model.js';
 
@@ -38,15 +37,19 @@ export default function GameShell( props ) {
   const [value, setValue] = useState("");
   const [trainingIterations, setTrainingIterations] = useState(0); 
   const [squares, setSquares] = useState(Array(9).fill(null));           // create the board with 9 empty slots
-  const [resigned, setResigned] = useState(null); 
+  const [resigned, setResigned] = useState(null); // takes X or O as value
   const [soundEffect, setSoundEffect] = useState(""); 
-  const [whoWon, setWhoWon] = useState(null) 
+  const [whoWon, setWhoWon] = useState(null)  // used for NL report 
+  const [generations, setGenerations] = useState(0); 
+  const [genepool, setGenepool] = useState(createGenepool(100, 13)); 
+  const [ranking, setRanking] = useState([
+    [[13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],0]
+  ]); 
   const foe = props.foe; 
   const setFoe = props.setFoe; 
   
   
-  
-  
+   
   // the net is set at this level so as to be available both for the training page and for the game itself
   //const [net, setNet] = useState(makeNetwork([27,32,36,5])) //
   const [net, setNet] = useState(createModel([128, 64]));
@@ -58,24 +61,7 @@ export default function GameShell( props ) {
     console.log("start of gameShell, soundEffect is ", props.soundEffect)
   }, [])
 
-  // useEffect(
-  //   () => {
-  //     checkNetData(net, "useEffect net checker")
-  //   },
-  //   [net]
-  // )
-   
-  // function checkGameShell(){
-  //   useEffect(() => {
-  //     let dbResponse = JSON.stringify(db[0].response)
-  //     let databaseResponse = JSON.stringify(database[0].response)
-  //     if (dbResponse !== databaseResponse){
-  //       throw new Error(`GameShell: db[0].response is ${dbResponse} but database[0].response is ${databaseResponse}`)
-  //     }
-  //     //else console.log("GameShell cleared on first render")
-  //   }, [])
-  // }
-  // checkGameShell()
+
 
   function handleXClick () {
     setHumansLetter('X');
@@ -93,6 +79,7 @@ export default function GameShell( props ) {
   }
 
   function handleTrainingModeClick (){
+    console.log("handleTrainingModeClick... responds")
     setSquares(Array(9).fill(null))
     setWinner(null); 
     setComputerOff(false)
@@ -180,6 +167,8 @@ function returnToGame(){
         playStyle = {props.playStyle}
         blurb = {props.blurb} 
         src = {props.src}
+
+        ranking = {ranking}
       />    
     )
   }
@@ -246,6 +235,7 @@ function returnToGame(){
         squares = {squares}
         setSquares = {setSquares}
         
+
         reset = {reset}
         returnToGame = {returnToGame} 
         name = {props.name} 
@@ -256,7 +246,7 @@ function returnToGame(){
   )
   else if (foe === 'evolvo') return (
     <div> 
-    <EvolvoTrainingPage
+    <EvolvoUpdater
         setSoundEffect = {setSoundEffect}
 
         soundEffect = {soundEffect}
@@ -270,6 +260,14 @@ function returnToGame(){
         setDatabase = {setDatabase}
         isCalculatingWinner = {isCalculatingWinner}
         setIsCalculatingWinner = {setIsCalculatingWinner}
+
+
+        generations = {generations} 
+        setGenerations = {setGenerations} 
+        genepool = {genepool} 
+        setGenepool = {setGenepool}
+        ranking = {ranking}
+        setRanking = {setRanking}
 
         gameLog = {gameLog}
         setGameLog = {setGameLog}
@@ -292,6 +290,7 @@ function returnToGame(){
         blurb = {props.blurb} 
         src = {props.src}
         trainingSound = {props.trainingSound}
+
       />  
       </div>   
   )
