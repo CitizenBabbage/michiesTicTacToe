@@ -10,7 +10,7 @@ export function TrainingIterationsField( props ) {
     const setValue = props.setValue; 
     const [submissionError, setSubmissionError] = useState(""); 
     const setSoundEffect = props.setSoundEffect; 
-    
+    const setSquares = props.setSquares; 
 
     function handleChange(event) {
         setValue(event.target.value);
@@ -22,9 +22,8 @@ export function TrainingIterationsField( props ) {
           console.log("submit button pressed")
           setTrainingIterations(event.target.elements[0].value); 
           console.log("trainingIterationsField: training iterations set to ", event.target.elements[0].value)
-
-          //setPlayersTurn(false)
           setSoundEffect("menaceLearn")
+          setSquares(Array(9).fill(null)); // this starts the GameCycle by triggering the useEffect at top of GameCycle
         }
         else setSubmissionError("I need a positive whole number")
       }

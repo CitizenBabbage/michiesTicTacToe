@@ -34,7 +34,7 @@ export default function AI_DecisionModule( props ) {
     const ranking = props.ranking; 
     const [controllingGenome, setControllingGenome] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13]); 
     const trainingTurn = props.trainingTurn; 
-
+    const trainingIterations = props.trainingIterations; 
 
     // the following useEffect updates the controller after learning or change in opponent 
     useEffect(setFoeSpecifications,[database, ranking, network, foe])
@@ -47,7 +47,9 @@ export default function AI_DecisionModule( props ) {
 
     // the following useEffect triggers the AI
     useEffect(()=>{
+        console.log("change in training turn or computerOff recognised...")
         if (!computersTurn()) return;
+        console.log("computersTurn check passed ...")
         takeComputersTurn(); 
     },[trainingTurn, computerOff]) // these values are changed in GameCycle at the right time to trigger the AI
 
@@ -72,7 +74,9 @@ export default function AI_DecisionModule( props ) {
         //     console.log("isCalculatingWinner is still in progress. Canceling checkForComputersTurn!")
         //     return
         // }; 
-        if (trainingMode && !trainingIterations > 0) {
+        if (trainingMode) console.log("it's trainingMode!")
+        console.log("trainingIterations are : ", trainingIterations)
+        if (trainingMode && trainingIterations <= 0) {
             console.log("Training iterations not set or reduced to 0. Canceling checkForComputersTurn!"); 
             return; 
         };

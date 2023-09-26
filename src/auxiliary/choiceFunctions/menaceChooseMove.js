@@ -77,7 +77,7 @@ export function chooseMoveFromBeadArray(beadArray){
         probSum += beadArray[i]; // add the beads in the ith position in the array to probsum
         if (rand < probSum){return i} // if rand is less than that, that's the move
     }
-    throw new Error(`Error in menaceChooseMove/chooseMoveFromBeadArray: object scanned without probability satisfaction`)
+    throw new Error(`Error in menaceChooseMove/chooseMoveFromBeadArray: object scanned without probability satisfaction. beadArray was ${beadArray}, rand was ${rand}, probSum finished at ${probSum} `)
 }
 
 

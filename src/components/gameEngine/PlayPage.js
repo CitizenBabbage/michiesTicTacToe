@@ -66,8 +66,8 @@ export default function PlayPage (props) {
       </div>
       <div>
         <IdFacts name = {props.name} blurb = {props.blurb} src = {props.src} trainingMode = { trainingMode }/>
-        <MenaceUpdater setComputerOff = {props.setComputerOff} computerOff = {props.computerOff} trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog} trainingIterations = {trainingIterations} setTrainingIterations = {setTrainingIterations} setWinner = {setWinner}  setGameLog = {setGameLog} setSquares = {setSquares} /> 
-        <SoundComponent foe = {foe} whoWon = {props.whoWon} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect}/>
+        <MenaceUpdater setWinner = {setWinner} setComputerOff = {props.setComputerOff} computerOff = {props.computerOff} trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} setDatabase = {setDatabase} winner = {winner} gameLog = {gameLog} trainingIterations = {trainingIterations} setTrainingIterations = {setTrainingIterations} setGameLog = {setGameLog} setSquares = {setSquares} /> 
+        <SoundComponent computerOff = {props.computerOff} foe = {foe} whoWon = {props.whoWon} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect}/>
       </div>
     </div>  
     )

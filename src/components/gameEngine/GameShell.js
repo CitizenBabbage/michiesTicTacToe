@@ -61,6 +61,12 @@ export default function GameShell( props ) {
     console.log("start of gameShell, soundEffect is ", props.soundEffect)
   }, [])
 
+  //decides which of human vs computer was the winner
+  useEffect(() => {
+    if (winner) setWhoWon(winner === humansLetter? "human": ['X','O'].includes(winner)? "computer": "draw")
+    console.log("setWhoWon has been triggered")
+},[winner])
+
 
 
   function handleXClick () {

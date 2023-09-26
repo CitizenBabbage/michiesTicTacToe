@@ -19,12 +19,15 @@ export default function SoundComponent( props ) {
 //   const loseSound = props.loseSound; 
 //   const bravadoSound = props.bravadoSound; 
 //   const startSound = props.startSound; 
+
+  const [bravadoCounter, setBravadoCounter] = useState(5); //controls bravado utterance frequencey 
   const trainingMode = props.trainingMode; 
   const soundEffect = props.soundEffect; 
   const setSoundEffect = props.setSoundEffect; 
   const whoWon = props.whoWon; 
   const foe = props.foe; 
   const computersTurn = props.computersTurn; 
+  const computerOff = props.computerOff; 
   const audioRef = useRef(null); 
   const soundMap = {
     menaceLearn,
@@ -58,35 +61,43 @@ useEffect(triggerWinOrLoseSound
 
 function triggerWinOrLoseSound(){
     console.log("triggerWinOrLoseSound triggered in SoundFX")
-    console.log("1. whoWon is : ", whoWon)
     if (whoWon === "human"){
-        console.log("2a. whoWon is now : ", whoWon)
         const sound = pickSound("loseSound")
         setSoundEffect(sound)
         // if (soundEffect !== "menaceBravado") setSoundEffect("menaceBravado") 
         // else setSoundEffect("minimaxBravado")
-        console.log("triggerWinOrLoseSound: soundEffect is ", soundEffect)
     }
     else if (whoWon === "computer"){
-        console.log("2b. whoWon is now : ", whoWon)
         const sound = pickSound("winSound")
-        console.log("sound is : ", sound)
         setSoundEffect(sound)
     }
-    else console.log("2c. whoWon is now : ", whoWon)
 }
 
 
-useEffect(() => {if (!trainingMode) playBravadoSound()}, [computersTurn])
+useEffect(() => {
+  console.log(`thinking of playing bravado sound...`)
+  if (!trainingMode) playBravadoSound()
+}, [computerOff])
 
   function playBravadoSound(){
-    const ran = Math.random(); 
-    if (ran < 0.1) {
-        const sound = pickSound("bravadoSound")
-        if (!sound) return 
-        console.log("sound is : ", sound)
-        setSoundEffect(sound)
-    }
+    console.log(`bravadoCounter is `, bravadoCounter)
+    if (bravadoCounter === 0) {
+          console.log(`play bravado sound!`)
+          const sound = pickSound("bravadoSound");
+          if (!sound) return; // if character has no bravadoSound
+          const randomCount = 3+Math.floor(Math.random()*5) 
+          setBravadoCounter(randomCount); 
+          setSoundEffect(sound); 
+      }
+    else setBravadoCounter(prevValue => prevValue -1)
+
+    // const ran = Math.random(); 
+    // if (ran < 0.1) {
+    //     const sound = pickSound("bravadoSound")
+    //     if (!sound) return 
+    //     console.log("sound is : ", sound)
+    //     setSoundEffect(sound)
+    // }
   }
 
 
