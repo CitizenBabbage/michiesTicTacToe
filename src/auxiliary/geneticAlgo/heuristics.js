@@ -52,11 +52,13 @@ function potentialForks(array, symbol){
     return possibleForks; 
 }
 
-function returnEmptySpaces(array) {
+
+export function returnEmptySpaces(array) {
     let result = [];
-    
+    //console.log("array.length is ", array.length)
     for (let i = 0; i < array.length; i++) {
-        if (array[i] === undefined) {
+        //console.log("checking square ", i)
+        if (!array[i]) {
             result.push(i);
         }
     }
@@ -64,17 +66,19 @@ function returnEmptySpaces(array) {
     return result;
 }
 
-function getAllWaysOfBlockingAllForks(array, mySymbol){
-    let opportunities = []; 
-    for (let i = 0; i < 9; i++){
-        let hypotheticalBoard = [...array]; 
-        hypotheticalBoard[i] = mySymbol; 
-        let forks = potentialForks(hypotheticalBoard, opposite(mySymbol)); 
-        if (forks.length === 0){opportunities.push(i)}
-    }
-    return opportunities; 
-}
+// function getAllWaysOfBlockingAllForks(array, mySymbol){
+//     let opportunities = []; 
+//     let emptySpaces = returnEmptySpaces(array); 
+//     for (let i = 0; i < emptySpaces.length; i++){
+//         let hypotheticalBoard = [...array]; 
+//         hypotheticalBoard[emptySpaces[i]] = mySymbol; 
+//         let forks = potentialForks(hypotheticalBoard, opposite(mySymbol)); 
+//         if (forks.length === 0){opportunities.push(i)}
+//     }
+//     return opportunities; 
+// }
 
+//commented out because it is essentially the same as above
 // returns a list of moves that do not result in the opponent being able to fork
 function getForkSafeMoves(array, mySymbol){
     let opportunities = []; 
@@ -88,6 +92,8 @@ function getForkSafeMoves(array, mySymbol){
     }
     return opportunities; 
     }
+
+
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -134,7 +140,7 @@ export function blockSingleForkingOpportunity(array, opponentsSymbol){
 // Rule NSS4: Otherwise, the player should block all forks in any way that simultaneously allows them to make two in a row.
 export function blockAllForksWhileThreatening(array, mySymbol){
     let opportunities = []; 
-    const opportunities1 = getAllWaysOfBlockingAllForks(array, mySymbol)
+    const opportunities1 = getForkSafeMoves(array, mySymbol)
     const opportunities2 = getAllPossibleTwoInALine(array, mySymbol);
     for (let i = 0; i < opportunities1.length; i++){
         if (opportunities2.includes(opportunities1[i])) opportunities.push(opportunities1[i])
@@ -353,9 +359,7 @@ export function playCenterOnSecond(array){
 // Rule 23: Play randomly! 
 export function playRandom(array){
     const emptySpaces = returnEmptySpaces(array); 
-    console.log("The only remaining empty spaces are ", emptySpaces)
     const randomIndex = Math.floor(Math.random()*emptySpaces.length)
-    console.log(`Choosing ${randomIndex} at random from those.`)
     return emptySpaces[randomIndex] 
 }
 
@@ -368,8 +372,8 @@ export function makeTwoInALine(array, mySymbol){
 }
 
 // Rule 25: block all forks NEEDS TESTING
-export function blockAllForks(array, mySymbol){
-    let opportunities = getAllWaysOfBlockingAllForks(array, mySymbol)
+export function avoidInvitingAFork(array, mySymbol){
+    let opportunities = getForkSafeMoves(array, mySymbol)
     if (opportunities.length > 0){
         let randomChoice = Math.floor(Math.random()*opportunities.length)
         return opportunities[randomChoice]
@@ -377,7 +381,12 @@ export function blockAllForks(array, mySymbol){
     return null; 
 }
 
-// Rule 26: make two in a line
+//console.log(avoidInvitingAFork(['O',null,'O',null,'X',null,'X','O','X'],'X'))
+
+
+
+
+////////////////////////////////////////////////
 
 function getAllPossibleTwoInALine(array, mySymbol){
     let opportunities = []
@@ -397,10 +406,3 @@ function getAllPossibleTwoInALine(array, mySymbol){
     return opportunities; 
 }
 
-// Rule 27
-export function avoidInvitingAFork(array, mySymbol){
-    const forkSafeMoves = getForkSafeMoves(array, mySymbol); 
-    const randomChoice = Math.floor(Math.random()*forkSafeMoves.length)
-    if (forkSafeMoves.length > 0) return (forkSafeMoves[randomChoice])
-    else return null; 
-}

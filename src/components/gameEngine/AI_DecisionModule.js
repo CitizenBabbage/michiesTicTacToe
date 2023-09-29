@@ -7,7 +7,9 @@ import { chooseMove } from '../../auxiliary/choiceFunctions/chooseMove.js';
 import { checkDbase, checkBoard } from "../../auxiliary/testers/errorCheckers.js"
 import {roundOffElementsInArray, placeMark} from "../../auxiliary/general/usefulFunctions.js"
 import Board from "../board/Board.js" 
-import SoundComponent from '../presentational/soundFX/SoundFX.js';
+import SoundComponent from '../presentational/sound/SoundFX.js';
+import GenomeDisplay from '../presentational/genomeDisplay.js';
+import { createGenome } from '../../auxiliary/geneticAlgo/createGenepool.js';
 
 
 
@@ -32,16 +34,19 @@ export default function AI_DecisionModule( props ) {
     const [foeSpec,setFoeSpec] = useState([]); 
     const [tempComputerOpponent, setTempComputerOpponent] = useState(foe); 
     const ranking = props.ranking; 
-    const [controllingGenome, setControllingGenome] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13]); 
+    const controllingGenome = props.controllingGenome;
+    const setControllingGenome = props.setControllingGenome;
     const trainingTurn = props.trainingTurn; 
     const trainingIterations = props.trainingIterations; 
+    let ruleUsed = '\u00A0'; 
 
     // the following useEffect updates the controller after learning or change in opponent 
     useEffect(setFoeSpecifications,[database, ranking, network, foe])
 
     function setFoeSpecifications(){
+        console.log("ranking[0] is ", ranking[0]); 
         if (foe === 'menace') {setFoeSpec(database)}
-        else if (foe === 'evolvo') {setFoeSpec(ranking[0])}
+        else if (foe === 'evolvo') {setFoeSpec(ranking[0].genome)}
         else if (foe === 'Neuro') {setFoeSpec(network)}
     }
 
@@ -92,10 +97,11 @@ export default function AI_DecisionModule( props ) {
     // computerPlay is async because an artificial delay is introduced to make the timing feel natural 
     async function computerPlay() {
         let nextSquares = [...squares];                                             // create duplicate board in memory
-        return delayAndChoose(nextSquares).then(choiceAndProbabilityArray => {
-            console.log("computerPlay: Move chosen is " , choiceAndProbabilityArray[0])
-            nextSquares = placeMark(choiceAndProbabilityArray[0], nextSquares)      // set the board square to X or O, as appropriate
-            setProbabilityArray(choiceAndProbabilityArray[1])
+        return delayAndChoose(nextSquares).then(choiceAndData => {
+            console.log("computerPlay: Move chosen is " , choiceAndData[0])
+            nextSquares = placeMark(choiceAndData[0], nextSquares)      // set the board square to X or O, as appropriate
+            setProbabilityArray(choiceAndData[1])
+            if (foe === 'huris') {ruleUsed = choiceAndData[1]}
             return Promise.resolve(nextSquares); 
             }
         )
@@ -163,16 +169,16 @@ export default function AI_DecisionModule( props ) {
             if (!trainingMode){delayms = 3000}
             delay(delayms)
             .then(() => {
-                console.log("choosing move")
+                console.log(`choosing move with board ${board}, foeSpec ${foeSpec} and tempComputerOpponent ${tempComputerOpponent}`)
                 //foeSpec is database for menace, genome for evolvo, network for neuro
                 // NOTE that you can't just add evolvo & neuro as opponents for menace
                 // because they need to take their foespec, which will be set to menace's
-                const choiceAndBoard = chooseMove(board, foeSpec, tempComputerOpponent); 
-                console.log("choiceAndBoard is: ", choiceAndBoard); 
+                const choiceAndData = chooseMove(board, foeSpec, tempComputerOpponent); 
+                console.log("choiceAndData is: ", choiceAndData); 
                 console.log("delayAndChoose: foe is: ", foe)
                 //console.log("delayAndChoose, selected move is :", choice)
                 //setPlayersTurn(true); 
-                resolve(choiceAndBoard);
+                resolve(choiceAndData);
                
             })
             .catch((error) => {
@@ -184,14 +190,15 @@ export default function AI_DecisionModule( props ) {
 
     return (
         <div className='center'>
-            {!trainingMode && <p> {winner === 'D'? "It is a draw!": winner? `${winner} is the winner!` : !computerOff && !winner?"Thinking...":'\u00A0'} </p>}
+            {!trainingMode && <p> {winner === 'D'? "It is a draw!": winner? `${winner} is the winner!` : !computerOff && !winner?"Thinking...":["huris", "evolvo"].includes(foe)? probabilityArray? probabilityArray: '\u00A0' :'\u00A0'} </p>}
 
             {/* <p> {!computerOff && !winner?"Thinking...":'\u00A0'} </p> */}
             {foe === 'menace' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>}
             {foe === 'Neuro' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "neuroPredictions" values = {thinkBoard}/>}
             {foe === 'minimax' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "minimaxBoard" values = {thinkBoard}/>}
             <SoundComponent trainingMode = {props.trainingMode} computersTurn = {computersTurn} foe = {foe} whoWon = {props.whoWon} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect}/>
-            {foe === 'evolvo' && <p> Controlling genome is: {JSON.stringify(ranking[0])}</p>  }
+            {foe === 'evolvo' && <p> Controlling genome is:</p>  }
+            {foe === 'evolvo' && <GenomeDisplay trainingMode = {props.trainingMode} genome = {ranking[0]}/> }
         </div>
       
     )

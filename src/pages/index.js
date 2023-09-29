@@ -21,9 +21,9 @@ const Home = ( props ) => {
 
             else if (event.key === "Enter") {
                 if (highlightedButton === "topButton"){
-                    // props.setAudioSelected(true)
+                    props.setAudioSelected(true)
                     // console.log("audioSelected at child level. AudioSelected = ", props.audioSelected)
-                    props.playAudio(); 
+                    //props.playAudio(); 
                     navigate("/intro?AudioSelected=true")
                 }
                 else if (highlightedButton === "bottomButton"){

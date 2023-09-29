@@ -1,5 +1,7 @@
 // This primarily handles the pre-game, wherein the player selects the piece they want to play, 
 // and the learning algorithm, which triggers in reaction to the completion of a game. 
+// But because this is the most immediate parent of both play and training elements, values 
+// that need to be defined for both are defined here. 
 
 import React from 'react';
 import { useState, useEffect } from 'react';
@@ -8,25 +10,21 @@ import {db} from '../../auxiliary/boardStateDatabase/dataBeadsFormatted.js'
 
 import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions.js';
 import { makeNetwork } from '../neuro/netBuilders.js'; // 
-// import { makeNetwork } from '../neuro/debuggingData/dummyInputs'; //for debugging DELETE afterwards
 import createGenepool from '../../auxiliary/geneticAlgo/createGenepool.js'
 import { ChooseSide } from './ChooseSide.js';
 import  PlayPage  from './PlayPage.js';
 import MenaceUpdater from '../menace/MenaceUpdater.js';
 import { NeuroTrainingPage } from '../neuro/NeuroTrainingPage.js';
 import { EvolvoUpdater } from '../evolvo/evolvoUpdater.js';
-import SoundComponent from '../presentational/soundFX/SoundFX.js';
+import SoundComponent from '../presentational/sound/SoundFX.js';
 import { createModel } from '../neuro/neuroTFmodel/model.js';
+import { NameManager } from '../../auxiliary/geneticAlgo/nameManager.js';
 
 
 export default function GameShell( props ) {
-  //console.log("db[0] is ", db[0])
   const [humansLetter, setHumansLetter] = useState( null ); 
-  //const [opponent, setOpponent] = useState( null ); 
   const [promptText, setPromptText ] = useState( `Choose side, X or O` ); 
   const [buttonActivation, setButtonActivation] = useState( true ); 
-  // const playersTurn = props.playersTurn; 
-  // const setPlayersTurn = props.setPlayersTurn; 
 
   const [winner, setWinner] = useState(); 
   const [database,setDatabase] = useState(dataBaseDuplicator(db));                     // this is the main database that is updated as learning progresses
@@ -41,13 +39,19 @@ export default function GameShell( props ) {
   const [soundEffect, setSoundEffect] = useState(""); 
   const [whoWon, setWhoWon] = useState(null)  // used for NL report 
   const [generations, setGenerations] = useState(0); 
-  const [genepool, setGenepool] = useState(createGenepool(100, 13)); 
-  const [ranking, setRanking] = useState([
-    [[13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],0]
-  ]); 
+  const [controllingGenome, setControllingGenome] = useState(); 
   const foe = props.foe; 
   const setFoe = props.setFoe; 
-  
+
+  const [nameManager, setNameManager] = useState();
+  const [genepool, setGenepool] = useState();
+
+  const [ranking, setRanking] = useState(() => {
+    const [gp, nm] = createGenepool(100, 26); 
+    setNameManager(nm); 
+    setGenepool(gp)
+    return gp;
+  });
   
    
   // the net is set at this level so as to be available both for the training page and for the game itself
@@ -108,18 +112,6 @@ function returnToGame(){
   // setFoe('menace'); 
 }
 
-// function startTraining(){
-//   setWinner(null); 
-//   setPlayersTurn(false);
-//   setHumansLetter(' ') ;
-//   setWhoWon(null);  
-//   setTrainingMode(true) ;
-// }
-
-
-
- 
-
  
   // if player is null, show the choose side options. Else display the game container. 
   if (humansLetter === null){   
@@ -175,6 +167,8 @@ function returnToGame(){
         src = {props.src}
 
         ranking = {ranking}
+        controllingGenome = {controllingGenome}
+        setControllingGenome = {setControllingGenome}
       />    
     )
   }

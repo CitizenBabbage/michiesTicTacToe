@@ -9,7 +9,7 @@ import GameLog from '../gameEngine/GameLog.js';
 import { IdFacts } from '../presentational/IdFacts.js';
 import { TrainingIterationsField } from '../buttons/TrainingIterationsField.js';
 import { NavigationButton } from '../buttons/NavigationButton.js';
-import SoundComponent from '../presentational/soundFX/SoundFX.js';
+import SoundComponent from '../presentational/sound/SoundFX.js';
 import { NLlog } from '../presentational/NLlog.js';
 import DatabaseDisplay from './DBDisplay.js';
 
@@ -55,7 +55,7 @@ export function MenaceTrainingPage (props) {
 
           <div label = "column1, row1"> 
             <NavigationButton path = "/selectOpponent" label = 'Menu'/>
-            {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Back To Game </button> }
+            {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Game </button> }
           </div> 
 
           <div label = "column1, row2" className='twoColumns'>

@@ -5,8 +5,9 @@ import BoardContainer from '../board/BoardContainer.js';
 import { IdFacts } from '../presentational/IdFacts.js';
 import { EnterGenerations } from '../buttons/EnterGenerations.js';
 import { NavigationButton } from '../buttons/NavigationButton.js';
-import SoundComponent from '../presentational/soundFX/SoundFX.js';
+import SoundComponent from '../presentational/sound/SoundFX.js';
 import { EvolvoUpdater } from './evolvoUpdater.js';
+import GenomeRanking from '../presentational/GenomeRanking.js';
 
 
 export function EvolvoTrainingPage (props) {
@@ -36,44 +37,35 @@ export function EvolvoTrainingPage (props) {
     const returnToGame = props.returnToGame; 
 
     return (
-      <div className='page'> 
 
-      <div className='threeRows'>
+      <div className='fourRows'>
 
-        <div label = "column1, row1"> 
+        <div label = "row1" className='centered'> 
           <NavigationButton path = "/selectOpponent" label = 'Menu'/>
-          {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Back To Game </button> }
+          {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Game </button> }
         </div> 
 
-        <div label = "column1, row2" className='twoColumns'>
-          <div>
-            <BoardContainer devMode = {props.devMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } src = {props.src} setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} setResigned = {setResigned} humansLetter = {humansLetter} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} reset = {reset} ></BoardContainer>
-            <EnterGenerations setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } setGenerations = {props.setGenerations}  xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} value = {value} setValue = {setValue}/>
-          </div>
-          <div>
-            <IdFacts name = {props.name} playStyle = {props.playStyle} blurb = {props.blurb} src = {props.src} trainingMode = { trainingMode }/>
-          </div>
+        <div label = "row2" className='centered'>
+          <IdFacts name = {props.name} playStyle = {props.playStyle} blurb = {props.blurb} src = {props.src} trainingMode = { trainingMode }/>
         </div> 
-        <div label = "column1, row3">
-
+        <div label = "row3" className='centered'>
+          <EnterGenerations setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } setGenerations = {props.setGenerations}  xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} value = {value} setValue = {setValue}/>
+        </div> 
+        <div label = "row4" className='centered'>
+          <SoundComponent 
+            setSoundEffect = {props.setSoundEffect}
+            soundEffect = {props.soundEffect} 
+            trainingSound = {props.trainingSound}
+            winSound = {props.winSound}
+            loseSound = {props.loseSound}
+            bravadoSound = {props.bravadoSound}
+            startSound = {props.startSound} 
+            trainingMode = {props.trainingMode}
+            />
+          <GenomeRanking trainingMode = {trainingMode} ranking = {props.ranking}/>
         </div>
 
-      </div>
-
-      <div label = "second column">
-        <SoundComponent 
-          setSoundEffect = {props.setSoundEffect}
-          soundEffect = {props.soundEffect} 
-          trainingSound = {props.trainingSound}
-          winSound = {props.winSound}
-          loseSound = {props.loseSound}
-          bravadoSound = {props.bravadoSound}
-          startSound = {props.startSound} 
-          trainingMode = {props.trainingMode}
-          
-        />
-      </div>
-    </div>  
+      </div> 
     )
 
 }

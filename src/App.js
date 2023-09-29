@@ -30,50 +30,41 @@ export default function App() {
 
 
 
-const audioRef = useRef(null);
-const [audioSelected, setAudioSelected] = useState(false);
+    // const audioRef = useRef(null);
+    const [audioSelected, setAudioSelected] = useState(false);
 
 
+    // function playAudio(){
+    //   if (audioRef.current) {
+    //       audioRef.current.play();
+    //   }
+    // }
 
-// function playAudio(){
-//     if (audioRef.current) {
-//         audioRef.current.play().then(() => {
-//             // Playback started successfully
-//         }).catch((error) => {
-//             console.error("Playback failed because: ", error);
-//         });
-//     }
-// }
+    //setAudioSelected = { setAudioSelected } audioSelected = { audioSelected } playAudio = {playAudio}
 
-function playAudio(){
-  if (audioRef.current) {
-      audioRef.current.play();
-  }
-}
+    return (
+      <div> 
+        {/* <audio ref={audioRef}>
+          <source src={introTune} type="audio/mpeg" />
+        </audio> */}
+        <Router>
+          <Routes>
+              <Route path='/' element= {<Home  devMode = {developmentMode} setAudioSelected = { setAudioSelected }/>} />
+              <Route path='/about' element={<About devMode = {developmentMode}/>} />
+              <Route path="/menace" element={<Menace devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe } />} />
+              <Route path="/minimax" element={<Minimax devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
+              <Route path="/huris" element={<Huris devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
+              <Route path="/evolvo" element={<Evolvo devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
+              <Route path="/neuro" element={<Neuro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
+              {/* <Route path="/test" element={<Test devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/> */}
+              <Route path="/selectOpponent" element={<SelectOpponent devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/>
+              <Route path="/intro" element={<Intro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/> 
 
-  return (
-    <div> 
-      <audio ref={audioRef} autoPlay>
-        <source src={introTune} type="audio/mpeg" />
-      </audio>
-      <Router>
-        <Routes>
-            <Route path='/' element= {<Home  devMode = {developmentMode} playAudio = {playAudio} setAudioSelected = { setAudioSelected } audioSelected = { audioSelected }/>} />
-            <Route path='/about' element={<About devMode = {developmentMode}/>} />
-            <Route path="/menace" element={<Menace devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe } />} />
-            <Route path="/minimax" element={<Minimax devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
-            <Route path="/huris" element={<Huris devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
-            <Route path="/evolvo" element={<Evolvo devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
-            <Route path="/neuro" element={<Neuro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
-            {/* <Route path="/test" element={<Test devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/> */}
-            <Route path="/selectOpponent" element={<SelectOpponent devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/>
-            <Route path="/intro" element={<Intro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/> 
-
-        </Routes>
-      </Router>
-    </div> 
-        
-    );
+          </Routes>
+        </Router>
+      </div> 
+          
+      );
 }
  
 // export default App;

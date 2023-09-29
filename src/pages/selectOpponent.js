@@ -37,8 +37,8 @@ export default function selectOpponent(){
 
     const styles = [
         'Brute Memorization',
-        'Rulebound',
-        'Anticipatory',
+        'Rule Follower',
+        'Space Searcher',
         'Darwinian', 
         'Connectionist',
         // 'Minxima'
@@ -52,9 +52,59 @@ export default function selectOpponent(){
         currentPortraitIndexRef.current = currentPortraitIndex; // Update the ref whenever the state changes
     }, [currentPortraitIndex]);
 
+
     useEffect(() => {
         currentNameIndexRef.current = currentNameIndex; 
     }, [currentNameIndex]);
+
+
+    function handleLeftArrowClick (){
+        setCurrentPortraitIndex((prevIndex) => (prevIndex - 1 + portraits.length) % portraits.length);
+        setCurrentNameIndex((prevIndex) => (prevIndex - 1 + names.length) % names.length);
+    }
+
+    function handleRightArrowClick (){
+        setCurrentPortraitIndex((prevIndex) => (prevIndex + 1) % portraits.length);
+        setCurrentNameIndex((prevIndex) => (prevIndex + 1) % names.length);
+    }
+
+
+    function handleRightArrowClick (){
+        setCurrentPortraitIndex((prevIndex) => (prevIndex + 1) % portraits.length);
+        setCurrentNameIndex((prevIndex) => (prevIndex + 1) % names.length);
+    }
+
+
+    function handlePortraitClick (){
+        goToSelectedPage ()
+    }
+
+
+    function goToSelectedPage () {
+        switch (currentPortraitIndexRef.current) { // Use the ref value here
+            case 0:
+                navigate("/menace");
+                //console.log("currentPortraitIndex is ", currentPortraitIndexRef.current)
+                break;
+            case 1:
+                navigate("/huris");
+                break;
+            case 2:
+                navigate("/minimax");
+                break;
+            case 3:
+                navigate("/evolvo");
+                break;
+            case 4:
+                navigate("/neuro");
+                break;
+            // case 5:
+            //     navigate("/minxima");
+            //     break;
+            default:
+                break;
+        }
+    }
 
     useEffect(() => {
         const handleKeyPress = (event) => {
@@ -68,29 +118,7 @@ export default function selectOpponent(){
             }
 
             if (event.key === "Enter") {
-                switch (currentPortraitIndexRef.current) { // Use the ref value here
-                    case 0:
-                        navigate("/menace");
-                        console.log("currentPortraitIndex is ", currentPortraitIndexRef.current)
-                        break;
-                    case 1:
-                        navigate("/huris");
-                        break;
-                    case 2:
-                        navigate("/minimax");
-                        break;
-                    case 3:
-                        navigate("/evolvo");
-                        break;
-                    case 4:
-                        navigate("/neuro");
-                        break;
-                    // case 5:
-                    //     navigate("/minxima");
-                    //     break;
-                    default:
-                        break;
-                }
+                goToSelectedPage(); 
             }
         };
         window.addEventListener("keydown", handleKeyPress);
@@ -98,20 +126,23 @@ export default function selectOpponent(){
         return () => {
             window.removeEventListener("keydown", handleKeyPress);
         };
-    }, [navigate]); // Only dependency is navigate
+    }, [navigate]); 
 
 
 
     return (
         <div>
             <div className = 'intropage'>
-                    <p>Select your opponent</p> 
-                    <PortraitButton characterStyle = {styles[currentNameIndex]} src={portraits[currentPortraitIndex]} alt="Portrait" characterName = {names[currentNameIndex]}/>
-            </div>
+                <div className = 'twoRows'>
+                    <p className='centered'>Select your opponent</p> 
+                    <div className='threeBoards'>
+                        <button className='leftButton' onClick={handleLeftArrowClick}/> 
+                        <PortraitButton handlePortraitClick = {handlePortraitClick} portraitIndex = {currentPortraitIndex} characterStyle = {styles[currentNameIndex]} len = {portraits.length} src={portraits[currentPortraitIndex]} alt="Portrait" characterName = {names[currentNameIndex]}/>
+                        <button className = 'rightButton' onClick={handleRightArrowClick}/>
+                    </div>
+                </div>
+            </div> 
         </div> 
     
     )
-
-
-
 }

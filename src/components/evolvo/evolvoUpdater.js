@@ -1,7 +1,7 @@
 import React from 'react';
 import { EvolvoTrainingPage } from './evolvoTrainingPage.js';
-import { useEffect } from 'react';
-import SoundComponent from '../presentational/soundFX/SoundFX.js';
+import { useEffect, useState } from 'react';
+import SoundComponent from '../presentational/sound/SoundFX.js';
 import { runOneGeneration } from '../../auxiliary/geneticAlgo/runOneGeneration.js';
 
 // 1. write a useEffect that reacts to the button being pushed by initiating the genepool, if it isn't already. 
@@ -17,19 +17,44 @@ export function EvolvoUpdater (props) {
     const ranking = props.ranking; 
     const setRanking = props.setRanking; 
     const setGenepool = props.setGenepool; 
+    const [generationNumber, setGenerationNumber] = useState(1); 
 
+    function getOrdinal(num) {
+        let lastDigit = num % 10;
+        let lastTwoDigits = num % 100;
+        
+        if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+            return num + 'th';
+        }
+        
+        switch(lastDigit) {
+            case 1:
+                return num + 'st';
+            case 2:
+                return num + 'nd';
+            case 3:
+                return num + 'rd';
+            default:
+                return num + 'th';
+        }
+    }
     
     useEffect(() => {
         if (generations > 0) {
-            const gp = runOneGeneration(genepool, 3, 0.2, 0.2, 0.01, 5) //genepool, encountersPerCompetition, cullFraction, breedFraction, mutationRate, mutationSize
+            const generationOrdinal = getOrdinal(generationNumber)
+            if (!genepool || genepool.length === 0) throw new Error(`useEffect in evolvoUpdater is passing a bum genepool. genepool = ${JSON.stringify(genepool)} `)
+            const gp = runOneGeneration(genepool, 200, 0.2, 0.01, 5, generationOrdinal) //genepool, encountersPerCompetition, cullFraction, mutationRate, mutationSize
             console.log(`resetting genepool with ${generations} generations remaining...`)
             setGenepool(gp) 
         }
-        else console.log("generations = 0")
+        else {
+            console.log("generations = 0")
+        }
     }, [generations])
 
     useEffect(() => {
-        setGenerations(prevValue => prevValue-1) ; 
+        setGenerations(prevValue => prevValue-1) ;
+        setGenerationNumber(prevValue => prevValue+1) ;
         console.log(`reranking genepool...`)
         const rKing = genomeRanker(); 
         setRanking(rKing); 
@@ -55,6 +80,7 @@ export function EvolvoUpdater (props) {
                 setGenerations = {props.setGenerations} 
                 genepool = {props.genepool} 
                 setGenepool = {props.setGenepool}
+                ranking = {props.ranking}
 
                 reset = {props.reset}
                 returnToGame = {props.returnToGame} 

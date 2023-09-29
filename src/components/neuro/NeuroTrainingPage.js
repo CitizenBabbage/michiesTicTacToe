@@ -86,7 +86,7 @@ export function NeuroTrainingPage (props) {
             <MaxCycleField setMaxCycle = {setMaxCycle} maxCycle = {maxCycle} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
             <SetSigmaField setSigma = {setSigma} sigma = {sigma} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
             <StartNeuroLearningButton getTrainingSet = {getTrainingSet} setNeuroLearning = {setNeuroLearning}/>
-            {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Back To Game </button> }
+            {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Game </button> }
             
             
       </div>

@@ -4,9 +4,10 @@
 } */
 
 #root {
+  height: fit-content;
   width: 100vw;  /* 100% of the viewport width */
-  height: 90vh; /* 100% of the viewport height */
-  outline: 1px solid rgb(213, 245, 6) !important;
+  /* height: 90vh; 100% of the viewport height */
+  /* outline: 1px solid rgb(213, 245, 6) !important; */
 }
 
 /* .wholePage {
@@ -25,7 +26,7 @@
   /* box-sizing: border-box; */
   display: grid;
   grid-template-columns: 1fr 1fr;
-  outline: 1px solid rgb(245, 6, 6) !important;
+  /* outline: 1px solid rgb(245, 6, 6) !important; */
   
 }
 
@@ -35,7 +36,7 @@
   place-items: center; 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  outline: 1px solid rgb(245, 6, 6) !important;
+  /* outline: 1px solid rgb(245, 6, 6) !important; */
 }
 
 .space-around {
@@ -51,13 +52,16 @@
 }
 
 .threeBoards {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
   width: 100% ;
   padding-top: 10px;
   padding-bottom: 10px; 
   /* box-sizing: border-box; */
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  outline: 1px solid rgb(6, 58, 245) !important;
+  /* outline: 1px solid rgb(6, 58, 245) !important; */
 }
 
 .textList {
@@ -67,7 +71,7 @@
   /* box-sizing: border-box; */
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr;
-  outline: 1px solid rgb(221, 245, 6) !important;
+  /* outline: 1px solid rgb(221, 245, 6) !important; */
 }
 
 .idFacts, .gameshell{
@@ -82,18 +86,34 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  outline: 1px solid rgb(6, 205, 245) !important;
+  /* outline: 1px solid rgb(6, 205, 245) !important; */
+}
+
+.twoRows {
+  grid-template-rows: 1fr 1fr;
+  place-items: center; 
+  /* height: 100%;  */
 }
 
 .gameshell, .threeRows {
-  outline: 1px solid rgb(9, 241, 55) !important;
+  /* outline: 1px solid rgb(9, 241, 55) !important; */
   grid-template-rows: 1fr 1fr 1fr;
   place-items: center; 
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; */
   height: 100%; 
+}
+
+.fourRows {
+  /* outline: 1px solid rgb(241, 9, 210) !important; */
+  grid-template-rows: 1fr 1fr 1fr 1fr; 
+  place-items: center; 
+  height: 100%; 
+}
+
+.centered {
+  display: flex;
+  align-items: center; /* Vertical centering */
+  justify-content: space-around;
+  /* justify-content: center; */
 }
 
 .intropage {
@@ -107,6 +127,42 @@
   margin: auto;
   display: grid;
   place-items: center;
+}
+
+.leftButton {
+  border-left: none;
+  background-color: black;
+  width: 0;
+  height: 0;
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+  border-right: 20px solid blue; /* This colored border determines the base of the triangle */
+  justify-self: end;
+}
+
+.rightButton {
+  border-right: none;
+  background-color: black;
+  width: 0;
+  height: 0;
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+  border-left: 20px solid blue; /* This colored border determines the base of the triangle */
+  justify-self: start;
+}
+
+.array {
+  font-family: 'Press Start 2P', cursive;
+  list-Style-Type: '';
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.array li {
+  font-family: 'Press Start 2P', cursive;
+  list-style-type: none;
+  margin-right: 10px; 
+  margin-bottom: 10px;
 }
 
 .gamelog {
@@ -246,6 +302,44 @@ body {
   justify-content: center;
   height: 100vh;
 }
+
+.gene {
+  margin: 0;
+  height: 30px;
+  width: 100/26%; 
+}
+
+.genome {
+  display: block;
+  display: flex;
+  flex-direction: row;
+  list-Style-Type: '';
+  /* padding-left: 0px;
+  padding: 0px; 
+  margin: 0px; 
+  font-family: 'Press Start 2P', cursive;
+  
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0; */
+}
+
+.genomeRanking {
+  /* list-Style-Type: ''; */
+    list-Style-Type: '';
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+}
+
+.genomeRanking li {
+  margin-bottom: 5px;
+}
+
+
 
 .player-button {
   margin: 10px;

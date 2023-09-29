@@ -23,6 +23,8 @@ export function createAllBeadStateObjects(num){
 
 
 
+
+
 //this cycles through database looking for objects with no more than one move played (which must be X) 
 // when found it calls the function reducing the options on the response array  
 function reduceOptionsOnFirstMove(database){

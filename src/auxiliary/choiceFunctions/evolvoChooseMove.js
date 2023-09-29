@@ -1,5 +1,6 @@
-import { readGenome } from '../geneticAlgo/readGenome.js'
+import { readGenes } from '../geneticAlgo/readGenes.js'
 
 export function evolvoChooseMove(board, mySymbol, genome){
-    return readGenome(genome, board, mySymbol)
+    // console.log("genome is ", genome)
+    return readGenes(genome, board, mySymbol)
 }

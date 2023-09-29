@@ -31,11 +31,11 @@ export function chooseMove(board, foeSpec, foe){
         return [netOutput[0], netOutput[2]]; 
     }
     else if (foe === "huris"){
-        return [hurisChooseMove(board, whoseTurn),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]
+        return hurisChooseMove(board, whoseTurn)
     }
     
     else if (foe === "evolvo"){
-        return [evolvoChooseMove(board, whoseTurn, foeSpec),["n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"]]
+        return evolvoChooseMove(board, whoseTurn, foeSpec)
     }
     else if (foe === "Neuro"){
         // netOutput = neuroChooseMove(board, foeSpec)
