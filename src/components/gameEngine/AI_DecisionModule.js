@@ -5,7 +5,7 @@ import React from 'react';
 import { useEffect, useState} from 'react'
 import { chooseMove } from '../../auxiliary/choiceFunctions/chooseMove.js';
 import { checkDbase, checkBoard } from "../../auxiliary/testers/errorCheckers.js"
-import {roundOffElementsInArray, placeMark} from "../../auxiliary/general/usefulFunctions.js"
+import {roundOffElementsInArray, placeMark, whoseMove, doubleCheckItsReallyComputersTurn} from "../../auxiliary/general/usefulFunctions.js"
 import Board from "../board/Board.js" 
 import SoundComponent from '../presentational/sound/SoundFX.js';
 import GenomeDisplay from '../presentational/genomeDisplay.js';
@@ -26,12 +26,14 @@ export default function AI_DecisionModule( props ) {
     // const setFoe = props.setFoe; 
     const setSquares = props.setSquares; 
     const squares = props.squares; 
-     
+    const setResigned = props.setResigned; 
+    const setComputerOff = props.setComputerOff; 
+    const humansLetter = props.humansLetter; 
 
     const [probabilityArray, setProbabilityArray] = useState(Array(9).fill(null))
     // const testMode = props.testMode; 
     const computerOff = props.computerOff 
-    const [foeSpec,setFoeSpec] = useState([]); 
+    const [foeSpec,setFoeSpec] = useState(returnFoeSpecs()); 
     const [tempComputerOpponent, setTempComputerOpponent] = useState(foe); 
     const ranking = props.ranking; 
     const controllingGenome = props.controllingGenome;
@@ -41,27 +43,60 @@ export default function AI_DecisionModule( props ) {
     let ruleUsed = '\u00A0'; 
 
     // the following useEffect updates the controller after learning or change in opponent 
-    useEffect(setFoeSpecifications,[database, ranking, network, foe])
+    useEffect(() => {setFoeSpec(returnFoeSpecs())},[database, ranking, network, foe])
 
-    function setFoeSpecifications(){
-        console.log("ranking[0] is ", ranking[0]); 
-        if (foe === 'menace') {setFoeSpec(database)}
-        else if (foe === 'evolvo') {setFoeSpec(ranking[0].genome)}
-        else if (foe === 'Neuro') {setFoeSpec(network)}
+    // function setFoeSpecifications(){
+    //     if (foe === 'menace') {
+    //         console.log("aidm: setting Foe Specifications to database... "); 
+    //         setFoeSpec(database)
+    //     }
+    //     else if (foe === 'evolvo') {
+    //         console.log("aidm: setting Foe Specifications to ranking[0].genome... "); 
+    //         setFoeSpec(ranking[0].genome)
+    //     }
+    //     else if (foe === 'Neuro') {
+    //         console.log("aidm: setting Foe Specifications to network... "); 
+    //         setFoeSpec(network)}
+    // }
+
+    function returnFoeSpecs(){
+        if (foe === 'menace') {
+            console.log("aidm: setting Foe Specifications to database... "); 
+            return database; 
+        }
+        else if (foe === 'evolvo') {
+            console.log("aidm: setting Foe Specifications to ranking[0].genome... "); 
+            return ranking[0].genome; 
+        }
+        else if (foe === 'Neuro') {
+            console.log("aidm: setting Foe Specifications to network... "); 
+            return network
+        }
     }
+    
 
     // the following useEffect triggers the AI
     useEffect(()=>{
-        console.log("change in training turn or computerOff recognised...")
-        if (!computersTurn()) return;
-        console.log("computersTurn check passed ...")
+        console.log("aidm 1: change in training turn or computerOff recognised...")
+        console.log("aidm 1a: computerOff is...", computerOff)
+
+        if (!computersTurn()) {
+            console.log("aidm 1c: computersTurn check failed ... exiting the useEffect.")
+            return;
+        }
+        console.log("aidm 2: computersTurn check passed ... taking computers turn...")
         takeComputersTurn(); 
+        console.log("aidm 3: computersTurn turn taken ...")
     },[trainingTurn, computerOff]) // these values are changed in GameCycle at the right time to trigger the AI
+
+
+     
 
 
     function takeComputersTurn(){
         computerPlay().then(resolvedSquares => {
-            checkBoard(resolvedSquares, "takeComputersTurn");
+            //checkBoard(resolvedSquares, "takeComputersTurn");
+            console.log("aidm 4: setting squares...")
             setSquares(resolvedSquares); // this triggers restart of gameCycle in gameCycle
             }
         ).catch(error => {
@@ -70,10 +105,11 @@ export default function AI_DecisionModule( props ) {
     }
 
     function computersTurn(){ //returns true if it is time for the computer to move
-        console.log("checking For Computers Turn..."); 
+        console.log("checking For Computers Turn...");
+        console.log("aidm: computersTurn, computeroff is.... ", computerOff) 
         if (computerOff) {
             console.log("computerOff is set to true. Canceling checkForComputersTurn!")
-            return
+            return false; 
         }; 
         // if (isCalculatingWinner) {
         //     console.log("isCalculatingWinner is still in progress. Canceling checkForComputersTurn!")
@@ -83,13 +119,19 @@ export default function AI_DecisionModule( props ) {
         console.log("trainingIterations are : ", trainingIterations)
         if (trainingMode && trainingIterations <= 0) {
             console.log("Training iterations not set or reduced to 0. Canceling checkForComputersTurn!"); 
-            return; 
+            return false; 
         };
         if (winner) {
             console.log("Winner is determined. Canceling checkForComputersTurn!")
-            return
+            return false; 
         };
         console.log("checkForComputersTurn: Passed!"); 
+        // the following is a temporary fix for a bug. It should be unnecessary. 
+        if (!doubleCheckItsReallyComputersTurn(squares, humansLetter, trainingMode)) {
+            console.log("aidm: failed double check that it really is computer's turn.")
+            if (!computerOff) setComputerOff(true); 
+            return false; 
+        }
         return true; 
     }
 
@@ -99,6 +141,9 @@ export default function AI_DecisionModule( props ) {
         let nextSquares = [...squares];                                             // create duplicate board in memory
         return delayAndChoose(nextSquares).then(choiceAndData => {
             console.log("computerPlay: Move chosen is " , choiceAndData[0])
+            if (choiceAndData[0] === -1){
+                setResigned(whoseMove(nextSquares))
+            }
             nextSquares = placeMark(choiceAndData[0], nextSquares)      // set the board square to X or O, as appropriate
             setProbabilityArray(choiceAndData[1])
             if (foe === 'huris') {ruleUsed = choiceAndData[1]}
@@ -107,7 +152,6 @@ export default function AI_DecisionModule( props ) {
         )
         }
         
-    
 
     // useEffect(
     //     changeTurns,
@@ -131,7 +175,6 @@ export default function AI_DecisionModule( props ) {
     )
 
     function updateProbabilityBoard(){
-        console.log("updateProbabilityBoard: probabilityArray is ", probabilityArray)
         setThinkBoard(roundOffElementsInArray(probabilityArray)); 
         return; 
     }
@@ -166,18 +209,16 @@ export default function AI_DecisionModule( props ) {
     function delayAndChoose(board) {
         return new Promise((resolve, reject) => {
             let delayms = 0; 
-            if (!trainingMode){delayms = 3000}
+            if (trainingMode){delayms = 0}
+            else delayms = 3000; 
             delay(delayms)
             .then(() => {
-                console.log(`choosing move with board ${board}, foeSpec ${foeSpec} and tempComputerOpponent ${tempComputerOpponent}`)
                 //foeSpec is database for menace, genome for evolvo, network for neuro
                 // NOTE that you can't just add evolvo & neuro as opponents for menace
                 // because they need to take their foespec, which will be set to menace's
+                console.log(`AIDM: foe is `, foe)
+                console.log(`AIDM: foeSpec is `, foeSpec)
                 const choiceAndData = chooseMove(board, foeSpec, tempComputerOpponent); 
-                console.log("choiceAndData is: ", choiceAndData); 
-                console.log("delayAndChoose: foe is: ", foe)
-                //console.log("delayAndChoose, selected move is :", choice)
-                //setPlayersTurn(true); 
                 resolve(choiceAndData);
                
             })
@@ -188,14 +229,19 @@ export default function AI_DecisionModule( props ) {
         });
     }
 
+    let squareColors; 
+    if (foe === 'menace'){
+        squareColors = ["rgb(255, 255, 0)", "rgb(165, 125, 42)", "rgb(255, 125, 0)", "rgb(0, 255, 0)", "rgb(255,255, 255)", "rgb(255, 0, 0)","rgb(0, 255, 255)","rgb(50, 50, 255)","rgb(255, 0, 255)" ]
+    }
+
     return (
         <div className='center'>
             {!trainingMode && <p> {winner === 'D'? "It is a draw!": winner? `${winner} is the winner!` : !computerOff && !winner?"Thinking...":["huris", "evolvo"].includes(foe)? probabilityArray? probabilityArray: '\u00A0' :'\u00A0'} </p>}
 
             {/* <p> {!computerOff && !winner?"Thinking...":'\u00A0'} </p> */}
-            {foe === 'menace' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>}
-            {foe === 'Neuro' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "neuroPredictions" values = {thinkBoard}/>}
-            {foe === 'minimax' && <Board devMode = {props.devMode} trainingMode = {trainingMode} squaresClassName = "minimaxBoard" values = {thinkBoard}/>}
+            {foe === 'menace' && !trainingMode && <Board devMode = {props.devMode} boardText = {props.thinkBoardText} squareColors = {squareColors} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>}
+            {foe === 'Neuro' && <Board devMode = {props.devMode} boardText = {props.thinkBoardText} trainingMode = {trainingMode} squaresClassName = "neuroPredictions" values = {thinkBoard}/>}
+            {foe === 'minimax' && <Board devMode = {props.devMode} boardText = {props.thinkBoardText} trainingMode = {trainingMode} squaresClassName = "minimaxBoard" values = {thinkBoard}/>}
             <SoundComponent trainingMode = {props.trainingMode} computersTurn = {computersTurn} foe = {foe} whoWon = {props.whoWon} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect}/>
             {foe === 'evolvo' && <p> Controlling genome is:</p>  }
             {foe === 'evolvo' && <GenomeDisplay trainingMode = {props.trainingMode} genome = {ranking[0]}/> }

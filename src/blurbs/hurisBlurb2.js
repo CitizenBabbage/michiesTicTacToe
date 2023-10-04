@@ -1,0 +1,1 @@
+export const hurisBlurb2 = `Huris's rules are ranked by importance. Huris tries its highest ranked move first, then the next most important, and so on. E.g., rule 1 tells it that, if it already has a line of two, it should make a line of three to win. Its next rule says to block you from making a line...`

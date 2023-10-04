@@ -2,6 +2,8 @@ import AI_DecisionModule from "./AI_DecisionModule.js";
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { calculateWinner } from "../../auxiliary/engineHelpers/checkWinner.js";
+import { opposite } from "../../auxiliary/general/usefulFunctions.js";
+import { doubleCheckItsReallyComputersTurn } from "../../auxiliary/general/usefulFunctions.js";
     
 export default function GameCycle( props ) {
     const isCalculatingWinner = props.isCalculatingWinner
@@ -11,7 +13,9 @@ export default function GameCycle( props ) {
     const squares = props.squares; 
     const winner = props.winner; 
     const computerOff = props.computerOff; 
-    const [trainingTurn, setTrainingTurn] = useState(0); // toggling this triggers next loop in training game
+    // const [trainingTurn, setTrainingTurn] = useState(0); // toggling this triggers next loop in training game
+    const trainingTurn = props.trainingTurn;
+    const setTrainingTurn = props.setTrainingTurn; 
     const setIsCalculatingWinner = props.setIsCalculatingWinner; 
     const setWinner = props.setWinner; 
     const playersTurn = props.playersTurn; 
@@ -44,7 +48,7 @@ export default function GameCycle( props ) {
     ////////////////////////
 
     useEffect (() => {
-        console.log("squares triggers useEffect, starting GameCycle")
+        console.log(`gc1: squares change to ${squares} triggers useEffect, starting GameCycle`)
         const victor = calculateWinner(squares); 
         if (victor){
             setWinner(victor)
@@ -54,13 +58,25 @@ export default function GameCycle( props ) {
                 console.log("training mode recognised, setting TrainingTurn")
                 setTrainingTurn(prevValue => 1 - prevValue)
             }
-            else setComputerOff(prevValue => !prevValue)
+            else {
+                console.log("gs: game mode recognised, changing computer off from current value : ", computerOff)
+
+                setComputerOff(prevValue => !prevValue)
+            }
+            // setting trainingTurn / computerOff triggers takeComputersturn in AI_DecisionModule (also addBoardStateToLog in gamelog)
         }
+        console.log("gc2: finished setting trainingTurn/computerOff")
+
     },[squares])
 
+   
+
     useEffect (() => {
+        console.log("gc3: restarting Game")
+
         if (trainingMode && winner) {restartGame()}
         // else nothing, await user interaction. 
+        console.log("gc4: finished restarting game")
     },[allPlayedBoards]) //this changes at end of learning from game
 
     function restartGame(){
@@ -68,39 +84,20 @@ export default function GameCycle( props ) {
         setWinner(null); 
         setGameLog([Array(9).fill(null)]); 
         setTrainingIterations(prevValue => prevValue - 1) // reduce training iterations by 1
+        console.log("gc: setting squares in restart game")
         setSquares(Array(9).fill(null)); // this restarts the loop by triggering the useEffect at top of this section
     }
 
-    
-    
 
-    /////////
-
-    // function fixWinner() {
-    //     if (isCalculatingWinner){
-    //         checkWinner(squares).then(writeGameResults)
-    //         .catch(error => {
-    //             console.error("Error from checkWinner:", error);
-    //         })
-    //     } 
+    //     useEffect(() =>{
+    //     if (resigned){
+    //         setWinner(opposite(resigned))
+    //         console.log(`${opposite(resigned)} has resigned!`)
+    //     }
     // }
+    //     ,[resigned] ) //resigned takes values undefined, null, 'X' or 'O'
+        
 
-    //  useEffect(() => { //start new training iteration
-    //     if (trainingIterations <= 0) return; 
-    //     setSquares(Array(9).fill(null)); 
-    //     setWinner(null); 
-    //     setGameLog([Array(9).fill(null)]); 
-    //     setTrainingIterations(trainingIterations - 1)
-    // }, [database])
-
-    // useEffect(checkForEmptySquares, [squares]);
-
-    // // this is called if there is a change in squares. To avoid triggering at the beginning,
-    // // when squares is changed to all blank, it checks to see that at least one square is occupied, 
-    // // before setting isCalculatingWinner to true.   
-    // function checkForEmptySquares(){
-    //     if (squares.some(value => value !== null)){setIsCalculatingWinner(true);}
-    // }
 
     ////////////////////////
     ///// end play cycle ///
@@ -109,7 +106,7 @@ export default function GameCycle( props ) {
 
     return (
         <div>
-            <AI_DecisionModule controllingGenome = {props.controllingGenome} setControllingGenome = {props.setControllingGenome} trainingTurn = {trainingTurn} ranking = {props.ranking} setComputerOff = {props.setComputerOff} computerOff = {props.computerOff} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect} net = {props.net} devMode = {props.devMode} trainingIterations = {trainingIterations} setSquares = {setSquares} setFoe = { props.setFoe } foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares }  winner = { winner }/>   
+            <AI_DecisionModule humansLetter = {props.humansLetter} setResigned = {props.setResigned} thinkBoardText = {props.thinkBoardText} controllingGenome = {props.controllingGenome} setControllingGenome = {props.setControllingGenome} trainingTurn = {trainingTurn} ranking = {props.ranking} setComputerOff = {props.setComputerOff} computerOff = {props.computerOff} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect} net = {props.net} devMode = {props.devMode} trainingIterations = {trainingIterations} setSquares = {setSquares} setFoe = { props.setFoe } foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {setTrainingMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares }  winner = { winner }/>   
         </div>
     )
 }

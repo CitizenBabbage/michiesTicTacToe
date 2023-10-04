@@ -66,6 +66,7 @@ export default function PortraitButton( props ) {
 
     return (
         <button className="portrait" onClick={handlePortraitClick}>
+            <div className="clickable-area" ></div>
             <img src={activeSrc} alt={props.alt} className={animationClass} />
             <p>{`\n${props.characterName}`}</p>
             <p>Style: {`\n${props.characterStyle}`}</p>

@@ -74,20 +74,7 @@
   /* outline: 1px solid rgb(221, 245, 6) !important; */
 }
 
-.idFacts, .gameshell{
-  flex: 1;  
-  min-width: 0;  
-  word-wrap: break-word;
-  overflow: hidden;
-}
 
-.idFacts {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* outline: 1px solid rgb(6, 205, 245) !important; */
-}
 
 .twoRows {
   grid-template-rows: 1fr 1fr;
@@ -138,6 +125,7 @@
   border-bottom: 50px solid transparent;
   border-right: 20px solid blue; /* This colored border determines the base of the triangle */
   justify-self: end;
+  cursor: url('./images/pointer.png'), pointer;
 }
 
 .rightButton {
@@ -149,6 +137,7 @@
   border-bottom: 50px solid transparent;
   border-left: 20px solid blue; /* This colored border determines the base of the triangle */
   justify-self: start;
+  cursor: url('./images/pointer.png'), pointer;
 }
 
 .array {
@@ -198,6 +187,10 @@ place-items: center;
   box-sizing: border-box;
 }
 
+body, * {
+  cursor: url('./images/cursor.png'), auto;
+}
+
 body {
   background-color: black;
   color: white; /* Set default text color to white */
@@ -206,6 +199,7 @@ body {
   /* margin: 20px; */
   padding: 0;
   animation: flicker 0.2s 7;
+  cursor: url('./images/cursor.png'), auto;
 
 }
 
@@ -239,6 +233,31 @@ h6 {
   font-size: 12px;
 }
 
+.idFacts, .gameshell{
+  flex: 1;  
+  min-width: 0;  
+  word-wrap: break-word;
+  /* overflow: hidden; */
+}
+
+.idFacts {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  /* outline: 1px solid rgb(6, 205, 245) !important; */
+}
+
+.id-pic-container {
+  display: flex;
+  justify-content: center;
+}
+
+.id-pic {
+  height: 300px;  
+  width: auto; 
+}
+
 code {
   font-size: 1.2em;
 }
@@ -257,6 +276,33 @@ body {
   padding: 0;
 }
 
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: url('./images/cursor.png'), auto;
+}
+
+.tooltip-text {
+  width: 500px; 
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 2;
+  bottom: 125%; /* Position the tooltip above the text */
+  left: 50%;
+  margin-left: -60px; /* Center the tooltip */
+  font-family: 'Press Start 2P', cursive;
+  cursor: url('./images/cursor.png'), auto;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+}
+
 .square {
   background: #fff;
   border: 1px solid #999;
@@ -270,6 +316,7 @@ body {
   padding: 0;
   text-align: center;
   width: 68px;
+  cursor: url('./images/pointer.png'), pointer;
 }
 
 .board-row:after {
@@ -346,11 +393,13 @@ body {
   width: 100px;
   height: 100px;
   font-size: 2rem;
+  cursor: url('./images/pointer.png'), pointer;
 }
 
 .player-button.active {
   background-color: #007ad9;
   color: #ffffff;
+  cursor: url('./images/pointer.png'), pointer;
 }
 
 .on-page-portrait {
@@ -373,6 +422,7 @@ body {
 
 .retro-text {
   font-family: 'Press Start 2P', cursive;
+  text-align: center;
 }
 
 .retro-button {
@@ -381,7 +431,8 @@ body {
   color: white; 
   font-family: 'Press Start 2P';
   src: url('./fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
-  height: 50px
+  height: 50px;
+  cursor: url('./images/pointer.png'), pointer;
 }
 
 p {

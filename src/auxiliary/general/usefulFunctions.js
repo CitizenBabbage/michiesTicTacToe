@@ -56,6 +56,8 @@ export function arrayEquals(array1,array2){
 
 //F1.4.1.1.1 areEquivalent//
 export function areEquivalent(board1, board2){
+    console.log(`board1 is `, board1); 
+    console.log(`board2 is `, board2); 
     if (areIdentical(board1, board2)){return true}; 
     if (areRotationalVariants(board1, board2)){return true}; 
     const refl = reflection(board1); 
@@ -349,6 +351,15 @@ export function whoseMove(board){
     if (oes === xes) return "X"; 
     else return "O"; 
 }
+
+ // this is a temporary fix that patches up a bug that causes the computer to play twice at opening. 
+    // remove it when the bug is properly diagnosed. 
+  export function doubleCheckItsReallyComputersTurn(board, humansSymbol, trainingMode){
+        if (trainingMode) return true; 
+        else if (humansSymbol === 'X' && whoseMove(board) === 'O') return true
+        else if (humansSymbol === 'O' && whoseMove(board) === 'X') return true
+        else return false; 
+    } 
 
 // X = 1, O = 2, _ = 3
 // export function numerizeBoard(board){

@@ -1,0 +1,1 @@
+export const evolvoBlurb1 = `Evolvo is an example of 'Genetic Programming'. It begins as a swarm of randomly generated programs whose performance in the game is measured. The worst players are destroyed while the best are mixed and mutated in a way that resembles Darwinian evolution. Over time, the system "evolves" towards intelligence... `

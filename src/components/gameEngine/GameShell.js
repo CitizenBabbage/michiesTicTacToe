@@ -19,6 +19,8 @@ import { EvolvoUpdater } from '../evolvo/evolvoUpdater.js';
 import SoundComponent from '../presentational/sound/SoundFX.js';
 import { createModel } from '../neuro/neuroTFmodel/model.js';
 import { NameManager } from '../../auxiliary/geneticAlgo/nameManager.js';
+import { NavigationButton } from '../buttons/NavigationButton.js';
+import { IdFacts } from '../presentational/IdFacts.js';
 
 
 export default function GameShell( props ) {
@@ -42,6 +44,8 @@ export default function GameShell( props ) {
   const [controllingGenome, setControllingGenome] = useState(); 
   const foe = props.foe; 
   const setFoe = props.setFoe; 
+   const [trainingTurn, setTrainingTurn] = useState(0); // toggling this triggers next loop in training game
+
 
   const [nameManager, setNameManager] = useState();
   const [genepool, setGenepool] = useState();
@@ -75,13 +79,16 @@ export default function GameShell( props ) {
 
   function handleXClick () {
     setHumansLetter('X');
+    console.log("handleXclick setting computeroff to true")
     setComputerOff(true); 
     setButtonActivation(false);
     setTrainingMode(false) ;
     setWhoWon(null)
   }
+
   function handleOClick () {
     setHumansLetter('O');
+    console.log("handleOclick setting computeroff to false")
     setComputerOff(false)
     setButtonActivation(false); 
     setTrainingMode(false) ;
@@ -90,8 +97,10 @@ export default function GameShell( props ) {
 
   function handleTrainingModeClick (){
     console.log("handleTrainingModeClick... responds")
+    console.log("gs: setting squares in handleTrainingModeClick")
     setSquares(Array(9).fill(null))
     setWinner(null); 
+    console.log("handleTrainingclick setting computeroff to true")
     setComputerOff(false)
     setButtonActivation(false); 
     setTrainingMode(true) ;
@@ -112,21 +121,40 @@ function returnToGame(){
   // setFoe('menace'); 
 }
 
+//for debugging
+useEffect(()=>{
+  console.log("computerOff has changed to...", computerOff)
+},[computerOff])
  
   // if player is null, show the choose side options. Else display the game container. 
   if (humansLetter === null){   
     return (
-      <ChooseSide foe = {foe} promptText = {promptText} handleXClick = {handleXClick} handleOClick = {handleOClick} humansLetter = {humansLetter} buttonActivation = {buttonActivation} handleTrainingModeClick = {handleTrainingModeClick}/>
-      )
-    }
+      <div className='page'> 
+        <div className='gameshell'>
+          <div className='centered'>
+            <NavigationButton path = "/selectOpponent" label = 'Menu'/>
+          </div>
+          <div className='space-around'>
+            <ChooseSide foe = {foe} promptText = {promptText} handleXClick = {handleXClick} handleOClick = {handleOClick} humansLetter = {humansLetter} buttonActivation = {buttonActivation} handleTrainingModeClick = {handleTrainingModeClick}/>
+          </div>
+        </div> 
+          <div>
+            <IdFacts name = {props.name} blurb = {props.preblurb} src = {props.src} trainingMode = { trainingMode }/>
+          </div>
+      </div>
+    )
+  }
   else if (!trainingMode){
     return (
       <PlayPage
+      setResigned = {setResigned}
+      computerOff = {computerOff} trainingTurn = {trainingTurn} setTrainingTurn = {setTrainingTurn}
+
+      thinkBoardText = {props.thinkBoardText}
       handleTrainingModeClick = {handleTrainingModeClick}
       setWhoWon = {setWhoWon}
       whoWon = {whoWon}
       setComputerOff = {setComputerOff}
-      computerOff = {computerOff}
 
       setSoundEffect = {setSoundEffect}
       soundEffect = {soundEffect}
@@ -156,7 +184,7 @@ function returnToGame(){
         squares = {squares}
         setSquares = {setSquares}
         resigned = {resigned}
-        setResigned = {setResigned}
+        
         foe = {foe}
         setFoe = {props.setFoe}
         reset = {reset}
@@ -175,6 +203,10 @@ function returnToGame(){
   else if (foe === 'menace') return (
     <div> 
     <MenaceUpdater
+
+        setResigned = {setResigned}
+        trainingTurn = {trainingTurn} setTrainingTurn = {setTrainingTurn}
+
         setSoundEffect = {setSoundEffect}
         soundEffect = {soundEffect}
 
@@ -204,7 +236,6 @@ function returnToGame(){
         squares = {squares}
         setSquares = {setSquares}
         resigned = {resigned}
-        setResigned = {setResigned}
         foe = {foe}
         setFoe = {props.setFoe}
         reset = {reset}
@@ -234,7 +265,10 @@ function returnToGame(){
         
         squares = {squares}
         setSquares = {setSquares}
-        
+
+        neuroMinimaxBoardText = {props.neuroMinimaxBoardText} 
+        neuroPredictionsBoardText = {props.neuroPredictionsBoardText} 
+        challengeBoardText = {props.challengeBoardText}
 
         reset = {reset}
         returnToGame = {returnToGame} 
@@ -247,6 +281,7 @@ function returnToGame(){
   else if (foe === 'evolvo') return (
     <div> 
     <EvolvoUpdater
+        setResigned = {setResigned}
         setSoundEffect = {setSoundEffect}
 
         soundEffect = {soundEffect}
@@ -280,7 +315,7 @@ function returnToGame(){
         squares = {squares}
         setSquares = {setSquares}
         resigned = {resigned}
-        setResigned = {setResigned}
+        
         foe = {foe}
         setFoe = {props.setFoe}
         reset = {reset}

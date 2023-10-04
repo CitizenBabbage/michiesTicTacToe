@@ -93,7 +93,7 @@ export function NeuroTrainingPage (props) {
       <div>
         <DownloadError net = {net} trainingSet = {trainingSet}>
           {/* <NeuroUpdater trainingSet = {trainingSet} trainingMode = {trainingMode} devMode = {props.devMode}  database = {database} percentTraining = {percentTraining} db = {database} net = {net} setNet = {setNet} learningRate = {learningRate} maxCycle = {maxCycle} sigma = {sigma} neuroLearning = {neuroLearning} setNeuroLearning = {setNeuroLearning}/>  */}
-          <NeuroComparison trainingStates = {trainingSet} net = {net}/>
+          <NeuroComparison neuroMinimaxBoardText = {props.neuroMinimaxBoardText} neuroPredictionsBoardText = {props.neuroPredictionsBoardText} challengeBoardText = {props.challengeBoardText} trainingStates = {trainingSet} net = {net}/>
         </DownloadError>
       </div>
     </div>  

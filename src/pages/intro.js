@@ -5,20 +5,23 @@ import { useLocation } from 'react-router-dom';
 
 import TekTokTaoLogo from '../components/presentational/TekTokTaoLogo.js';
 import IntroTheme from '../components/presentational/IntroTheme.js';
+import IntroTune from '../components/presentational/sound/introTune.js';
 
 
  
 const Intro = ( props ) => {
     const location = useLocation();
-    const [audioSelected, setAudioSelected] = useState(false);  
+    const audioSelected = props.audioSelected; 
     const navigate = useNavigate();
-    const [keyPressed, setKeyPressed] = useState(false); 
+    // const [keyPressed, setKeyPressed] = useState(false); 
+    const setMusicStarted = props.setMusicStarted; 
+    const keyPressed = props.musicStarted; 
 
     
     useEffect(() => {
         function handleKeyPress(){
             if (!keyPressed) {
-                setKeyPressed(true)
+                setMusicStarted(true)
                 navigate("/selectOpponent");
             }
             
@@ -31,29 +34,14 @@ const Intro = ( props ) => {
     } 
         , [])
     
-        
-    useEffect(() => {
-        // Parse the query parameters from the URL
-        const queryParams = new URLSearchParams(window.location.search);
-        setAudioSelected(queryParams.get('AudioSelected')); 
-    }, []);
 
-    if (audioSelected) return (
+    return (
         <div className = 'intropage'>
             <div className = 'logoContainer'>
-                {/* <IntroTheme/> */}
                 <TekTokTaoLogo/>
-                {/* <p>Press Any Key</p> */}
+                <IntroTune audioSelected = {props.audioSelected}/>
             </div> 
         </div>
-    )
-    else return (
-        <div className = 'intropage'>
-            <div className = 'logoContainer'>
-                <TekTokTaoLogo/>
-                <p>Press Any Key</p>
-            </div> 
-    </div>
     )
 };
  

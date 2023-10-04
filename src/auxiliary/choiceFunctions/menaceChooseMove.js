@@ -9,6 +9,8 @@ import { checkSum, checkDbase, checkArchetype } from "../testers/errorCheckers.j
 //  4. applying the reverse of the transform to the response array to get the applicable response array. 
 
 export function menaceChooseMove(board, dbase){
+    console.log(`mcm: menaceChooseMove dbase.length is `, dbase.length)
+
     let arche = JSON.parse(JSON.stringify(getBoardArchetype(board, dbase))) // returns an object from database with learned response array and transform set to indicate rotation/flip required
     const beadArray = getBeadArray(board, arche); // reverses the transformation needed to find the archetype on the response array, to yield a probability array for the initial board state
     if (beadArray) {return [chooseMoveFromBeadArray(beadArray),beadArray]} //return the chosen move and the response array that led to it. 
@@ -38,7 +40,10 @@ function testForChangeInFirstObjectInDataBase(dbase){
 // this function takes board state, and returns the archetype of which it is a flip/rotation
 // changes transform, however, to represent the change needed to recover input board state 
 export function getBoardArchetype(boardState, dbase){
+    console.log(`mcm: boardState is `, boardState)
+    console.log(`mcm: getBoardArchetype dbase.length is `, dbase.length)
     for (let i = 0; i < dbase.length; i++){
+        console.log(`mcm: initializing for loop in getBoardArchetype `)
         if (areEquivalent(boardState, dbase[i].state)){
             let boardObject = dbase[i]; 
             boardObject.transform = equivalenceScore(boardState, dbase[i].state)
@@ -70,6 +75,7 @@ function checkTransformReversesState(boardState, archetypeState, transform, func
 // takes object, returns move chosen 
 
 export function chooseMoveFromBeadArray(beadArray){
+    if (beadArray.every((item => item === 0))) return -1; // -1 is the code for a resignation
     const sum = beadArray.reduce((acc, val) => acc + val, 0);
     let rand = Math.floor(Math.random()*sum); 
     let probSum = 0; 

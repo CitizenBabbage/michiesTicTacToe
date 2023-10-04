@@ -13,24 +13,24 @@ export default function GameLog( props ){
     const initialRender = useRef(true);
     //const [logBoardButton, setLogBoardButton] = useState("logBoardButton"); 
     const trainingMode = props.trainingMode;
-    
+    const trainingTurn = props.trainingTurn; 
+    const computerOff = props.computerOff; 
 
     useEffect(() => {
-        console.log("gamelog: exploring adding board state to log...")
+        console.log("gl1: exploring adding board state to log...")
         if (squares) addBoardStateToLog(); 
-    },[squares])
+    },[trainingTurn, computerOff])
 
 
     function addBoardStateToLog(){
-        //console.log("1. gameLog is ", gameLog)
+        // console.log("1. gameLog is ", gameLog)
         if (initialRender.current) {
-            console.log("gamelog: not adding board state to log because this is first render...")
             initialRender.current = false;
             return;
         }
         if (!includes(gameLog,squares)) {
-            console.log(`gamelog: gamelog is ${gameLog}, but adding board state ${squares} to log...`)
             setGameLog((gameLog) => [...gameLog,squares])
+            console.log("gl2. gameLog set ")
         }
         else (console.log("gamelog: didn't add board state to log because it was already included!"))
 

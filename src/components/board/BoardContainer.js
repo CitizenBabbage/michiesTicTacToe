@@ -34,6 +34,8 @@ export default function BoardContainer( props ) {
 
 
   function clearBoard() {
+    console.log("boardContainer: setting squares in clearBoard")
+
       setSquares(Array(9).fill(null)); 
       setWinner(undefined); 
       setResigned(null); 

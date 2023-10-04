@@ -5,14 +5,15 @@ import { useLocation } from 'react-router-dom';
 
 import PortraitButton from '../components/buttons/PortraitButton.js'
 
-import hurisPortrait from '../images/huris/10a7f78f1fd64265a7df0efd71c8c959bc63d032.webp'
-import evolvoPortrait from '../images/evolvo4.webp'
-import menacePortrait from '../images/menace/77fa83d664df40fb96fe7fb183d4004a02d73734.webp'
-import minimaxPortrait from '../images/minimax/minimax4.png'
+import hurisPortrait from '../images/chosen/huris2.gif'
+import evolvoPortrait from '../images/chosen/evolvoFinal.png'
+import menacePortrait from '../images/chosen/menace.png'
+import minimaxPortrait from '../images/chosen/minimax.gif'
 // import minximaPortrait from '../images/minxima/af896fd40d0249c88c952f8308485f6888596ec3.webp'
-import neuroPortrait from '../images/neuro/gingerNeuro.gif'
+import neuroPortrait from '../images/chosen/neuro3.gif'
+import SelectionMusic from '../components/presentational/sound/selectionMusic.js';
 
-export default function selectOpponent(){
+export default function selectOpponent( props ){
     const [currentPortraitIndex, setCurrentPortraitIndex] = useState(0);
     const [currentNameIndex, setCurrentNameIndex] = useState(0);
     const navigate = useNavigate();
@@ -139,6 +140,7 @@ export default function selectOpponent(){
                         <button className='leftButton' onClick={handleLeftArrowClick}/> 
                         <PortraitButton handlePortraitClick = {handlePortraitClick} portraitIndex = {currentPortraitIndex} characterStyle = {styles[currentNameIndex]} len = {portraits.length} src={portraits[currentPortraitIndex]} alt="Portrait" characterName = {names[currentNameIndex]}/>
                         <button className = 'rightButton' onClick={handleRightArrowClick}/>
+                        {/* <SelectionMusic audioSelected = {props.audioSelected}/> */}
                     </div>
                 </div>
             </div> 

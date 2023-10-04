@@ -32,6 +32,15 @@ export default function NeuroComparison( props ) {
  
     const trainingStates = props.trainingStates;
     const net = props.net; 
+
+    const neuroMinimaxBoardText = props.neuroMinimaxBoardText; 
+    const neuroPredictionsBoardText = props.neuroPredictionsBoardText; 
+    const challengeBoardText = props.challengeBoardText; 
+
+    console.log("neuroMinimaxBoardText is ", neuroMinimaxBoardText)
+    console.log("neuroPredictionsBoardText is ", neuroPredictionsBoardText)
+    console.log("challengeBoardText is ", challengeBoardText)
+
     
     useEffect(() => {if (trainingStates && trainingStates.length > 0) {setShouldDisable(false)} else setShouldDisable(true)}, [trainingStates])
                                    
@@ -88,9 +97,9 @@ export default function NeuroComparison( props ) {
         {toPlay? <p>{toPlay} to play</p>:<p></p>}
         <div className='gameshell'>
             <div className='threeBoards'>
-                <Board squaresClassName = "neuroXOtest" values = { testBoard }></Board> 
-                <Board squaresClassName = "neuroPredictions" values = { neuroPredictions }></Board> 
-                <Board squaresClassName = "minimaxBoard" values = { minimaxRecommendations }></Board> 
+                <Board squaresClassName = "neuroXOtest" values = { testBoard } boardText = {challengeBoardText} ></Board> 
+                <Board squaresClassName = "neuroPredictions" values = { neuroPredictions } boardText = {neuroPredictionsBoardText} ></Board> 
+                <Board squaresClassName = "minimaxBoard" values = { minimaxRecommendations } boardText = {neuroMinimaxBoardText}></Board> 
             </div> 
             <div className='textList'>
                 {/* <p>Raw Errors = {rErrors.join(', ')}</p>

@@ -25,8 +25,7 @@ export default function GenomeDisplay( props ) {
         </div>
         <div className = 'centered'>
             <ol className = 'genome'>
-                {
-                    
+                {   
                     genome.genome.map((item, index) => {
                     // Assuming item.response is an array of values between 0 and 1
                     const colour = getColor(item,100);

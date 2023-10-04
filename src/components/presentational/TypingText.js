@@ -17,7 +17,7 @@ export default function TypingText({ text }) {
     }, [index, text]);
 
     return (
-    <div class="block-container">
+    <div className="block-container">
         <span className="retro-text"style={{ fontSize: '12px' }}>{displayedText}</span>
     </div>
         

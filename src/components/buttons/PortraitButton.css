@@ -20,7 +20,22 @@ body {
     background-color: black;
     color: white; /* Set default text color to white */
     border: none;
+    cursor: url('../../images/cursor.png'), auto;
+    position: relative; /* Ensures that the clickable-area is positioned relative to this container */
 }
+
+.portrait .clickable-area {
+    position: absolute;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    width: 80%; /* Adjust as needed */
+    height: 90%; /* Adjust as needed */
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    cursor: url('../../images/pointer.png'), pointer;
+    z-index: 2;
+  }
 
 .slide-in-forwards {
     animation: slide-in-forwards 0.3s ease-out forwards;

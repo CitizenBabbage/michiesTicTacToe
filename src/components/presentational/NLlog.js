@@ -47,17 +47,15 @@ export function NLlog( props ) {
 
     useEffect(()=>{
        if (nLLogStats.length > 0) {
-        console.log("naturalLanguageLog was ", naturalLanguageLog)
         let newNaturalLanguageLog = updateNLLog(nLLogStats)
-        console.log("newNaturalLanguageLog is ", newNaturalLanguageLog)
         setNaturalLanguageLog(newNaturalLanguageLog)
         
        }
     },[nLLogStats])
 
-    useEffect (()=>{
-        console.log("naturalLanguageLog is now ", naturalLanguageLog)
-    },[naturalLanguageLog])
+    // useEffect (()=>{
+    //     console.log("naturalLanguageLog is now ", naturalLanguageLog)
+    // },[naturalLanguageLog])
 
 
     if (NLlogVisible === true)

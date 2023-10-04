@@ -20,6 +20,8 @@ import Neuro from './pages/neuro.js';
 import Test from './pages/test.js';
 import SelectOpponent from './pages/selectOpponent.js'
 import Intro from './pages/intro.js'
+import SelectionMusic from './components/presentational/sound/selectionMusic.js';
+
  
 export default function App() {
     // eslint-disable-next-line no-unused-vars
@@ -27,12 +29,14 @@ export default function App() {
     //const [playersTurn, setPlayersTurn] = useState( true ); 
     const [xsTurn, setXsTurn] = useState( false )
     const [foe, setFoe] = useState("")
-
-
-
     // const audioRef = useRef(null);
     const [audioSelected, setAudioSelected] = useState(false);
+    const [musicStarted, setMusicStarted] = useState(false); 
 
+
+    useState(() => {
+      console.log("audioSelected changed to ", audioSelected)
+    },[audioSelected])
 
     // function playAudio(){
     //   if (audioRef.current) {
@@ -44,6 +48,8 @@ export default function App() {
 
     return (
       <div> 
+        <SelectionMusic audioSelected = {audioSelected} musicStarted = {musicStarted}/>
+
         {/* <audio ref={audioRef}>
           <source src={introTune} type="audio/mpeg" />
         </audio> */}
@@ -58,7 +64,7 @@ export default function App() {
               <Route path="/neuro" element={<Neuro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>} />
               {/* <Route path="/test" element={<Test devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/> */}
               <Route path="/selectOpponent" element={<SelectOpponent devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/>
-              <Route path="/intro" element={<Intro devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/> 
+              <Route path="/intro" element={<Intro setMusicStarted = {setMusicStarted} audioSelected = {audioSelected} devMode = {developmentMode} xsTurn={xsTurn} setXsTurn={setXsTurn} foe = { foe }/>}/> 
 
           </Routes>
         </Router>

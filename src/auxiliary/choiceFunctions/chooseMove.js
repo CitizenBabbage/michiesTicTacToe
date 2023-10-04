@@ -23,6 +23,8 @@ export function chooseMove(board, foeSpec, foe){
     let netOutput;  
     if (foe === "menace"){
         let tempDB = [...foeSpec] // foeSpec[0] in this case should be the board object database
+        console.log(`cm: chooseMove foeSpec.length is `, foeSpec.length)
+        console.log(`cm: chooseMove tempDB.length is `, tempDB.length)
         let x = menaceChooseMove(board, tempDB)
         return x; 
     }

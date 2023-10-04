@@ -45,7 +45,10 @@ export function MenaceTrainingPage (props) {
     const setAllPlayedBoards = props.setAllPlayedBoards; 
 
     // this ensures that squares are null when training begins, so that setSquares (in TrainingIterationsField) will launch the Gamecycle
-    useEffect(() => setSquares([null,null,null,null,null,null,null,null,null,]), [])
+    useEffect(() => {
+      console.log("mtp: setting squares in useEffect")
+      setSquares([null,null,null,null,null,null,null,null,null,])
+    }, [])
     
     
     return (
@@ -58,20 +61,20 @@ export function MenaceTrainingPage (props) {
             {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Game </button> }
           </div> 
 
-          <div label = "column1, row2" className='twoColumns'>
+          <div label = "column1, row2" >
             <div>
+              <div>
+                <IdFacts name = {props.name} playStyle = {props.playStyle} blurb = {props.blurb} src = {props.src} trainingMode = { trainingMode }/>
+              </div>
               <BoardContainer devMode = {props.devMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } src = {props.src} setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} setResigned = {setResigned} humansLetter = {humansLetter} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} reset = {reset} ></BoardContainer>
-              <TrainingIterationsField setSquares = {props.setSquares} setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } setTrainingIterations = {setTrainingIterations}  xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} value = {value} setValue = {setValue}/>
-            </div>
-            <div>
-              <IdFacts name = {props.name} playStyle = {props.playStyle} blurb = {props.blurb} src = {props.src} trainingMode = { trainingMode }/>
+              <TrainingIterationsField setSquares = {props.setSquares} setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } setTrainingIterations = {setTrainingIterations}  xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} value = {value} setValue = {setValue}/>    
             </div>
           </div> 
           <div label = "column1, row3">
             {/* <GameEnd setWhoWon = {props.setWhoWon} humansLetter = {humansLetter}  devMode = {props.devMode} resigned = { resigned } isCalculatingWinner = {isCalculatingWinner} setIsCalculatingWinner = {setIsCalculatingWinner} squares = {squares} winner = {winner} setWinner = {setWinner} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn}/> */}
-            <GameCycle allPlayedBoards = {allPlayedBoards} setAllPlayedBoards = {setAllPlayedBoards} setTrainingIterations = {props.setTrainingIterations} setGameLog = {props.setGameLog} setWinner = {props.setWinner} ranking = {props.ranking} setComputerOff = {props.setComputerOff} computerOff = {props.computerOff} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect} net = {props.net} devMode = {props.devMode} trainingIterations = {trainingIterations} setSquares = {setSquares} setFoe = { props.setFoe } foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {props.setTrainingMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares }  winner = { winner }/>   
-            <GameLog devMode = {props.devMode} trainingMode = {trainingMode} winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
-            {trainingMode && <NLlog naturalLanguageLog = { props.naturalLanguageLog } setNaturalLanguageLog = { props.setNaturalLanguageLog } nLLogStats = { props.nLLogStats }/>}
+            <GameCycle trainingTurn = {props.trainingTurn} setTrainingTurn = {props.setTrainingTurn} allPlayedBoards = {allPlayedBoards} setAllPlayedBoards = {setAllPlayedBoards} setTrainingIterations = {props.setTrainingIterations} setGameLog = {props.setGameLog} setWinner = {props.setWinner} ranking = {props.ranking} setComputerOff = {props.setComputerOff} computerOff = {props.computerOff} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect} net = {props.net} devMode = {props.devMode} trainingIterations = {trainingIterations} setSquares = {setSquares} setFoe = { props.setFoe } foe = {props.foe} database = {database} trainingMode = {trainingMode} setTrainingMode = {props.setTrainingMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} setIsCalculatingWinner = { setIsCalculatingWinner } isCalculatingWinner = {isCalculatingWinner} opponent ={ props.opponent } setOpponent = { props.setOpponent } squares = { squares }  winner = { winner }/>   
+            <GameLog computerOff = {props.computerOff} trainingTurn = {props.trainingTurn} devMode = {props.devMode} trainingMode = {trainingMode} winner = {winner} gameLog = {gameLog} setGameLog = {setGameLog} squares = {squares}/> 
+            {/* {trainingMode && <NLlog naturalLanguageLog = { props.naturalLanguageLog } setNaturalLanguageLog = { props.setNaturalLanguageLog } nLLogStats = { props.nLLogStats }/>} */}
 
           </div>
 

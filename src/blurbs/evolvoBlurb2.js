@@ -1,0 +1,1 @@
+export const evolvoBlurb2 = `Each program is a sequence of numbers, with position in the sequence representing one rule, e.g. "play the centre". The higher the number at that position, the more that rule is preferred. Over time, the genomes that assign the highest numbers to the best rules get matched, mixed and mutated to create new, even better, generations. `

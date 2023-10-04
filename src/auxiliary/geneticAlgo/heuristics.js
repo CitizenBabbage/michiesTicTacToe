@@ -294,10 +294,10 @@ export function nextCornerAsSelfAntiClockwise(array, mySymbol){
 
 // Rule 16: next edge clockwise as opponent: If the opponent is on the edge, the player plays the next edge clockwise.
 export function nextEdgeAsOpponentClockwise(array, mySymbol){
-    if (!array[0] && array[6] === opposite(mySymbol)) return 0; 
-    else if (!array[2] && array[0] === opposite(mySymbol)) return 2;
-    else if (!array[6] && array[8] === opposite(mySymbol)) return 6;
-    else if (!array[8] && array[2] === opposite(mySymbol)) return 8;
+    if (!array[1] && array[3] === opposite(mySymbol)) return 1; 
+    else if (!array[3] && array[7] === opposite(mySymbol)) return 3;
+    else if (!array[5] && array[1] === opposite(mySymbol)) return 5;
+    else if (!array[7] && array[5] === opposite(mySymbol)) return 7;
     else return null; 
 }
 
@@ -305,46 +305,46 @@ export function nextEdgeAsOpponentClockwise(array, mySymbol){
 
 // Rule 17: Next edge anticlockwise as opponent: If the opponent is on the edge, the player plays the next edge anticlockwise.
 export function nextEdgeAsOpponentAntiClockwise(array, mySymbol){
-    if (!array[0] && array[2] === opposite(mySymbol)) return 0; 
-    else if (!array[2] && array[8] === opposite(mySymbol)) return 2;
-    else if (!array[6] && array[0] === opposite(mySymbol)) return 6;
-    else if (!array[8] && array[6] === opposite(mySymbol)) return 8;
+    if (!array[1] && array[5] === opposite(mySymbol)) return 1; 
+    else if (!array[3] && array[1] === opposite(mySymbol)) return 3;
+    else if (!array[5] && array[7] === opposite(mySymbol)) return 5;
+    else if (!array[7] && array[3] === opposite(mySymbol)) return 7;
     else return null; 
 }
 
 // Rule 18: next edge clockwise as self: If self is on the edge, the player plays the next edge clockwise.
 export function nextEdgeAsSelfClockwise(array, mySymbol){
-    if (!array[0] && array[6] === mySymbol) return 0; 
-    else if (!array[2] && array[0] === mySymbol) return 2;
-    else if (!array[6] && array[8] === mySymbol) return 6;
-    else if (!array[8] && array[2] === mySymbol) return 8;
+    if (!array[1] && array[3] === mySymbol) return 1; 
+    else if (!array[3] && array[7] === mySymbol) return 3;
+    else if (!array[5] && array[1] === mySymbol) return 5;
+    else if (!array[7] && array[5] === mySymbol) return 7;
     else return null; 
 }
 
 // Rule 19: Next edge anticlockwise as self: If self is on the edge, the player plays the next edge anticlockwise.
 export function nextEdgeAsSelfAntiClockwise(array, mySymbol){
-    if (!array[0] && array[2] === mySymbol) return 0; 
-    else if (!array[2] && array[8] === mySymbol) return 2;
-    else if (!array[6] && array[0] === mySymbol) return 6;
-    else if (!array[8] && array[6] === mySymbol) return 8;
+    if (!array[1] && array[5] === mySymbol) return 1; 
+    else if (!array[3] && array[1] === mySymbol) return 3;
+    else if (!array[5] && array[7] === mySymbol) return 5;
+    else if (!array[7] && array[3] === mySymbol) return 7;
     else return null; 
 }
 
 // Rule 20: Opposite edge as opponent: If opponent is on the edge, the player plays the opposite edge.
 export function oppositeEdgeAsOpponent(array, mySymbol){
-    if (!array[0] && array[2] === mySymbol) return 0; 
-    else if (!array[2] && array[8] === mySymbol) return 2;
-    else if (!array[6] && array[0] === mySymbol) return 6;
-    else if (!array[8] && array[6] === mySymbol) return 8;
+    if (!array[1] && array[7] === opposite(mySymbol)) return 1; 
+    else if (!array[3] && array[5] === opposite(mySymbol)) return 3;
+    else if (!array[5] && array[3] === opposite(mySymbol)) return 5;
+    else if (!array[7] && array[1] === opposite(mySymbol)) return 7;
     else return null; 
 }
 
 // Rule 21: Opposite edge as self: If self is on the edge, the player plays the opposite edge.
 export function oppositeEdgeAsSelf(array, mySymbol){
-    if (!array[0] && array[2] === mySymbol) return 0; 
-    else if (!array[2] && array[8] === mySymbol) return 2;
-    else if (!array[6] && array[0] === mySymbol) return 6;
-    else if (!array[8] && array[6] === mySymbol) return 8;
+    if (!array[1] && array[7] === mySymbol) return 1; 
+    else if (!array[3] && array[5] === mySymbol) return 3;
+    else if (!array[5] && array[3] === mySymbol) return 5;
+    else if (!array[7] && array[1] === mySymbol) return 7;
     else return null; 
 }
 
