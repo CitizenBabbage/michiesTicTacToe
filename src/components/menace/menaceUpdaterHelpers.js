@@ -4,7 +4,7 @@ import { checkIsIntegral, checkBeadSubbase, checkIsANumber } from '../../auxilia
 export function updateHistoryLog(allPlayedBoards, gameLog, database){ 
     //console.log(`updateHistoryLog called: allPlayedBoards has length ${allPlayedBoards.length} and is as follows: ${JSON.stringify(allPlayedBoards)}. gameLog has length ${gameLog.length}`)
     let newAllPlayedBoards = dataBaseDuplicator(allPlayedBoards);
-    checkBeadSubbase(newAllPlayedBoards, "updateHistoryLog")
+    // checkBeadSubbase(newAllPlayedBoards, "updateHistoryLog")
     for (let j = 0; j < gameLog.length; j++){ //for each item in the new gameLog, find the corresponding object and update the history log with it
         //console.log(`checking gamelog[${j}], which is `, gameLog[j])
         let gameLogObject = returnCorrespondingObjectFromDatabase(gameLog[j], database); 
@@ -51,9 +51,9 @@ function updateHistory(historyBase, object){
 
 
 export function learnFromGame(winner, gameLog, database){
-    console.log("initiating learnFromGame, winner is ", winner)
+    //console.log("initiating learnFromGame, winner is ", winner)
     if (winner === undefined || winner == null || gameLog === undefined) {
-        console.log(`Either winner or gamelog is undefined or null. Aborting learnFromGame. Details: winner = ${winner}, gameLog = ${gameLog}`)
+        //console.log(`Either winner or gamelog is undefined or null. Aborting learnFromGame. Details: winner = ${winner}, gameLog = ${gameLog}`)
         return
      }  
      
@@ -72,7 +72,7 @@ function updateEachBoardPlayed(log, gameResult, database){ // gameResult = 1: X 
     let nLLog = []; 
     let newData = dataBaseDuplicator(database); 
     checkIsANumber(gameResult, "updateEachBoardPlayed", "gameResult")
-    for (let i = 0; i < log.length -1; i++){                //for each state in the game log
+    for (let i = 0; i < log.length -1; i++){                    //for each state in the game log
         let move = getPositionThatChanged(log[i], log[i+1]);    //find the position that changed 
         let update; 
         if (isOdd(i)) {                                         // if it was an odd round, that was O's turn. 
@@ -81,7 +81,6 @@ function updateEachBoardPlayed(log, gameResult, database){ // gameResult = 1: X 
         else update = gameResult; 
         if (update > 0) update *= 3 // 3 points for a win
         else if (update === 0) update = 1; // 1 point for a draw
-        checkIsANumber(update, "updateEachBoardPlayed", "update")  
         newData = findAndUpdateEquivalent(newData, update, move, log[i]); 
         nLLog = [...nLLog, [gameResult, update, log[i], move]]
         }
@@ -95,7 +94,7 @@ function updateEachBoardPlayed(log, gameResult, database){ // gameResult = 1: X 
 
 
 
-
+// finds the equivalent of a given board state in the db and updates it, returning whole db
 function findAndUpdateEquivalent(data, update, move, boardState){
     //console.log(`Updating for ${JSON.stringify(boardState)}`)
     let newData = dataBaseDuplicator(data); 
@@ -107,7 +106,9 @@ function findAndUpdateEquivalent(data, update, move, boardState){
             //console.log("newBeadCount is", newBeadCount); 
             checkIsIntegral(newBeadCount, "findAndUpdateEquivalent")
             newData[j].response[newMove] = newBeadCount;                                        // update response array accordingly 
+            newData[j].updates = newData[j].updates + 1;                                        // mark that the object has been updated
             //addToAllPlayedBoards(newData[j])
+            return newData;
             }
     }
     return newData; 

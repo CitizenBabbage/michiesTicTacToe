@@ -56,8 +56,8 @@ export function arrayEquals(array1,array2){
 
 //F1.4.1.1.1 areEquivalent//
 export function areEquivalent(board1, board2){
-    console.log(`board1 is `, board1); 
-    console.log(`board2 is `, board2); 
+    // console.log(`board1 is `, board1); 
+    // console.log(`board2 is `, board2); 
     if (areIdentical(board1, board2)){return true}; 
     if (areRotationalVariants(board1, board2)){return true}; 
     const refl = reflection(board1); 
@@ -324,7 +324,7 @@ export function isNumber(value) {
 export function placeMark(squareNumber, board){
     if (board[squareNumber]) return;            // if the square is occupied, do nothing 
     let symbolCount = board.reduce((acc,item) => item? acc+1: acc, 0)
-    console.log("symbol count is ", symbolCount)
+    //console.log("symbol count is ", symbolCount)
     if (symbolCount % 2 === 0){ board[squareNumber] = 'X'} 
     else board[squareNumber] = 'O'; 
     return board

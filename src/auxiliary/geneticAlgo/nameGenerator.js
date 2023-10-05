@@ -158,7 +158,7 @@ function testForDuplicates(sampleSize){
             }
         }
     }
-    console.log("duplicates length is ", duplicates.length)
+    // console.log("duplicates length is ", duplicates.length)
     return [duplicates, originalNameSet]; 
 }
 

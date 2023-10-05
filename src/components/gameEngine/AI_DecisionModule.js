@@ -5,7 +5,7 @@ import React from 'react';
 import { useEffect, useState} from 'react'
 import { chooseMove } from '../../auxiliary/choiceFunctions/chooseMove.js';
 import { checkDbase, checkBoard } from "../../auxiliary/testers/errorCheckers.js"
-import {roundOffElementsInArray, placeMark, whoseMove, doubleCheckItsReallyComputersTurn} from "../../auxiliary/general/usefulFunctions.js"
+import {opposite, roundOffElementsInArray, placeMark, whoseMove, doubleCheckItsReallyComputersTurn} from "../../auxiliary/general/usefulFunctions.js"
 import Board from "../board/Board.js" 
 import SoundComponent from '../presentational/sound/SoundFX.js';
 import GenomeDisplay from '../presentational/genomeDisplay.js';
@@ -27,6 +27,7 @@ export default function AI_DecisionModule( props ) {
     const setSquares = props.setSquares; 
     const squares = props.squares; 
     const setResigned = props.setResigned; 
+    const resigned = props.resigned; 
     const setComputerOff = props.setComputerOff; 
     const humansLetter = props.humansLetter; 
 
@@ -61,15 +62,15 @@ export default function AI_DecisionModule( props ) {
 
     function returnFoeSpecs(){
         if (foe === 'menace') {
-            console.log("aidm: setting Foe Specifications to database... "); 
+            // console.log("aidm: setting Foe Specifications to database... "); 
             return database; 
         }
         else if (foe === 'evolvo') {
-            console.log("aidm: setting Foe Specifications to ranking[0].genome... "); 
+            // console.log("aidm: setting Foe Specifications to ranking[0].genome... "); 
             return ranking[0].genome; 
         }
         else if (foe === 'Neuro') {
-            console.log("aidm: setting Foe Specifications to network... "); 
+            // console.log("aidm: setting Foe Specifications to network... "); 
             return network
         }
     }
@@ -77,16 +78,16 @@ export default function AI_DecisionModule( props ) {
 
     // the following useEffect triggers the AI
     useEffect(()=>{
-        console.log("aidm 1: change in training turn or computerOff recognised...")
-        console.log("aidm 1a: computerOff is...", computerOff)
+        // console.log("aidm 1: change in training turn or computerOff recognised...")
+        // console.log("aidm 1a: computerOff is...", computerOff)
 
         if (!computersTurn()) {
-            console.log("aidm 1c: computersTurn check failed ... exiting the useEffect.")
+            // console.log("aidm 1c: computersTurn check failed ... exiting the useEffect.")
             return;
         }
-        console.log("aidm 2: computersTurn check passed ... taking computers turn...")
+        // console.log("aidm 2: computersTurn check passed ... taking computers turn...")
         takeComputersTurn(); 
-        console.log("aidm 3: computersTurn turn taken ...")
+        // console.log("aidm 3: computersTurn turn taken ...")
     },[trainingTurn, computerOff]) // these values are changed in GameCycle at the right time to trigger the AI
 
 
@@ -96,78 +97,81 @@ export default function AI_DecisionModule( props ) {
     function takeComputersTurn(){
         computerPlay().then(resolvedSquares => {
             //checkBoard(resolvedSquares, "takeComputersTurn");
-            console.log("aidm 4: setting squares...")
-            setSquares(resolvedSquares); // this triggers restart of gameCycle in gameCycle
+            // console.log("aidm 4: setting squares...")
+            if (resolvedSquares) { // if not resolveSquares it's because Menace had no beads and resigned
+                setSquares(resolvedSquares); // this triggers restart of gameCycle in gameCycle
             }
+            //setSquares(resolvedSquares);
+        }
         ).catch(error => {
             console.error("Error in takeComputersTurn:", error); 
         });
     }
 
     function computersTurn(){ //returns true if it is time for the computer to move
-        console.log("checking For Computers Turn...");
-        console.log("aidm: computersTurn, computeroff is.... ", computerOff) 
+        // console.log("checking For Computers Turn...");
+        // console.log("aidm: computersTurn, computeroff is.... ", computerOff) 
         if (computerOff) {
-            console.log("computerOff is set to true. Canceling checkForComputersTurn!")
+            // console.log("computerOff is set to true. Canceling checkForComputersTurn!")
             return false; 
         }; 
         // if (isCalculatingWinner) {
         //     console.log("isCalculatingWinner is still in progress. Canceling checkForComputersTurn!")
         //     return
         // }; 
-        if (trainingMode) console.log("it's trainingMode!")
-        console.log("trainingIterations are : ", trainingIterations)
+        //if (trainingMode) console.log("it's trainingMode!")
+        // console.log("trainingIterations are : ", trainingIterations)
         if (trainingMode && trainingIterations <= 0) {
-            console.log("Training iterations not set or reduced to 0. Canceling checkForComputersTurn!"); 
+            // console.log("Training iterations not set or reduced to 0. Canceling checkForComputersTurn!"); 
             return false; 
         };
         if (winner) {
-            console.log("Winner is determined. Canceling checkForComputersTurn!")
+            // console.log("Winner is determined. Canceling checkForComputersTurn!")
             return false; 
         };
-        console.log("checkForComputersTurn: Passed!"); 
+        // console.log("checkForComputersTurn: Passed!"); 
         // the following is a temporary fix for a bug. It should be unnecessary. 
         if (!doubleCheckItsReallyComputersTurn(squares, humansLetter, trainingMode)) {
-            console.log("aidm: failed double check that it really is computer's turn.")
+            // console.log("aidm: failed double check that it really is computer's turn.")
             if (!computerOff) setComputerOff(true); 
             return false; 
         }
         return true; 
     }
 
+    // useEffect(() =>{
+    //     if (resigned){
+    //         console.log(`registering that ${resigned} has resigned, and setting winner as ${opposite(resigned)}!`)
+    //         setWinner(opposite(resigned))
+    //         //console.log(`${opposite(resigned)} has resigned!`)
+    //     }
+    // }
+    //     ,[resigned] ) //resigned takes values undefined, null, 'X' or 'O'
+       
 
     // computerPlay is async because an artificial delay is introduced to make the timing feel natural 
     async function computerPlay() {
         let nextSquares = [...squares];                                             // create duplicate board in memory
         return delayAndChoose(nextSquares).then(choiceAndData => {
-            console.log("computerPlay: Move chosen is " , choiceAndData[0])
-            if (choiceAndData[0] === -1){
-                setResigned(whoseMove(nextSquares))
+            // console.log("computerPlay: Move chosen is " , choiceAndData[0])
+            if (choiceAndData[0] === -1){ // this occurs when Menace runs out of beads for a board state
+                console.log(`setting resigned to ${opposite(whoseMove(nextSquares))}`)
+                setResigned(opposite(whoseMove(nextSquares)))
+                console.log("AI_dm: menace has resigned!")
+                // throw new Error("menace has resigned!")
+                return Promise.resolve(null); // returning null should cause takeComputersTurn to halt
             }
-            nextSquares = placeMark(choiceAndData[0], nextSquares)      // set the board square to X or O, as appropriate
-            setProbabilityArray(choiceAndData[1])
-            if (foe === 'huris') {ruleUsed = choiceAndData[1]}
-            return Promise.resolve(nextSquares); 
+            else {
+                nextSquares = placeMark(choiceAndData[0], nextSquares)      // set the board square to X or O, as appropriate
+                setProbabilityArray(choiceAndData[1])
+                if (foe === 'huris') {ruleUsed = choiceAndData[1]}
+                return Promise.resolve(nextSquares);
+            } 
             }
         )
         }
         
 
-    // useEffect(
-    //     changeTurns,
-    //     [computersTurn]
-    // )
-    
-    // function changeTurns(){
-    //     if (!computersTurn){
-    //         if (!trainingMode) {
-    //             setPlayersTurn(true)
-    //         }
-    //         else {
-    //             reverseFoe(); 
-    //         }
-    //     }
-    // }
     
     useEffect(
         updateProbabilityBoard,
@@ -216,8 +220,8 @@ export default function AI_DecisionModule( props ) {
                 //foeSpec is database for menace, genome for evolvo, network for neuro
                 // NOTE that you can't just add evolvo & neuro as opponents for menace
                 // because they need to take their foespec, which will be set to menace's
-                console.log(`AIDM: foe is `, foe)
-                console.log(`AIDM: foeSpec is `, foeSpec)
+                // console.log(`AIDM: foe is `, foe)
+                // console.log(`AIDM: foeSpec is `, foeSpec)
                 const choiceAndData = chooseMove(board, foeSpec, tempComputerOpponent); 
                 resolve(choiceAndData);
                

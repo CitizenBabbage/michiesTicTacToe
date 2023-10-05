@@ -16,6 +16,18 @@ const Home = ( props ) => {
     //     console.log("audioSelected changed at index.js to ", audioSelected)
     //   },[audioSelected])
 
+    function handleTopClick(){
+        setHighlightedButton("topButton")
+        setAudioSelected(true)
+        navigate("/intro")
+    }
+
+    function handleBottomClick(){
+        setHighlightedButton("bottomButton")
+        setAudioSelected(false)
+        navigate("/intro")
+    }
+
     useEffect(() => {
         const handleKeyPress = (event) => {
             if (event.key === "ArrowUp") {
@@ -28,11 +40,15 @@ const Home = ( props ) => {
                 if (highlightedButton === "topButton"){
                     setAudioSelected(true)
                     /console.log("audioSelected at child level. AudioSelected = ", props.audioSelected)
-                    navigate("/intro?AudioSelected=true")
+                    // navigate("/intro?AudioSelected=true")
+                    navigate("/intro")
+
                 }
                 else if (highlightedButton === "bottomButton"){
                     setAudioSelected(false)
-                    navigate("/intro?AudioSelected=false")
+                    // navigate("/intro?AudioSelected=false")
+                    navigate("/intro")
+
                 }
             }
         };
@@ -48,8 +64,8 @@ const Home = ( props ) => {
 
     return (
         <div className = 'buttonContainer' >
-            <button className = {highlightedButton === "topButton"? 'highlightedButton': 'normalButton'}>Proceed with audio on</button> 
-            <button className = {highlightedButton === "bottomButton"? 'highlightedButton': 'normalButton'}>Proceed with audio off</button> 
+            <button onClick = {handleTopClick} className = {highlightedButton === "topButton"? 'highlightedButton': 'normalButton'}>Proceed with audio on</button> 
+            <button onClick = {handleBottomClick} className = {highlightedButton === "bottomButton"? 'highlightedButton': 'normalButton'}>Proceed with audio off</button> 
         </div> 
     )
 };

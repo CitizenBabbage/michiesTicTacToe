@@ -37,9 +37,9 @@ export default function NeuroComparison( props ) {
     const neuroPredictionsBoardText = props.neuroPredictionsBoardText; 
     const challengeBoardText = props.challengeBoardText; 
 
-    console.log("neuroMinimaxBoardText is ", neuroMinimaxBoardText)
-    console.log("neuroPredictionsBoardText is ", neuroPredictionsBoardText)
-    console.log("challengeBoardText is ", challengeBoardText)
+    // console.log("neuroMinimaxBoardText is ", neuroMinimaxBoardText)
+    // console.log("neuroPredictionsBoardText is ", neuroPredictionsBoardText)
+    // console.log("challengeBoardText is ", challengeBoardText)
 
     
     useEffect(() => {if (trainingStates && trainingStates.length > 0) {setShouldDisable(false)} else setShouldDisable(true)}, [trainingStates])
@@ -48,7 +48,7 @@ export default function NeuroComparison( props ) {
     function setPredictionAndRecommendationFromTrainingSet(){
         const rand = Math.floor(Math.random()*trainingStates.length);
         const board = trainingStates[rand]; 
-        console.log("setPredictionAndRecommendationFromTrainingSet: board is : ", board)
+        //console.log("setPredictionAndRecommendationFromTrainingSet: board is : ", board)
         setPredictionAndRecommendation(board);
     }
 
@@ -65,7 +65,7 @@ export default function NeuroComparison( props ) {
 
     function setPredictionAndRecommendation(board){
         const data = neuroChooseMove(board, net); 
-        console.log("setPredictionAndRecommendation: data[1] is ", data[1])
+        //console.log("setPredictionAndRecommendation: data[1] is ", data[1])
         const prediction  = roundOffElementsInArray(data[1]); 
         const whoseTurn = whoseMove(board); 
         const recommendations = minimaxChooseMove(board, whoseTurn)[2]; 

@@ -18,7 +18,10 @@ export default function GameLog( props ){
 
     useEffect(() => {
         console.log("gl1: exploring adding board state to log...")
-        if (squares) addBoardStateToLog(); 
+        if (squares) {
+            console.log("gl1: adding board state to log...")
+            addBoardStateToLog();
+        } 
     },[trainingTurn, computerOff])
 
 
@@ -30,9 +33,9 @@ export default function GameLog( props ){
         }
         if (!includes(gameLog,squares)) {
             setGameLog((gameLog) => [...gameLog,squares])
-            console.log("gl2. gameLog set ")
+            //console.log("gl2. gameLog set ")
         }
-        else (console.log("gamelog: didn't add board state to log because it was already included!"))
+        //else console.log("gamelog: didn't add board state to log because it was already included!")
 
     }
 

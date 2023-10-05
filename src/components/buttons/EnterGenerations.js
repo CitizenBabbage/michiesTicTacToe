@@ -17,9 +17,9 @@ export function EnterGenerations( props ) {
     function handleSubmit (event) {
         event.preventDefault();
         if (isAnInteger(event.target.elements[0].value) && event.target.elements[0].value > 0){
-          console.log("submit generations button pressed")
+        //   console.log("submit generations button pressed")
           setGenerations(event.target.elements[0].value); 
-          console.log("enterGenerations: number of evolutions set to ", event.target.elements[0].value)
+        //   console.log("enterGenerations: number of evolutions set to ", event.target.elements[0].value)
 
           //setPlayersTurn(false)
           setSoundEffect("evolvoLearn")

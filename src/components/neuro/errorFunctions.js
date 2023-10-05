@@ -44,9 +44,9 @@ function getAllCrossEntropyLosses(arrayOfPredictions, arrayOfLabels){
 // and the differentials at the actual layer
 // returns an error array
 export function computeErrorForHiddenLayers(weights, errs, differentials){
-    console.log("computeErrorForHiddenLayers, errs received are: ", errs)
-    console.log("computeErrorForHiddenLayers, weights received are: ", weights) // weights received are NaNs. 
-    console.log("computeErrorForHiddenLayers, differentials received are: ", differentials)
+    // console.log("computeErrorForHiddenLayers, errs received are: ", errs)
+    // console.log("computeErrorForHiddenLayers, weights received are: ", weights) // weights received are NaNs. 
+    // console.log("computeErrorForHiddenLayers, differentials received are: ", differentials)
 
 
     errs = errs.flat(); 
@@ -58,7 +58,7 @@ export function computeErrorForHiddenLayers(weights, errs, differentials){
         }
         errArray[i] = runningSum * differentials[i] // the error at that node equals the above sum times the ith differential
     }
-    console.log("computeErrorForHiddenLayers, errArray returned is : ", errArray)
+    //console.log("computeErrorForHiddenLayers, errArray returned is : ", errArray)
     return errArray;
     }
 

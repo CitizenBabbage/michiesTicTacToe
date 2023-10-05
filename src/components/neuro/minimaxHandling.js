@@ -7,10 +7,10 @@ export function getCorrectArray(board){
     //console.log("starting getCorrectArray")
 
     const whoseTurn = whoseMove(board); 
-    console.log("getCorrectArray: board is ", board)
+    //console.log("getCorrectArray: board is ", board)
     const minimaxArray = minimaxChooseMove(board, whoseTurn)[2];
     const oneHotOutput = convertMinimax(minimaxArray); // replaces values with one hot arrays
-    console.log("getCorrectArray: oneHotOutput is ", oneHotOutput)
+    //console.log("getCorrectArray: oneHotOutput is ", oneHotOutput)
     //console.log("ending getCorrectArray")
     //return denullifiedMinimaxArray; 
     return oneHotOutput; 

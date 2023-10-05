@@ -6,7 +6,7 @@ export function StartNeuroLearningButton( props ) {
     const getTrainingSet = props.getTrainingSet; 
 
     const handleClick = () => {
-        console.log("start learning button clicked")
+        // console.log("start learning button clicked")
         setNeuroLearning(true); // the change in this should trigger the useEffect in NeuroTrainingPage.js
     };
 

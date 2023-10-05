@@ -34,15 +34,15 @@ export default function BoardContainer( props ) {
 
 
   function clearBoard() {
-    console.log("boardContainer: setting squares in clearBoard")
+    // console.log("boardContainer: setting squares in clearBoard")
 
       setSquares(Array(9).fill(null)); 
       setWinner(undefined); 
       setResigned(null); 
       setGameLog([Array(9).fill(null)]);
-      console.log("trainingMode is ", trainingMode)
+      // console.log("trainingMode is ", trainingMode)
       // if (props.testMode) {setPlayersTurn(true); setComputerOff(true)}
-      console.log("setComputerOff is ", props.computerOff)
+      // console.log("setComputerOff is ", props.computerOff)
   }
 
 

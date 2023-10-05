@@ -11,7 +11,7 @@ import { squaredError, getReluDifferentials } from "../errorFunctions.js";
 export function calculateFinalLayerUpdate(correctArray, previousLayerValues, thisLayerSums, predictedValues, afferentConnections, afferentBiases, learningRate, epsi, board){
     const [finalErrors,crossEntropyErrors] = computeErrorForLastLayer(predictedValues, correctArray, thisLayerSums);
     let output; 
-    console.log("calculateFinalLayerUpdate: finalErrors are... ", finalErrors)
+    //console.log("calculateFinalLayerUpdate: finalErrors are... ", finalErrors)
     const finalWeights = update(afferentConnections, afferentBiases, finalErrors, previousLayerValues, learningRate);
     output = [...finalWeights, "dummy", finalErrors, crossEntropyErrors];
     return output;  
@@ -25,10 +25,10 @@ export function calculateHiddenLayerUpdate(
     hiddenSums, firstConnections, firstBiases, board, learningRate, finalErrors){
    
     const differentialArray1 = getReluDifferentials(hiddenSums) 
-    console.log(`calculateHiddenLayerUpdate: calling computeErrorForHiddenLayers with values firstConnections ${firstConnections} finalErrors, ${finalErrors} differentialArray1 ${differentialArray1}`)
+    //console.log(`calculateHiddenLayerUpdate: calling computeErrorForHiddenLayers with values firstConnections ${firstConnections} finalErrors, ${finalErrors} differentialArray1 ${differentialArray1}`)
 
     const hiddenErrors = computeErrorForHiddenLayers(firstConnections, finalErrors, differentialArray1)
-    console.log("calculateHiddenLayerUpdate, calling update with errors... ", hiddenErrors)
+   // console.log("calculateHiddenLayerUpdate, calling update with errors... ", hiddenErrors)
     const hiddenWeights = update(firstConnections, firstBiases, hiddenErrors, board, learningRate);
     return hiddenWeights; 
 }
@@ -36,7 +36,7 @@ export function calculateHiddenLayerUpdate(
 // returns [newWeights,newBiases]
 export function update(weightArray, biasArray, errArray, priorLayer, learningRate){
 
-    console.log("update: errArray is ", errArray)
+    //console.log("update: errArray is ", errArray)
     let newWeights = [...weightArray];
     
     

@@ -7,10 +7,10 @@ import { minimaxChooseMove } from '../../../auxiliary/choiceFunctions/minimaxCho
 export async function dataFeeder(dataset, model) {
     const encodedData = ohEncodeBoards(dataset); 
     const xs = tf.tensor2d(encodedData, [encodedData.length, 27]);
-    console.log("Starting encoding of labels...")
+    //console.log("Starting encoding of labels...")
     const encodedLabels = getAllLabels(dataset);
-    console.log("encodedLabels[0] is : ", encodedLabels[0])
-    console.log("Finished encoding of labels!")
+    //console.log("encodedLabels[0] is : ", encodedLabels[0])
+    //console.log("Finished encoding of labels!")
     const ys = tf.tensor(encodedLabels, [encodedLabels.length, 9, 4]);
     
     // Train the model
@@ -21,7 +21,7 @@ export async function dataFeeder(dataset, model) {
         epochs: epochs,
         batchSize: batchSize
     }).then(info => {
-        console.log('Final accuracy', info.history.acc);
+        //console.log('Final accuracy', info.history.acc);
     });
     // add validation check here
     
@@ -68,7 +68,7 @@ function getAllLabels(dataset){
         const oneHotArray = convertMinimax(minimaxArray).flat(); 
         oneHotDataSet.push(oneHotArray)
     }
-    console.log("oneHotDataSet[0] is : ", oneHotDataSet[0])
+    //console.log("oneHotDataSet[0] is : ", oneHotDataSet[0])
     return oneHotDataSet; 
 } 
 

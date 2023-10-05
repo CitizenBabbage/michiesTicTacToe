@@ -67,13 +67,13 @@ function differences(array1, array2){
     let secondListAdditionals = []; 
     for (let i = 0; i < array1.length; i++){
         if (!deepIncludes(array2,array1[i])){
-            console.log(`${JSON.stringify(array2)} does not include ${JSON.stringify(array1[i])}`)
+            // console.log(`${JSON.stringify(array2)} does not include ${JSON.stringify(array1[i])}`)
             firstListAdditionals.push(i)
         }
     }
     for (let i = 0; i < array2.length; i++){
         if (!deepIncludes(array1, array2[i])){
-            console.log(`${JSON.stringify(array1)} does not include ${JSON.stringify(array2[i])}`)
+            // console.log(`${JSON.stringify(array1)} does not include ${JSON.stringify(array2[i])}`)
             secondListAdditionals.push(i)
         }
     }
@@ -110,7 +110,7 @@ function testForNulls(func){
 }
 
 
-console.log(testThreats())
+// console.log(testThreats())
 //console.log(deepIncludes([[4,"X"],[4,"X"],[4,"O"],[4,"O"]], [4,"O"]))
 //console.log(testForNulls(altlistThreats))
 // console.log(listThreats([

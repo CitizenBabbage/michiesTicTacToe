@@ -21,6 +21,7 @@ export default function GameCycle( props ) {
     const playersTurn = props.playersTurn; 
     const trainingMode = props.trainingMode; 
     const resigned = props.resigned; 
+    const setResigned = props.setResigned; 
     const setWhoWon = props.setWhoWon; 
     const humansLetter = props.humansLetter;
     const network = props.net; 
@@ -43,65 +44,77 @@ export default function GameCycle( props ) {
     const ranking = props.ranking; 
     const [controllingGenome, setControllingGenome] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13]); 
     
+    //for debugging
+    const [gameTracker, setGameTracker] = useState(0)
+    const [turnTracker, setTurnTracker] = useState(0)
+
+
+
     ////////////////////////
     ///// PLAY CYCLE ///////
     ////////////////////////
 
     useEffect (() => {
-        console.log(`gc1: squares change to ${squares} triggers useEffect, starting GameCycle`)
+        //console.log(`gc1: squares change to ${squares} triggers useEffect, starting GameCycle`)
+        setTurnTracker(prevValue => prevValue +1); 
+        console.log("turntracker is : ", turnTracker); 
+        console.log("squares are ", squares); 
+
         const victor = calculateWinner(squares); 
         if (victor){
+            console.log("victor detected!")
             setWinner(victor)
         }
         else {
             if (trainingMode) {
-                console.log("training mode recognised, setting TrainingTurn")
+                //console.log("training mode recognised, setting TrainingTurn")
                 setTrainingTurn(prevValue => 1 - prevValue)
             }
             else {
-                console.log("gs: game mode recognised, changing computer off from current value : ", computerOff)
+                //console.log("gs: game mode recognised, changing computer off from current value : ", computerOff)
 
                 setComputerOff(prevValue => !prevValue)
             }
             // setting trainingTurn / computerOff triggers takeComputersturn in AI_DecisionModule (also addBoardStateToLog in gamelog)
         }
-        console.log("gc2: finished setting trainingTurn/computerOff")
+        //console.log("gc2: finished setting trainingTurn/computerOff")
 
     },[squares])
 
    
 
     useEffect (() => {
-        console.log("gc3: restarting Game")
-
-        if (trainingMode && winner) {restartGame()}
+        setTurnTracker(0); 
+        setGameTracker(prevValue => prevValue +1); 
+        console.log("gametracker is : ", turnTracker);
+        //console.log("gc3: restarting Game")
+        console.log("trainingMode is: ", trainingMode)
+        console.log("winner is: ", winner)
+        if (trainingMode && winner) {
+            console.log("GC: restarting game!")
+            restartGame()
+        }
         // else nothing, await user interaction. 
-        console.log("gc4: finished restarting game")
-    },[allPlayedBoards]) //this changes at end of learning from game
+    },[database]) //this changes at end of learning from game in MU
 
     function restartGame(){
-        console.log("restarting game for the iteration ", trainingIterations)
+        //console.log("restarting game for the iteration ", trainingIterations)
+        setResigned(null); 
         setWinner(null); 
         setGameLog([Array(9).fill(null)]); 
         setTrainingIterations(prevValue => prevValue - 1) // reduce training iterations by 1
-        console.log("gc: setting squares in restart game")
-        setSquares(Array(9).fill(null)); // this restarts the loop by triggering the useEffect at top of this section
+        //console.log("gc: setting squares in restart game")
+        setSquares(Array(9).fill(null)); // this restarts the turn loop by triggering the useEffect at top of this section
     }
 
 
-    //     useEffect(() =>{
-    //     if (resigned){
-    //         setWinner(opposite(resigned))
-    //         console.log(`${opposite(resigned)} has resigned!`)
-    //     }
-    // }
-    //     ,[resigned] ) //resigned takes values undefined, null, 'X' or 'O'
         
 
 
     ////////////////////////
     ///// end play cycle ///
     ////////////////////////
+
 
 
     return (

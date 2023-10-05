@@ -39,7 +39,7 @@ export default function TrainingCycler(props){
     function nTrainingCycles(){
         if (cycleCount < 1) return;
         // set a counter equal to the size of the training set, ready for a new cycle 
-        console.log(`nTrainingCycles, trainingSet length is: `, trainingSet.length)
+        //console.log(`nTrainingCycles, trainingSet length is: `, trainingSet.length)
         setTrainingCounter(trainingSet.length); 
         setNewNetAndError(); 
     }
@@ -57,7 +57,7 @@ export default function TrainingCycler(props){
         checkNetData(updateData[0],`setNewNetAndError output, cycleCount: ${cycleCount}, trainingCase: ${trainingSet[trainingCounter -1]}`)
 
         setNet(updateData[0])
-        console.log("updateData[1] is ", updateData[1])
+        //console.log("updateData[1] is ", updateData[1])
         if (updateData[1]) {
             setError(sumErrors(updateData[1]))
             setErrorArray(updateData[1])

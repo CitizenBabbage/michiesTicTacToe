@@ -29,7 +29,7 @@ export default function Board( props ) {
       return;
     }
     nextSquares = placeMark(i, nextSquares);              // puts an X or O in the array depending on who is the player
-    console.log("board: setting squares in placePlayersMark")
+    // console.log("board: setting squares in placePlayersMark")
     setSquares(nextSquares);                              // sets the board equal to the duplicate board
     
     // if (!props.computerOff) {

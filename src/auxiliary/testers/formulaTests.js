@@ -12,12 +12,12 @@ function testAllReverseRotation()
                 let x = rotation(i, j); 
                 let y = reverseRotation(x,j)
                 if (i !== y){
-                    console.log(`Failure for ${i}, ${j}`)
+                    // console.log(`Failure for ${i}, ${j}`)
                     return
                 }
             }
         }
-        console.log("All passed!")
+        // console.log("All passed!")
         return
     }
 
@@ -50,7 +50,7 @@ function gtTest(){
             }
     
         }
-        console.log("gtTest passed!")
+        // console.log("gtTest passed!")
         return true; 
     }
 
@@ -59,7 +59,7 @@ function gtTest(){
     //console.log(chooseMove(['X',null,null,null,null,null,null,null,null]))
 
     function transformAndReTransformBoardStates(board, transform){
-        console.log("Board is", board)
+        // console.log("Board is", board)
         let newBoard = transformBoard(board,transform); 
         //console.log("newBoard is", newBoard)
         let oldBoard = reverseTransformBoard(newBoard,transform)
@@ -78,20 +78,19 @@ let boardstate1 = ['X', 'X', null, 'X', 'X', 'O', null, 'O', 'O']
             for (let j = 0; j < 5; j++){ // number of rotations
                 for (let k = 0; k < 2; k++){ // flip score
                     try {
-                        console.log("x")
                     if (transformAndReTransformBoardStates(board,[k,j])) continue
                     else {
-                        console.log(`1. Fail for board ${board} with transform [${k},${j}]}`)
+                        // console.log(`1. Fail for board ${board} with transform [${k},${j}]}`)
                         return false
                     }
                     }
                     catch(e) {
-                        console.log(`2. Fail for board ${board} with transform [${k},${j}]}`)
+                        // console.log(`2. Fail for board ${board} with transform [${k},${j}]}`)
                         console.error(e.message)};
                 }
             }
         }
-        console.log("transformAndReverseAllBoardStates succeeds for all values!")
+        // console.log("transformAndReverseAllBoardStates succeeds for all values!")
     }
 
     //transformAndReverseAllBoardStates()
@@ -100,7 +99,7 @@ function testChooseMoveForAllDBEntries(){
     for (let i = 0; i < db.length; i++){
         if (!chooseMove(db[i].state)){console.log(`Failure for i = ${i}`)}
     }
-    console.log("testChooseMoveForAllDBEntries finished with success")
+    // console.log("testChooseMoveForAllDBEntries finished with success")
 }
 
 function testEquivalenceScoreForAllDBEntries(){
@@ -166,11 +165,11 @@ function testEquivalenceScoreForOneEntry(boardState1, boardState2){
             for (let j = 0; j < 300; j++){
                 newSuggestion = chooseMove(nextBoard); 
                 if (nextBoard[newSuggestion]){
-                    console.log(`ERROR: X suggestion for ${nextBoard} is already filled`)
+                   // console.log(`ERROR: X suggestion for ${nextBoard} is already filled`)
                 return}
             }
         }
-        console.log("testChooseMoveNeverTriesToFillFilledSquare completed with no errors.")
+        // console.log("testChooseMoveNeverTriesToFillFilledSquare completed with no errors.")
         return true; 
     }
 
@@ -181,17 +180,17 @@ function testEquivalenceScoreForOneEntry(boardState1, boardState2){
                 for (let k = 0; k < 2; k++){
                     let board2 = transformBoard(board1, [k,j])
                     if (!areEquivalent(board1,board2)){
-                        console.log(`Bad inequivalence 1 for board1 = ${board1}, board2 = ${board2}`)
+                        // console.log(`Bad inequivalence 1 for board1 = ${board1}, board2 = ${board2}`)
                         return
                     }
                     else if (areIdentical(equivalenceScore(board1,board2),['error','error'])){
-                        console.log(`Bad inequivalence 2 for board1 = [${board1}] board2 = [${board2}]`)
+                        // console.log(`Bad inequivalence 2 for board1 = [${board1}] board2 = [${board2}]`)
                         return
                     }
                 }
             }
         }
-        console.log("testEquivalenceAndEquivalenceScore succeeds without errors")
+        // console.log("testEquivalenceAndEquivalenceScore succeeds without errors")
     }
 
     

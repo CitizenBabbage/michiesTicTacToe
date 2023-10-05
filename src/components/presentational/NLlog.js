@@ -13,7 +13,7 @@ export function NLlog( props ) {
     }
     
     function updateNLLog(listOfLists) {
-        console.log("CALLING updateNLLog on input ",listOfLists )
+        //console.log("CALLING updateNLLog on input ",listOfLists )
         let nLLog = []; 
         //[gameResult, update, log[i], move]
         for (let i = 0; i < listOfLists.length; i++){

@@ -42,7 +42,7 @@ function firstBlank(board){
     }
 }
 
-console.log(readGenes([93,81,13,63,52,5,59,48,42,76,2,51,9,20,50,51,0,-3,32,46,68,7,78,45,31,60],[null,'X','O','O','O','X','X','O','X'],'X'))
+// console.log(readGenes([93,81,13,63,52,5,59,48,42,76,2,51,9,20,50,51,0,-3,32,46,68,7,78,45,31,60],[null,'X','O','O','O','X','X','O','X'],'X'))
 
 export function readGenes(genome, board, mySymbol){
     // console.log(`Initiating readGenome with genome: ${genome}, board: ${board} and mySymbol: ${mySymbol} `) 
@@ -52,7 +52,7 @@ export function readGenes(genome, board, mySymbol){
         const blanks = numberOfBlanks(board); 
 
         if (blanks === 0){
-            console.log("Board is full, returning null")
+            // console.log("Board is full, returning null")
             return [null,[]]; //if the board is full, return null
         }
         else if (blanks === 1) return [firstBlank(board),"Forced move"] // one move left, forced move

@@ -16,13 +16,13 @@ export default function PortraitButton( props ) {
         if (props.src !== activeSrc) {
         // if (props.portraitIndex !== oldIndex){
             // First slide out the current image
-            console.log(`portraitIndex is ${props.portraitIndex}, oldIndex is ${oldIndex}`)
+            // console.log(`portraitIndex is ${props.portraitIndex}, oldIndex is ${oldIndex}`)
             if (isOneGreaterInLoop(props.portraitIndex, oldIndex, portraitArrayLength)) {
-                console.log('slide-out-forwards')
+                // console.log('slide-out-forwards')
                 setAnimationClass('slide-out-forwards');
             }
             else if (isOneLesserInLoop(props.portraitIndex, oldIndex, portraitArrayLength)) {
-                console.log('slide-out-backwards')
+                // console.log('slide-out-backwards')
                 setAnimationClass('slide-out-backwards');
             }
             const slideOutTimer = setTimeout(() => {
@@ -37,11 +37,11 @@ export default function PortraitButton( props ) {
     useEffect(()=>{
             // Trigger slide-in for the new image
             if (isOneGreaterInLoop(props.portraitIndex, oldIndex, portraitArrayLength)){
-                console.log('slide-in-forwards')
+                // console.log('slide-in-forwards')
                 {setAnimationClass('slide-in-forwards')};
             }
             else if (isOneLesserInLoop(props.portraitIndex, oldIndex, portraitArrayLength)){
-                console.log('slide-in-backwards')
+                // console.log('slide-in-backwards')
                 {setAnimationClass('slide-in-backwards')};
             }
             // Update the source to the new image

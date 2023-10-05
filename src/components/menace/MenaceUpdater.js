@@ -6,10 +6,12 @@ import { NLlog } from '../presentational/NLlog.js';
 import DatabaseDisplay from './DBDisplay.js';
 import { learnFromGame, startNewTrainingIteration, updateHistoryLog } from './menaceUpdaterHelpers.js';
 import {MenaceTrainingPage} from './MenaceTrainingPage.js'
+import { opposite } from '../../auxiliary/general/usefulFunctions.js';
 
 
 export default function MenaceUpdater(props){
     const winner = props.winner; 
+    const resigned = props.resigned; 
 
     const database = props.database; 
     const setDatabase = props.setDatabase; 
@@ -21,6 +23,7 @@ export default function MenaceUpdater(props){
 
     const gameLog = props.gameLog; 
     const setGameLog = props.setGameLog; 
+
 
     const setSquares = props.setSquares; 
     const trainingMode = props.trainingMode; 
@@ -54,12 +57,14 @@ export default function MenaceUpdater(props){
             "transform":[
                0,
                0
-            ]
+            ],
+            updates: 0
          }]); 
-    const [nLLogStats, setNLLogStats] = useState([])
     const previousDatabaseRef = useRef();
+    const [nLLogStats, setNLLogStats] = useState([])
 
-    
+
+
 
     // updates database based on game 
     useEffect(() => {
@@ -69,14 +74,14 @@ export default function MenaceUpdater(props){
             console.log("mu2: setting database...")
             setDatabase(newDataAndLog[0]); 
             if (!trainingMode) setNLLogStats(newDataAndLog[1])
-            console.log("mu3: finishing setting database and NL stats.")
+            //console.log("mu3: finishing setting database and NL stats.")
         }
     },[winner])
 
     // reports change to database
     useEffect(() => {
         if (previousDatabaseRef.current && JSON.stringify(database) !== JSON.stringify(previousDatabaseRef.current)) {
-            console.log('Database has changed!');
+            //console.log('Database has changed!');
         }
         // After checking, update the ref for next time
         previousDatabaseRef.current = database;
@@ -84,21 +89,20 @@ export default function MenaceUpdater(props){
 
 
     // when the database is updated, get the updated objects, with new response arrays, and add them to the history
-    useEffect(() => {
-        console.log('mu4: Database has changed! updating allPlayedBoards by adding ', gameLog);
-        setAllPlayedBoards(updateHistoryLog(allPlayedBoards, gameLog, database))
-        console.log('mu5: Finished updating allPlayedBoards.');
+    // useEffect(() => {
+    //     console.log('mu4: Database has changed! updating allPlayedBoards by adding ', gameLog);
+    //     setAllPlayedBoards(updateHistoryLog(allPlayedBoards, gameLog, database))
+    //     console.log('mu5: Finished updating allPlayedBoards.');
 
-    },[database]) 
-
-    
-    
-    
+    // },[database]) 
 
     
-    if (trainingMode) return (
+    
+
+    
+    return (
         <div> 
-            <MenaceTrainingPage
+            {trainingMode && <MenaceTrainingPage
                 computerOff = {props.computerOff} trainingTurn = {props.trainingTurn} setTrainingTurn = {props.setTrainingTurn}
 
                 allPlayedBoards = {allPlayedBoards} 
@@ -156,7 +160,11 @@ export default function MenaceUpdater(props){
                 blurb = {props.blurb} 
                 src = {props.src}
             />  
+            }
+            {!trainingMode && <NLlog nLLogStats = {nLLogStats} naturalLanguageLog = { naturalLanguageLog } setNaturalLanguageLog = {setNaturalLanguageLog } />
+            }
       </div>   
+
         
     )
     

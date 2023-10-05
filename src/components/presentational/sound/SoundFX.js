@@ -44,14 +44,14 @@ export default function SoundComponent( props ) {
 
   let soundInProgress = false; 
 
-useEffect(()=>{
-    console.log("start of SoundFX, soundEffect is ", soundEffect)
-}, [])
+// useEffect(()=>{
+//     console.log("start of SoundFX, soundEffect is ", soundEffect)
+// }, [])
 
 
 //whenever the sound source changes, play it. 
 useEffect(() => {
-    console.log(`playing soundSource ${soundSource} because it changed`)
+    //console.log(`playing soundSource ${soundSource} because it changed`)
     playAudio(); 
 }, [soundSource])
 
@@ -60,7 +60,7 @@ useEffect(triggerWinOrLoseSound
     ,[whoWon])
 
 function triggerWinOrLoseSound(){
-    console.log("triggerWinOrLoseSound triggered in SoundFX")
+    //console.log("triggerWinOrLoseSound triggered in SoundFX")
     if (whoWon === "human"){
         const sound = pickSound("loseSound")
         setSoundEffect(sound)
@@ -75,14 +75,14 @@ function triggerWinOrLoseSound(){
 
 
 useEffect(() => {
-  console.log(`thinking of playing bravado sound...`)
+  //console.log(`thinking of playing bravado sound...`)
   if (!trainingMode) playBravadoSound()
 }, [computerOff])
 
   function playBravadoSound(){
-    console.log(`bravadoCounter is `, bravadoCounter)
+    //console.log(`bravadoCounter is `, bravadoCounter)
     if (bravadoCounter === 0) {
-          console.log(`play bravado sound!`)
+          //console.log(`play bravado sound!`)
           const sound = pickSound("bravadoSound");
           if (!sound) return; // if character has no bravadoSound
           const randomCount = 3+Math.floor(Math.random()*5) 
@@ -154,11 +154,11 @@ useEffect(() => {
 
 
   function playAudio(){
-    console.log("playaudio triggered")
+    //console.log("playaudio triggered")
     // if (soundInProgress) return; 
     // soundInProgress = true; 
     if (audioRef.current) {
-        console.log(`audioref has a current, namely ${audioRef.current}`)
+        //console.log(`audioref has a current, namely ${audioRef.current}`)
         audioRef.current.load(); 
 
         audioRef.current.play().then(() => {

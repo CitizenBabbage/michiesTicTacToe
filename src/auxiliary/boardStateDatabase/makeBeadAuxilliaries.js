@@ -183,7 +183,8 @@ function buildBeadObject(board,id){
         state: board,
         turn: calculateTurn(board),
         response: initializeBeadArray(board),
-        transform: [0,0]
+        transform: [0,0],
+        updates: 0
     }
 }
 

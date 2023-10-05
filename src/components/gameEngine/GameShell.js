@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 
 import {db} from '../../auxiliary/boardStateDatabase/dataBeadsFormatted.js'
 
-import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions.js';
+import { opposite, dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions.js';
 import { makeNetwork } from '../neuro/netBuilders.js'; // 
 import createGenepool from '../../auxiliary/geneticAlgo/createGenepool.js'
 import { ChooseSide } from './ChooseSide.js';
@@ -44,7 +44,7 @@ export default function GameShell( props ) {
   const [controllingGenome, setControllingGenome] = useState(); 
   const foe = props.foe; 
   const setFoe = props.setFoe; 
-   const [trainingTurn, setTrainingTurn] = useState(0); // toggling this triggers next loop in training game
+  const [trainingTurn, setTrainingTurn] = useState(0); // toggling this triggers next loop in training game
 
 
   const [nameManager, setNameManager] = useState();
@@ -57,7 +57,7 @@ export default function GameShell( props ) {
     return gp;
   });
   
-   
+
   // the net is set at this level so as to be available both for the training page and for the game itself
   //const [net, setNet] = useState(makeNetwork([27,32,36,5])) //
   const [net, setNet] = useState(createModel([128, 64]));
@@ -65,21 +65,33 @@ export default function GameShell( props ) {
   
 
 
+
   useEffect(()=>{
-    console.log("start of gameShell, soundEffect is ", props.soundEffect)
+    //console.log("start of gameShell, soundEffect is ", props.soundEffect)
   }, [])
 
   //decides which of human vs computer was the winner
   useEffect(() => {
     if (winner) setWhoWon(winner === humansLetter? "human": ['X','O'].includes(winner)? "computer": "draw")
-    console.log("setWhoWon has been triggered")
+    //console.log("setWhoWon has been triggered")
 },[winner])
+
+useEffect(() =>{
+  if (resigned){
+      console.log(`gs: registering that ${resigned} has resigned, and setting winner as ${opposite(resigned)}!`)
+      setWinner(opposite(resigned))
+      //console.log(`${opposite(resigned)} has resigned!`)
+  }
+}
+  ,[resigned] ) //resigned takes values undefined, null, 'X' or 'O'
+ 
 
 
 
   function handleXClick () {
     setHumansLetter('X');
-    console.log("handleXclick setting computeroff to true")
+    setResigned(null); 
+    //console.log("handleXclick setting computeroff to true")
     setComputerOff(true); 
     setButtonActivation(false);
     setTrainingMode(false) ;
@@ -88,7 +100,8 @@ export default function GameShell( props ) {
 
   function handleOClick () {
     setHumansLetter('O');
-    console.log("handleOclick setting computeroff to false")
+    setResigned(null); 
+    //console.log("handleOclick setting computeroff to false")
     setComputerOff(false)
     setButtonActivation(false); 
     setTrainingMode(false) ;
@@ -96,11 +109,12 @@ export default function GameShell( props ) {
   }
 
   function handleTrainingModeClick (){
-    console.log("handleTrainingModeClick... responds")
-    console.log("gs: setting squares in handleTrainingModeClick")
+    // console.log("handleTrainingModeClick... responds")
+    // console.log("gs: setting squares in handleTrainingModeClick")
     setSquares(Array(9).fill(null))
     setWinner(null); 
-    console.log("handleTrainingclick setting computeroff to true")
+    setResigned(null); 
+    // console.log("handleTrainingclick setting computeroff to true")
     setComputerOff(false)
     setButtonActivation(false); 
     setTrainingMode(true) ;
@@ -123,7 +137,7 @@ function returnToGame(){
 
 //for debugging
 useEffect(()=>{
-  console.log("computerOff has changed to...", computerOff)
+  //console.log("computerOff has changed to...", computerOff)
 },[computerOff])
  
   // if player is null, show the choose side options. Else display the game container. 
@@ -147,17 +161,17 @@ useEffect(()=>{
   else if (!trainingMode){
     return (
       <PlayPage
-      setResigned = {setResigned}
-      computerOff = {computerOff} trainingTurn = {trainingTurn} setTrainingTurn = {setTrainingTurn}
+        setResigned = {setResigned}
+        computerOff = {computerOff} trainingTurn = {trainingTurn} setTrainingTurn = {setTrainingTurn}
+        setComputerOff = {setComputerOff}
 
-      thinkBoardText = {props.thinkBoardText}
-      handleTrainingModeClick = {handleTrainingModeClick}
-      setWhoWon = {setWhoWon}
-      whoWon = {whoWon}
-      setComputerOff = {setComputerOff}
+        thinkBoardText = {props.thinkBoardText}
+        handleTrainingModeClick = {handleTrainingModeClick}
+        setWhoWon = {setWhoWon}
+        whoWon = {whoWon}
 
-      setSoundEffect = {setSoundEffect}
-      soundEffect = {soundEffect}
+        setSoundEffect = {setSoundEffect}
+        soundEffect = {soundEffect}
 
         net = {net} 
         setNet = {setNet} 
@@ -203,7 +217,7 @@ useEffect(()=>{
   else if (foe === 'menace') return (
     <div> 
     <MenaceUpdater
-
+        
         setResigned = {setResigned}
         trainingTurn = {trainingTurn} setTrainingTurn = {setTrainingTurn}
 

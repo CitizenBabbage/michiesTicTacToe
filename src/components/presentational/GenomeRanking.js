@@ -13,8 +13,8 @@ export default function GenomeRanking(props){
     //its called topTen but I changed it to top five
     useEffect(() => {
         const x = props.ranking.slice(0,5); 
-        console.log("ranking length is : ", ranking.length)
-        console.log("new top ten is : ", x)
+        //console.log("ranking length is : ", ranking.length)
+        //console.log("new top ten is : ", x)
         setTopTen(x); 
     },[ranking])
 

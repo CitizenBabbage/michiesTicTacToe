@@ -1,5 +1,5 @@
 export function numerizeBoard(board){
-    console.log("numerizeBoard: board length upon receipt is ", board.length)
+    //console.log("numerizeBoard: board length upon receipt is ", board.length)
     let numberBoard = []; 
     let j = 0; 
     for (let i = 0; i < board.length; i++){

@@ -11,16 +11,16 @@ export function oneLearningIteration(board, net, learningRate, epsi){
     
     checkNetData(net,"oneLearningIteration input")
 
-    console.log("oneLearningIteration: board 1 is ", board)
+    //console.log("oneLearningIteration: board 1 is ", board)
     const correctArray = getCorrectArray(board);
     // board = numerizeBoard(board); 
-    console.log("oneLearningIteration: board 2 is ", JSON.stringify(board))
+    //console.log("oneLearningIteration: board 2 is ", JSON.stringify(board))
 
     // returns predictedValues chopped into one hots and softmaxed
     const [unused, forwardPassData, predictedValues] = neuroChooseMove(board, net); // returns [0.recommended move, 1.hiddenSums arrays, 2.output values]
     const arrayOfSums = forwardPassData[0]; const arrayOfValues = forwardPassData[1]; 
     //console.log("oneLearningIteration: arrayOfSums are ", arrayOfSums)
-    console.log("oneLearningIteration: arrayOfSums is ", arrayOfSums)
+    //console.log("oneLearningIteration: arrayOfSums is ", arrayOfSums)
 
     return comparePredictedToCorrect(correctArray, predictedValues, arrayOfSums, arrayOfValues, net, board, learningRate, epsi)
 }
@@ -37,7 +37,7 @@ function comparePredictedToCorrect(correctArray, predictedValues, arrayOfSums, a
         // extract the sums, weights, biases from data inputs
         previousLayerValues = i === 0? numerizeBoard(board): arrayOfValues[i-1]; //1st layer's values are just the board inputs
         thisLayerSums = arrayOfSums[i]; 
-        console.log("comparePredictedToCorrect: setting afferentConnections to net[i] = ", net[i])
+        //console.log("comparePredictedToCorrect: setting afferentConnections to net[i] = ", net[i])
 
         afferentConnections = net[i]; 
         afferentBiases = net[i + halfLength];
@@ -49,13 +49,13 @@ function comparePredictedToCorrect(correctArray, predictedValues, arrayOfSums, a
             newNet[i+halfLength] = newBiases; 
             }
         else { // ordinary layer
-            console.log("comparePredictedToCorrect: calling calculateHiddenLayerUpdate with afferentConnections : ", afferentConnections)
+            //console.log("comparePredictedToCorrect: calling calculateHiddenLayerUpdate with afferentConnections : ", afferentConnections)
 
             [newWeights, newBiases] = calculateHiddenLayerUpdate(thisLayerSums, afferentConnections, afferentBiases, previousLayerValues, learningRate, finalErrors);
             newNet[i] = newWeights; newNet[i+halfLength] = newBiases; 
         }
     }
-    console.log("exiting comparePredictedToCorrect")
+    //console.log("exiting comparePredictedToCorrect")
     return [newNet, crossEntropyErrors]; 
 }
 

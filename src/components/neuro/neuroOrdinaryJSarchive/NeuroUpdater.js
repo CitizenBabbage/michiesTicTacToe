@@ -32,16 +32,16 @@ export default function NeuroUpdater(props){
 
     
     function neuroLearn(){
-        console.log("neuro learning has begun")
+        //console.log("neuro learning has begun")
         if (!neuroLearning) return; 
         // const trainingSet = getTrainingSet(percentTraining); 
         let newNet = dataBaseDuplicator(net); 
 
         checkConnections(newNet[0], "first layer of connections", neuroLearn)
         //runToMaxCycle(trainingSet, newNet); 
-        console.log("setting cycle count")
+        //console.log("setting cycle count")
         setCycleCount(maxCycle);
-        console.log("cycle count set") 
+        //console.log("cycle count set") 
     }
 
     // function runToMaxCycle(trainingSet, newNet){

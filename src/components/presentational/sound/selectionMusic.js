@@ -13,7 +13,7 @@ export default function SelectionMusic( props ) {
 
     function playAudio(){
       //if (audioSelected && audioRef.current) {
-        if (audioRef.current) {
+        if (audioRef.current && audioSelected) {
 
           audioRef.current.play();
       }
