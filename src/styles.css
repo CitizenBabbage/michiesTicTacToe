@@ -277,6 +277,7 @@ body {
 }
 
 .tooltip-container {
+  white-space: pre-line;
   position: relative;
   display: inline-block;
   cursor: url('./images/cursor.png'), auto;

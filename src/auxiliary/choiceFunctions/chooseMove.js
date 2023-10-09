@@ -5,6 +5,7 @@ import { hurisChooseMove } from "./hurisChooseMove.js";
 import { evolvoChooseMove } from "./evolvoChooseMove.js";
 import { neuroChooseMove } from "./neuroChooseMoveTF.js";
 import { whoseMove } from "../general/usefulFunctions.js";
+import { babymenChooseMove } from "./babymenChooseMove.js";
 
 
 //For testing
@@ -43,6 +44,9 @@ export function chooseMove(board, foeSpec, foe){
         // netOutput = neuroChooseMove(board, foeSpec)
         // return [netOutput[0],netOutput[2]]
         return neuroChooseMove(board, foeSpec)
+    }
+    else if (foe === "babymen"){
+        return babymenChooseMove(board); 
     }
     }
 

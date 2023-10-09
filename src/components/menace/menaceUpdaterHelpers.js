@@ -1,44 +1,49 @@
-import { boardFull, areExactlyTheSame, isOdd,  reverseTransformation, dataBaseDuplicator, areEquivalent , equivalenceScore, isNumber} from '../../auxiliary/general/usefulFunctions.js';
+import { transformBoard, boardFull, areExactlyTheSame, isOdd,  reverseTransformation, dataBaseDuplicator, areEquivalent , equivalenceScore, isNumber} from '../../auxiliary/general/usefulFunctions.js';
 import { checkIsIntegral, checkBeadSubbase, checkIsANumber } from '../../auxiliary/testers/errorCheckers.js';
+import { returnSymmetries, returnHorizontalOpposite, returnVerticalOpposite, returnForwardDiagonalOpposite, returnBackwardDiagonalOpposite  } from '../../auxiliary/general/symmetryCheckers.js';
 
-export function updateHistoryLog(allPlayedBoards, gameLog, database){ 
-    //console.log(`updateHistoryLog called: allPlayedBoards has length ${allPlayedBoards.length} and is as follows: ${JSON.stringify(allPlayedBoards)}. gameLog has length ${gameLog.length}`)
-    let newAllPlayedBoards = dataBaseDuplicator(allPlayedBoards);
-    // checkBeadSubbase(newAllPlayedBoards, "updateHistoryLog")
-    for (let j = 0; j < gameLog.length; j++){ //for each item in the new gameLog, find the corresponding object and update the history log with it
-        //console.log(`checking gamelog[${j}], which is `, gameLog[j])
-        let gameLogObject = returnCorrespondingObjectFromDatabase(gameLog[j], database); 
-        if (!gameLogObject && !(boardFull(gameLog[j]))) throw new Error(` at updateHistoryLog: board state ${gameLog[j]} has no corresponding object`)
-        newAllPlayedBoards = updateHistory(newAllPlayedBoards,gameLogObject)
-    }
-    //console.log(`icounter is ${icounter}, jcounter is ${jcounter} and kcounter is ${kcounter} `)
-    //console.log(`newAllPlayedBoards has length ${newAllPlayedBoards.length} and is `, newAllPlayedBoards)
-    return newAllPlayedBoards ; 
-}
+// commented out because it is no longer called from MenaceUpdater
+//
+// export function updateHistoryLog(allPlayedBoards, gameLog, database){ 
+//     //console.log(`updateHistoryLog called: allPlayedBoards has length ${allPlayedBoards.length} and is as follows: ${JSON.stringify(allPlayedBoards)}. gameLog has length ${gameLog.length}`)
+//     let newAllPlayedBoards = dataBaseDuplicator(allPlayedBoards);
+//     // checkBeadSubbase(newAllPlayedBoards, "updateHistoryLog")
+//     for (let j = 0; j < gameLog.length; j++){ //for each item in the new gameLog, find the corresponding object and update the history log with it
+//         //console.log(`checking gamelog[${j}], which is `, gameLog[j])
+//         let gameLogObject = returnCorrespondingObjectFromDatabase(gameLog[j], database); 
+//         if (!gameLogObject && !(boardFull(gameLog[j]))) throw new Error(` at updateHistoryLog: board state ${gameLog[j]} has no corresponding object`)
+//         newAllPlayedBoards = updateHistory(newAllPlayedBoards,gameLogObject)
+//     }
+//     //console.log(`icounter is ${icounter}, jcounter is ${jcounter} and kcounter is ${kcounter} `)
+//     //console.log(`newAllPlayedBoards has length ${newAllPlayedBoards.length} and is `, newAllPlayedBoards)
+//     return newAllPlayedBoards ; 
+// }
 
-function returnCorrespondingObjectFromDatabase(boardstate, database){
-    for (let k = 0; k < database.length; k++){ // find the database object it corresponds to
-        if (areEquivalent(database[k].state,boardstate)){
-            return database[k]; 
-        }
-    }
-}
+// function returnCorrespondingObjectFromDatabase(boardstate, database){
+//     for (let k = 0; k < database.length; k++){ // find the database object it corresponds to
+//         if (areEquivalent(database[k].state,boardstate)){
+//             return database[k]; 
+//         }
+//     }
+// }
 
-function updateHistory(historyBase, object){
-    if (!object) return historyBase; // we get an undefined object for full board states, ignore. 
-    let isInHistoryAlready = false; 
-    for (let i = 0; i < historyBase.length; i++){ // for each board object in historyBase
-        if (areExactlyTheSame(historyBase[i].state,object.state)){
-            //console.log("Updating a board state that is already in history...  ")
-            historyBase = [...historyBase.slice(0,i),object, ...historyBase.slice(i+1)]
-            isInHistoryAlready = true; 
-            break; 
-            }
-        }
-    if (!isInHistoryAlready) historyBase = [...historyBase,object] // if it wasnt anywhere in the set, push it to the end
-    //console.log("historyBase is ", historyBase)
-    return historyBase; 
-    }
+// no longer called 
+//
+// function updateHistory(historyBase, object){
+//     if (!object) return historyBase; // we get an undefined object for full board states, ignore. 
+//     let isInHistoryAlready = false; 
+//     for (let i = 0; i < historyBase.length; i++){ // for each board object in historyBase
+//         if (areExactlyTheSame(historyBase[i].state,object.state)){
+//             //console.log("Updating a board state that is already in history...  ")
+//             historyBase = [...historyBase.slice(0,i),object, ...historyBase.slice(i+1)]
+//             isInHistoryAlready = true; 
+//             break; 
+//             }
+//         }
+//     if (!isInHistoryAlready) historyBase = [...historyBase,object] // if it wasnt anywhere in the set, push it to the end
+//     //console.log("historyBase is ", historyBase)
+//     return historyBase; 
+//     }
 
 // export function startNewTrainingIteration(trainingIterations){
 //     if (trainingIterations <= 0) return; 
@@ -81,6 +86,7 @@ function updateEachBoardPlayed(log, gameResult, database){ // gameResult = 1: X 
         else update = gameResult; 
         if (update > 0) update *= 3 // 3 points for a win
         else if (update === 0) update = 1; // 1 point for a draw
+        console.log(`on the ${i}th move...`)
         newData = findAndUpdateEquivalent(newData, update, move, log[i]); 
         nLLog = [...nLLog, [gameResult, update, log[i], move]]
         }
@@ -101,7 +107,12 @@ function findAndUpdateEquivalent(data, update, move, boardState){
     for (let j = 0; j < newData.length; j++){                                                   // look through the db for equivalent board state
         if (areEquivalent(boardState, newData[j].state)){                                       // when you find it
             let equivScore = equivalenceScore(boardState, newData[j].state)                     // get the equivalence score 
+            console.log(`equivScore is ${equivScore}`)
             let newMove = reverseTransformation(move, equivScore)                               // use that to rotate/flip move appropriately
+            console.log(`For boardstate ${JSON.stringify(boardState)}, transformed to ${JSON.stringify(newData[j].state)}, move ${move} tranformed to newMove (before symmetries eliminated) is ${newMove}`)
+            newMove = eliminateSymmetriesFromResponseMove(newData[j].state, newMove, newData[j].response)     
+            console.log(`newMove after symmetries eliminated is ${newMove}`) 
+            if (newData[j].response[newMove] === -1)  throw new Error (`in findAndUpdateEquivalent: trying to alter a response whose value is -1, namely item ${newMove} in response array ${newData[j].response}`)                    
             let newBeadCount = Math.max(0, newData[j].response[newMove] + update); 
             //console.log("newBeadCount is", newBeadCount); 
             checkIsIntegral(newBeadCount, "findAndUpdateEquivalent")
@@ -113,6 +124,53 @@ function findAndUpdateEquivalent(data, update, move, boardState){
     }
     return newData; 
 }
+
+
+function findEquivalent(data, boardState){
+    let newData = dataBaseDuplicator(data); 
+    for (let j = 0; j < newData.length; j++){                                                   // look through the db for equivalent board state
+        if (areEquivalent(boardState, newData[j].state)){ 
+            return newData[j]
+            }
+    }
+}
+
+
+
+// given that we're already in an archetypal frame...
+// get the move
+// see if the move is on the responses array
+// if it isn't, try out each reflection of the move
+// when you find one, update that. 
+
+// export function returnSymmetries(boardstate){
+//     let symmetryList = [];
+//     if (isHorizontallySymmetrical(boardstate)) symmetryList.push('h'); 
+//     if (isVerticallySymmetrical(boardstate)) symmetryList.push('v'); 
+//     if (isForwardDiagonallySymmetrical(boardstate)) symmetryList.push('d'); 
+//     if (isBackwardDiagonallySymmetrical(boardstate)) symmetryList.push('b')
+//     return symmetryList; 
+// }
+
+//ALERT : using >= 0 rather than >0 because 0 is updatable, but -1 is not to be updated. 
+// the board here should be the archetypal board pulled from the db
+export function eliminateSymmetriesFromResponseMove(board, move, responses){
+    console.log("responses = ", responses)
+    if (responses[move] >= 0) {return move}
+    else {
+        console.log(`responses[move] equals ${responses[move]}, which is < 0`)
+        const symmetries = returnSymmetries(board); 
+        if (symmetries.includes('h') && returnHorizontalOpposite(move) > 0) return returnHorizontalOpposite(move); 
+        if (symmetries.includes('v') && returnVerticalOpposite(move) > 0) return returnVerticalOpposite(move); 
+        if (symmetries.includes('d') && returnForwardDiagonalOpposite(move) > 0) return returnForwardDiagonalOpposite(move); 
+        if (symmetries.includes('b') && returnBackwardDiagonalOpposite(move) > 0) return returnBackwardDiagonalOpposite(move); 
+    }
+}
+
+3,3,3,-1,3,-1,-1,-1,-1
+
+
+//console.log(getEquivalentResponse(['X','X',null,'O',null,null,null,null,null],2,[3,null,null,1,0,null,2,3,4]))
 
 // //remove if not called 
 // function addToAllPlayedBoards(object){

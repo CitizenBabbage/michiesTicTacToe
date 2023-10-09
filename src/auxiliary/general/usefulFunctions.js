@@ -180,10 +180,10 @@ export function reverseTransformBoard(boardState, transform){
 //uses nextWheel, which takes an index and n, and returns the index at n clockwise rotations from it
 export function checkRotationalID(board1, board2, n){
     for (let i = 0; i<board1.length; i++){
-        if (edge.includes(i)){
-            let indexOfRotation = nextWheel(edge.indexOf(i),n); 
-            if (equals(board1[i], board2[edge[indexOfRotation]])) continue
-            else return false
+        if (edge.includes(i)){ // if it's an edge square (but not corner)
+            let indexOfRotation = nextWheel(edge.indexOf(i),n); // find square n places around the board from it
+            if (equals(board1[i], board2[edge[indexOfRotation]])) continue // if it has the same value then this part passes
+            else return false // otherwise we know board2 is not a rotational variant of board 1
         }
         else if (corner.includes(i)){
             let indexOfRotation = nextWheel(corner.indexOf(i),n);

@@ -1,6 +1,14 @@
+// babymen is a dummy player that acts only as an opponent for menace when it is training
+// it equals menace but with no training, i.e. it plays randomly, except it minimizes the play space 
+// by always making the same choice from symmetrical/rotationally equivalent moves. 
+// In effect, that just provides a time saving during training. 
+// The importance of adding babymen to meance's mentors is two fold: 
+//  1. by providing an opponent it improves upon, we can better measure Menace's progress. 
+//  2. by providing a player that effectively playes randomly, we ensure no parts of the learning space are necessarily unexplored
+
 import {areEquivalent, equivalenceScore, areIdentical, reverseTransformBoard} from "../general/usefulFunctions.js"
 import { checkSum, checkDbase, checkArchetype } from "../testers/errorCheckers.js";
-
+import { db } from "../boardStateDatabase/dataBeadsFormatted.js";
 
 //this choosemove function works by: 
 //  1. Finding the object in the database (the "archetype") that is the equivalent of the boardstate presented. 
@@ -8,10 +16,8 @@ import { checkSum, checkDbase, checkArchetype } from "../testers/errorCheckers.j
 //  3. Getting the response array from the archetype
 //  4. applying the reverse of the transform to the response array to get the applicable response array. 
 
-export function menaceChooseMove(board, dbase){
-    // console.log(`mcm: menaceChooseMove dbase.length is `, dbase.length)
-
-    let arche = JSON.parse(JSON.stringify(getBoardArchetype(board, dbase))) // returns an object from database with learned response array and transform set to indicate rotation/flip required
+export function babymenChooseMove(board){
+    let arche = JSON.parse(JSON.stringify(getBoardArchetype(board, db))) // returns an object from database 
     const beadArray = getBeadArray(board, arche); // reverses the transformation needed to find the archetype on the response array, to yield a probability array for the initial board state
     if (beadArray) {return [chooseMoveFromBeadArray(beadArray),beadArray]} //return the chosen move and the response array that led to it. 
     else throw new Error(`Error in menaceChooseMove: no array returned for board state ${board}`)
@@ -39,7 +45,7 @@ function testForChangeInFirstObjectInDataBase(dbase){
 // db contains ARCHETYPAL board states---i.e. not every equivalent flip and rotation
 // this function takes board state, and returns the archetype of which it is a flip/rotation
 // changes transform, however, to represent the change needed to recover input board state 
-export function getBoardArchetype(boardState, dbase){
+function getBoardArchetype(boardState, dbase){
     // console.log(`mcm: boardState is `, boardState)
     // console.log(`mcm: getBoardArchetype dbase.length is `, dbase.length)
     for (let i = 0; i < dbase.length; i++){
@@ -73,20 +79,7 @@ function checkTransformReversesState(boardState, archetypeState, transform, func
 
 
 
-// takes object, returns move chosen 
-// this version assumes that the lowest value in the response array is 0
-// export function chooseMoveFromBeadArray(beadArray){
-//     console.log("chooseMoveFromBeadArray initiated with beadArray... ", beadArray)
-//     if (beadArray.every((item => item === 0))) return -1; // -1 is the code for a resignation
-//     const sum = beadArray.reduce((acc, val) => acc + val, 0);
-//     let rand = Math.floor(Math.random()*sum); 
-//     let probSum = 0; 
-//     for (let i = 0; i < beadArray.length; i++){
-//         probSum += beadArray[i]; // add the beads in the ith position in the array to probsum
-//         if (rand < probSum){return i} // if rand is less than that, that's the move
-//     }
-//     throw new Error(`Error in menaceChooseMove/chooseMoveFromBeadArray: object scanned without probability satisfaction. beadArray was ${beadArray}, rand was ${rand}, probSum finished at ${probSum} `)
-// }
+
 
 // this version allows that some "out of bounds" values in the response array equal -1, and compensates
 

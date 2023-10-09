@@ -190,7 +190,7 @@ export default function AI_DecisionModule( props ) {
                 // NOTE that you can't just add evolvo & neuro as opponents for menace
                 // because they need to take their foespec, which will be set to menace's
     function reverseFoe(){
-        let foes = ["menace","minimax","huris"]
+        let foes = ["menace","minimax","huris","babyMen"]
         if (tempComputerOpponent === "menace"){
             let randomFoe = foes[Math.floor(Math.random() * foes.length)];
             setTempComputerOpponent(randomFoe)
@@ -222,6 +222,7 @@ export default function AI_DecisionModule( props ) {
                 // because they need to take their foespec, which will be set to menace's
                 // console.log(`AIDM: foe is `, foe)
                 // console.log(`AIDM: foeSpec is `, foeSpec)
+                console.log("tempComputerOpponent is ", tempComputerOpponent)
                 const choiceAndData = chooseMove(board, foeSpec, tempComputerOpponent); 
                 resolve(choiceAndData);
                
@@ -243,9 +244,9 @@ export default function AI_DecisionModule( props ) {
             {!trainingMode && <p> {winner === 'D'? "It is a draw!": winner? `${winner} is the winner!` : !computerOff && !winner?"Thinking...":["huris", "evolvo"].includes(foe)? probabilityArray? probabilityArray: '\u00A0' :'\u00A0'} </p>}
 
             {/* <p> {!computerOff && !winner?"Thinking...":'\u00A0'} </p> */}
-            {foe === 'menace' && !trainingMode && <Board devMode = {props.devMode} boardText = {props.thinkBoardText} squareColors = {squareColors} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>}
-            {foe === 'Neuro' && <Board devMode = {props.devMode} boardText = {props.thinkBoardText} trainingMode = {trainingMode} squaresClassName = "neuroPredictions" values = {thinkBoard}/>}
-            {foe === 'minimax' && <Board devMode = {props.devMode} boardText = {props.thinkBoardText} trainingMode = {trainingMode} squaresClassName = "minimaxBoard" values = {thinkBoard}/>}
+            {foe === 'menace' && !trainingMode && <Board devMode = {props.devMode} tipText = {props.thinkBoardText} squareColors = {squareColors} trainingMode = {trainingMode} squaresClassName = "thinkBoardButton" values = {thinkBoard}/>}
+            {foe === 'Neuro' && <Board devMode = {props.devMode} tipText = {props.thinkBoardText} trainingMode = {trainingMode} squaresClassName = "neuroPredictions" values = {thinkBoard}/>}
+            {foe === 'minimax' && <Board devMode = {props.devMode} tipText = {props.thinkBoardText} trainingMode = {trainingMode} squaresClassName = "minimaxBoard" values = {thinkBoard}/>}
             <SoundComponent trainingMode = {props.trainingMode} computersTurn = {computersTurn} foe = {foe} whoWon = {props.whoWon} soundEffect = {props.soundEffect} setSoundEffect= {props.setSoundEffect}/>
             {foe === 'evolvo' && <p> Controlling genome is:</p>  }
             {foe === 'evolvo' && <GenomeDisplay trainingMode = {props.trainingMode} genome = {ranking[0]}/> }

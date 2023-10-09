@@ -34,7 +34,7 @@ export function checkDbase(dbase, funcName){
     // }
     for (let i = 0; i < dbase.length; i++){
         for (let j = 0; j < dbase[i].response.length; j++){
-            if (dbase[i].response[j] < 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is smaller than 0.`)
+            //if (dbase[i].response[j] < 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is smaller than 0.`)
             if (dbase[i].response[j] > 1 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is larger than 1.`)
     }
 }
@@ -49,7 +49,7 @@ export function checkBeadbase(dbase, funcName){
     if (!isNumber(dbase[0].response[0])) throw new Error(` in ${funcName}: dbase isn't right. Board state 0 should have all numbers for response array, but has ${JSON.stringify(dbase[0].response)} instead. dblength = ${dblength}.`)
     for (let i = 0; i < dbase.length; i++){
         for (let j = 0; j < dbase[i].response.length; j++){
-            if (dbase[i].response[j] < 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is smaller than 0.`)
+            //if (dbase[i].response[j] < 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is smaller than 0.`)
             if (dbase[i].response[j] % 1 !== 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is non integral.`)
     }
 }
@@ -64,7 +64,7 @@ export function checkBeadSubbase(dbase, funcName){
     if (!isNumber(dbase[0].response[0])) throw new Error(` in ${funcName}: dbase isn't right. Board state 0 should have all numbers for response array, but has ${JSON.stringify(dbase[0].response)} instead. dblength = ${dblength}.`)
     for (let i = 0; i < dbase.length; i++){
         for (let j = 0; j < dbase[i].response.length; j++){
-            if (dbase[i].response[j] < 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is smaller than 0.`)
+            //if (dbase[i].response[j] < 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is smaller than 0.`)
             if (dbase[i].response[j] % 1 !== 0 ) throw new Error(` in ${funcName}: dbase isn't right. Element ${j} in response array of board state ${i} is non integral.`)
     }
 }

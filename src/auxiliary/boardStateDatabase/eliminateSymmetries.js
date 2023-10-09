@@ -1,6 +1,6 @@
     //import fs from 'fs'; 
     import {db} from '../../auxiliary/boardStateDatabase/dataBeadsFormatted.js'
-
+    import { isHorizontallySymmetrical, isVerticallySymmetrical, isForwardDiagonallySymmetrical, isBackwardDiagonallySymmetrical } from '../general/symmetryCheckers.js';
     
     // this looks through the database for board states that are symmetrical
     // for any such found, it doubles the beads in the square on one side of the symmetry, and reduces
@@ -61,34 +61,6 @@
 
     
 
-    function isHorizontallySymmetrical(boardstate){
-        if (boardstate[0] === boardstate[2] &&
-            boardstate[3] === boardstate[5] &&
-            boardstate[6] === boardstate[8] ) return true
-        else return false; 
-    }
-
-    function isVerticallySymmetrical(boardstate){
-        if (boardstate[0] === boardstate[6] &&
-            boardstate[1] === boardstate[7] &&
-            boardstate[2] === boardstate[8] ) return true
-        else return false; 
-    }
-
-    function isForwardDiagonallySymmetrical(boardstate){
-        if (boardstate[0] === boardstate[8] &&
-            boardstate[1] === boardstate[5] &&
-            boardstate[3] === boardstate[7] ) return true
-        else return false; 
-    }
-
-    function isBackwardDiagonallySymmetrical(boardstate){
-        if (boardstate[1] === boardstate[3] &&
-            boardstate[2] === boardstate[6] &&
-            boardstate[5] === boardstate[7] ) return true
-        else return false; 
-    }
-
 
     /// this is just for inspection
     function getAllSymmetricals(database){
@@ -99,16 +71,6 @@
             }
         }
         return symmetricalsDB; 
-    }
-
-    function isSymmetrical(boardstate){
-        if (
-            isHorizontallySymmetrical(boardstate) ||
-            isVerticallySymmetrical(boardstate) ||
-            isForwardDiagonallySymmetrical(boardstate) ||
-            isBackwardDiagonallySymmetrical(boardstate)
-        ) return true
-        else return false; 
     }
 
 

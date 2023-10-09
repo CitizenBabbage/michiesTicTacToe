@@ -9,7 +9,7 @@ import menacePortrait from '../images/chosen/menace.png'
 export default function Menace( props ) {
   const trainingSound = '../soundFX/menaceLoss2.mp3'
   const [foe, setFoe] = useState("menace")
-  const thinkBoardText = "How MENACE decided its previous turn. The more beads of the color representing the square, the more likely MENACE was to move there." 
+  const thinkBoardText = "How MENACE decided its previous turn. The more beads in the square, the more likely that move." 
 
   return (
       <div>

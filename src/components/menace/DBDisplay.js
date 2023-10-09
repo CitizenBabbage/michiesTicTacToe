@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { areExactlyTheSame, roundOffElementsInArray } from '../../auxiliary/general/usefulFunctions.js';
 import "./DatabaseDisplay.css"
 import Board from "../board/Board.js"
+import { Tooltip } from '../presentational/ToolTip.js';
 
 function databaseDisplay(props){
     
@@ -16,25 +17,41 @@ function databaseDisplay(props){
     const updatesText = "View the board states MENACE has learned from."
     const [displayRequested, setDisplayRequested] = useState(false)
     const [toggleText, setToggleText] = useState("View Updates")
+    const [textTipIndex, setTextTipIndex] = useState(0); 
+    const [mouseEventCounter, setMouseEventCounter] = useState(0); 
+
+    const textTips = ["This display shows boards that were encountered during learning", "The colors show how probable each move was in response to the current situation", "The redder the square, the higher the probability", "Hovering your mouse over any board shows more detail, like so...", "In this text window, numbers represent beads remaining for that choice", "# represents an occupied square", "If there are any $'s, they represent rotations or reflections of equivalent moves", "Updating a square is the same as updating its rotations and reflections"]
     
     // useEffect(() => {setUpdateLog(database.filter(item => allPlayedBoards.some(apbItem => areExactlyTheSame(apbItem.state, item.state))))},[allPlayedBoards])
 
+    useEffect(() => {
+        setTextTipIndex(prevValue => (prevValue + 1) % textTips.length)
+    }
+    ,[mouseEventCounter])
+
+    useEffect(() => {
+        if (displayRequested) toggleView(); 
+    }, [trainingIterations])
+
     function toggleView(){
-        if (toggleText === "View Updates") setToggleText("Hide Updates")
-        else setToggleText("View Updates")
+        if (toggleText === "View Updates") {
+            refreshData(); 
+            setToggleText("Hide Updates")
+        }
+        else {
+            setToggleText("View Updates"); 
+        }
         setDisplayRequested(prevValue => !prevValue);
     }
 
     function refreshData(){
         let filteredResults = getAllPlayedBoards(database); 
-        console.log("filteredResults are ", filteredResults)
         setAllPlayedBoards(getAllPlayedBoards(database))
     }
 
     function getAllPlayedBoards(database){
         const filteredDb = database.filter((item) => item.updates > 0); 
         if (filteredDb.length === 0) {
-            console.log("dbd: filtered database has no elements")
             return [ // allPlayedBoards always requires at least the starting board
                 {
                 "id":0,
@@ -74,38 +91,65 @@ function databaseDisplay(props){
 
     function getColor(value) {
         let redComponent = 0; 
-        let greenComponent = 0; 
+        // let greenComponent = 0; 
         if (value >= 0) redComponent = Math.round(value * 255);
-        else greenComponent = Math.round(-value * 255)
-        return `rgb(${redComponent}, ${greenComponent}, 0)`; // green shows negatives, which should never happen. For debugging only. 
+        // else greenComponent = Math.round(-value * 255)
+        return `rgb(${redComponent}, 0, 0)`; // 
     }
+
     let getNormalCount = 0; 
     function getNormalValues(array){
         getNormalCount++; 
-        console.log("getNormalCount is ", getNormalCount); 
-        const sum = array.reduce((acc, val) => acc + val, 0);
+        const sum = 1 + array.reduce((acc, val) => val < 0? acc : acc + val, 0);
         return array.map(item => item / sum)
     }
+
+    function changeNegativesToHashForDisplay(board, response){
+        let output = []; 
+        for (let i = 0; i < board.length; i ++) {
+            if (board[i] === 'X' || board[i] === 'O') output[i] = '#'; // a # represents a filled square
+        }
+        for (let i = 0; i < response.length; i ++) {
+            if (output[i] === '#') continue; 
+            else if (response[i] === -1) output[i] = '$'; // a $ represents a square that is symmetrical, or a rotational variant, of a square that has been scored
+            else  output[i] = response[i]; 
+        }
+        return output; 
+    }
+
+    function formatArrayToGrid(arr) {
+        let result = '';
+        for (let i = 0; i < arr.length; i += 3) {
+          result += arr.slice(i, i + 3).join(' ') + '\n';
+        }
+        // console.log(`unstringified display is ${result}`)
+        // console.log(`display is ${JSON.stringify(result)}`)
+        return result;
+      }
+
+   
+
+      
     
     
     // checkDbase(database, "2. upDater")
    return (
         <div> 
             <p style = {{fontSize: 12}}> {`Training Games Left: ${trainingIterations}`}</p> 
-            <div className='tooltip-container'>
-                <div>
-                    <div className='tooltip-text'>
-                        {props.updatesText}
-                    </div>
-                    <div>
-                        <button onClick={toggleView}>{toggleText}</button>
-                    </div> 
-                </div>
-            </div>
+            <button className='retro-button' onClick={toggleView}>
+                    {toggleText}
+            </button>
+            {/* <Tooltip tooltipText={textTips[textTipIndex]}>
+            <div>
+                <button className='retro-button' onClick={toggleView}>
+                    {toggleText}
+                </button>
+            </div> 
+            </Tooltip> */}
             {displayRequested && 
                 <div>
                     <div>
-                        <button onClick={refreshData}>Refresh</button>
+                        <button className='retro-button' onClick={refreshData}>Refresh</button>
                     </div> 
                     {/* <p> {props.devMode? `First probability distribution is ${JSON.stringify(roundOffElementsInArray(database[0].response))}`:""}</p>  */}
                     <ul className = 'array'>
@@ -121,6 +165,8 @@ function databaseDisplay(props){
                                         trainingMode={trainingMode} 
                                         values={vals} 
                                         squareColors={colors} 
+                                        tipText = {textTips[textTipIndex] +"\n" + formatArrayToGrid(changeNegativesToHashForDisplay(item.state, item.response))}
+                                        setMouseEventCounter = {setMouseEventCounter}
                                     />
                                 </li>
                             );

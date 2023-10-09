@@ -13,7 +13,7 @@ export default function Board( props ) {
     const setSquares = props.setSquares; 
     const setPlayersTurn = props.setPlayersTurn;
     //const testMode = props.testMode; 
-    
+
     if (!Array.isArray(props.values)) {
       return null; // or return a loading spinner, error message, etc.
     }
@@ -37,30 +37,30 @@ export default function Board( props ) {
     // }
   }
 
-  document.querySelectorAll('.tooltip-container').forEach((element) => {
-    element.addEventListener('mouseenter', function (e) {
-      const tooltip = this.querySelector('.tooltip-text');
-      const boundingBox = tooltip.getBoundingClientRect();
-      if (boundingBox.right > window.innerWidth) {
-        tooltip.style.right = '0'; // Align the tooltip to the right edge of the container if it overflows on the right side of the viewport
-        tooltip.style.left = 'auto';
-      }
-      if (boundingBox.left < 0) {
-        tooltip.style.left = '0'; // Align the tooltip to the left edge of the container if it overflows on the left side of the viewport
-        tooltip.style.right = 'auto';
-      }
-    });
-  });
+  // document.querySelectorAll('.tooltip-container').forEach((element) => {
+  //   element.addEventListener('mouseenter', function (e) {
+  //     const tooltip = this.querySelector('.tooltip-text');
+  //     const boundingBox = tooltip.getBoundingClientRect();
+  //     if (boundingBox.right > window.innerWidth) {
+  //       tooltip.style.right = '0'; // Align the tooltip to the right edge of the container if it overflows on the right side of the viewport
+  //       tooltip.style.left = 'auto';
+  //     }
+  //     if (boundingBox.left < 0) {
+  //       tooltip.style.left = '0'; // Align the tooltip to the left edge of the container if it overflows on the left side of the viewport
+  //       tooltip.style.right = 'auto';
+  //     }
+  //   });
+  // });
 
   let squareColors = props.squareColors; 
   if (!squareColors){squareColors = Array(9).fill(null)}
   
    return (
-      <div className='tooltip-container'>
+      <Tooltip tipText = {props.tipText} setMouseEventCounter = {props.setMouseEventCounter}>
         <div className='board'>
-          <div className='tooltip-text'>
+          {/* <div className='tooltip-text'>
             {props.boardText}
-          </div>
+          </div> */}
           <div className = "board-row">
             <Square  className = {squaresClassName} value={values[0]} onSquareClick={() => placePlayersMark(0)} squareColor = {squareColors[0]}/>
             <Square  className = {squaresClassName} value={values[1]} onSquareClick={() => placePlayersMark(1)} squareColor = {squareColors[1]}/>
@@ -77,7 +77,7 @@ export default function Board( props ) {
             <Square  className = {squaresClassName} value={values[8]} onSquareClick={() => placePlayersMark(8)} squareColor = {squareColors[8]}/>
           </div>
         </div>
-      </div>
+      </Tooltip>
     )
   }
 

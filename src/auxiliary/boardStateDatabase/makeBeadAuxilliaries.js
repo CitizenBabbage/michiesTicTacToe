@@ -18,6 +18,7 @@ export function createAllBeadStateObjects(num){
     //database = reduceOptionsOnFirstMove(database)
     database = eliminateResponseSymmetries(database); 
     console.log("length of database after response mod is : ", database.length)
+    database = reduceNilResponsesToMinus1(database); 
     return database
 }
 
@@ -371,5 +372,13 @@ function isEquivalentToBoardOnList(board, arrayOfBoards){
     return false
 }
 
-
-
+// this is a module that, after all the other processing, reduces the 0 scoring resource squares to -1. 
+// this is to narrow the learning space by making symmetrically redundant squares out of bounds for learning.
+export function reduceNilResponsesToMinus1(dbase){
+    for (let i = 0; i < dbase.length; i++){
+        for (let j = 0; j < dbase[i].response.length; j++){
+            if (dbase[i].response[j] === 0) dbase[i].response[j] = -1
+        }
+    }
+    return dbase; 
+}

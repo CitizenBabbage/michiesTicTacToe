@@ -97,9 +97,9 @@ export default function NeuroComparison( props ) {
         {toPlay? <p>{toPlay} to play</p>:<p></p>}
         <div className='gameshell'>
             <div className='threeBoards'>
-                <Board squaresClassName = "neuroXOtest" values = { testBoard } boardText = {challengeBoardText} ></Board> 
-                <Board squaresClassName = "neuroPredictions" values = { neuroPredictions } boardText = {neuroPredictionsBoardText} ></Board> 
-                <Board squaresClassName = "minimaxBoard" values = { minimaxRecommendations } boardText = {neuroMinimaxBoardText}></Board> 
+                <Board squaresClassName = "neuroXOtest" values = { testBoard } tipText = {challengeBoardText} ></Board> 
+                <Board squaresClassName = "neuroPredictions" values = { neuroPredictions } tipText = {neuroPredictionsBoardText} ></Board> 
+                <Board squaresClassName = "minimaxBoard" values = { minimaxRecommendations } tipText = {neuroMinimaxBoardText}></Board> 
             </div> 
             <div className='textList'>
                 {/* <p>Raw Errors = {rErrors.join(', ')}</p>
