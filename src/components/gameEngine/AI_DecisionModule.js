@@ -34,17 +34,23 @@ export default function AI_DecisionModule( props ) {
     const [probabilityArray, setProbabilityArray] = useState(Array(9).fill(null))
     // const testMode = props.testMode; 
     const computerOff = props.computerOff 
+    const ranking = props.ranking;
     const [foeSpec,setFoeSpec] = useState(returnFoeSpecs()); 
     const [tempComputerOpponent, setTempComputerOpponent] = useState(foe); 
-    const ranking = props.ranking; 
     const controllingGenome = props.controllingGenome;
     const setControllingGenome = props.setControllingGenome;
     const trainingTurn = props.trainingTurn; 
     const trainingIterations = props.trainingIterations; 
     let ruleUsed = '\u00A0'; 
+     
+
 
     // the following useEffect updates the controller after learning or change in opponent 
     useEffect(() => {setFoeSpec(returnFoeSpecs())},[database, ranking, network, foe])
+
+    useEffect(()=>{
+        if (ranking) console.log("in AI_DecisionModule, setting of ranking has been recognised! ")
+      }, [ranking])
 
     // function setFoeSpecifications(){
     //     if (foe === 'menace') {
@@ -190,8 +196,9 @@ export default function AI_DecisionModule( props ) {
                 // NOTE that you can't just add evolvo & neuro as opponents for menace
                 // because they need to take their foespec, which will be set to menace's
     function reverseFoe(){
-        let foes = ["menace","minimax","huris","babyMen"]
+        let foes = ["menace","minimax","babymen"]
         if (tempComputerOpponent === "menace"){
+            console.log("changing tempComputerOpponent away from menace")
             let randomFoe = foes[Math.floor(Math.random() * foes.length)];
             setTempComputerOpponent(randomFoe)
         }
@@ -222,6 +229,7 @@ export default function AI_DecisionModule( props ) {
                 // because they need to take their foespec, which will be set to menace's
                 // console.log(`AIDM: foe is `, foe)
                 // console.log(`AIDM: foeSpec is `, foeSpec)
+                if (trainingMode) reverseFoe(); 
                 console.log("tempComputerOpponent is ", tempComputerOpponent)
                 const choiceAndData = chooseMove(board, foeSpec, tempComputerOpponent); 
                 resolve(choiceAndData);

@@ -160,14 +160,13 @@ export function eliminateSymmetriesFromResponseMove(board, move, responses){
     else {
         console.log(`responses[move] equals ${responses[move]}, which is < 0`)
         const symmetries = returnSymmetries(board); 
-        if (symmetries.includes('h') && returnHorizontalOpposite(move) > 0) return returnHorizontalOpposite(move); 
-        if (symmetries.includes('v') && returnVerticalOpposite(move) > 0) return returnVerticalOpposite(move); 
-        if (symmetries.includes('d') && returnForwardDiagonalOpposite(move) > 0) return returnForwardDiagonalOpposite(move); 
-        if (symmetries.includes('b') && returnBackwardDiagonalOpposite(move) > 0) return returnBackwardDiagonalOpposite(move); 
+        if (symmetries.includes('h') && responses[returnHorizontalOpposite(move)] > 0) return returnHorizontalOpposite(move); 
+        if (symmetries.includes('v') && responses[returnVerticalOpposite(move)] > 0) return returnVerticalOpposite(move); 
+        if (symmetries.includes('d') && responses[returnForwardDiagonalOpposite(move)] > 0) return returnForwardDiagonalOpposite(move); 
+        if (symmetries.includes('b') && responses[returnBackwardDiagonalOpposite(move)] > 0) return returnBackwardDiagonalOpposite(move); 
     }
 }
 
-3,3,3,-1,3,-1,-1,-1,-1
 
 
 //console.log(getEquivalentResponse(['X','X',null,'O',null,null,null,null,null],2,[3,null,null,1,0,null,2,3,4]))

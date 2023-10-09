@@ -48,7 +48,9 @@ export default function GameCycle( props ) {
     const [gameTracker, setGameTracker] = useState(0)
     const [turnTracker, setTurnTracker] = useState(0)
 
-
+    useEffect(()=>{
+        if (props.ranking) console.log("in gameCycle, setting of ranking has been recognised! ")
+      }, [props.ranking])
 
     ////////////////////////
     ///// PLAY CYCLE ///////

@@ -7,13 +7,11 @@ export function IdFacts( props ) {
     return (
         trainingMode? 
             <div className = 'IdFacts'> 
-                <div className='centered'>
-                <h2 className = 'retro-text'> {props.name} </h2> 
-                <div className='id-pic-container'>
-                    <img src = {props.src} className = 'id-pic'/>
-                </div>
-                <h2 className = 'retro-text'> Style: {props.playStyle} </h2> 
-            </div> 
+                    <h2 className = 'retro-text'> {props.name} </h2> 
+                    <div className='id-pic-container'>
+                        <img src = {props.src} className = 'id-pic'/>
+                    </div>
+                    <h2 className = 'retro-text'> Style: {props.playStyle} </h2> 
             </div>
         
         

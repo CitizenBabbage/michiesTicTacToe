@@ -45,7 +45,6 @@ function databaseDisplay(props){
     }
 
     function refreshData(){
-        let filteredResults = getAllPlayedBoards(database); 
         setAllPlayedBoards(getAllPlayedBoards(database))
     }
 
@@ -136,21 +135,20 @@ function databaseDisplay(props){
    return (
         <div> 
             <p style = {{fontSize: 12}}> {`Training Games Left: ${trainingIterations}`}</p> 
+
             <button className='retro-button' onClick={toggleView}>
                     {toggleText}
             </button>
-            {/* <Tooltip tooltipText={textTips[textTipIndex]}>
-            <div>
-                <button className='retro-button' onClick={toggleView}>
-                    {toggleText}
-                </button>
-            </div> 
-            </Tooltip> */}
             {displayRequested && 
                 <div>
-                    <div>
+                    {/* <div>
                         <button className='retro-button' onClick={refreshData}>Refresh</button>
-                    </div> 
+                    </div>  */}
+                    <div>
+                        <p className='retro-text'>
+                            % of board states updated : {Math.round((getAllPlayedBoards(database).length/database.length) * 100) }
+                        </p>
+                    </div>
                     {/* <p> {props.devMode? `First probability distribution is ${JSON.stringify(roundOffElementsInArray(database[0].response))}`:""}</p>  */}
                     <ul className = 'array'>
                         {

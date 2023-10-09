@@ -18,9 +18,10 @@ import { db } from "../boardStateDatabase/dataBeadsFormatted.js";
 
 export function babymenChooseMove(board){
     let arche = JSON.parse(JSON.stringify(getBoardArchetype(board, db))) // returns an object from database 
+    if (!arche) console.log("WARNING: no value for arche in babymenChooseMove")
     const beadArray = getBeadArray(board, arche); // reverses the transformation needed to find the archetype on the response array, to yield a probability array for the initial board state
     if (beadArray) {return [chooseMoveFromBeadArray(beadArray),beadArray]} //return the chosen move and the response array that led to it. 
-    else throw new Error(`Error in menaceChooseMove: no array returned for board state ${board}`)
+    else throw new Error(`Error in babymenChooseMove: no array returned for board state ${board}`)
 
 }
 

@@ -54,7 +54,9 @@ export function minimaxRecurse(board, turn){
     //this takes a precalculated movearray (as above) and finds the highest score in that array
     // or lowest if it is calculating for opponent
     function getMoveAndAssociatedScore(moveArray, turn, whoseTurn){
-        let recommendedMove = 0.5, highestSoFar = 0.3, lowestSoFar = 1024, recommendedMoveScore = 0.1; 
+        //let recommendedMove = 0.5, highestSoFar = 0.3, lowestSoFar = 1024, recommendedMoveScore = 0.1; 
+        let recommendedMove = 0, highestSoFar = 0, lowestSoFar = Infinity, recommendedMoveScore = 0; 
+
         if (whoseTurn === turn){
             for (let i = 0; i < moveArray.length; i++){
                 if (moveArray[i] === null) continue; 

@@ -46,17 +46,21 @@ export default function GameShell( props ) {
   const setFoe = props.setFoe; 
   const [trainingTurn, setTrainingTurn] = useState(0); // toggling this triggers next loop in training game
 
-
-  const [nameManager, setNameManager] = useState();
-  const [genepool, setGenepool] = useState();
-
-  const [ranking, setRanking] = useState(() => {
-    const [gp, nm] = createGenepool(100, 26); 
-    setNameManager(nm); 
-    setGenepool(gp)
-    return gp;
-  });
+  const [gp, nm] = createGenepool(100, 26);
+  const [nameManager, setNameManager] = useState(nm);
+  const [genepool, setGenepool] = useState(gp);
+  const [ranking, setRanking] = useState(gp); 
+  // const [ranking, setRanking] = useState(() => {
+  //   const [gp, nm] = createGenepool(100, 26); 
+  //   setNameManager(nm); 
+  //   setGenepool(gp)
+  //   console.log("initializing ranking")
+  //   return gp;
+  // });
   
+  useEffect(()=>{
+    if (ranking) console.log("in gameshell, ranking has been set! ")
+  }, [ranking])
 
   // the net is set at this level so as to be available both for the training page and for the game itself
   //const [net, setNet] = useState(makeNetwork([27,32,36,5])) //

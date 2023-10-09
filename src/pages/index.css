@@ -4,6 +4,7 @@
   color: white; 
   font-family: 'Press Start 2P';
   src: url('../fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+  font-size: 22px;
 }
 
 .normalButton {
@@ -12,6 +13,7 @@
     color: rgb(76, 2, 2); 
     font-family: 'Press Start 2P';
     src: url('../fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+    font-size: 22px;
 }
 
 .audioSelectPage {
