@@ -6,6 +6,9 @@
 // Most of the fuss below is controlling the complexity, so that complex sounds are possible
 // but they only rarely aggregate together into a series. 
 
+import { badwords } from "../badwords/badwords.js"
+
+
 const simpleOpeners = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "V", "W"]
 const complexOpeners = ["Bl", "Br", "Cl", "Cr", "Dr", "Fl", "Fr", "Gl", "Gr", "Qu", "Sk", "Sh", "Sl", "Sm", "Sn", "Sp", "Sw"]
 const veryComplexOpeners = ["Ll", "Shl", "Shr", "Spl", "Thr"]
@@ -25,7 +28,15 @@ const simpleLongMiddles = ["b", "d", "f", "g", "k", "l", "m", "n", "p", "s", "t"
 
 const endingPhemes = ["abog", "aboggle", "addle", "agger", "agog", "agoggle", "amble", "ample", "ankh", "arat", "atch", "er", "eth", "ew", "ick", "ickle", "icker", "ig", "ight", "ilk", "itch", "offle", "og", "oggle", "onger", "ongle", "omble", "omp", "ooze", "or", "orm", "ough", "ourgh", "uck", "uddle", "ulch", "umble", "umph", "urk", "ur", "urgh"]
 
-export default function randomName() {
+export default function randomName(){
+    let name = "xxx"; 
+    while (isABadWord(name)){
+        name = baseName(); // keep generating til you get a clean one
+    }
+    return name; 
+}
+
+function baseName() {
     let complexity = 0; 
     const openingData = fixOpening(complexity); 
     const opening = openingData[0]; complexity = openingData[1]; 
@@ -39,7 +50,15 @@ export default function randomName() {
     if (opening !== "" && ending !== "" && rand1 < 0.5)
         {name = capitalizeFirstLetter(opening + ending)}
     else name = capitalizeFirstLetter(opening + vowel + middle + ending)
+    
     return name; 
+}
+
+function isABadWord(string){
+    for (let i = 0; i < badwords.length; i++){
+        if (badwords[i].includes(string)) return true; 
+    }
+    return false; 
 }
 
 function fixOpening(complexity){
