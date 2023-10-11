@@ -1,7 +1,15 @@
 import fs from 'fs'; 
+import { ProfanityEngine } from '@coffeeandfun/google-profanity-words';
 
+// Pass the 'language' parameter to specify the language (optional).
+// Defaults to 'en' if no valid language code is provided.
+const profanity = new ProfanityEngine();
 
+// profanity.search('shit').then(response => console.log("is shit profane?", response ))
+// profanity.all().then(response => {console.log("profanity.all.length is ", response.length)})
 
+const newBadWords = ["kkk", "jew", "shlong", "schlong",
+"scrot","gag","throb", "yid"]
 
   
 function commaSeparatedMaker(newlineSeparatedText){
@@ -12,9 +20,117 @@ function removeStars(text){
     return text.replace(/\*/g, '');
 }
 
+function removeMultiWordPhrases(array){
+  return array.filter((item) => !item.includes(" "))
+}
 
-    
-const badText = `ahole
+function removeHyphenatedPhrases(array){
+  return array.filter((item) => !item.includes("-"))
+}
+
+function removePunctuatedPhrases(array){
+  return array.filter((item) => !containsPunctuation(item))
+}
+
+function containsPunctuation(text){
+  const punct = /[!#$%&*+,-.:;<=>?@^_~]/;
+  return punct.test(text); 
+}
+
+
+function removeNumericalHybrids(array){
+  return array.filter((item) => !containsNumerical(item))
+}
+
+function containsNumerical(text){
+  const nums = /\d/;
+  return nums.test(text); 
+}
+
+function removeSuperStrings(array){
+  return array.filter((item) => {
+    return !array.some(element => isSuperStringedBy(element,item))
+  })
+}
+
+function isSuperStringedBy(string1,string2){
+  if (string1 === string2) return false; 
+  else return string2.includes(string1); 
+}
+
+function removeDuplicates(array) {
+  return array.filter((item, index) => array.indexOf(item) === index);
+}
+
+
+function removeIrrelevant(array){
+  console.log("length of array before removeMultiWordPhrases is ", array.length)
+  let output = removeMultiWordPhrases(array);
+  console.log("length of output before removeHyphenatedPhrases is ", output.length)
+
+  output = removeHyphenatedPhrases(output); 
+  console.log("length of output before removePunctuatedPhrases is ", output.length)
+
+  output = removePunctuatedPhrases(output); 
+  console.log("length of output before removeNumericalHybrids is ", output.length)
+
+  output = removeNumericalHybrids(output); 
+  // console.log("length of output before removeSuperStrings is ", output.length)
+  output = removeEmpty(output); 
+  output = removeCommonMorphemes(output); 
+  output = removeEmojis(output); 
+  output = removeAssStarters(output); 
+  console.log("words = 4: ", JSON.stringify(getAllWordsEqualToFour(output)))
+ console.log("shortest element is ", getShortest(output))
+  output = removeSuperStrings(output); 
+  console.log("length of output before removeDuplicates is ", output.length)
+  output = removeDuplicates(output); 
+  console.log("length of output after removeDuplicates is ", output.length)
+  return output; 
+}
+
+function containsEmojis(text){
+  const emojiRegex = /(?:[\u2700-\u27BF]|(?:\uD83C[\uDC00-\uDFFF])|(?:\uD83D[\uDC00-\uDFFF])|(?:\uD83E[\uDC00-\uDFFF]|[\u{1F595}\u{1F595}\u{1F596}\u{1F918}\u{1F92F}\u{1F644}\u{1F975}\u{1F92A}\u{1F92C}\u{1F92F}\u{1F9D0}\u{1F615}]))/g;
+  return emojiRegex.test(text); 
+}
+
+function removeEmojis(array){
+  return array.filter((item) => !containsEmojis(item))
+}
+
+function removeCommonMorphemes(array){
+  return array.filter((current) => !["ho","ass", "gag", "feg", "yed", "ekto","cipa","hell","merd", "dink","feck","pron"].includes(current))
+}
+
+function getShortest(array){
+  return array.reduce((acc,current) => current.length < acc.length? current : acc, array[0])
+}
+
+function getAllWordsLessThanFour(array){
+  return array.filter((current) => current.length < 4)
+}
+
+function getAllWordsEqualToFour(array){
+  return array.filter((current) => current.length === 4)
+}
+
+function removeEmpty(array){
+  return array.filter((current) => current.length > 0)
+}
+
+//just about anything starting with 'ass...' sounds bad, but not everything containing 'ass' sounds bad (e.g. bass)
+// so these are handled separately and they can be removed from the list for the sake of efficiency
+function isAssStarter(string){
+    const pattern = /^ass/;
+    if (pattern.test(string)) return true; 
+}
+
+function removeAssStarters(array){
+  return array.filter((current) => !isAssStarter(current))
+}
+
+async function makeBadWordsArray(){
+    const badText = `ahole
 anus
 ash0le
 ash0les
@@ -473,16 +589,55 @@ wichser
 wop*
 yed
 zabourah`
+  let badWords = `"` + commaSeparatedMaker(removeStars(badText)) + `"`
+  let badArray = JSON.parse("[" + badWords + "]")
+  return profanity.all().then(response => {
+    badArray = [...newBadWords, ...badArray, ...response]
+    console.log("length of badarray before removeIrrelevant is : ", badArray.length)
+    if (typeof badArray[0] !== 'string') throw new Error("in makeBadWordsArray. Array elements are not strings.")
+    badArray = removeIrrelevant(badArray); 
+    console.log("length of badarray is : ", badArray.length)
+    return badArray; 
+  }
+  )  
+}
 
-const badWords = `"` + commaSeparatedMaker(removeStars(badText)) + `"`
-const badArray = "export const badwords = [" + badWords + "]"
-console.log(badArray)
+function consoleBadWords(){
+  makeBadWordsArray().then((successResult) => {
+    console.log('Success: length of bad words array is ' + successResult.length);
+  }).catch((error) => {
+    console.log('Error in consoleBadWords: ' + error.message);
+  });}
 
-const filePath = './badwords.js'
-fs.writeFile(filePath, badArray, (err) => {
-    if (err) {
-      console.error('An error occurred:', err);
-    } else {
-      console.log('Data has been written to the file successfully!');
-    }
-  });
+  //consoleBadWords(); 
+
+function writeBadWords(){
+  const filePath = './badwords.js';
+  makeBadWordsArray().then(
+    (badArray) => {
+      const badFileText = "export const badwords = [" + JSON.stringify(badArray) + "]"; 
+      fs.writeFile(filePath, badFileText, (err) => {
+        if (err) {
+          console.error('An error occurred:', err);
+        } else {
+          console.log('Data has been written to the file successfully!');
+        }
+      });    }
+  ).catch((error) => {
+    console.log('Error in writeBadWords: ' + error.message);
+  });}
+
+writeBadWords()
+
+// makeBadWordsArray().then(badFileText => {
+//   const filePath = './badwords.js';
+//   fs.writeFile(filePath, badFileText, (err) => {
+//       if (err) {
+//         console.error('An error occurred:', err);
+//       } else {
+//         console.log('Data has been written to the file successfully!');
+//       }
+//     });
+// })
+
+

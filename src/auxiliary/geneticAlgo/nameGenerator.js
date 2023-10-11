@@ -28,8 +28,10 @@ const simpleLongMiddles = ["b", "d", "f", "g", "k", "l", "m", "n", "p", "s", "t"
 
 const endingPhemes = ["abog", "aboggle", "addle", "agger", "agog", "agoggle", "amble", "ample", "ankh", "arat", "atch", "er", "eth", "ew", "ick", "ickle", "icker", "ig", "ight", "ilk", "itch", "offle", "og", "oggle", "onger", "ongle", "omble", "omp", "ooze", "or", "orm", "ough", "ourgh", "uck", "uddle", "ulch", "umble", "umph", "urk", "ur", "urgh"]
 
+const badWholes = ["ho","ass","cipa"]; 
+
 export default function randomName(){
-    let name = "xxx"; 
+    let name = "kkk"; 
     while (isABadWord(name)){
         name = baseName(); // keep generating til you get a clean one
     }
@@ -55,11 +57,18 @@ function baseName() {
 }
 
 function isABadWord(string){
+    if (badWholes.includes(string)) return true; 
+    const pattern = /^ass/;
+    if (pattern.test(string)) return true; 
     for (let i = 0; i < badwords.length; i++){
-        if (badwords[i].includes(string)) return true; 
+        if (string.includes(badwords[i])) return true; 
     }
     return false; 
 }
+
+// console.log("first element of badwords is ", badwords[0])
+// console.log("is kkk a bad word?", isABadWord("kkk"))
+
 
 function fixOpening(complexity){
     const rand1 = Math.random(); 

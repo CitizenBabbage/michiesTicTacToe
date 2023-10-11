@@ -8,6 +8,7 @@ import { NavigationButton } from '../buttons/NavigationButton.js';
 import SoundComponent from '../presentational/sound/SoundFX.js';
 import { EvolvoUpdater } from './evolvoUpdater.js';
 import GenomeRanking from '../presentational/GenomeRanking.js';
+import { EnterGenePoolSize } from '../buttons/EnterGenePoolSize.js';
 
 
 export function EvolvoTrainingPage (props) {
@@ -35,6 +36,8 @@ export function EvolvoTrainingPage (props) {
     const foe = props.foe; 
     const reset = props.reset; 
     const returnToGame = props.returnToGame; 
+    const genepoolSize = props.genepoolSize; 
+    const setGenepoolSize = props.setGenepoolSize; 
 
     return (
 
@@ -48,8 +51,13 @@ export function EvolvoTrainingPage (props) {
         <div label = "row2" className='centered'>
           <IdFacts name = {props.name} playStyle = {props.playStyle} blurb = {props.blurb} src = {props.src} trainingMode = { trainingMode }/>
         </div> 
-        <div label = "row3" className='centered'>
-          <EnterGenerations setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } setGenerations = {props.setGenerations}  xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} value = {value} setValue = {setValue}/>
+        <div className='twoRows'> 
+          <div label = "row3" className='text-field'>
+            <EnterGenePoolSize setGenepoolSize = {props.setGenepoolSize} trainingMode = { trainingMode } xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} />
+          </div> 
+          <div label = "row3" className='text-field'>
+            <EnterGenerations setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } setGenerations = {props.setGenerations}  xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} />
+          </div> 
         </div> 
         <div label = "row4" className='centered'>
           <SoundComponent 

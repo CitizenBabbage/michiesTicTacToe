@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 // import { Button } from 'primereact/button';
 // import { Button } from 'button.esm.js'
 
@@ -12,7 +13,11 @@ export function ChooseSide( props ){
     const buttonActivation = props.buttonActivation; 
     const handleTrainingModeClick = props.handleTrainingModeClick; 
     const foe = props.foe; 
-    const trainingWord = foe === 'evolvo'? 'Evolve': 'Train'
+    const [trainingWord,setTrainingWord] = useState(foe === 'evolvo'? 'Evolve': foe === 'menace'? 'Learn': 'Train')
+
+    useEffect(()=> {
+      setTrainingWord(foe === 'evolvo'? 'Evolve': foe === 'menace'? 'Learn': 'Train')
+    },[foe])
 
     return (
     <div className="gameshell"> 

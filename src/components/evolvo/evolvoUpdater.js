@@ -18,6 +18,7 @@ export function EvolvoUpdater (props) {
     const setRanking = props.setRanking; 
     const setGenepool = props.setGenepool; 
     const [generationNumber, setGenerationNumber] = useState(1); 
+    const setBusy = props.setBusy; 
 
     function getOrdinal(num) {
         let lastDigit = num % 10;
@@ -41,6 +42,7 @@ export function EvolvoUpdater (props) {
     
     useEffect(() => {
         if (generations > 0) {
+            setBusy(true); 
             const generationOrdinal = getOrdinal(generationNumber)
             if (!genepool || genepool.length === 0) throw new Error(`useEffect in evolvoUpdater is passing a bum genepool. genepool = ${JSON.stringify(genepool)} `)
             const gp = runOneGeneration(genepool, 200, 0.2, 0.01, 5, generationOrdinal) //genepool, encountersPerCompetition, cullFraction, mutationRate, mutationSize
@@ -48,6 +50,7 @@ export function EvolvoUpdater (props) {
             setGenepool(gp) 
         }
         else {
+            setBusy(false); 
             console.log("generations = 0")
         }
     }, [generations])
@@ -67,7 +70,9 @@ export function EvolvoUpdater (props) {
     return (
         <div>
             <EvolvoTrainingPage
-                
+                genepoolSize = {props.genepoolSize} 
+                setGenepoolSize = {props.setGenepoolSize}
+
                 trainingMode = {props.trainingMode}
                 setTrainingMode = {props.setTrainingMode}
 

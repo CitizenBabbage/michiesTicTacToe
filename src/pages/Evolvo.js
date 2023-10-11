@@ -12,7 +12,7 @@ export default function Huris( props ) {
   const [foe, setFoe] = useState("evolvo")
   return (
       <div >
-      <GameShell name = "Evolvo" playStyle = "Darwinian" preblurb = {evolvoBlurb1} blurb = {evolvoBlurb2} src = {evolvoPortrait} devMode = {props.devMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} setFoe = { setFoe }/>
+      <GameShell busy = {props.busy} setBusy = {props.setBusy} name = "Evolvo" playStyle = "Darwinian" preblurb = {evolvoBlurb1} blurb = {evolvoBlurb2} src = {evolvoPortrait} devMode = {props.devMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} setFoe = { setFoe }/>
       </div>
   )
 }

@@ -17,8 +17,8 @@ export default function MenaceUpdater(props){
     const setDatabase = props.setDatabase; 
     
     
-    const trainingIterations = props.trainingIterations;
-    const setTrainingIterations = props.setTrainingIterations;
+    // const trainingIterations = props.trainingIterations;
+    // const setTrainingIterations = props.setTrainingIterations;
     const setWinner = props.setWinner;  
 
     const gameLog = props.gameLog; 
@@ -140,8 +140,8 @@ export default function MenaceUpdater(props){
                 value = {props.value}
                 setValue = {props.setValue}
 
-                trainingIterations = {trainingIterations}
-                setTrainingIterations = {setTrainingIterations}
+                trainingIterations = {props.trainingIterations}
+                setTrainingIterations = {props.setTrainingIterations}
 
                 squares = {props.squares}
                 setSquares = {setSquares}

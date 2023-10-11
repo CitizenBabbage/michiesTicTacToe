@@ -5,6 +5,7 @@ import { useState } from 'react';
 export function Tooltip( props ) {
     const [tooltipStyle, setTooltipStyle] = useState({});
     const setMouseEventCounter = props.setMouseEventCounter; 
+    const tipText = props.tipText; 
 
     const handleMouseEnter = (e) => {
         console.log("tooltip activated")
@@ -45,7 +46,7 @@ export function Tooltip( props ) {
             };
         }
         newStyle = { ...newStyle, visibility: 'visible', opacity: '1' };
-        setTooltipStyle(newStyle);
+        if (tipText) setTooltipStyle(newStyle);
     };
 
     const handleMouseLeave = () => {
@@ -58,7 +59,7 @@ export function Tooltip( props ) {
     return (
         <div className='tooltip-container' onMouseEnter={handleMouseEnter} onMouseLeave = {handleMouseLeave}>
             <div className='tooltip-text' style={tooltipStyle}>
-                {props.tipText}
+                {tipText}
             </div>
             {props.children}
         </div>

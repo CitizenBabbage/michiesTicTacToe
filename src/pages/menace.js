@@ -13,7 +13,7 @@ export default function Menace( props ) {
 
   return (
       <div>
-        <GameShell thinkBoardText = {thinkBoardText} trainingSound = {trainingSound} preblurb = {menaceBlurb1} playStyle = "Brute Memorization" name = "Menace" blurb = {menaceBlurb2} src = {menacePortrait} devMode = {props.devMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} setFoe = { setFoe }/>
+        <GameShell setBusy = {props.setBusy} thinkBoardText = {thinkBoardText} trainingSound = {trainingSound} preblurb = {menaceBlurb1} playStyle = "Brute Memorization" name = "Menace" blurb = {menaceBlurb2} src = {menacePortrait} devMode = {props.devMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} setFoe = { setFoe }/>
       </div>
   )
 }

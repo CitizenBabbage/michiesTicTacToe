@@ -10,6 +10,7 @@
   /* outline: 1px solid rgb(213, 245, 6) !important; */
 }
 
+
 /* .wholePage {
   display: flex;
   flex-direction: column;
@@ -78,7 +79,10 @@
 
 .twoRows {
   grid-template-rows: 1fr 1fr;
-  place-items: center; 
+  /* place-items: center;  */
+  align-items: center; /* Vertical centering */
+  justify-content: center;
+  gap: 20px; 
   /* height: 100%;  */
 }
 
@@ -101,6 +105,17 @@
   align-items: center; /* Vertical centering */
   justify-content: space-around;
   /* justify-content: center; */
+}
+
+.text-field {
+  height: 80px; 
+  display: flex;
+  align-items: center; /* Vertical centering */
+  justify-content: center;
+  gap: 20px;
+  /* justify-content: center; */
+  cursor: url('./images/cursor.png'), auto; 
+  /* cursor: url('./images/pointer.png'), pointer; */
 }
 
 .intropage {
@@ -188,7 +203,7 @@ place-items: center;
 }
 
 body, * {
-  cursor: url('./images/cursor.png'), auto;
+  /* cursor: url('./images/cursor.png'), auto; */
 }
 
 body {
@@ -199,8 +214,29 @@ body {
   /* margin: 20px; */
   padding: 0;
   animation: flicker 0.2s 7;
-  cursor: url('./images/cursor.png'), auto;
+  /* cursor: url('./images/cursor.png'), auto; */
+}
 
+.inactive-pointer {
+  pointer-events: none;
+
+}
+
+.inactive-pointer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  cursor: url('./images/hourglass-clipart-pixelized.png'), auto !important; 
+  pointer-events:all;
+  transition: cursor 0.50s ease;
+}
+
+.active-pointer{
+  cursor: url('./images/cursor.png'), auto !important;
+  /* pointer-events: auto; */
 }
 
 h1 {
@@ -355,6 +391,8 @@ body {
   margin: 0;
   height: 30px;
   width: 100/26%; 
+  cursor: url('./images/cursor.png'), auto; 
+
 }
 
 .genome {
@@ -421,10 +459,33 @@ body {
   font-style: normal;
 }
 
+/* hides spin buttons on text input, firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* hides spin buttons on text input, chrome edge safari */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.retro-fill {
+  width: 420px; 
+  font-family: 'Press Start 2P', cursive;
+  font-size: 22px;
+  text-align: center;
+  cursor: url('./images/I-beam.png'), text; 
+  
+}
+
 .retro-text {
   font-family: 'Press Start 2P', cursive;
   text-align: center;
 }
+
+
 
 .retro-button {
   background-color: black;
@@ -435,6 +496,8 @@ body {
   height: 50px;
   cursor: url('./images/pointer.png'), pointer;
 }
+
+
 
 p {
   font-family: 'Press Start 2P', cursive;

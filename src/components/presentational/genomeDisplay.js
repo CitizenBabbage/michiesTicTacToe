@@ -1,4 +1,6 @@
 import React from 'react';
+import { getRuleText } from '../../auxiliary/geneticAlgo/readGenes.js';
+import { Tooltip } from './ToolTip.js';
 
 export default function GenomeDisplay( props ) {
     const genome = props.genome; 
@@ -17,6 +19,7 @@ export default function GenomeDisplay( props ) {
     function highest(genome){
         return genome.reduce((accum, current) => current > accum? current : accum, 0)
     }
+
     
    if (genome) return (
     <div className={trainingMode ? 'threeBoards' : 'threeRows'}>
@@ -29,13 +32,16 @@ export default function GenomeDisplay( props ) {
                     genome.genome.map((item, index) => {
                     // Assuming item.response is an array of values between 0 and 1
                     const colour = getColor(item,100);
-
+                    const ruleText = getRuleText(index); 
                     return (
                         <li key={index}>
-                            <button 
-                                className={"gene"} 
-                                style = {{backgroundColor: colour}}
-                            />
+                            <Tooltip tipText = {ruleText}>
+                                <button 
+                                    className={"gene"} 
+                                    style = {{backgroundColor: colour}}
+                                />
+                            </Tooltip>
+                            
                         </li>
                     );
                 })}

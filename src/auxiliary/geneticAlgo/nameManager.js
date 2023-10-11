@@ -38,6 +38,7 @@ export class NameManager {
 
 
 export function makeNameUnique(name,nameManager){
+  // console.log("makeNameUnique called! ")
     nameManager = addNameToNameManager(name, nameManager); 
     const count = countNamesInManager(name, nameManager); 
     const romanCount = toRoman(count); 
@@ -47,6 +48,8 @@ export function makeNameUnique(name,nameManager){
 
 function addNameToNameManager(name, nameManager){
     const firstLetter = name[0]; 
+    // console.log(`firstLetter of name ${name} is ${name[0]}`)
+    // console.log(`nameManager is : ${JSON.stringify(nameManager)}; nameManager first letter is ${nameManager[0]}`)
     let letterCategory = nameManager[firstLetter]; 
     letterCategory.push(name); 
     nameManager[firstLetter] = letterCategory; 

@@ -83,6 +83,12 @@ export function readGenes(genome, board, mySymbol){
 // console.log(readGenome([85,21,82,28,12,83,43,19,74,80,38,16,99], [null,'X','O',null,'O','X',null,null,null], 'X'))
 // ,X,X,O,O,X,X,O,O and mySymbol: O
 
+// given a number, returns the text of the corresponding rule; 
+export function getRuleText(number){
+    const board = [null,null,null,null,null,null,null,null,], symbol = 'X'; // dummy values, we just want the rule 
+    let data = runRule(number, board, symbol); 
+    return data[1]; 
+}
 
 
 function indexOfHighest(array){

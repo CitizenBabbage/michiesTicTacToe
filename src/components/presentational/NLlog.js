@@ -1,12 +1,24 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import { dataBaseDuplicator } from '../../auxiliary/general/usefulFunctions.js';
+import cursorImage from '../../images/cursor.png';
+import pointerImage from '../../images/pointer.png';
 
 export function NLlog( props ) {
     const naturalLanguageLog = props.naturalLanguageLog; 
     const nLLogStats = props.nLLogStats; 
     const setNaturalLanguageLog = props.setNaturalLanguageLog; 
     const [NLlogVisible, setNLlogVisible] = useState(false)
+    const [shouldDisable, setShouldDisable] = useState(true); 
+
+
+    useEffect(() => {if (naturalLanguageLog.length > 0) {setShouldDisable(false)} else setShouldDisable(true)}, [naturalLanguageLog])
+
+    const buttonStyle = {
+        color: shouldDisable ? 'grey' : 'white',
+        borderColor: shouldDisable ? 'grey' : 'white',
+        cursor: shouldDisable ? `url('${cursorImage}'),auto` : `url('${pointerImage}'),pointer`
+    };
 
     function handleClick(){
         setNLlogVisible(prevValue => !prevValue)
@@ -61,7 +73,7 @@ export function NLlog( props ) {
     if (NLlogVisible === true)
         return (
             <div> 
-                <button className = 'retro-text' onClick = {handleClick}> Hide Menace's Diary</button>
+                <button className = 'retro-button' onClick = {handleClick}> Hide Menace's Diary</button>
                 <ol className = 'retro-text' style = {{fontSize : 12}}>
                     {naturalLanguageLog.map((item, index) => 
                         (
@@ -74,7 +86,7 @@ export function NLlog( props ) {
             </div>
         )
     else return (
-        <button className = 'retro-text' onClick = {handleClick}> Read Menace's Diary</button>
+        <button className = 'retro-button' onClick = {handleClick} disabled={shouldDisable} style={buttonStyle}> Read Menace's Diary</button>
     )
     
 }

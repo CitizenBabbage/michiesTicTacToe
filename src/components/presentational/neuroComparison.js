@@ -16,6 +16,9 @@ import { minimaxChooseMove } from '../../auxiliary/choiceFunctions/minimaxChoose
 import { convertMinimax } from '../neuro/minimaxHandling.js';
 import { computeErrorForLastLayer } from '../neuro/errorFunctions.js';
 
+import cursorImage from '../../images/cursor.png';
+import pointerImage from '../../images/pointer.png';
+
 export default function NeuroComparison( props ) {
   
   
@@ -76,6 +79,14 @@ export default function NeuroComparison( props ) {
         setToPlay(whoseTurn); 
         // setActivationSums(data[1][0][2]); 
     }
+
+    const buttonStyle = {
+        color: shouldDisable ? 'grey' : 'white',
+        borderColor: shouldDisable ? 'grey' : 'white',
+        cursor: shouldDisable ? `url('${cursorImage}'),auto` : `url('${pointerImage}'),pointer`
+    };
+
+      
    
     // useEffect(computeError,[neuroPredictions, minimaxRecommendations, activationSums])
 
@@ -91,8 +102,8 @@ export default function NeuroComparison( props ) {
   return (
     <div>
         <div>
-            <button className = 'retro-button' disabled={shouldDisable} onClick = { setPredictionAndRecommendationFromTrainingSet } values = {neuroPredictions}> Training Example </button>
-            <button className = 'retro-button' disabled={shouldDisable} onClick = { setPredictionAndRecommendationFromTestingSet } values = {minimaxRecommendations}> Test Example</button>
+            <button className = 'retro-button' disabled={shouldDisable} onClick = { setPredictionAndRecommendationFromTrainingSet } values = {neuroPredictions} style={buttonStyle}> Training Example </button>
+            <button className = 'retro-button' onClick = { setPredictionAndRecommendationFromTestingSet } values = {minimaxRecommendations}> Test Example</button>
         </div>
         {toPlay? <p>{toPlay} to play</p>:<p></p>}
         <div className='gameshell'>

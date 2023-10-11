@@ -1,6 +1,7 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { isAnInteger } from '../../auxiliary/general/usefulFunctions.js';
+import { Tooltip } from '../presentational/ToolTip.js';
 
 export function EnterGenerations( props ) {
     const trainingMode = props.trainingMode; 
@@ -8,7 +9,13 @@ export function EnterGenerations( props ) {
     const [submissionError, setSubmissionError] = useState(""); 
     const setSoundEffect = props.setSoundEffect; 
     const setGenerations = props.setGenerations; 
-    const [value, setValue] = useState(0); 
+    const [value, setValue] = useState(); 
+    const tipText = "How long the evolution should run"
+
+    useEffect(()=>{
+      setSubmissionError("")
+    },[value])
+
 
     function handleChange(event) {
         setValue(event.target.value);
@@ -16,29 +23,26 @@ export function EnterGenerations( props ) {
 
     function handleSubmit (event) {
         event.preventDefault();
-        if (isAnInteger(event.target.elements[0].value) && event.target.elements[0].value > 0){
-        //   console.log("submit generations button pressed")
+        if (isAnInteger(event.target.elements[0].value) && event.target.elements[0].value > 0 && event.target.elements[0].value < 30){
           setGenerations(event.target.elements[0].value); 
-        //   console.log("enterGenerations: number of evolutions set to ", event.target.elements[0].value)
-
-          //setPlayersTurn(false)
-          setSoundEffect("evolvoLearn")
         }
-        else setSubmissionError("I need a positive whole number")
+        else setSubmissionError("I need a positive whole number between 1 and 30")
       }
 
 
     
-      
+    return (
+      <Tooltip tipText = {tipText} setMouseEventCounter = {props.setMouseEventCounter}>
+
+        <div className='twoRows'>
+            <form className = 'text-field' onSubmit={handleSubmit}>
+            <input className = "retro-fill" type="number" value={value} placeholder = "No. of Generations" onChange={handleChange} />
+            </form>
+            <h1 className = "retro-text">{submissionError} </h1>
+        </div>
+      </Tooltip> 
+    ) 
       
 
-    if (trainingMode) return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input className = "retro-text" type="number" value={value} placeholder = "No. of Generations" onChange={handleChange} />
-                {/* <input type="submit" value="Submit" /> */}
-            </form>
-            <p>{submissionError} </p>
-        </div>
-    )
+  
 }

@@ -45,18 +45,39 @@ export default function GameShell( props ) {
   const foe = props.foe; 
   const setFoe = props.setFoe; 
   const [trainingTurn, setTrainingTurn] = useState(0); // toggling this triggers next loop in training game
+  const [genepoolSize, setGenepoolSize] = useState(100); 
 
+  // const [gp, nm] = createGenepool(100, 26);
+  // const [nameManager, setNameManager] = useState(nm);
+  // const [genepool, setGenepool] = useState(gp);
+  // const [ranking, setRanking] = useState(gp); 
+
+  const genomeLength = 26; 
   const [gp, nm] = createGenepool(100, 26);
-  const [nameManager, setNameManager] = useState(nm);
-  const [genepool, setGenepool] = useState(gp);
-  const [ranking, setRanking] = useState(gp); 
-  // const [ranking, setRanking] = useState(() => {
-  //   const [gp, nm] = createGenepool(100, 26); 
-  //   setNameManager(nm); 
-  //   setGenepool(gp)
-  //   console.log("initializing ranking")
-  //   return gp;
-  // });
+  const [nameManager, setNameManager] = useState();
+  const [genepool, setGenepool] = useState();
+  const [ranking, setRanking] = useState(() => {
+    const [gp, nm] = createGenepool(genepoolSize, genomeLength); 
+    setNameManager(nm); 
+    setGenepool(gp)
+    console.log("initializing ranking")
+    return gp;
+  });
+  const setBusy = props.setBusy; 
+
+  useEffect(() => {
+    createGenepool(genepoolSize,genomeLength) 
+  },[genepoolSize])
+
+  // this controls the appearance of the hourglass cursor for menace, and makes buttons unclickable while it's training
+  useEffect(()=>{
+    if (foe === 'menace'){
+      if (trainingMode && trainingIterations > 0){
+        setBusy(true); 
+      }
+      else setBusy(false); 
+    } 
+  },[trainingIterations])
   
   useEffect(()=>{
     if (ranking) console.log("in gameshell, ranking has been set! ")
@@ -66,10 +87,6 @@ export default function GameShell( props ) {
   //const [net, setNet] = useState(makeNetwork([27,32,36,5])) //
   const [net, setNet] = useState(createModel([128, 64]));
 
-  
-
-
-
   useEffect(()=>{
     //console.log("start of gameShell, soundEffect is ", props.soundEffect)
   }, [])
@@ -78,16 +95,16 @@ export default function GameShell( props ) {
   useEffect(() => {
     if (winner) setWhoWon(winner === humansLetter? "human": ['X','O'].includes(winner)? "computer": "draw")
     //console.log("setWhoWon has been triggered")
-},[winner])
+  },[winner])
 
-useEffect(() =>{
-  if (resigned){
-      console.log(`gs: registering that ${resigned} has resigned, and setting winner as ${opposite(resigned)}!`)
-      setWinner(opposite(resigned))
-      //console.log(`${opposite(resigned)} has resigned!`)
+  useEffect(() =>{
+    if (resigned){
+        console.log(`gs: registering that ${resigned} has resigned, and setting winner as ${opposite(resigned)}!`)
+        setWinner(opposite(resigned))
+        //console.log(`${opposite(resigned)} has resigned!`)
+    }
   }
-}
-  ,[resigned] ) //resigned takes values undefined, null, 'X' or 'O'
+    ,[resigned] ) //resigned takes values undefined, null, 'X' or 'O'
  
 
 
@@ -221,7 +238,7 @@ useEffect(()=>{
   else if (foe === 'menace') return (
     <div> 
     <MenaceUpdater
-        
+
         setResigned = {setResigned}
         trainingTurn = {trainingTurn} setTrainingTurn = {setTrainingTurn}
 
@@ -269,6 +286,10 @@ useEffect(()=>{
 
   else if (foe === 'Neuro') return (
     <NeuroTrainingPage
+        busy = {props.busy}
+        setBusy = {props.setBusy}
+        hourglassActive = {props.hourglassActive} 
+
         net = {net} 
         setNet = {setNet} 
         humansLetter = {humansLetter}
@@ -299,6 +320,11 @@ useEffect(()=>{
   else if (foe === 'evolvo') return (
     <div> 
     <EvolvoUpdater
+        genepoolSize = {genepoolSize} 
+        setGenepoolSize = {setGenepoolSize}
+
+        setBusy = {props.setBusy} 
+
         setResigned = {setResigned}
         setSoundEffect = {setSoundEffect}
 

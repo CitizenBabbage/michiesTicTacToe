@@ -4,24 +4,23 @@ import { createModel } from './model.js';
 import { whoseMove } from '../../../auxiliary/general/usefulFunctions.js';
 import { minimaxChooseMove } from '../../../auxiliary/choiceFunctions/minimaxChooseMove.js';
 
-export async function dataFeeder(dataset, model) {
-    const encodedData = ohEncodeBoards(dataset); 
+export async function dataFeeder(dataset, model, epochs = 20, batchSize = 32 ) {
+    const encodedData = ohEncodeBoards(dataset); //oh means one-hot
     const xs = tf.tensor2d(encodedData, [encodedData.length, 27]);
-    //console.log("Starting encoding of labels...")
-    const encodedLabels = getAllLabels(dataset);
-    //console.log("encodedLabels[0] is : ", encodedLabels[0])
-    //console.log("Finished encoding of labels!")
+    console.log("Starting encoding of labels...")
+    const encodedLabels = getAllLabels(dataset); // get all right answers, i.e. ask minimax
+    console.log("Finished encoding of labels!")
     const ys = tf.tensor(encodedLabels, [encodedLabels.length, 9, 4]);
     
     // Train the model
-    const epochs = 20;
-    const batchSize = 32;
+    // const epochs = 20;
+    // const batchSize = 32;
 
     await model.fit(xs, ys, {
         epochs: epochs,
         batchSize: batchSize
     }).then(info => {
-        //console.log('Final accuracy', info.history.acc);
+        console.log('Final accuracy: ', info.history.acc);
     });
     // add validation check here
     

@@ -7,6 +7,7 @@ export default function createGenepool (numberOfCritters, genomeLength){
     for (let i = 0; i < numberOfCritters; i++){
         const genes = createRandomGenome(genomeLength); 
         const name = randomName(); 
+        // console.log("random name is ", name)
         const [extName,newNameManager] = makeNameUnique(name,nmManager);
         const genome = new Genome({genome:genes, basicName:name, extendedName: extName, fitness: 0, generation: "1st"})
         genePool.push(genome)

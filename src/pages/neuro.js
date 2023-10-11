@@ -18,7 +18,7 @@ export default function Neuro( props ) {
   const neuroMinimaxBoardText = "The correct scores from Minimax"
   return (
       <div>
-        <GameShell neuroMinimaxBoardText = {neuroMinimaxBoardText} neuroPredictionsBoardText = {neuroPredictionsBoardText} challengeBoardText = {challengeBoardText} thinkBoardText = {thinkBoardText} name = "Neuro" playStyle = "Connectionist" preblurb = {neuroBlurb1} blurb = {neuroBlurb2} src = {neuroPortrait} devMode = {props.devMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} setFoe = { setFoe }/>
+        <GameShell hourglassActive = {props.hourglassActive} busy = {props.busy} setBusy = {props.setBusy} neuroMinimaxBoardText = {neuroMinimaxBoardText} neuroPredictionsBoardText = {neuroPredictionsBoardText} challengeBoardText = {challengeBoardText} thinkBoardText = {thinkBoardText} name = "Neuro" playStyle = "Connectionist" preblurb = {neuroBlurb1} blurb = {neuroBlurb2} src = {neuroPortrait} devMode = {props.devMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} setFoe = { setFoe }/>
       </div>
   )
 }

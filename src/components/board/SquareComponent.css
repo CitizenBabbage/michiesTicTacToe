@@ -27,6 +27,7 @@
     padding: 0;
     text-align: center;
     width: 34px;
+    cursor: url('../../images/cursor.png'), auto
 }
 
 .thinkBoardButton {
@@ -42,6 +43,7 @@
     padding: 0;
     text-align: center;
     width: 34px;
+    cursor: url('../../images/cursor.png'), auto
 }
 
 .minimaxBoard {
@@ -57,6 +59,7 @@
     padding: 0;
     text-align: center;
     width: 34px;
+    cursor: url('../../images/cursor.png'), auto
 }
 
 .neuroPredictions {
@@ -72,6 +75,7 @@
     padding: 0;
     text-align: center;
     width: 34px;
+    cursor: url('../../images/cursor.png'), auto
 }
 
 .logBoardButton {
@@ -82,7 +86,7 @@
     font-weight: bold;
     height: 17px;
     width: 17px;
-    
+    cursor: url('../../images/cursor.png'), auto
 }
 
 .probBoardButton {
@@ -99,5 +103,5 @@
     text-align: center; */
     height: 12px;
     width: 10px;
-    
+    cursor: url('../../images/cursor.png'), auto
 }

@@ -43,7 +43,6 @@ function createPairings(genepool){
     if (!genepool || genepool.length === 0) throw new Error(`createPairings received a bum genepool. genepool = ${JSON.stringify(genepool)} `)
     const sizeOfInitialGenepool = genepool.length; 
     const pairings = []; 
-    console.log("genepool.length is ", genepool.length)
     while (genepool.length > 1){
         const critter1 = genepool[0]; 
         const restOfTheArray = genepool.slice(1)
