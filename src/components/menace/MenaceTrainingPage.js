@@ -56,7 +56,7 @@ export function MenaceTrainingPage (props) {
 
         <div className='threeRows'>
 
-          <div label = "column1, row1"> 
+          <div label = "column1, row1" className='twoColumns'> 
             <NavigationButton path = "/selectOpponent" label = 'Menu'/>
             {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Game </button> }
           </div> 

@@ -9,7 +9,8 @@ import neuroLearn from '../../../soundFX/cylonMoreTraining.mp3'
 import neuroLose from '../../../soundFX/cylonMoreTraining.mp3'
 import menaceBravado from '../../../soundFX/menaceNotThisTime2.mp3'
 import minimaxBravado from '../../../soundFX/minimaxLookAhead2.mp3'
-import hurisBravado from '../../../soundFX/vindicator2.mp3'
+import hurisBravado from '../../../soundFX/RulesRule.mp3'
+import hurisWin from '../../../soundFX/HurisWin.mp3'
 
 export default function SoundComponent( props ) {
   const [playSound, setPlaySound] = useState(false);
@@ -38,6 +39,7 @@ export default function SoundComponent( props ) {
     neuroLearn,
     neuroLose,
     hurisBravado,
+    hurisWin,
     minimaxBravado,
     menaceBravado,
   };
@@ -64,8 +66,6 @@ function triggerWinOrLoseSound(){
     if (whoWon === "human"){
         const sound = pickSound("loseSound")
         setSoundEffect(sound)
-        // if (soundEffect !== "menaceBravado") setSoundEffect("menaceBravado") 
-        // else setSoundEffect("minimaxBravado")
     }
     else if (whoWon === "computer"){
         const sound = pickSound("winSound")
@@ -85,7 +85,7 @@ useEffect(() => {
           //console.log(`play bravado sound!`)
           const sound = pickSound("bravadoSound");
           if (!sound) return; // if character has no bravadoSound
-          const randomCount = 3+Math.floor(Math.random()*5) 
+          const randomCount = 12+Math.floor(Math.random()*5) 
           setBravadoCounter(randomCount); 
           setSoundEffect(sound); 
       }
@@ -130,7 +130,7 @@ useEffect(() => {
     }
     else if (foe === 'huris'){
         trainingSound = ""
-        winSound = "" 
+        winSound = "hurisWin" 
         loseSound = "";  
         bravadoSound = "hurisBravado"; 
     }

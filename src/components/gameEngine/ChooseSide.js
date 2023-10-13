@@ -21,27 +21,32 @@ export function ChooseSide( props ){
 
     return (
     <div className="gameshell"> 
-      <p>{ promptText }</p>
-      <button 
-        disabled = { !buttonActivation } 
-        onClick = { handleXClick }
-        className={`player-button`}>
-        <p className = 'retro-text' style = {{ fontSize: '16px'}}>X</p>
-      </button>
-      <button 
-        disabled = { !buttonActivation }
-        onClick = { handleOClick }
-        className={`player-button`}>
-        <p className = 'retro-text' style = {{ fontSize: '16px'}}>O</p>
-      </button>
-      {(foe === 'menace' || foe === 'Neuro' || foe === 'evolvo') && 
+      <div className='center-children'>
+        <p>{ promptText }</p>
+      </div>
+      <div className='center-children'>
         <button 
           disabled = { !buttonActivation } 
-          onClick = { handleTrainingModeClick }
+          onClick = { handleXClick }
           className={`player-button`}>
-          <p className = 'retro-text' style = {{ fontSize: '14px'}}>{trainingWord}</p>
+          <p className = 'retro-text' style = {{ fontSize: '16px'}}>X</p>
         </button>
+        <button 
+          disabled = { !buttonActivation }
+          onClick = { handleOClick }
+          className={`player-button`}>
+          <p className = 'retro-text' style = {{ fontSize: '16px'}}>O</p>
+        </button>
+        {(foe === 'menace' || foe === 'Neuro' || foe === 'evolvo') && 
+          <button 
+            disabled = { !buttonActivation } 
+            onClick = { handleTrainingModeClick }
+            className={`player-button`}>
+            <p className = 'retro-text' style = {{ fontSize: '14px'}}>{trainingWord}</p>
+          </button>
       }
-      </div>
+      </div> 
+      
+    </div>
     )
 }

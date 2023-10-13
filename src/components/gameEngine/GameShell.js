@@ -288,7 +288,6 @@ useEffect(()=>{
     <NeuroTrainingPage
         busy = {props.busy}
         setBusy = {props.setBusy}
-        hourglassActive = {props.hourglassActive} 
 
         net = {net} 
         setNet = {setNet} 

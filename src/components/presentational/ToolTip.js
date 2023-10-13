@@ -19,6 +19,7 @@ export function Tooltip( props ) {
 
         // If tooltip overflows on the right side of the viewport, align it to the right edge of the container.
         if (boundingBox.right > window.innerWidth) {
+            console.log("detecting box has gone off right edge")
             newStyle = {
                 right: '0',
                 left: 'auto'

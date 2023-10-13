@@ -56,7 +56,7 @@ export function EvolvoTrainingPage (props) {
             <EnterGenePoolSize setGenepoolSize = {props.setGenepoolSize} trainingMode = { trainingMode } xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} />
           </div> 
           <div label = "row3" className='text-field'>
-            <EnterGenerations setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } setGenerations = {props.setGenerations}  xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} />
+            <EnterGenerations setSoundEffect = {props.setSoundEffect} trainingMode = { trainingMode } generations = {props.generations} setGenerations = {props.setGenerations}  xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} />
           </div> 
         </div> 
         <div label = "row4" className='centered'>

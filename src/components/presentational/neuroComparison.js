@@ -18,6 +18,7 @@ import { computeErrorForLastLayer } from '../neuro/errorFunctions.js';
 
 import cursorImage from '../../images/cursor.png';
 import pointerImage from '../../images/pointer.png';
+import { Tooltip } from './ToolTip.js';
 
 export default function NeuroComparison( props ) {
   
@@ -102,8 +103,12 @@ export default function NeuroComparison( props ) {
   return (
     <div>
         <div>
-            <button className = 'retro-button' disabled={shouldDisable} onClick = { setPredictionAndRecommendationFromTrainingSet } values = {neuroPredictions} style={buttonStyle}> Training Example </button>
-            <button className = 'retro-button' onClick = { setPredictionAndRecommendationFromTestingSet } values = {minimaxRecommendations}> Test Example</button>
+            <Tooltip tipText = "Test Neuro on a board it has seen">
+                <button className = 'retro-button' disabled={shouldDisable} onClick = { setPredictionAndRecommendationFromTrainingSet } values = {neuroPredictions} style={buttonStyle}>Practiced</button>
+            </Tooltip>
+            <Tooltip tipText = "Test Neuro on a board it hasn't seen">
+                <button className = 'retro-button' onClick = { setPredictionAndRecommendationFromTestingSet } values = {minimaxRecommendations}>Unseen</button>
+            </Tooltip>
         </div>
         {toPlay? <p>{toPlay} to play</p>:<p></p>}
         <div className='gameshell'>

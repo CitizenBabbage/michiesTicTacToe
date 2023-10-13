@@ -63,10 +63,14 @@ const Home = ( props ) => {
       
 
     return (
-        <div className = 'buttonContainer' >
-            <button onClick = {handleTopClick} className = {highlightedButton === "topButton"? 'highlightedButton': 'normalButton'}>Proceed with audio on</button> 
-            <button onClick = {handleBottomClick} className = {highlightedButton === "bottomButton"? 'highlightedButton': 'normalButton'}>Proceed with audio off</button> 
+        <div>
+            <p className='retro-text'>This is a work in progress...</p>
+            <div className = 'buttonContainer' >
+                <button onClick = {handleTopClick} className = {highlightedButton === "topButton"? 'highlightedButton': 'normalButton'}>Proceed with audio on</button> 
+                <button onClick = {handleBottomClick} className = {highlightedButton === "bottomButton"? 'highlightedButton': 'normalButton'}>Proceed with audio off</button> 
         </div> 
+        </div> 
+        
     )
 };
  

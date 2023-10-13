@@ -16,29 +16,34 @@ const Intro = ( props ) => {
     // const [keyPressed, setKeyPressed] = useState(false); 
     const setMusicStarted = props.setMusicStarted; 
     const keyPressed = props.musicStarted; 
+    const [permissionToProceed, setPermissionToProceed] = useState(false); 
 
     
     useEffect(() => {
         function handleKeyPress(){
-            if (!keyPressed) {
-                setMusicStarted(true)
+            if (!keyPressed && permissionToProceed) {
+                setMusicStarted(true) // this triggers the useEffect in selectionMusic.js & plays the theme
                 navigate("/selectOpponent");
             }
             
         }
         window.addEventListener('keydown', handleKeyPress);
+        window.addEventListener('click', handleKeyPress);
+
         return () => {
                 window.removeEventListener('keydown', handleKeyPress);
+                window.removeEventListener('click', handleKeyPress);
+
         };
         
     } 
-        , [])
+        , [permissionToProceed])
     
 
     return (
         <div className = 'intropage'>
             <div className = 'logoContainer'>
-                <TekTokTaoLogo/>
+                <TekTokTaoLogo setPermissionToProceed = {setPermissionToProceed} />
                 <IntroTune audioSelected = {props.audioSelected}/>
             </div> 
         </div>

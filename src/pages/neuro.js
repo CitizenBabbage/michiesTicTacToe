@@ -12,13 +12,13 @@ import {neuroBlurb2} from '../blurbs/neuroBlurb2.js'
 export default function Neuro( props ) {
 
   const [foe, setFoe] = useState("Neuro")
-  const thinkBoardText = "These are the scores Neuro assigned to each possible move on the last turn"
+  const thinkBoardText = "Scores Neuro assigned to each potential move on previous turn"
   const challengeBoardText = "Neuro must score the moves for this board state"
-  const neuroPredictionsBoardText = "Neuro tries to predict Minimax's scores. Neuro plays well when its highest scoring move is also Minimax's"
+  const neuroPredictionsBoardText = "Neuro's prediction of Minimax's scores."
   const neuroMinimaxBoardText = "The correct scores from Minimax"
   return (
       <div>
-        <GameShell hourglassActive = {props.hourglassActive} busy = {props.busy} setBusy = {props.setBusy} neuroMinimaxBoardText = {neuroMinimaxBoardText} neuroPredictionsBoardText = {neuroPredictionsBoardText} challengeBoardText = {challengeBoardText} thinkBoardText = {thinkBoardText} name = "Neuro" playStyle = "Connectionist" preblurb = {neuroBlurb1} blurb = {neuroBlurb2} src = {neuroPortrait} devMode = {props.devMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} setFoe = { setFoe }/>
+        <GameShell busy = {props.busy} setBusy = {props.setBusy} neuroMinimaxBoardText = {neuroMinimaxBoardText} neuroPredictionsBoardText = {neuroPredictionsBoardText} challengeBoardText = {challengeBoardText} thinkBoardText = {thinkBoardText} name = "Neuro" playStyle = "Connectionist" preblurb = {neuroBlurb1} blurb = {neuroBlurb2} src = {neuroPortrait} devMode = {props.devMode} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} foe = {foe} setFoe = { setFoe }/>
       </div>
   )
 }

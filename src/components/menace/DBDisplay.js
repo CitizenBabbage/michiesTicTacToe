@@ -133,18 +133,20 @@ function databaseDisplay(props){
     
     // checkDbase(database, "2. upDater")
    return (
-        <div> 
-            <p style = {{fontSize: 12}}> {`Training Games Left: ${trainingIterations}`}</p> 
+        <div className='two-rows'> 
+            <p className='centered' style = {{fontSize: 12}}> {`Training Games Left: ${trainingIterations}`}</p> 
+            <div className='center-children'>
+                <button className='retro-button' onClick={toggleView}>
+                        {toggleText}
+                </button>
+            </div>
 
-            <button className='retro-button' onClick={toggleView}>
-                    {toggleText}
-            </button>
             {displayRequested && 
-                <div>
+                <div className='centered'>
                     {/* <div>
                         <button className='retro-button' onClick={refreshData}>Refresh</button>
                     </div>  */}
-                    <div>
+                    <div className='centered'>
                         <p className='retro-text'>
                             % of board states updated : {Math.round((getAllPlayedBoards(database).length/database.length) * 100) }
                         </p>

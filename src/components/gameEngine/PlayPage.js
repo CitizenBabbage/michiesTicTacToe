@@ -61,7 +61,7 @@ export default function PlayPage (props) {
       <div className='gameshell'>
           <div className='space-around'>
             <NavigationButton path = "/selectOpponent" label = 'Menu'/>
-            {!trainingMode && <button className = 'retro-button' onClick = {handleTrainingModeClick}> {trainingWord} </button> }
+            {!trainingMode && (foe === 'menace' || foe === 'evolvo' || foe === 'Neuro' ) && <button className = 'retro-button' onClick = {handleTrainingModeClick}> {trainingWord} </button> }
           </div>
             
             <BoardContainer devMode = {props.devMode} computerOff = { props.computerOff } setComputerOff = { props.setComputerOff } src = {props.src} setFoe = { props.setFoe } foe = {foe} trainingIterations = {trainingIterations} setResigned = {setResigned} humansLetter = {humansLetter} squares = {squares} setSquares = {setSquares} trainingMode = {trainingMode}  setTrainingMode = {setTrainingMode} gameLog = {gameLog} setGameLog = {setGameLog} database = {database} winner = {winner} setWinner = {setWinner} xsTurn={props.xsTurn} setXsTurn={props.setXsTurn} reset = {reset} ></BoardContainer>

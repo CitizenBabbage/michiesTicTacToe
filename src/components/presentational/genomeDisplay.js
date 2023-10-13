@@ -24,7 +24,9 @@ export default function GenomeDisplay( props ) {
    if (genome) return (
     <div className={trainingMode ? 'threeBoards' : 'threeRows'}>
         <div className = 'centered'> 
-            <p>{genome.extendedName} </p>
+            <Tooltip tipText = {"Each ruleset gets a unique name!"}>
+                <p>{genome.extendedName} </p>
+            </Tooltip>
         </div>
         <div className = 'centered'>
             <ol className = 'genome'>
@@ -48,8 +50,12 @@ export default function GenomeDisplay( props ) {
             </ol>
         </div> 
        <div className = {trainingMode ? 'twoRows' : 'centered'}>
-            <p>{genome.generation} Gen </p>
-            <p>Fitness = {genome.fitness}</p>
+            <Tooltip tipText = {"The generation the ruleset was spawned on"}>
+                <p>{genome.generation} Gen </p>
+            </Tooltip>
+            <Tooltip tipText = {"Total score for games against other rulesets"}>
+                <p> &nbsp; Fitness = {genome.fitness}</p>
+            </Tooltip>
        </div>
     </div>
     )

@@ -1,5 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
-import { ohEncodeSingleBoard } from "../../components/neuro/neuroTFmodel/datafeeder.js";
+import { ohEncodeSingleBoard } from '../../components/neuro/neuroTFmodel/datafeeder.js';
 
 
 // returns [0.recommended move, 1.[hiddenSums, hiddenValues], 2.output values]

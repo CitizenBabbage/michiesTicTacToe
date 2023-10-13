@@ -2,6 +2,7 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import { isAnInteger } from '../../auxiliary/general/usefulFunctions.js';
 import { Tooltip } from '../presentational/ToolTip.js';
+import SoundComponent from '../presentational/sound/SoundFX.js';
 
 export function EnterGenerations( props ) {
     const trainingMode = props.trainingMode; 
@@ -9,12 +10,17 @@ export function EnterGenerations( props ) {
     const [submissionError, setSubmissionError] = useState(""); 
     const setSoundEffect = props.setSoundEffect; 
     const setGenerations = props.setGenerations; 
+    const generations = props.generations; 
     const [value, setValue] = useState(); 
     const tipText = "How long the evolution should run"
 
     useEffect(()=>{
       setSubmissionError("")
     },[value])
+
+    useEffect(() => {
+      if (generations > 0) setValue(prevValue => prevValue -1)
+  }, [generations])
 
 
     function handleChange(event) {
@@ -32,7 +38,8 @@ export function EnterGenerations( props ) {
 
     
     return (
-      <Tooltip tipText = {tipText} setMouseEventCounter = {props.setMouseEventCounter}>
+      <div>
+        <Tooltip tipText = {tipText} setMouseEventCounter = {props.setMouseEventCounter}>
 
         <div className='twoRows'>
             <form className = 'text-field' onSubmit={handleSubmit}>
@@ -40,7 +47,9 @@ export function EnterGenerations( props ) {
             </form>
             <h1 className = "retro-text">{submissionError} </h1>
         </div>
-      </Tooltip> 
+        </Tooltip> 
+      </div>
+      
     ) 
       
 

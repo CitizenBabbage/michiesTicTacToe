@@ -3,13 +3,16 @@ import {useState, useEffect} from 'react';
 import logo from '../../images/logo-williams.png'
 import './TekTokTaoLogo.css'
 
-export default function TekTokTaoLogo(  ) {
+export default function TekTokTaoLogo( props ) {
     const [showImage, setShowImage] = useState(false);  // Initial state set to false
+    const setPermissionToProceed = props.setPermissionToProceed; 
   
     useEffect(() => {
     const timer = setTimeout(() => {
         setShowImage(true);  
-    }, 5500);  
+        setPermissionToProceed(true); 
+    }, 5500); 
+
 
     return () => clearTimeout(timer);  // Clear the timer when component unmounts
   }, []);  // 
@@ -17,9 +20,9 @@ export default function TekTokTaoLogo(  ) {
 
     return (
         <div>
-        {showImage && (<img src= { logo } alt="Tek Tok Tao logo" />)}
-        {!showImage && (<p>Loading...</p>)}
-        {showImage && (<p style={{ textAlign: 'center' }}>  {`  `}Press Any Key</p>)}
+          {showImage && (<img src= { logo } alt="Tek Tok Tao logo" />)}
+          {!showImage && (<p>Loading...</p>)}
+          {showImage && (<p style={{ textAlign: 'center' }}>  {`  `}Press Any Key</p>)}
         </div>
         )
 

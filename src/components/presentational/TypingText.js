@@ -10,7 +10,7 @@ export default function TypingText({ text }) {
             const timer = setTimeout(() => {
                 setDisplayedText((prevText) => prevText + text[index]);
                 setIndex((prevIndex) => prevIndex + 1);
-            }, 100); // This sets the typing speed. Change 100 to whatever speed you want.
+            }, 60); // This sets the typing speed. Change 100 to whatever speed you want.
 
             return () => clearTimeout(timer); // Clear the timer on cleanup
         }

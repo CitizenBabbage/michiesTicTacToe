@@ -5,12 +5,12 @@ import { useLocation } from 'react-router-dom';
 
 import PortraitButton from '../components/buttons/PortraitButton.js'
 
-import hurisPortrait from '../images/chosen/huris2.gif'
+import hurisPortrait from '../images/chosen/huris2.png'
 import evolvoPortrait from '../images/chosen/evolvoFinal.png'
 import menacePortrait from '../images/chosen/menace.png'
-import minimaxPortrait from '../images/chosen/minimax.gif'
+import minimaxPortrait from '../images/chosen/minimax.png'
 // import minximaPortrait from '../images/minxima/af896fd40d0249c88c952f8308485f6888596ec3.webp'
-import neuroPortrait from '../images/chosen/neuro3.gif'
+import neuroPortrait from '../images/chosen/neuro3.png'
 import SelectionMusic from '../components/presentational/sound/selectionMusic.js';
 
 export default function selectOpponent( props ){
@@ -37,7 +37,7 @@ export default function selectOpponent( props ){
     ];
 
     const styles = [
-        'Brute Memorization',
+        'Brute Memorizer',
         'Rule Follower',
         'Space Searcher',
         'Darwinian', 
