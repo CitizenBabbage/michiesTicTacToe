@@ -13,10 +13,10 @@ export function ChooseSide( props ){
     const buttonActivation = props.buttonActivation; 
     const handleTrainingModeClick = props.handleTrainingModeClick; 
     const foe = props.foe; 
-    const [trainingWord,setTrainingWord] = useState(foe === 'evolvo'? 'Evolve': foe === 'menace'? 'Learn': 'Train')
+    const [trainingWord,setTrainingWord] = useState(foe === 'evolvo'? 'Evolve': foe === 'menace'? 'Learn': foe === 'huris'? 'Rewire' : 'Train')
 
     useEffect(()=> {
-      setTrainingWord(foe === 'evolvo'? 'Evolve': foe === 'menace'? 'Learn': 'Train')
+      setTrainingWord(foe === 'evolvo'? 'Evolve': foe === 'menace'? 'Learn': foe === 'huris'? 'Rewire' :'Train')
     },[foe])
 
     return (
@@ -37,7 +37,7 @@ export function ChooseSide( props ){
           className={`player-button`}>
           <p className = 'retro-text' style = {{ fontSize: '16px'}}>O</p>
         </button>
-        {(foe === 'menace' || foe === 'Neuro' || foe === 'evolvo') && 
+        {(foe === 'menace' || foe === 'Neuro' || foe === 'evolvo' || foe === 'huris') && 
           <button 
             disabled = { !buttonActivation } 
             onClick = { handleTrainingModeClick }

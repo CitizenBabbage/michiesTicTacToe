@@ -21,6 +21,8 @@ import { createModel } from '../neuro/neuroTFmodel/model.js';
 import { NameManager } from '../../auxiliary/geneticAlgo/nameManager.js';
 import { NavigationButton } from '../buttons/NavigationButton.js';
 import { IdFacts } from '../presentational/IdFacts.js';
+import { HurisTrainingPage } from '../huris/hurisTrainingPage.js';
+import { Genome } from '../../auxiliary/geneticAlgo/createGenepool.js';
 
 
 export default function GameShell( props ) {
@@ -47,11 +49,6 @@ export default function GameShell( props ) {
   const [trainingTurn, setTrainingTurn] = useState(0); // toggling this triggers next loop in training game
   const [genepoolSize, setGenepoolSize] = useState(100); 
 
-  // const [gp, nm] = createGenepool(100, 26);
-  // const [nameManager, setNameManager] = useState(nm);
-  // const [genepool, setGenepool] = useState(gp);
-  // const [ranking, setRanking] = useState(gp); 
-
   const genomeLength = 26; 
   const [gp, nm] = createGenepool(100, 26);
   const [nameManager, setNameManager] = useState();
@@ -64,6 +61,19 @@ export default function GameShell( props ) {
     return gp;
   });
   const setBusy = props.setBusy; 
+  const [hurisGenome, setHurisGenome] = useState(createHurisGenome()); 
+
+  function createHurisGenome(){
+    let hg = Array(genomeLength - 12).fill(0)
+    hg = [100, 95, 90, 85, 75, 65, 55, 45, 35, 25, 15, 5, ...hg]
+    const genome = new Genome({genome:hg, basicName:"Huris", extendedName: "Huris", fitness: 0, generation: "N/A"})
+    return genome; 
+  }
+  
+  //for debugging
+  useEffect(() => {
+    console.log("change in hurisGenome, genome is ", JSON.stringify(hurisGenome.genome))
+  },[hurisGenome])
 
   useEffect(() => {
     createGenepool(genepoolSize,genomeLength) 
@@ -185,6 +195,8 @@ useEffect(()=>{
         setResigned = {setResigned}
         computerOff = {computerOff} trainingTurn = {trainingTurn} setTrainingTurn = {setTrainingTurn}
         setComputerOff = {setComputerOff}
+
+        hurisGenome = {hurisGenome}
 
         thinkBoardText = {props.thinkBoardText}
         handleTrainingModeClick = {handleTrainingModeClick}
@@ -315,6 +327,22 @@ useEffect(()=>{
         blurb = {props.blurb} 
         src = {props.src}
       />   
+  )
+
+  else if (foe === 'huris') return (
+    <div>
+      <HurisTrainingPage
+        foe = {foe}
+        returnToGame = {returnToGame} 
+        name = {props.name} 
+        playStyle = {props.playStyle}
+        blurb = {props.blurb} 
+        src = {props.src}
+        trainingSound = {props.trainingSound}
+        hurisGenome = {hurisGenome}
+        setHurisGenome = {setHurisGenome}
+      />
+    </div>
   )
   else if (foe === 'evolvo') return (
     <div> 

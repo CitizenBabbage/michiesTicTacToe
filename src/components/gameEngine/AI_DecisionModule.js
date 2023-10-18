@@ -35,13 +35,15 @@ export default function AI_DecisionModule( props ) {
     // const testMode = props.testMode; 
     const computerOff = props.computerOff 
     const ranking = props.ranking;
+    const hurisGenome = props.hurisGenome; 
     const [foeSpec,setFoeSpec] = useState(returnFoeSpecs()); 
     const [tempComputerOpponent, setTempComputerOpponent] = useState(foe); 
-    const controllingGenome = props.controllingGenome;
-    const setControllingGenome = props.setControllingGenome;
+    // const controllingGenome = props.controllingGenome;
+    // const setControllingGenome = props.setControllingGenome;
     const trainingTurn = props.trainingTurn; 
     const trainingIterations = props.trainingIterations; 
     let ruleUsed = '\u00A0'; 
+    
      
 
 
@@ -51,20 +53,6 @@ export default function AI_DecisionModule( props ) {
     useEffect(()=>{
         if (ranking) console.log("in AI_DecisionModule, setting of ranking has been recognised! ")
       }, [ranking])
-
-    // function setFoeSpecifications(){
-    //     if (foe === 'menace') {
-    //         console.log("aidm: setting Foe Specifications to database... "); 
-    //         setFoeSpec(database)
-    //     }
-    //     else if (foe === 'evolvo') {
-    //         console.log("aidm: setting Foe Specifications to ranking[0].genome... "); 
-    //         setFoeSpec(ranking[0].genome)
-    //     }
-    //     else if (foe === 'Neuro') {
-    //         console.log("aidm: setting Foe Specifications to network... "); 
-    //         setFoeSpec(network)}
-    // }
 
     function returnFoeSpecs(){
         if (foe === 'menace') {
@@ -79,21 +67,19 @@ export default function AI_DecisionModule( props ) {
             // console.log("aidm: setting Foe Specifications to network... "); 
             return network
         }
+        else if (foe === 'huris') {
+            console.log("aidm: setting Foe Specifications for huris... "); 
+            return hurisGenome; 
+        }
     }
     
 
     // the following useEffect triggers the AI
     useEffect(()=>{
-        // console.log("aidm 1: change in training turn or computerOff recognised...")
-        // console.log("aidm 1a: computerOff is...", computerOff)
-
         if (!computersTurn()) {
-            // console.log("aidm 1c: computersTurn check failed ... exiting the useEffect.")
             return;
         }
-        // console.log("aidm 2: computersTurn check passed ... taking computers turn...")
         takeComputersTurn(); 
-        // console.log("aidm 3: computersTurn turn taken ...")
     },[trainingTurn, computerOff]) // these values are changed in GameCycle at the right time to trigger the AI
 
 
@@ -102,12 +88,9 @@ export default function AI_DecisionModule( props ) {
 
     function takeComputersTurn(){
         computerPlay().then(resolvedSquares => {
-            //checkBoard(resolvedSquares, "takeComputersTurn");
-            // console.log("aidm 4: setting squares...")
             if (resolvedSquares) { // if not resolveSquares it's because Menace had no beads and resigned
                 setSquares(resolvedSquares); // this triggers restart of gameCycle in gameCycle
             }
-            //setSquares(resolvedSquares);
         }
         ).catch(error => {
             console.error("Error in takeComputersTurn:", error); 
@@ -115,56 +98,32 @@ export default function AI_DecisionModule( props ) {
     }
 
     function computersTurn(){ //returns true if it is time for the computer to move
-        // console.log("checking For Computers Turn...");
-        // console.log("aidm: computersTurn, computeroff is.... ", computerOff) 
         if (computerOff) {
-            // console.log("computerOff is set to true. Canceling checkForComputersTurn!")
             return false; 
         }; 
-        // if (isCalculatingWinner) {
-        //     console.log("isCalculatingWinner is still in progress. Canceling checkForComputersTurn!")
-        //     return
-        // }; 
-        //if (trainingMode) console.log("it's trainingMode!")
-        // console.log("trainingIterations are : ", trainingIterations)
         if (trainingMode && trainingIterations <= 0) {
-            // console.log("Training iterations not set or reduced to 0. Canceling checkForComputersTurn!"); 
             return false; 
         };
         if (winner) {
-            // console.log("Winner is determined. Canceling checkForComputersTurn!")
             return false; 
         };
-        // console.log("checkForComputersTurn: Passed!"); 
         // the following is a temporary fix for a bug. It should be unnecessary. 
         if (!doubleCheckItsReallyComputersTurn(squares, humansLetter, trainingMode)) {
-            // console.log("aidm: failed double check that it really is computer's turn.")
             if (!computerOff) setComputerOff(true); 
             return false; 
         }
         return true; 
     }
 
-    // useEffect(() =>{
-    //     if (resigned){
-    //         console.log(`registering that ${resigned} has resigned, and setting winner as ${opposite(resigned)}!`)
-    //         setWinner(opposite(resigned))
-    //         //console.log(`${opposite(resigned)} has resigned!`)
-    //     }
-    // }
-    //     ,[resigned] ) //resigned takes values undefined, null, 'X' or 'O'
-       
 
     // computerPlay is async because an artificial delay is introduced to make the timing feel natural 
     async function computerPlay() {
         let nextSquares = [...squares];                                             // create duplicate board in memory
         return delayAndChoose(nextSquares).then(choiceAndData => {
-            // console.log("computerPlay: Move chosen is " , choiceAndData[0])
             if (choiceAndData[0] === -1){ // this occurs when Menace runs out of beads for a board state
                 console.log(`setting resigned to ${opposite(whoseMove(nextSquares))}`)
                 setResigned(opposite(whoseMove(nextSquares)))
                 console.log("AI_dm: menace has resigned!")
-                // throw new Error("menace has resigned!")
                 return Promise.resolve(null); // returning null should cause takeComputersTurn to halt
             }
             else {

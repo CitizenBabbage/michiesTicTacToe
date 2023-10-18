@@ -34,7 +34,7 @@ export function chooseMove(board, foeSpec, foe){
         return [netOutput[0], netOutput[2]]; 
     }
     else if (foe === "huris"){
-        return hurisChooseMove(board, whoseTurn)
+        return hurisChooseMove(board, whoseTurn, foeSpec)
     }
     
     else if (foe === "evolvo"){

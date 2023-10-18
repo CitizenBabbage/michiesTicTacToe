@@ -36,7 +36,7 @@ export function TrainingIterationsField( props ) {
       
 
     if (trainingMode) return (
-        <div>
+        <div className='center-children'>
             <form onSubmit={handleSubmit}>
                 <input className = "retro-text" type="number" value={value} placeholder = "No. of Games" onChange={handleChange} />
                 {/* <input type="submit" value="Submit" /> */}
