@@ -41,6 +41,10 @@ Select opponent music: "Neon Gaming" by dopestuff on pixabay
 
 https://pixabay.com/users/dopestuff-30965024/
 
+The animation for the Evolvo leaderboard thanks to Josh Comeau here: 
+
+https://github.com/joshwcomeau/react-flip-move/blob/master/documentation/enter_leave_animations.md
+
 Hourglass cursor adapted (extensively) using GIMP from: 
 
 https://vectorportal.com/vector/hourglass-clip-art.ai/21950
