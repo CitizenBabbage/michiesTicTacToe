@@ -68,6 +68,8 @@ Voice changes for Huris from Celebrity Voice Changer, available on the app store
 Graphics created using a mixture of apps, but largely by using GIMP on something created by ai. I used the following extensively: 
 
 https://www.craiyon.com/ (mostly for initial idea production)
+
 https://starryai.com/
+
 https://deepdreamgenerator.com/
 
