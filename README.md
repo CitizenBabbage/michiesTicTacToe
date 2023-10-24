@@ -73,3 +73,5 @@ https://starryai.com/
 
 https://deepdreamgenerator.com/
 
+I used Google's naughty word list to ensure the automatic name generator in evolvo produced only kid friendly names. 
+
