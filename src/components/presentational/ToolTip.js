@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 export function Tooltip( props ) {
@@ -16,20 +16,22 @@ export function Tooltip( props ) {
         const boundingBox = tooltip.getBoundingClientRect();
         let newStyle = {};
         
-
+        
         // If tooltip overflows on the right side of the viewport, align it to the right edge of the container.
         if (boundingBox.right > window.innerWidth) {
             console.log("detecting box has gone off right edge")
             newStyle = {
                 right: '0',
-                left: 'auto'
+                left: 'auto',
             };
+            console.log("1. newStyle is ", newStyle)
+
         } 
         // If tooltip overflows on the left side of the viewport, align it to the left edge of the container.
         if (boundingBox.left < 0) {
             newStyle = {
                 left: '0',
-                right: 'auto'
+                right: 'auto',
             };
         }
         // If tooltip overflows at the top of the viewport, move it below.
@@ -46,9 +48,25 @@ export function Tooltip( props ) {
                 top: 'auto'
             };
         }
+
+        if (boundingBox.right > window.innerWidth && boundingBox.top < 0) {
+            console.log("detecting box has gone off right edge")
+            newStyle = {
+                right: '0',
+                left: 'auto',
+                top: '100%',
+                bottom: 'auto'
+            };
+        }
         newStyle = { ...newStyle, visibility: 'visible', opacity: '1' };
+        console.log("3. newStyle is ", newStyle)
+
         if (tipText) setTooltipStyle(newStyle);
     };
+
+    // for debugging
+        useEffect(()=>{console.log("tooltipStyle is ", tooltipStyle)
+    },[tooltipStyle])
 
     const handleMouseLeave = () => {
         // Reset tooltip visibility and opacity when the mouse leaves the tooltip area.

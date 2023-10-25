@@ -46,6 +46,11 @@
     justify-content: space-around;
 }
 
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
 .center {
   display: grid;
   place-items: center; 

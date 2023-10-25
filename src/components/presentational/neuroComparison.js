@@ -15,6 +15,7 @@ import { neuroChooseMove } from '../../auxiliary/choiceFunctions/neuroChooseMove
 import { minimaxChooseMove } from '../../auxiliary/choiceFunctions/minimaxChooseMove.js';
 import { convertMinimax } from '../neuro/minimaxHandling.js';
 import { computeErrorForLastLayer } from '../neuro/errorFunctions.js';
+import { db } from '../../auxiliary/boardStateDatabase/dataBeadsFormatted.js';
 
 import cursorImage from '../../images/cursor.png';
 import pointerImage from '../../images/pointer.png';
@@ -50,20 +51,33 @@ export default function NeuroComparison( props ) {
                                    
     // get a random training state, set prediction and recommendation, 
     function setPredictionAndRecommendationFromTrainingSet(){
-        const rand = Math.floor(Math.random()*trainingStates.length);
-        const board = trainingStates[rand]; 
+        let rand, board; 
+        if (trainingStates){
+            rand = Math.floor(Math.random()*trainingStates.length);
+            board = trainingStates[rand]; 
+        }
+        else {
+            rand = Math.floor(Math.random()*db.length);
+            board = trainingStates[rand].state; 
+        }
         //console.log("setPredictionAndRecommendationFromTrainingSet: board is : ", board)
         setPredictionAndRecommendation(board);
     }
 
     function setPredictionAndRecommendationFromTestingSet(){
         const allStates = generateGoodBoardStates(9); 
-        let board; 
-        while (!board) {        // select something NOT in the training set
-            const rand = Math.floor(Math.random()*allStates.length);
-            const selection = allStates[rand]; 
-            if (!includes(trainingStates, selection)) board = selection; 
+        let board, rand, selection; 
+        if (!trainingStates){ // if training set is not defined, then any selection is not in the training set
+            rand = Math.floor(Math.random()*allStates.length);
+            board = allStates[rand]; 
         }
+        else{
+            while (!board) {        // select something NOT in the training set
+                rand = Math.floor(Math.random()*allStates.length);
+                selection = allStates[rand]; 
+                if (!includes(trainingStates, selection)) board = selection; 
+            }
+        } 
         setPredictionAndRecommendation(board); 
     }
 
@@ -102,7 +116,7 @@ export default function NeuroComparison( props ) {
     // }
   return (
     <div>
-        <div>
+        <div className='centered'>
             <Tooltip tipText = "Test Neuro on a board it has seen">
                 <button className = 'retro-button' disabled={shouldDisable} onClick = { setPredictionAndRecommendationFromTrainingSet } values = {neuroPredictions} style={buttonStyle}>Practiced</button>
             </Tooltip>
@@ -112,7 +126,7 @@ export default function NeuroComparison( props ) {
         </div>
         {toPlay? <p>{toPlay} to play</p>:<p></p>}
         <div className='gameshell'>
-            <div className='threeBoards'>
+            <div className='centered'>
                 <Board squaresClassName = "neuroXOtest" values = { testBoard } tipText = {challengeBoardText} ></Board> 
                 <Board squaresClassName = "neuroPredictions" values = { neuroPredictions } tipText = {neuroPredictionsBoardText} ></Board> 
                 <Board squaresClassName = "minimaxBoard" values = { minimaxRecommendations } tipText = {neuroMinimaxBoardText}></Board> 

@@ -186,7 +186,9 @@ export function NeuroTrainingPage (props) {
             <MaxCycleField className='text-field' trainingSet = {trainingSet} epochsRemaining = {epochsRemaining} setEpochsRemaining = {setEpochsRemaining} maxCycle = {maxCycle} trainingMode = { trainingMode } value = {value} setValue = {setValue}/>
             {/* <SetSigmaField setSigma = {setSigma} sigma = {sigma} trainingMode = { trainingMode } value = {value} setValue = {setValue}/> */}
             {/* <StartNeuroLearningButton setEpochsRemaining = {setEpochsRemaining} trainingSet = {trainingSet} setTrainingSet = {setTrainingSet} setNeuroLearning = {setNeuroLearning}/> */}
-            {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Game </button> }
+            <div className = 'centered'>
+              {trainingMode && <button className = 'retro-button' onClick = {returnToGame}> Game </button> }
+            </div>
             <GetTrainingSet trainingSet = {trainingSet} setTrainingSet = {setTrainingSet} setValidationSet = {setValidationSet} setValidationLabels = {setValidationLabels} busy = {busy} />
             
       </div>
