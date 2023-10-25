@@ -25,17 +25,27 @@ export default function PortraitButton( props ) {
                 // console.log('slide-out-backwards')
                 setAnimationClass('slide-out-backwards');
             }
-            const slideOutTimer = setTimeout(() => {
-                setActiveSrc(props.src);
-            }, 334); // duration for slide-out
+            // const slideOutTimer = setTimeout(() => {
+            //     setActiveSrc(props.src);
+            // }, 334); // duration for slide-out
     
-            return () => clearTimeout(slideOutTimer);
+            // return () => clearTimeout(slideOutTimer);
         }
     }, [props.src, activeSrc]);
 
+    
     useEffect(()=>{
-            // Update the source to the new image
-            setOldIndex(props.portraitIndex);
+        if (animationClass === 'slide-out-forwards' || animationClass === 'slide-out-backwards'){
+            const slideOutTimer = setTimeout(() => {
+                setActiveSrc(props.src);
+            }, 100); // duration for slide-out
+    
+            return () => clearTimeout(slideOutTimer);
+        }
+    },[animationClass])
+
+
+    useEffect(()=>{
             // Trigger slide-in for the new image
             if (isOneGreaterInLoop(props.portraitIndex, oldIndex, portraitArrayLength)){
                 // console.log('slide-in-forwards')
@@ -45,6 +55,8 @@ export default function PortraitButton( props ) {
                 // console.log('slide-in-backwards')
                 {setAnimationClass('slide-in-backwards')};
             }
+            // Update the source to the new image
+            setOldIndex(props.portraitIndex);
     },[activeSrc])
 
     // the next two functions replace > and < (for size one) for looping numbers, e.g. 0, 1, 2, 3, 0, 1, 2, 3 ... 
