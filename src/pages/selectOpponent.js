@@ -5,15 +5,23 @@ import { useLocation } from 'react-router-dom';
 
 import PortraitButton from '../components/buttons/PortraitButton.js'
 
-import hurisPortrait from '../images/chosen/huris2.png'
-import evolvoPortrait from '../images/chosen/evolvoFinal.png'
-import menacePortrait from '../images/chosen/menace.png'
-import minimaxPortrait from '../images/chosen/minimax.png'
-// import minximaPortrait from '../images/minxima/af896fd40d0249c88c952f8308485f6888596ec3.webp'
-import neuroPortrait from '../images/chosen/neuro3.png'
+// import hurisPortrait from '../images/chosen/huris2.png'
+// import evolvoPortrait from '../images/chosen/evolvoFinal.png'
+// import menacePortrait from '../images/chosen/menace.png'
+// import minimaxPortrait from '../images/chosen/minimax.png'
+// // import minximaPortrait from '../images/minxima/af896fd40d0249c88c952f8308485f6888596ec3.webp'
+// import neuroPortrait from '../images/chosen/neuro3.png'
 import SelectionMusic from '../components/presentational/sound/selectionMusic.js';
 
 export default function selectOpponent( props ){
+    const hurisPortrait = process.env.PUBLIC_URL + '/images/huris2.png';
+    const evolvoPortrait = process.env.PUBLIC_URL + '/images/evolvoFinal.png';
+    const menacePortrait = process.env.PUBLIC_URL + '/images/menace.png';
+    const minimaxPortrait = process.env.PUBLIC_URL + '/images/minimax.png';
+    const neuroPortrait = process.env.PUBLIC_URL + '/images/neuro3.png';
+
+
+
     const [currentPortraitIndex, setCurrentPortraitIndex] = useState(0);
     const [currentNameIndex, setCurrentNameIndex] = useState(0);
     const navigate = useNavigate();
