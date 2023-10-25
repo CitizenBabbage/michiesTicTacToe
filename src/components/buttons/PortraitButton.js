@@ -27,14 +27,15 @@ export default function PortraitButton( props ) {
             }
             const slideOutTimer = setTimeout(() => {
                 setActiveSrc(props.src);
-            }, 334); // 1s duration for slide-out
+            }, 334); // duration for slide-out
     
-            // Cleanup function
             return () => clearTimeout(slideOutTimer);
         }
     }, [props.src, activeSrc]);
 
     useEffect(()=>{
+            // Update the source to the new image
+            setOldIndex(props.portraitIndex);
             // Trigger slide-in for the new image
             if (isOneGreaterInLoop(props.portraitIndex, oldIndex, portraitArrayLength)){
                 // console.log('slide-in-forwards')
@@ -44,8 +45,6 @@ export default function PortraitButton( props ) {
                 // console.log('slide-in-backwards')
                 {setAnimationClass('slide-in-backwards')};
             }
-            // Update the source to the new image
-            setOldIndex(props.portraitIndex);
     },[activeSrc])
 
     // the next two functions replace > and < (for size one) for looping numbers, e.g. 0, 1, 2, 3, 0, 1, 2, 3 ... 
